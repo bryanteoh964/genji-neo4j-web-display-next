@@ -1,0 +1,27 @@
+.header_img {
+    top: 0;
+    left: 0;
+    margin: 0;
+    background-image: url('../assets/images/Genji_emaki_azumaya.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 94vh;
+}
+
+.container {
+    position: absolute;
+    bottom: 6vh;
+    width: 100%;
+}
+
+.boundary {
+    text: center;
+    justify-content: center;
+    align-self: center;
+    text-color: white;
+}
+.boundary h1 {
+    padding-top: 0.75rem;
+    padding-bottom: 1.25rem;
+}
