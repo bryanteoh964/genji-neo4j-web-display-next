@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import styles from '../styles/home.module.css'
+import styles from '../styles/default_page.module.css'
 
 const page = () => {
   return (
