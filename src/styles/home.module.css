@@ -1,0 +1,9 @@
+.section_frame {
+    display: flex;
+    justify-content: center;
+}
+
+.section_container {
+    margin: 80px 0;
+    width: 720px;
+}

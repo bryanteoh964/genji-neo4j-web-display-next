@@ -6,8 +6,8 @@ import styles from '../styles/nav.module.css'
 
 const Nav =()=> {
     return (
-        <div>
-            <nav className={styles.nav_frame}>
+        <div className={styles.nav_frame}>
+            <nav className={styles.nav_container}>
                 <Link href="/">Home</Link>
                 {/* <Link href="/poems">Poems</Link>
                 <Link href="/characters">Characters</Link>
