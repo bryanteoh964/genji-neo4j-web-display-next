@@ -6,15 +6,15 @@ import Nav from '../components/nav';
 const layout = ({ children }) => {
   return (
     <html className="html" lang="en">
-      <div className="main">
+      <body className="main">
         <div className="top">
-          <Header />
-          <Nav />
+          	<Header />
+          	<Nav />
         </div>
         <main className="bottom">
-          {children}
+        	{children}
         </main>
-      </div>
+      </body>
     </html>
   )
 }
