@@ -16,12 +16,20 @@
 }
 
 .boundary {
-    text: center;
-    justify-content: center;
-    align-self: center;
-    text-color: white;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;
 }
 .boundary h1 {
+    width: 100%;
+    margin: 0;
+    padding-top: 0.75rem;
+    padding-bottom: 1.25rem;
+}
+.boundary h3 {
+    width: 100%;
+    margin: 0;
     padding-top: 0.75rem;
     padding-bottom: 1.25rem;
 }
