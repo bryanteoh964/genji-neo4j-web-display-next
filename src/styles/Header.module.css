@@ -7,11 +7,14 @@
     background-size: cover;
     background-position: center;
     height: 94vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .container {
-    position: absolute;
-    bottom: 6vh;
+    position: relative;
+    height: 18vh;
     width: 100%;
 }
 
