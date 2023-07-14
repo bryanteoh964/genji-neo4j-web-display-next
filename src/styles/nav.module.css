@@ -1,0 +1,24 @@
+.nav_boundary{
+    width: 100%;
+    height: 6vh;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.nav_frame {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    marin: 0 10%;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+.nav_frame a {
+    user-select: none;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 1rem;
+}
