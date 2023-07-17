@@ -18,7 +18,11 @@
 .nav_frame a {
     user-select: none;
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 400;
     margin: 0 1rem;
+    color: black;
+}
+.nav_frame a:hover {
+    color: #1890ff;
 }

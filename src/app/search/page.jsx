@@ -1,7 +1,5 @@
 'use client'
 
-import { useMemo, useState, useReducer, useEffect } from 'react'
-
 const page = () => {
   return (
     <div>page</div>
