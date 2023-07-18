@@ -1,5 +1,5 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
-import { traj } from './traj'
+// import { traj } from './traj'
 
 // tag::toNativeTypes[]
 /**
@@ -344,3 +344,5 @@ export function getPoemTableContent(poemRes, transTemp) {
 export function concatObj(e) {
     return Object.values(e).join('')
 }
+
+module.exports = { toNativeTypes, valueToNativeType, getChpList }

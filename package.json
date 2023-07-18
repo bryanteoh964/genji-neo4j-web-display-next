@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "antd": "^4.24.12",
-    "css-loader": "^6.8.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
-    "mini-css-extract-plugin": "^2.7.6",
+    "neo4j": "^2.0.0-RC2",
+    "neo4j-driver": "^5.10.0",
     "next": "13.4.9",
-    "next-transpile-modules": "^10.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.14.1"

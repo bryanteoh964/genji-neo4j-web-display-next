@@ -7,6 +7,7 @@ import { Select, Col, Row, Button } from 'antd';
 import '../../node_modules/antd/dist/antd.min.css';
 // import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 const { Option } = Select;
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 const PoemQuery = () => {
@@ -26,40 +27,26 @@ const PoemQuery = () => {
     // temp loc
     const loc = {pathname: '/poems', search: '', hash: '', state: null, key: 'default'}
     
-    // let { chapter, number } = useParams()
-    // temp chapter and number
-    let { chapter, number } = {chapter: '1', number: '1'}
+    let { chapter, number } = useParams()
 
-    // loads the dropdowns
+    // new loads the dropdowns
+    const loadDropdown = async () => {
+        /*
+            API Returns:
+            - chp object - example: {chapter number: '1', number of chapters: 9, chapter name: 'Kiritsubo 桐壺'}
+        */
+        const response = await fetch(`/api/poems/poem_query`);
+        const responseData = await response.json();
+        setChapters(responseData)
+    };
+
     useEffect(() => {
-        let get = 'match (:Genji_Poem)-[r:INCLUDED_IN]->(c:Chapter) return c.chapter_number as num, c.chapter_name as name, count(r) as count'
-        const _ = async () => {
-            initDriver( process.env.REACT_APP_NEO4J_URI, 
-                process.env.REACT_APP_NEO4J_USERNAME, 
-                process.env.REACT_APP_NEO4J_PASSWORD )
-            const driver = getDriver()
-            const session = driver.session()
-            const res = await session.readTransaction(tx => tx.run(get))
-            let chp = []
-            const ls = getChpList()
-            res.records.forEach(element => {
-                chp.push({
-                    num: Object.values(toNativeTypes(element.get('num'))).join(''),
-                    count: toNativeTypes(element.get('count')).low,
-                    name: ls[chp.length]
-                })
-            });
-            setChapters(chp)
-            // access via url
-            if (chapter !== undefined && number !== undefined) {
-                setChpSelect([true, chapter, number])
-                setButtonLock(false)
-                updatePrevNext(chp)
-            }
-            session.close()
-            closeDriver()
+        loadDropdown();
+        if (chapter !== undefined && number !== undefined) {
+            setChpSelect([true, chapter, number])
+            setButtonLock(false)
+            updatePrevNext(chapters)
         }
-        _().catch(console.error)
     }, [])
 
     // chps: the chapters state array
@@ -104,6 +91,7 @@ const PoemQuery = () => {
                     style={{ width:220 }}
                     value={chpSelect[1]}
                     onSelect={(value) => {
+                        console.log("Value ran!", value)
                         setChpSelect([true, value, chpSelect[2]])
                         setCount(Array.from({length: chapters[value-1].count}, (_, i) => i + 1))
                     }}
