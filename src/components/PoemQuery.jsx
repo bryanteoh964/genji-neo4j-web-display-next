@@ -27,21 +27,22 @@ const PoemQuery = () => {
     
     let { chapter, number } = useParams()
 
-    /*
-        Purpose: Calls backend API to load dropdown menu
-        API Returns:
-        - chp object - example: {chapter number: '1', number of chapters: 9, chapter name: 'Kiritsubo 桐壺'}
-    */
-    const loadDropdown = async () => {
-        const response = await fetch(`/api/poems/poem_query`);
-        const responseData = await response.json();
-        setChapters(responseData)
-    };
 
     /*
         Handles dropdown logic
     */
     useEffect(() => {
+        /*
+            Purpose: Calls backend API to load dropdown menu
+            API Returns:
+            - chp object - example: {chapter number: '1', number of chapters: 9, chapter name: 'Kiritsubo 桐壺'}
+        */
+        const loadDropdown = async () => {
+            const response = await fetch(`/api/poems/poem_query`);
+            const responseData = await response.json();
+            console.log(responseData)
+            setChapters(responseData)
+        };
         loadDropdown();
         if (chapter !== undefined && number !== undefined) {
             setChpSelect([true, chapter, number])
