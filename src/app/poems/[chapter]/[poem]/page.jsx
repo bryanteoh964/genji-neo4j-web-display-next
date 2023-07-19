@@ -1,12 +1,15 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { usePathname,  useSearchParams} from 'next/navigation'
+import {useRouter} from 'next/navigation'
+const PoemPage = (params) => {
+  //const router = usePathname();
 
-const PoemPage = () => {
-  const router = usePathname();
-  console.log(router)
-
-  // Now you can use `chapter` and `poem` in your component.
+  
+  
+  let chapter = params.params.chapter
+  let poem = params.params.poem
+  
 
   return (
     <div>
