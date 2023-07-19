@@ -1,45 +1,46 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-// import { initDriver, getDriver, closeDriver } from '../neo4j.js'
-// import { toNativeTypes, getChpList } from './utils'
+import { useEffect, useState } from 'react';
 import { Select, Col, Row, Button } from 'antd';
 import '../../node_modules/antd/dist/antd.min.css';
-// import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 const { Option } = Select;
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from 'next/link';
+// Temporary notes on react imports: { Outlet, useLocation } from 'react-router-dom';
 
 const PoemQuery = () => {
-    // chapters: [{num: '1', count: 9, name: 'Kiritsubo 桐壺'},...]
-    // count: number of poems in a chapter
+    /*
+        State Variable:
+            chapters: [{num: '1', count: 9, name: 'Kiritsubo 桐壺'},...]
+            chpSelect: values of the selects, e.g., [true, "1", "1"]
+            count: number of poems in a chapter
+            prevNext: [["prevChp", "nextChp"], ["prevNum", "nextNum"]]
+            buttonLock: Disabling previous and next buttons
+            loc keeps track of the url
+    */
     const [chapters, setChapters] = useState([])
-    // values of the selects, e.g., [true, "1", "1"]
     const [chpSelect, setChpSelect] = useState([false, "", undefined])
-    // 
     const [count, setCount] = useState([])
-    // prevNext: [["prevChp", "nextChp"], ["prevNum", "nextNum"]]
     const [prevNext, setPrevNext] = useState([["",-1],["",-1]])
-    // use this state variable to disable the previous and next buttons (not query), becomes false once a poem page is loaded
     const [buttonLock, setButtonLock] = useState(true)
-    // keeps track of the url
-    // const loc = useLocation()
-    // temp loc
     const loc = {pathname: '/poems', search: '', hash: '', state: null, key: 'default'}
     
     let { chapter, number } = useParams()
 
-    // new loads the dropdowns
+    /*
+        Purpose: Calls backend API to load dropdown menu
+        API Returns:
+        - chp object - example: {chapter number: '1', number of chapters: 9, chapter name: 'Kiritsubo 桐壺'}
+    */
     const loadDropdown = async () => {
-        /*
-            API Returns:
-            - chp object - example: {chapter number: '1', number of chapters: 9, chapter name: 'Kiritsubo 桐壺'}
-        */
         const response = await fetch(`/api/poems/poem_query`);
         const responseData = await response.json();
         setChapters(responseData)
     };
 
+    /*
+        Handles dropdown logic
+    */
     useEffect(() => {
         loadDropdown();
         if (chapter !== undefined && number !== undefined) {
@@ -49,7 +50,9 @@ const PoemQuery = () => {
         }
     }, [])
 
-    // chps: the chapters state array
+    /*
+        Purpose: Logic for updating the previous and next chapter and poem number buttons
+    */
     function updatePrevNext(chps) {
         let prev, next
         if (chapter === '1' && number === '1') {
