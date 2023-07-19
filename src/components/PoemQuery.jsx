@@ -5,7 +5,7 @@ import { Select, Col, Row, Button } from 'antd';
 import '../../node_modules/antd/dist/antd.min.css';
 const { Option } = Select;
 import { useParams } from 'next/navigation';
-import { Link } from 'next/link';
+import  Link  from 'next/link';
 // Temporary notes on react imports: { Outlet, useLocation } from 'react-router-dom';
 
 const PoemQuery = () => {
