@@ -10,7 +10,9 @@ const Nav =()=> {
             <nav className={styles.nav_container}>
                 <Link href="/">Home</Link>
                 <Link href="/poems">Poems</Link>
+                <Link href="/characters">Character</Link>
                 {/* <Link href="/characters">Characters</Link>
+                
                 <Link href="/alt_characters">Alt Characters</Link>
                 <Link href="/allusions">Allusions</Link>
                 <Link href="/search">Search</Link>

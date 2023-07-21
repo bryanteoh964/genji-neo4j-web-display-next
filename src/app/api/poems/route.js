@@ -1,5 +1,7 @@
 const { getSession } = require('../neo4j_driver/route.js');
 
+import { toNativeTypes } from '../neo4j_driver/utils.js';
+
 async function getData (chapter, number){
   
     const session = await getSession();
@@ -20,7 +22,13 @@ async function getData (chapter, number){
 			tx.run(queries[key], { chapter, number})
 		); 
 		result[key] = queryResult;
-		return result;
+    } 
+    //something wrong with indettatiaon ,,missing a brakaet
+
+     //console.log('result', result)
+
+  
+		//return result;
 
 		let exchange = new Set()           
 		result['res'].records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
@@ -52,17 +60,15 @@ async function getData (chapter, number){
 		temp.forEach(e => {
 			pls.push({value:e, label:e})
 		})
-		console.log('exchange',exchange)
-		console.log('related', result['resRel'])
 		const data = [exchange, transTemp, sources, related, tags, ls, pls];
-		res.json(data);
-  	}
-  } catch(error){
+		return (data);
+  	} catch(error){
     console.error('Failed to execute queries:', error);
-    res.status(500).json({ error: 'Failed to execute queries' });
+    result.status(500).json({ error: 'Failed to execute queries' });
 }finally{
   await session.close();
-}}
+}
+}
 
 export const GET = async (request) =>{
     try {   

@@ -197,13 +197,13 @@ useEffect(() => {
 					try {
                   
 						const response = await fetch (`/api/poems?chapter=${chapter}&&number=${number}`);
-
+                        const responseData = await response.json()
 						// Check if response was successful
 						if (response.status !== 200) {
 								throw new Error(`HTTP error! status: ${response.status}`);
 						}
-		
-						return response.data;
+                        console.log('response data', responseData)
+						return responseData;
 				} catch (error) {
 						console.error(`There was an error! ${error}`);
 						throw error;
@@ -220,6 +220,7 @@ useEffect(() => {
 							//const { res, resHonkaInfo, resRel, resTag, resType, resPnum } = await fetchData({ chapter, number });
 							//console.log("The call from backend", res )
 							const response = await fetchData({ chapter, number });
+                            console.log('needed',response)
 							const exchange = response[0]
 							const transTemp =response[1]
 							const sources  = response[2]
@@ -307,6 +308,43 @@ useEffect(() => {
 }, [chapter, number])
 
 
+   // async func for tag queries
+   useMemo(() => {
+    const _ = async () => {
+        /*initDriver(process.env.REACT_APP_NEO4J_URI,
+            process.env.REACT_APP_NEO4J_USERNAME,
+            process.env.REACT_APP_NEO4J_PASSWORD)
+        const driver = getDriver()
+        const session = driver.session()
+        let write = await session.writeTransaction(tx => tx.run(query[0]))
+        session.close()
+        closeDriver()*/
+        
+
+        const response = await fetch (`/api/poems/tag_query?query=${query[0]}`);
+       
+        if (query.length > 0) {
+            if (query[1] === 'create tag') {
+                _().catch(console.error)
+                alert('tag created!')
+            } else if (query[1] === 'delete tag') {
+                _().catch(console.error)
+                alert('tag deleted!')
+            } else if (query[1] === 'create rel') {
+                _().catch(console.error)
+                alert('link created!')
+            } else if (query[1] === 'delete rel') {
+                _().catch(console.error)
+                alert('link delete!')
+            } else if (query[1] === 'notes' && query[0] !== '') {
+                _().catch(console.error)
+                alert('Notes updated!')
+                setQuery([])
+            }
+        } 
+    }
+
+}, [query])
 
   return (
 <div>

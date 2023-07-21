@@ -1,5 +1,5 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
-// import { traj } from './traj'
+const {traj} = requre('../neo4j_driver/traj.js')
 
 // tag::toNativeTypes[]
 /**
@@ -345,4 +345,60 @@ export function concatObj(e) {
     return Object.values(e).join('')
 }
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList }
+
+
+//character
+export function generateGeneology(l) {
+    let counts = l.reduce((acc, subArr) => {
+        subArr.forEach(str => {
+                if (!str.includes('_')){
+                    if (!acc[str]) {
+                        acc[str] = 1;
+                    } else {
+                        acc[str]++;
+                }}});
+        return acc;
+    }, {});
+    delete counts.Genji
+    let ranked = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .map(pair => pair[0]);
+    let nodes = [{
+        id: '1',
+        data: {
+            label: 'Genji'
+        }, 
+        position: {x: traj[0][0], y: traj[0][0]}
+    }]
+    let edges = []
+    let id = 2
+    ranked.forEach(e => {
+        nodes.push({
+            id: id.toString(),
+            data: {
+                label: e
+            },
+            position: {x : traj[1750-id*2][0], y: traj[1750-id*2][1]},
+            draggable: true,
+        })
+        id += 1
+    })
+    id = 1
+    l.forEach(e => {
+        let s = nodes.findIndex(element => element.data.label === e[0])
+        let t = nodes.findIndex(element => element.data.label === e[2])
+        s = (s+1).toString()
+        t = (t+1).toString()
+        edges.push({
+            id: 'e'+id.toString(),
+            source: s,
+            target: t,
+            label: e[1]
+        })
+        id += 1
+    })
+    return [nodes, edges]
+  }
+  
+
+module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology}
