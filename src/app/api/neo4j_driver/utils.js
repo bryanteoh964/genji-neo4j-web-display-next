@@ -1,5 +1,5 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
-const {traj} = requre('../neo4j_driver/traj.js')
+const traj = require('../neo4j_driver/traj')
 
 // tag::toNativeTypes[]
 /**
@@ -12,7 +12,7 @@ export function toNativeTypes(properties) {
     return Object.fromEntries(Object.keys(properties).map((key) => {
         let value = valueToNativeType(properties[key])
 
-        return [ key, value ]
+        return [ key , value ]
     }))
 }
 
@@ -349,6 +349,7 @@ export function concatObj(e) {
 
 //character
 export function generateGeneology(l) {
+    
     let counts = l.reduce((acc, subArr) => {
         subArr.forEach(str => {
                 if (!str.includes('_')){
@@ -363,6 +364,7 @@ export function generateGeneology(l) {
     let ranked = Object.entries(counts)
         .sort((a, b) => b[1] - a[1])
         .map(pair => pair[0]);
+       
     let nodes = [{
         id: '1',
         data: {
@@ -370,6 +372,7 @@ export function generateGeneology(l) {
         }, 
         position: {x: traj[0][0], y: traj[0][0]}
     }]
+  
     let edges = []
     let id = 2
     ranked.forEach(e => {
@@ -397,8 +400,9 @@ export function generateGeneology(l) {
         })
         id += 1
     })
+
     return [nodes, edges]
   }
   
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology}
+module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj}
