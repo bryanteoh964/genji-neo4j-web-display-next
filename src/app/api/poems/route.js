@@ -3,32 +3,25 @@ const { getSession } = require('../neo4j_driver/route.js');
 import { toNativeTypes } from '../neo4j_driver/utils.js';
 
 async function getData (chapter, number){
-  
-    const session = await getSession();
-    //all the get method and return the db data
-    const queries = {
+	const session = await getSession();
+	//all the get method and return the db data
+	const queries = {
 		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) where g.pnum ends with "' + number + '" return poem, exchange, trans',
 		resHonkaInfo:  'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[n:ALLUDES_TO]->(h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source), (h)<-[:AUTHOR_OF]-(a:People), (h)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) where g.pnum ends with "' + number + '" return h.Honka as honka, h.Romaji as romaji, s.title as title, a.name as poet, r.order as order, p.name as translator, t.translation as translation, n.notes as notes',
 		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel',
 		resPnum : 'match (g:Genji_Poem) return g.pnum as pnum',
 		resTag : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:TAGGED_AS]->(t:Tag) where g.pnum ends with "' + number + '" return t.Type as type',
 		resType : 'match (t:Tag) return t.Type as type'
-  	};
+	};
 
-  const result = {};
-  try{
-    for (let key in queries) {
-		const queryResult = await session.readTransaction(tx => 
-			tx.run(queries[key], { chapter, number})
-		); 
-		result[key] = queryResult;
-    } 
-    //something wrong with indettatiaon ,,missing a brakaet
-
-     //console.log('result', result)
-
-  
-		//return result;
+	const result = {};
+	try {
+		for (let key in queries) {
+			const queryResult = await session.readTransaction(tx => 
+				tx.run(queries[key], { chapter, number})
+			); 
+			result[key] = queryResult;
+		} 
 
 		let exchange = new Set()           
 		result['res'].records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
@@ -62,25 +55,23 @@ async function getData (chapter, number){
 		})
 		const data = [exchange, transTemp, sources, related, tags, ls, pls];
 		return (data);
-  	} catch(error){
-    console.error('Failed to execute queries:', error);
-    result.status(500).json({ error: 'Failed to execute queries' });
-}finally{
-  await session.close();
-}
+	} catch(error) {
+		console.error('Failed to execute queries:', error);
+		result.status(500).json({ error: 'Failed to execute queries' });
+	} finally{
+		await session.close();
+	}
 }
 
 export const GET = async (request) =>{
-    try {   
-      const{searchParams} = new URL(request.url);
-      const chapter = searchParams.get('chapter')
-      const number = searchParams.get('number')
-      const data = await getData(chapter, number)
-      console.log('data',data)
-    //   const formattedData = formatData(data);
+	try {   
+		const{searchParams} = new URL(request.url);
+		const chapter = searchParams.get('chapter')
+		const number = searchParams.get('number')
+		const data = await getData(chapter, number)
 
-      return new Response(JSON.stringify(data), {status: 200})
-  }catch (error){
-    return new Response(error, {status: 500})
-  }
+		return new Response(JSON.stringify(data), {status: 200})
+	}catch (error){
+		return new Response(error, {status: 500})
+	}
 } 
