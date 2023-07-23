@@ -1,9 +1,9 @@
-import styles from '../../styles/default_page.module.css'
+import "../../styles/globals.css";
 
 const page = () => {
   return (
-    <section className={styles.section_frame}>
-        <div className={styles.section_container}>
+    <section className="section_frame">
+        <div className="section_container">
             <p>
                 This website would never have been possible without the help of the many students in LJ 250 over the years who have painstakingly entered and tagged the poems.
             </p>

@@ -29,8 +29,7 @@ export default function GeneologyMap({l}) {
     console.log('show', onNodesChange)
 
     return (
-        <ReactFlow
-            className={styles.test}
+        <ReactFlow className={styles.viewer_window}
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}

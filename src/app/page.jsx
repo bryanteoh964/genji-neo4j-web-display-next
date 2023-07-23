@@ -1,10 +1,9 @@
 import "../styles/globals.css";
-import styles from '../styles/default_page.module.css';
 
 const page = () => {
   return (
-    <section className={styles.section_frame}>
-      <div className={styles.section_container}>
+    <section className="section_frame">
+      <div className="section_container">
         <p>
           The Genji Poetry Database is a project created by Professor J. Keith
           Vincent and his students in LJ250 “Masterpieces of Japanese
