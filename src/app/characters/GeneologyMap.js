@@ -7,6 +7,9 @@ import ReactFlow, {
     Background,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+
+import styles from '../../styles/pages/characters.module.css';
+
 /**
  * @param {Array} l the array of edges
  */
@@ -24,8 +27,10 @@ export default function GeneologyMap({l}) {
     const onNodesChange = useCallback( (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),[] );
     const onEdgesChange = useCallback( (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),[] );
     console.log('show', onNodesChange)
+
     return (
         <ReactFlow
+            className={styles.test}
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
@@ -39,7 +44,6 @@ export default function GeneologyMap({l}) {
             <MiniMap style={minimapStyle} zoomable pannable />
             <Controls />
             <Background color="#aaa" gap={16} />
-            <div>display</div>
         </ReactFlow>
         )
 }
