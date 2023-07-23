@@ -1,55 +1,98 @@
 body {
-  margin: 0;
-  
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  /* font-family: 'MS Mincho'; */
-  /* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
-  /* font-family: "Hiragino Kaku Gothic Pro", sans-serif; */
-  /* font-family: Osaka, sans-serif; */
-  /* font-family: Meiryo, sans-serif; */
-  /* font-family: "MS PGothic", sans-serif; */
-  /* font-family : 'ヒラギノ角ゴ ProN' , 'Hiragino Kaku Gothic ProN' , '游ゴシック' , '游ゴシック体' , YuGothic , 'Yu Gothic' , 'ＭＳ ゴシック' , 'MS Gothic' , HiraKakuProN-W3 , 'TakaoExゴシック' , TakaoExGothic , 'MotoyaLCedar' , 'Droid Sans Japanese' , sans-serif; */
+	margin: 0;
 
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.5;
-  text-align: center;
-  
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+	sans-serif;
+	/* font-family: 'MS Mincho'; */
+	/* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
+	/* font-family: "Hiragino Kaku Gothic Pro", sans-serif; */
+	/* font-family: Osaka, sans-serif; */
+	/* font-family: Meiryo, sans-serif; */
+	/* font-family: "MS PGothic", sans-serif; */
+	/* font-family : 'ヒラギノ角ゴ ProN' , 'Hiragino Kaku Gothic ProN' , '游ゴシック' , '游ゴシック体' , YuGothic , 'Yu Gothic' , 'ＭＳ ゴシック' , 'MS Gothic' , HiraKakuProN-W3 , 'TakaoExゴシック' , TakaoExGothic , 'MotoyaLCedar' , 'Droid Sans Japanese' , sans-serif; */
+
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.5;
+	text-align: center;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 body p {
-  font-size: 14px;
+	font-size: 14px;
 } 
 
 .main {
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  position: relative;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: relative;
 }
 
 .bottom {
-  min-height: 80vh;
-}
+	min-height: 80vh;
+	}
 
 .section_frame {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 .section_container {
-  margin: 80px 0;
-  width: 720px;
-  min-height: 460px;
+	margin: 80px 0;
+	width: 720px;
+	min-height: 460px;
 }
 
 .section_container a {
-  text-decoration: none;
-  color:blue;
+	text-decoration: none;
+	color:blue;
 }
+
+form, button {
+	display: inline-block;
+  }
+  
+  table {
+	display: inline-block;
+	white-space: pre-wrap;
+  }
+  
+  [type=JP] {
+	display: inline-block;
+	white-space: pre-wrap;
+	writing-mode: vertical-rl;
+	word-break:normal;
+	text-align: left;
+	margin: auto;
+  }
+  
+  [type=non-JP] {
+	text-align: center;
+	display: inline-block;
+	white-space: pre-wrap;
+	word-break:normal;
+	text-align: left;
+	margin: auto;
+  }
+  
+  .pg p {
+	text-align: center;
+  }
+  
+  table p, table textarea {
+	writing-mode: horizontal-tb;
+	word-break:normal;
+	text-align: left;
+	margin: auto;
+  }
+  
+  code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+	  monospace;
+  }

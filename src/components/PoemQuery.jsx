@@ -6,6 +6,8 @@ import '../../node_modules/antd/dist/antd.min.css';
 const { Option } = Select;
 import { useParams } from 'next/navigation';
 import  Link  from 'next/link';
+
+import styles from "../styles/pages/poems.module.css";
 // Temporary notes on react imports: { Outlet, useLocation } from 'react-router-dom';
 
 const PoemQuery = () => {
@@ -88,11 +90,12 @@ const PoemQuery = () => {
 
     return (
         <Row>
-            <Col span={5}>
+            <Col span={24} className={styles.search_bar}>
+                {/* Chapter Select */}
                 <Select 
                     showSearch
                     placeholder="Select a chapter"
-                    style={{ width:220 }}
+                    style={{ width:460 }}
                     value={chpSelect[1]}
                     onSelect={(value) => {
                         console.log("Value ran!", value)
@@ -109,6 +112,7 @@ const PoemQuery = () => {
                         </Option>
                     )}
                 </Select>
+                {/* Chapter Poem Select */}
                 <Select
                     showSearch
                     placeholder="#"
@@ -128,6 +132,7 @@ const PoemQuery = () => {
                         </Option>
                     )}
                 </Select>
+                {/* Query Button */}
                 <Link
                     href={`/poems/${chpSelect[1]}/${chpSelect[2]}`}
                 >
@@ -142,7 +147,7 @@ const PoemQuery = () => {
                         Query
                     </Button>
                 </Link>
-                <br />
+                {/* Previous Poem Button */}
                 <Link
                     href={`/poems/${prevNext[0][0]}/${prevNext[0][1]}`}    
                 >
@@ -153,6 +158,7 @@ const PoemQuery = () => {
                         Previous
                     </Button>
                 </Link>
+                {/* Next Poem Button */}
                 <Link
                     href={`/poems/${prevNext[1][0]}/${prevNext[1][1]}`}    
                 >
@@ -163,9 +169,6 @@ const PoemQuery = () => {
                         Next
                     </Button>
                 </Link>
-            </Col>
-            <Col span={19}>
-                {/* <Outlet /> */}
             </Col>
         </Row>
     )

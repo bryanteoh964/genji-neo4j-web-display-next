@@ -1,7 +1,6 @@
 'use client';
 
 import "../../../../styles/globals.css";
-import styles from '../../../../styles/default_page.module.css';
 import PoemQuery from "@/components/PoemQuery";
 
 import { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ const layout = ({ children }) => {
 		<PoemQuery />
 		<main>
             {children}
-        </main>
+    </main>
 	</div>
   )
 }

@@ -29,10 +29,14 @@
     margin: 0;
     padding-top: 0.75rem;
     padding-bottom: 1.25rem;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
 }
 .boundary h3 {
     width: 100%;
     margin: 0;
     padding-top: 0.75rem;
     padding-bottom: 1.25rem;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
 }
