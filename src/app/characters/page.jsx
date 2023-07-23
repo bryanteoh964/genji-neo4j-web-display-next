@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ReactFlowProvider } from 'reactflow';
-import GeneologyMap from './GeneologyMap';
-
-import styles from '../../styles/pages/characters.module.css';
+import GeneologyMap from '@/components/GeneologyMap';
 
 const page = () => {
 	const [graph, setGraph] = useState([])

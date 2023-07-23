@@ -2,7 +2,9 @@
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <h1>Welcome to the Search Page</h1>
+    </div>
   )
 }
 
