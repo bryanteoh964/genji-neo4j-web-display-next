@@ -17,10 +17,8 @@ import styles from '../styles/pages/characters.module.css';
  */
 export default function GeneologyMap({l}) {
     const [nodes, setNodes] =useState(l[0])
-    console.log('express',l[0])
     const [edges, setEdges] = useState(l[1])
-    console.log('express',l[1])
-    const onInit = (reactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
+    const onInit = (reactFlowInstance) => {};
     const onConnect = () => null
     const minimapStyle = {
         height: 120,
@@ -34,7 +32,6 @@ export default function GeneologyMap({l}) {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
-            onClick={(event) => console.log(event.target)}
             onConnect={onConnect}
             onInit={onInit}
             fitView
