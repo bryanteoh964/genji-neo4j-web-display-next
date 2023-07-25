@@ -1,8 +1,11 @@
 import React from 'react'
 
-const SearchTable = () => {
+const SearchTable = ({ query }) => {
   return (
-    <div>SearchTable</div>
+    <div>
+        <h1>Search Results</h1>
+        <h1>{query}</h1>
+    </div>
   )
 }
 
