@@ -4,6 +4,7 @@ import { toNativeTypes } from '../neo4j_driver/utils.js';
 
 async function getData (chapter, number){
 	const session = await getSession();
+
 	//all the get method and return the db data
 	const queries = {
 		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) where g.pnum ends with "' + number + '" return poem, exchange, trans',
@@ -56,7 +57,7 @@ async function getData (chapter, number){
 		const data = [exchange, transTemp, sources, related, tags, ls, pls];
 		return (data);
 	} catch(error) {
-		console.error('Failed to execute queries:', error);
+		console.error('Failed to execute queries in poems:', error);
 		result.status(500).json({ error: 'Failed to execute queries' });
 	} finally{
 		await session.close();

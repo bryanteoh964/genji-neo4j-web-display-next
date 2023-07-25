@@ -1,9 +1,11 @@
 'use client'
 
+import PoemSearch from '@/components/PoemSearch';
+
 const page = () => {
   return (
     <div>
-      <h1>Welcome to the Search Page</h1>
+	    <PoemSearch />
     </div>
   )
 }

@@ -42,7 +42,6 @@ const PoemQuery = () => {
         const loadDropdown = async () => {
             const response = await fetch(`/api/poems/poem_query`);
             const responseData = await response.json();
-            console.log(responseData)
             setChapters(responseData)
         };
         loadDropdown();
