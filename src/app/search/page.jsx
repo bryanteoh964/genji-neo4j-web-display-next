@@ -1,6 +1,6 @@
 'use client'
 
-import PoemSearch from '@/components/PoemSearch';
+import PoemSearch from '@/components/Search';
 
 import styles from "../../styles/pages/search.module.css"
 
