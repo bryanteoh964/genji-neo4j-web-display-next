@@ -3,11 +3,9 @@
 import React from 'react';
 import { Input, Select, Checkbox, Col, Row, Collapse, Spin, Button, Space, Statistic, BackTop } from 'antd';
 import 'antd/dist/antd.min.css';
-import Link from 'next/link';
 import Graph from 'graph-data-structure';
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
-const { Panel } = Collapse;
 
 
 export default class Search extends React.Component {
