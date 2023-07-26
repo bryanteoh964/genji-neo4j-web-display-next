@@ -1,16 +1,11 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react'
-// import { initDriver, getDriver, closeDriver } from '../neo4j'
-// import { toNativeTypes, getPoemTableContent, parseChp, parseOrder } from './utils'
-import { Link } from 'react-router-dom'
-
-// import Edit from './edit' // this is a temporary Edit component for testing
+import Link from 'next/link';
 import Edit from '@/components/Edit';
 
 export default function PoemTable({ query }) {
     // Info passed from the Search component
-    // let { chapter, spkrGen, speaker, addrGen, addressee, auth, username, password } = useParams()
     let [chapter, setChapter] = useState();
     let [spkrGen, setSpkrGen] = useState();
     let [speaker, setSpeaker] = useState();
@@ -27,7 +22,6 @@ export default function PoemTable({ query }) {
     const [charAndGen, setCharAndGen] = useState([[], []])
     // const [characters, setCharacters] = useState([])
     // const [genders, setGenders] = useState([])
-    // console.log( chapter, spkrGen, speaker, addrGen, addressee, auth, username, password )
     const getChar = 'match (c:Character) return c.name as char, c.gender as gender order by c.name'
 
     useEffect (() => {
@@ -38,7 +32,6 @@ export default function PoemTable({ query }) {
     useEffect(() => {
         // write an async function to set the values
         const setStateValues = async () => {
-            console.log("THIS IS THE QUERY", query)
             setChapter(query.chapter);
             setSpkrGen(query.spkrGender);
             setSpeaker(query.speaker);
@@ -62,8 +55,8 @@ export default function PoemTable({ query }) {
             }
         }
 
-        let allSpkrGen = ['male', 'female']
-        let allAddrGen = ['male', 'female', 'nonhuman', 'multiple']
+        // let allSpkrGen = ['male', 'female']
+        // let allAddrGen = ['male', 'female', 'nonhuman', 'multiple']
         if (spkrGen && spkrGen.split(',').length === 2) {
             spkrGen = 'Any'
         }
@@ -75,94 +68,55 @@ export default function PoemTable({ query }) {
 
     useMemo(() => {
         // make sure speaker, addressee, and chapter are defined
-        let varsDefined = !(speaker === undefined) && !(addressee === undefined) && !(chapter === undefined)
-        if (!(speaker === undefined)) { console.log("SPEAKER IS DEFINED") }
-        if (!(addressee === undefined)) { console.log("ADDRESSEE IS DEFINED") }
-        if (!(chapter === undefined)) { console.log("CHAPTER IS DEFINED") }
+        let varsDefined = !(spkrGen === undefined) && !(addrGen === undefined) && !(speaker === undefined) && !(addressee === undefined) && !(chapter === undefined)
 
-        let getSpeaker, getAddressee, getChapter, getJPKeyword, getENKeyword
-        if (speaker === 'Any' && spkrGen === 'Any') {
-            getSpeaker = '(:Character)'
-        } else if (speaker === 'Any' && spkrGen !== 'Any') {
-            getSpeaker = '(:Character {gender: "' + spkrGen + '"})'
-        } else {
-            getSpeaker = '(:Character {name: "' + speaker + '"})'
-        }
-        if (addressee === 'Any' && addrGen === 'Any') {
-            getAddressee = '(:Character)'
-        } else if (addressee === 'Any' && addrGen !== 'Any') {
-            getAddressee = '(:Character {gender: "' + addrGen + '"})'
-        } else {
-            getAddressee = '(:Character {name: "' + addressee + '"})'
-        }
-        if (chapter === 'anychp') {
-            getChapter = ', (g)-[:INCLUDED_IN]-(:Chapter), '
-        } else {
-            // as of Apirl 2022, the chapter numbers are in string
-            getChapter = ', (g)-[:INCLUDED_IN]-(:Chapter {chapter_number: "' + chapter + '"}), '
-        }
-        let get = 'match exchange=' + getSpeaker + '-[:SPEAKER_OF]-(g:Genji_Poem)-'
-            + '[:ADDRESSEE_OF]-' + getAddressee
-            + getChapter
-            + 'trans=(g)-[:TRANSLATION_OF]-(t:Translation) '
-            + ' return exchange, trans'
         const _ = async () => {
             // Information to send to the backend: getChar, get, { speaker, addressee, chapter }
-            
-            console.log("This is the variable check", { speaker, addressee, chapter })
-            console.log("THIS is the first query", getChar);
-            console.log("THIS is the second query", get, { speaker, addressee, chapter });
-            initDriver(process.env.REACT_APP_NEO4J_URI,
-                process.env.REACT_APP_NEO4J_USERNAME,
-                process.env.REACT_APP_NEO4J_PASSWORD)
-            const driver = getDriver()
-            const session = driver.session()
-            alert(getChar)
-            const res1 = await session.readTransaction(tx => tx.run(getChar))
-            setCharAndGen([
-                res1.records.map(row => {
-                    return toNativeTypes(row.get('char'))
-                }).map(e => Object.values(e).join('')),
-                res1.records.map(row => {
-                    return toNativeTypes(row.get('gender'))
-                }).map(e => Object.values(e).join(''))])
-            alert(get, {speaker, addressee, chapter})
-            const res2 = await session.readTransaction(tx => tx.run(get, { speaker, addressee, chapter }))
-            let poemRes = res2.records.map(row => { return toNativeTypes(row.get('exchange')) })
-            let transTemp = res2.records.map(row => { return toNativeTypes(row.get('trans')) }).map(row => [Object.keys(row.end.properties), Object.values(row.end.properties)])
-            let [plist, info, propname] = getPoemTableContent(poemRes, transTemp)
-            setMetadata(plist)
-            // [
-            //     [
-            //         "01KR05",
-            //         "Genji's Grandmother",
-            //         "Kiritsubo Emperor"
-            //     ]
-            // ]
-            setEntries(info)
-            // {
-            //     "01KR05": {
-            //         "Cranston": "The once sheltering shade\nThat kept rough winds away is now\nLifeless and bare,\nAnd my heart, too withered, had no rest\nFrom fret for the young bush clover.",
-            //         "Washburn": "The tree that was once a buffer against \nThese harsh autumn winds has withered and left \nThe bush clover to its uncertain fate ",
-            //         "Waley": "All this, together with a poem in which she compared her grandchild to a flower which has lost the tree that sheltered it from the great winds, was so wild and ill-writ as only to be suffered from the hand of one whose sorrow was as yet unhealed.",
-            //         "WaleyPageNum": 11,
-            //         "Tyler": "Ever since that tree whose boughs took the cruel winds withered and was lost \nmy heart is sorely troubled for the little hagi frond.",
-            //         "Seidensticker": "The tree that gave them shelter has withered and died. \nOne fears for the plight of the hagi shoots beneath.",
-            //         "Japanese": "荒き風\nふせぎし陰の\n枯しより\n小萩がうへぞ\n静心なき",
-            //         "Romaji": "Araki kaze\nFusegishi kage no\nKareshi yori\nKohagi ga ue zo\nShizugokoro naki"
-            //     }
-            // }
-            setEditProp(propname)
-            // [
-            //     [
-            //         "Japanese",
-            //         "Romaji",
-            //         "empty",
-            //         "empty"
-            //     ]
-            // ]
-            session.close()
-            closeDriver()
+            const fetchData1 = async ( params = {} ) => {
+                const response = await fetch (`/api/search?requestType=${"get characters"}&&getChar=${getChar}`);
+                const responseData = await response.json();
+                return responseData;
+            };
+
+            const fetchData2 = async ( params = {} ) => {
+                const response = await fetch (`/api/search?requestType=${"get interactions"}&&spkrGen=${spkrGen}&&addrGen=${addrGen}&&speaker=${speaker}&&addressee=${addressee}&&chapter=${chapter}`);
+                const responseData = await response.json();
+                return responseData;
+            };
+
+            const updateLocalStates = async () => {
+                const res1 = await fetchData1({ getChar });
+                const res2 = await fetchData2({ spkrGen, addrGen, speaker, addressee, chapter });
+                setCharAndGen(res1)
+                let plist = res2.plist
+                let info = res2.info
+                let propname = res2.propname
+                setMetadata(plist)
+                // [ [ "01KR05", "Genji's Grandmother", "Kiritsubo Emperor"] ]
+                setEntries(info)
+                // {
+                //     "01KR05": {
+                //         "Cranston": "The once sheltering shade\nThat kept rough winds away is now\nLifeless and bare,\nAnd my heart, too withered, had no rest\nFrom fret for the young bush clover.",
+                //         "Washburn": "The tree that was once a buffer against \nThese harsh autumn winds has withered and left \nThe bush clover to its uncertain fate ",
+                //         "Waley": "All this, together with a poem in which she compared her grandchild to a flower which has lost the tree that sheltered it from the great winds, was so wild and ill-writ as only to be suffered from the hand of one whose sorrow was as yet unhealed.",
+                //         "WaleyPageNum": 11,
+                //         "Tyler": "Ever since that tree whose boughs took the cruel winds withered and was lost \nmy heart is sorely troubled for the little hagi frond.",
+                //         "Seidensticker": "The tree that gave them shelter has withered and died. \nOne fears for the plight of the hagi shoots beneath.",
+                //         "Japanese": "荒き風\nふせぎし陰の\n枯しより\n小萩がうへぞ\n静心なき",
+                //         "Romaji": "Araki kaze\nFusegishi kage no\nKareshi yori\nKohagi ga ue zo\nShizugokoro naki"
+                //     }
+                // }
+                setEditProp(propname)
+                // [
+                //     [
+                //         "Japanese",
+                //         "Romaji",
+                //         "empty",
+                //         "empty"
+                //     ]
+                // ]
+            };
+            updateLocalStates();
         }
         // _().catch(console.error)
         try{
@@ -268,6 +222,33 @@ export default function PoemTable({ query }) {
         setEditProp(prop)
     }
 
+    // input: String pnum, poem number
+    // output: A html paragraph that contains the chapter name of a Genji poem with Romaji in front of Kanji
+    function parseChp(pnum) {
+        const chapterNames = {'01':'Kiritsubo 桐壺','02':'Hahakigi 帚木','03':'Utsusemi 空蝉','04':'Yūgao 夕顔','05':'Wakamurasaki 若紫','06':'Suetsumuhana 末摘花','07':'Momiji no Ga 紅葉賀','08':'Hana no En 花宴','09':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
+    
+        let [chp, _, smt] = pnum.match(/.{1,2}/g);
+        let chp_name = chapterNames[chp];
+        if (!chp_name) {
+            chp_name = 'Unknown Chapter';
+        }
+    
+        return (
+            <p>{chp} {chp_name}</p>
+        );
+    }
+    
+
+    // input: String pnum, poem number
+    // output: A html paragraph that contains the order of a poem in its chapter
+    function parseOrder(pnum) {
+        let [chp, _, order] = pnum.match(/.{1,2}/g)
+        order = parseInt(order)
+        return (
+            <p>{order}</p>
+        )
+    }
+
     return (
         <div style={{ position: "relative" }}>
             <table>
@@ -317,7 +298,7 @@ export default function PoemTable({ query }) {
                             <td>{parseChp(row[0])}</td>
                             <td className='pg'>{
                                 <Link 
-                                    to={`/poems/${parseInt(row[0].substring(0, 2))}/${parseInt(row[0].match(/.{1,2}/g)[2])}`}
+                                    href={`/poems/${parseInt(row[0].substring(0, 2))}/${parseInt(row[0].match(/.{1,2}/g)[2])}`}
                                     target="_blank"
                                 >
                                     {parseOrder(row[0])}

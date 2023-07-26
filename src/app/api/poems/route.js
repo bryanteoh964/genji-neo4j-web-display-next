@@ -69,7 +69,8 @@ export const GET = async (request) =>{
 		const{searchParams} = new URL(request.url);
 		const chapter = searchParams.get('chapter')
 		const number = searchParams.get('number')
-		const data = await getData(chapter, number)
+		// const data = await getData(chapter, number)
+		data = searchParams
 
 		return new Response(JSON.stringify(data), {status: 200})
 	}catch (error){
