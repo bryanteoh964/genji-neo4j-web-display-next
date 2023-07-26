@@ -24,7 +24,6 @@ const page = () => {
 			username: segments[8],
 			password: segments[9]
 		};
-		console.log("Search Params:", searchParams);
 		// make sure all values in searchParams are defined and is a string
 		setQueryValid(Object.values(searchParams).every(param => typeof param === 'string' && param !== undefined));
 		setQueryMade(true)
@@ -40,17 +39,17 @@ const page = () => {
 				<div className={styles.table_section}>
 					{ queryValid ? (
 						<div>
-							<h1>Query Valid</h1>
+							<h1>Query Status: ✅</h1>
 							<SearchTable query={query}/>
 						</div>
 					) : (
-						<h1>Query Invalid</h1>
+						<h1>Query Status: ❌</h1>
 					)
 					}
 				</div>
 				) : (
 					<div className={styles.table_section}>
-						<h1>Query Not Made</h1>
+						<h1>Query Status: 🔎</h1>
 					</div>
 				)
 			}

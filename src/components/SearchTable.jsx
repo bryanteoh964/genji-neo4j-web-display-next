@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link';
 import Edit from '@/components/Edit';
+import 'antd/dist/antd.min.css';
 
 export default function PoemTable({ query }) {
     // Info passed from the Search component

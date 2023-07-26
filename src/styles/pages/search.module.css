@@ -1,10 +1,12 @@
 .viewport_container {
     display: flex;
-    margin: 20px 100px;
-    justify-content: center;
+    margin: 30px 100px;
     flex-direction: column;
+    min-height: 100vw;
 }
 
 .table_section {
-    margin: 100px 0;
+    display: flex;
+    justify-content: center;
+    margin: 120px 100px;
 }
