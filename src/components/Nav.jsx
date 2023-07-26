@@ -12,6 +12,7 @@ const Nav =()=> {
                 <Link href="/poems">Poems</Link>
                 <Link href="/characters">Character</Link>
                 <Link href="/search">Search</Link>
+                <Link href="/allusions">Allusions</Link>
                 {/* <Link href="/characters">Characters</Link>
                 
                 <Link href="/alt_characters">Alt Characters</Link>
