@@ -1,4 +1,10 @@
 .viewport_container {
     display: flex;
     margin: 20px 100px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.table_section {
+    margin: 100px 0;
 }

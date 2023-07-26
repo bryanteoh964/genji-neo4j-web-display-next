@@ -15,33 +15,33 @@ const PoemDisplay = ({ poemData }) => {
     let chapter = poemData.chapterNum
     let number = poemData.poemNum
     useEffect(()=>{
-    const validateParams = (chapterInfo) => {
-        const chapterNum = parseInt(chapter)
-        const poem = parseInt(number)
-        if (Number.isInteger(chapterNum) === false || Number.isInteger(poem) === false) {
-            return [false, "Chapter or poem is not an integer"]
+        const validateParams = (chapterInfo) => {
+            const chapterNum = parseInt(chapter)
+            const poem = parseInt(number)
+            if (Number.isInteger(chapterNum) === false || Number.isInteger(poem) === false) {
+                return [false, "Chapter or poem is not an integer"]
+            }
+            if (chapterNum < 1 || chapterNum > 54) {
+                return [false, "Chapter is out of range"]
+            }
+            const validPoemCount = chapterInfo[chapterNum - 1].count;
+            if (validPoemCount === undefined || validPoemCount < 1 || !Number.isInteger(validPoemCount)) {
+                return [false, "Chapter does not have a valid poem count"]
+            }
+            if (poem < 1 || poem > validPoemCount) {
+                return [false, "Poem is out of range"]
+            }
+            return true
         }
-        if (chapterNum < 1 || chapterNum > 54) {
-            return [false, "Chapter is out of range"]
+        const checkParams = async () => {
+            const response = await fetch(`/api/poems/poem_query`);
+            const chapterInfo = await response.json();
+            const valid = validateParams(chapterInfo);
+            if (valid[0] === false) {
+                alert("Invalid URL: " + valid[1])
+            }
         }
-        const validPoemCount = chapterInfo[chapterNum - 1].count;
-        if (validPoemCount === undefined || validPoemCount < 1 || !Number.isInteger(validPoemCount)) {
-            return [false, "Chapter does not have a valid poem count"]
-        }
-        if (poem < 1 || poem > validPoemCount) {
-            return [false, "Poem is out of range"]
-        }
-        return true
-    }
-    const checkParams = async () => {
-        const response = await fetch(`/api/poems/poem_query`);
-        const chapterInfo = await response.json();
-        const valid = validateParams(chapterInfo);
-        if (valid[0] === false) {
-            alert("Invalid URL: " + valid[1])
-        }
-    }
-    checkParams();
+        checkParams();
     }, [])
 
 

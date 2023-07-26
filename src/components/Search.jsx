@@ -3,11 +3,9 @@
 import React from 'react';
 import { Input, Select, Checkbox, Col, Row, Collapse, Spin, Button, Space, Statistic, BackTop } from 'antd';
 import 'antd/dist/antd.min.css';
-import Link from 'next/link';
 import Graph from 'graph-data-structure';
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
-const { Panel } = Collapse;
 
 
 export default class Search extends React.Component {
@@ -619,6 +617,7 @@ export default class Search extends React.Component {
     }
 
     updateCount(event) {
+        console.log("Update count called!!!")
         this.setState({
             newCountNeeded: true
         })
@@ -711,20 +710,6 @@ export default class Search extends React.Component {
             }
         }
 
-        const myObject = {
-            exchange2: exchange,
-            characters: characters.sort().map((e) => [e, 1]),
-            male_speakers: male_speakers.sort().map((e) => [e, 1]),
-            female_speakers: female_speakers.sort().map((e) => [e, 1]),
-            male_addressees: male_addressees.sort().map((e) => [e, 1]),
-            female_addressees: female_addressees.sort().map((e) => [e, 1]),
-            multiple_addressees: multiple_addressees.sort().map((e) => [e, 1]),
-            nonhuman_addressees: nonhuman_addressees.sort().map((e) => [e, 1]),
-            graph: graph,
-        };
-          
-        console.log(myObject);
-
         this.setState({
             characters: characters.sort().map(e => [e, 1]),
             male_speakers: male_speakers.sort().map(e => [e, 1]),
@@ -748,6 +733,14 @@ export default class Search extends React.Component {
                 newCountNeeded: false,
             })
         }
+    }
+
+    handleQuery = () => {
+        // Additional, update count
+        this.updateCount()
+        console.log("handleQuery called")
+        const query_info = `/search/${this.state.selectedChapters}/${this.state.selectedSpkrGen}/${this.state.selectedSpeaker}/${this.state.selectedAddrGen}/${this.state.selectedAddressee}/${this.state.auth}/${this.state.username}/${this.state.password}`
+        this.props.updateQuery(query_info)
     }
 
     render() {
@@ -911,15 +904,7 @@ export default class Search extends React.Component {
                                     </Option>)}
                             </Select>
                         </form>
-                        <Link
-                            href={`/search/${this.state.selectedChapters}/${this.state.selectedSpkrGen}/${this.state.selectedSpeaker}/${this.state.selectedAddrGen}/${this.state.selectedAddressee}/${this.state.auth}/${this.state.username}/${this.state.password}`}
-                        >
-                            <Button 
-                                onClick={this.updateCount}
-                            >
-                                Query
-                            </Button>
-                        </Link>
+                        <Button onClick={this.handleQuery}>Query</Button>
                         {/* <Outlet /> */}
                     </Col>
                     <Col span={3}>
