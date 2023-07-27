@@ -96,3 +96,15 @@ form, button {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 	  monospace;
   }
+
+  thead {
+	position: sticky;
+	top: 0;
+	background-color: white;
+  }
+  
+  table, th, td {
+	margin-left: 0;
+	margin-right: auto;
+	border: 1px solid lightgray ;
+  }

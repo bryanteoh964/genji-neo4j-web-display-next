@@ -199,45 +199,40 @@ useEffect(() => {
 						if (response.status !== 200) {
 								throw new Error(`HTTP error! status: ${response.status}`);
 						}
-                        console.log('response data', responseData)
 						return responseData;
 				} catch (error) {
 						console.error(`There was an error! ${error}`);
 						throw error;
 				}
 			};
-			console.log("chapter number", number)
 			
 			const _try = async () => {
 // Initialize with default values
-					setTrans({ Waley: 'N/A', Seidensticker: 'N/A', Tyler: 'N/A', Washburn: 'N/A', Cranston: 'N/A' });
-			
-					try {
-							
-							//const { res, resHonkaInfo, resRel, resTag, resType, resPnum } = await fetchData({ chapter, number });
-							//console.log("The call from backend", res )
-							const response = await fetchData({ chapter, number });
-                            console.log('needed',response)
-							const exchange = response[0]
-							const transTemp =response[1]
-							const sources  = response[2]
-							const related= response[3]
-							const tags =response[4]
-							const ls  =response[5]
-							const pls =response[6]
-							//const exchange= await fetchData({ chapter, number })
-							//let exchange = new Set();
-						
-							
-							
-							
-							//res1.records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
-							//exchange.add(res.records[1]._fields[1])
-							//console.log("disect",res.records[1]._fields[1])
-							
-							//exchange = Array.from(exchange).map(e => JSON.parse(e))
-
-			console.log('exchange',exchange)
+                setTrans({ Waley: 'N/A', Seidensticker: 'N/A', Tyler: 'N/A', Washburn: 'N/A', Cranston: 'N/A' });
+        
+                try {
+                        
+                        //const { res, resHonkaInfo, resRel, resTag, resType, resPnum } = await fetchData({ chapter, number });
+                        //console.log("The call from backend", res )
+                        const response = await fetchData({ chapter, number });
+                        const exchange = response[0]
+                        const transTemp = response[1]
+                        const sources  = response[2]
+                        const related= response[3]
+                        const tags = response[4]
+                        const ls  = response[5]
+                        const pls = response[6]
+                        //const exchange= await fetchData({ chapter, number })
+                        //let exchange = new Set();
+                    
+                        
+                        
+                        
+                        //res1.records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
+                        //exchange.add(res.records[1]._fields[1])
+                        //console.log("disect",res.records[1]._fields[1])
+                        
+                        //exchange = Array.from(exchange).map(e => JSON.parse(e))
 			setSpeaker([exchange[0].start.properties.name])
 			setAddressee(exchange.map(e => e.end.properties.name))
 			setJPRM([exchange[0].segments[0].end.properties.Japanese, exchange[0].segments[0].end.properties.Romaji])

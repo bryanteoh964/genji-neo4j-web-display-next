@@ -54,177 +54,17 @@ export function getChpList() {
 // input: String pnum, poem number
 // output: A html paragraph that contains the chapter name of a Genji poem with Romaji in front of Kanji
 export function parseChp(pnum) {
-    let [chp, _, smt] = pnum.match(/.{1,2}/g)
-    let chp_name
-    switch(chp){
-        case '01':
-            chp_name = "Kiritsubo 桐壺"
-            break
-        case '02':
-            chp_name = "Hahakigi 帚木"
-            break
-        case '03': 
-            chp_name = "Utsusemi 空蝉"
-            break
-        case '04': 
-            chp_name = "Yūgao 夕顔"
-            break
-        case '05': 
-            chp_name = "Wakamurasaki 若紫"
-            break
-        case '06': 
-            chp_name = "Suetsumuhana 末摘花"
-            break
-        case '07': 
-            chp_name = "Momiji no Ga 紅葉賀"
-            break
-        case '08': 
-            chp_name = "Hana no En 花宴"
-            break
-        case '09': 
-            chp_name = "Aoi 葵"
-            break
-        case '10': 
-            chp_name = "Sakaki 榊"
-            break
-        case '11': 
-            chp_name = "Hana Chiru Sato 花散里"
-            break
-        case '12': 
-            chp_name = "Suma 須磨"
-            break
-        case '13': 
-            chp_name = "Akashi 明石"
-            break
-        case '14': 
-            chp_name = "Miotsukushi 澪標"
-            break
-        case '15': 
-            chp_name = "Yomogiu 蓬生"
-            break
-        case '16': 
-            chp_name = "Sekiya 関屋"
-            break
-        case '17': 
-            chp_name = "E Awase 絵合"
-            break
-        case '18': 
-            chp_name = "Matsukaze 松風"
-            break
-        case '19': 
-            chp_name = "Usugumo 薄雲"
-            break
-        case '20': 
-            chp_name = "Asagao 朝顔"
-            break
-        case '21': 
-            chp_name = "Otome 乙女"
-            break
-        case '22': 
-            chp_name = "Tamakazura 玉鬘"
-            break
-        case '23': 
-            chp_name = "Hatsune 初音"
-            break
-        case '24': 
-            chp_name = "Kochō 胡蝶"
-            break
-        case '25': 
-            chp_name = "Hotaru 螢"
-            break
-        case '26': 
-            chp_name = "Tokonatsu 常夏"
-            break
-        case '27': 
-            chp_name = "Kagaribi 篝火"
-            break
-        case '28': 
-            chp_name = "Nowaki 野分"
-            break
-        case '29': 
-            chp_name = "Miyuki 行幸"
-            break
-        case '30': 
-            chp_name = "Fujibakama 藤袴"
-            break
-        case '31': 
-            chp_name = "Makibashira 真木柱"
-            break
-        case '32': 
-            chp_name = "Umegae 梅枝"
-            break
-        case '33': 
-            chp_name = "Fuji no Uraba 藤裏葉"
-            break
-        case '34': 
-            chp_name = "Wakana: Jō 若菜上"
-            break
-        case '35': 
-            chp_name = "Wakana: Ge 若菜下"
-            break
-        case '36': 
-            chp_name = "Kashiwagi 柏木"
-            break
-        case '37': 
-            chp_name = "Yokobue 横笛"
-            break
-        case '38': 
-            chp_name = "Suzumushi 鈴虫"
-            break
-        case '39':
-            chp_name = "Yūgiri 夕霧"
-            break
-        case '40': 
-            chp_name = "Minori 御法"
-            break
-        case '41': 
-            chp_name = "Maboroshi 幻"
-            break
-        case '42': 
-            chp_name = "Niou Miya 匂宮"
-            break
-        case '43': 
-            chp_name = "Kōbai 紅梅"
-            break
-        case '44': 
-            chp_name = "Takekawa 竹河"
-            break
-        case '45': 
-            chp_name = "Hashihime 橋姫"
-            break
-        case '46': 
-            chp_name = "Shii ga Moto 椎本"
-            break
-        case '47': 
-            chp_name = "Agemaki 総角"
-            break
-        case '48': 
-            chp_name = "Sawarabi 早蕨"
-            break
-        case '49': 
-            chp_name = "Yadorigi 宿木"
-            break
-        case '50': 
-            chp_name = "Azumaya 東屋"
-            break
-        case '51':
-            chp_name = "Ukifune 浮舟"
-            break
-        case '52':
-            chp_name = "Kagerō 蜻蛉"
-            break
-        case '53':
-            chp_name = "Tenarai 手習"
-            break
-        case '54':
-            chp_name = "Yume no Ukihashi 夢浮橋"
-            break
-        default: 
-            console.log('unknown chapter caught')
+    const chapterNames = {'01':'Kiritsubo 桐壺','02':'Hahakigi 帚木','03':'Utsusemi 空蝉','04':'Yūgao 夕顔','05':'Wakamurasaki 若紫','06':'Suetsumuhana 末摘花','07':'Momiji no Ga 紅葉賀','08':'Hana no En 花宴','09':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
+
+    let [chp, _, smt] = pnum.match(/.{1,2}/g);
+    let chp_name = chapterNames[chp];
+    if (!chp_name) {
+        chp_name = 'Unknown Chapter';
     }
+
     return (
         <p>{chp} {chp_name}</p>
-    )
+    );
 }
 
 // input: String pnum, poem number
@@ -405,4 +245,4 @@ export function generateGeneology(l) {
   }
   
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj}
+module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent }
