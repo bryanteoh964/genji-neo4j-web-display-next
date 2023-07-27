@@ -41,11 +41,6 @@ export default function AllusionTable() {
       return data;
     }
 
-
-    
-
-      
-  
     // Editable cell code from antd doc
     const EditableContext = React.createContext(null);
     const EditableRow = ({ index, ...props }) => {
@@ -112,15 +107,11 @@ export default function AllusionTable() {
                     session.close()
                     closeDriver()
                     */
-                   if(newTrans){
-                    const response = await fetch(`/api/allusions/newTrans?key=${key}&&selectedTranslation=${selectedTranslation}&&translation=${translation}`)
-                   }else{
-                    const response2 = await fetch(`/api/allusions/newOthers?key=${key}&&selectedTranslation=${selectedTranslation}&&honka=${honka}&&romaji=${romaji}&&notes=${notes}&&translation=${translation}`)
-                   }
-                    
-                    
- 
-
+                    if(newTrans){
+                        const response = await fetch(`/api/allusions/newTrans?key=${key}&&selectedTranslation=${selectedTranslation}&&translation=${translation}`)
+                    }else{
+                        const response2 = await fetch(`/api/allusions/newOthers?key=${key}&&selectedTranslation=${selectedTranslation}&&honka=${honka}&&romaji=${romaji}&&notes=${notes}&&translation=${translation}`)
+                    }
                 } else {
                     console.log('nothing changed')
                 }
@@ -756,16 +747,17 @@ export default function AllusionTable() {
     return (
         <div>
             <Row>
-                <Col span={21}>
-                    <Table 
-                        columns={auth ? columns : defaultColumns} 
-                        components={components} 
-                        dataSource={data} 
-                        rowClassName={() => 'editable-row'}
-                    />
-                </Col>
-                <Col span={3}>
-                    <Space direction='vertical'>
+                <Row style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    flexDirection: 'column',
+                    margin: 'auto',
+                    padding: '5vh'
+                }}>
+                    <Space direction='vertical' style={{
+                        marginBottom: '2.5vh'
+                    }}>
                         <Input
                             placeholder="input username"
                             onChange={(event) => setUsr(event.target.value)}
@@ -775,11 +767,12 @@ export default function AllusionTable() {
                             onChange={(event) => setPwd(event.target.value)}
                         />
                     </Space>
-                    <Button disabled={auth} onClick={() => (usr === vincent[0]) && (pwd === vincent[1]) ? setAuth(true) : null}>Login</Button>
-                    <Button disabled={!auth} onClick={() => setAuth(false)}>Logout</Button>
-                    <br />
-                    <Button disabled={!auth} onClick={() => setRerender(rerender + 1)}>Refresh Table</Button>
-                    <Divider></Divider>
+                    <Space>
+                        <Button disabled={auth} onClick={() => (usr === vincent[0]) && (pwd === vincent[1]) ? setAuth(true) : null}>Login</Button>
+                        <Button disabled={!auth} onClick={() => setAuth(false)}>Logout</Button>
+                        <br />
+                        <Button disabled={!auth} onClick={() => setRerender(rerender + 1)}>Refresh Table</Button>
+                    </Space>
                     {auth === true
                         ? <>
                             <p>ID: H{maxID + 1}</p>
@@ -836,7 +829,21 @@ export default function AllusionTable() {
                     <BackTop>
                         <div>Back to top</div>
                     </BackTop>
-                </Col>
+                </Row>
+                <Divider style={{width: '15vw'}}></Divider>
+                <Row style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    margin: 'auto',
+                }}>
+                    <Table 
+                        columns={auth ? columns : defaultColumns} 
+                        components={components} 
+                        dataSource={data} 
+                        rowClassName={() => 'editable-row'}
+                    />
+                </Row>
             </Row>
         </div>
     )
