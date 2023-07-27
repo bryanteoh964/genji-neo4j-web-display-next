@@ -182,14 +182,6 @@ useEffect(() => {
 			Cranston: 'N/A'
 	})
 	const _ = async () => {
-			/*initDriver(process.env.REACT_APP_NEO4J_URI,
-					process.env.REACT_APP_NEO4J_USERNAME,
-					process.env.REACT_APP_NEO4J_PASSWORD)
-			//const driver = getDriver()
-			const session = driver.session()
-			const res1 = await session.readTransaction(tx => tx.run(get))*/
-		 
-			// Adding //
 			const fetchData = async (params = {}) => {
 					try {
                   
@@ -207,13 +199,9 @@ useEffect(() => {
 			};
 			
 			const _try = async () => {
-// Initialize with default values
+                // Initialize with default values
                 setTrans({ Waley: 'N/A', Seidensticker: 'N/A', Tyler: 'N/A', Washburn: 'N/A', Cranston: 'N/A' });
-        
                 try {
-                        
-                        //const { res, resHonkaInfo, resRel, resTag, resType, resPnum } = await fetchData({ chapter, number });
-                        //console.log("The call from backend", res )
                         const response = await fetchData({ chapter, number });
                         const exchange = response[0]
                         const transTemp = response[1]
@@ -222,17 +210,6 @@ useEffect(() => {
                         const tags = response[4]
                         const ls  = response[5]
                         const pls = response[6]
-                        //const exchange= await fetchData({ chapter, number })
-                        //let exchange = new Set();
-                    
-                        
-                        
-                        
-                        //res1.records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
-                        //exchange.add(res.records[1]._fields[1])
-                        //console.log("disect",res.records[1]._fields[1])
-                        
-                        //exchange = Array.from(exchange).map(e => JSON.parse(e))
 			setSpeaker([exchange[0].start.properties.name])
 			setAddressee(exchange.map(e => e.end.properties.name))
 			setJPRM([exchange[0].segments[0].end.properties.Japanese, exchange[0].segments[0].end.properties.Romaji])
@@ -256,45 +233,16 @@ useEffect(() => {
 					}
 			})
 			setSource(src_obj)
-			//let related = new Set()
-			//resRel.records.map(e => toNativeTypes(e.get('rel'))).forEach(e => related.add([Object.values(e).join('')]))
-			//related = Array.from(related).flat()
-			//related = related.map(e => [e, true])
 			setRel(related)
-			//let tags = new Set()
-			//resTag.records.map(e => toNativeTypes(e.get('type'))).forEach(e => tags.add([Object.values(e).join('')]))
-			//tags = Array.from(tags).flat()
-			//tags = tags.map(e => [e, true])
 			setTag(tags)
-			//let types = resType.records.map(e => e.get('type'))
-			//let ls = []
-			//types.forEach(e => ls.push({value: e, label: e})) 
 			setTagType(ls)
-			/*let temp = resPnum.records.map(e => e.get('pnum'))
-			let pls = []
-			temp.forEach(e => {
-					pls.push({value:e, label:e})
-			})*/
 			setPnum(pls)
-			//session.close()
-			//closeDriver()
-
 					} catch (error) {
 							console.error(error);
 
 					}
 			};  
-			
 			_try().catch(console.error);
-			//const resHonkaInfo = await session.readTransaction(tx => tx.run(getHonkaInfo))
-			//console.log('The call from front end', res)
-			//console.log("The call from backend2", res)
-			//const resRel = await session.readTransaction(tx => tx.run(getRel))
-			//const resTag = await session.readTransaction(tx => tx.run(getTag))
-			//const resType = await session.readTransaction(tx => tx.run(getTagTypes))
-			//const resPnum = await session.readTransaction(tx => tx.run(getPnum))
-			// holds unique values of speaker & addressee & Japanese & Romaji (top row)
-			
 	}
 	_().catch(console.error)
 }, [chapter, number])
@@ -303,18 +251,7 @@ useEffect(() => {
    // async func for tag queries
    useMemo(() => {
     const _ = async () => {
-        /*initDriver(process.env.REACT_APP_NEO4J_URI,
-            process.env.REACT_APP_NEO4J_USERNAME,
-            process.env.REACT_APP_NEO4J_PASSWORD)
-        const driver = getDriver()
-        const session = driver.session()
-        let write = await session.writeTransaction(tx => tx.run(query[0]))
-        session.close()
-        closeDriver()*/
-        
-
         const response = await fetch (`/api/poems/tag_query?query=${query[0]}`);
-       
         if (query.length > 0) {
             if (query[1] === 'create tag') {
                 _().catch(console.error)
