@@ -3,6 +3,7 @@ const { toNativeTypes,generateGeneology,concatObj } = require('../neo4j_driver/u
 
 export const GET = async () =>{
 	try {   
+		
 		const session = await getSession();
 
 		let resGraph = await session.readTransaction(tx => tx.run('MATCH (a:Character)-[r]-(b:Character) return a.name as startName, TYPE(r) as rel, b.name as endName')) 

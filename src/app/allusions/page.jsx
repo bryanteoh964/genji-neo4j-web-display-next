@@ -1,8 +1,13 @@
-import React from 'react'
+'use client'
 
+import React from 'react'
+import AllusionTable from '@/components/AllusionTable'
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+
+    <AllusionTable/>
+    </div>
   )
 }
 
