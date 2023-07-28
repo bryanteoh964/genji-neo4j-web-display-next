@@ -5,14 +5,13 @@ import { Select, Col, Row, Button } from 'antd';
 import '../../node_modules/antd/dist/antd.min.css';
 const { Option } = Select;
 import { useParams } from 'next/navigation';
-import  Link  from 'next/link';
+import Link from 'next/link';
 
 import styles from "../styles/pages/poems.module.css";
-// Temporary notes on react imports: { Outlet, useLocation } from 'react-router-dom';
 
 const PoemQuery = () => {
     /*
-        State Variable:
+        State Variables:
             chapters: [{num: '1', count: 9, name: 'Kiritsubo 桐壺'},...]
             chpSelect: values of the selects, e.g., [true, "1", "1"]
             count: number of poems in a chapter
@@ -21,15 +20,29 @@ const PoemQuery = () => {
             loc keeps track of the url
     */
     const [chapters, setChapters] = useState([])
-    const [chpSelect, setChpSelect] = useState([false, "", undefined])
+    const [chpSelect, setChpSelect] = useState([false, '', ''])
     const [count, setCount] = useState([])
-    const [prevNext, setPrevNext] = useState([["",-1],["",-1]])
+    const [prevNext, setPrevNext] = useState([["",0],["",0]])
     const [buttonLock, setButtonLock] = useState(true)
-    const loc = {pathname: '/poems', search: '', hash: '', state: null, key: 'default'}
+    const [loc, setLoc] = useState({pathname: '/poems', search: '', hash: '', state: null, key: 'default'})
     
-    let { chapter, number } = useParams()
+    let { chapter, poem } = useParams()
 
-
+    // Temporary keep track of the state variables
+    useEffect(() => {
+        console.log("Link 1 check: ", `/poems/${chpSelect[1]}/${chpSelect[2]}`)
+        console.log("Link 2 check: ", `/poems/${prevNext[0][0]}/${prevNext[0][1]}`)
+        console.log("Link 3 check: ", `/poems/${prevNext[1][0]}/${prevNext[1][1]}`)
+        // check if any of the individual variabls above are undefined
+        console.log("chpSelect[1]:", chpSelect[1] === undefined)
+        console.log("chpSelect[2]:", chpSelect[2] === undefined)
+        console.log("prevNext[0][0]:", prevNext[0][0] === undefined)
+        console.log("prevNext[0][1]:", prevNext[0][1] === undefined)
+        console.log("prevNext[1][0]:", prevNext[1][0] === undefined)
+        console.log("prevNext[1][1]:", prevNext[1][1] === undefined)
+        console.log("chapter:", chapter === undefined)
+        console.log("poem:", poem === undefined)
+    }, [chapters, chpSelect, count, prevNext, buttonLock, loc])
     /*
         Handles dropdown logic
     */
@@ -43,10 +56,15 @@ const PoemQuery = () => {
             const response = await fetch(`/api/poems/poem_query`);
             const responseData = await response.json();
             setChapters(responseData)
+            const chapter_count = Object.values(responseData).map(item => item.count)[chapter - 1]
+            // make the elements in the array strings
+            // const chapter_array = Array.from(Array(chapter_count).keys()).map(item => item + 1)
+            const chapter_array = Array.from(Array(chapter_count).keys()).map(item => (item + 1).toString())
+            setCount(chapter_array);
         };
         loadDropdown();
-        if (chapter !== undefined && number !== undefined) {
-            setChpSelect([true, chapter, number])
+        if (chapter !== undefined && poem !== undefined && chapters.length > 0) {
+            setChpSelect([true, chapter, poem])
             setButtonLock(false)
             updatePrevNext(chapters)
         }
@@ -57,7 +75,7 @@ const PoemQuery = () => {
     */
     function updatePrevNext(chps) {
         let prev, next
-        if (chapter === '1' && number === '1') {
+        if (chapter === '1' && poem === '1') {
             prev = ['1', 1]
             next = ['1', 2]
         } else if (chapter === '54') {
@@ -66,23 +84,24 @@ const PoemQuery = () => {
         } else if (chapter === '42') {
             prev = ['41', 26]
             next = ['43', 1]
-        } else if (number === '1') {
+        } else if (poem === '1') {
             prev = [(parseInt(chapter) - 1).toString(), chps[parseInt(chapter) - 2].count]
             next = [chapter, 2]
-        } else if (parseInt(number) === chps[parseInt(chapter) - 1].count) {
-            prev = [chapter, parseInt(number) - 1]
+        } else if (parseInt(poem) === chps[parseInt(chapter) - 1].count) {
+            prev = [chapter, parseInt(poem) - 1]
             next = [(parseInt(chapter) + 1).toString(), 1]
         } else {
-            prev = [chapter, parseInt(number) - 1]
-            next = [chapter, parseInt(number) + 1]
-        } 
+            prev = [chapter, parseInt(poem) - 1]
+            next = [chapter, parseInt(poem) + 1]
+        }
         setPrevNext([prev, next])
-        setChpSelect([true, chapter, number])
+        setChpSelect([true, chapter.toString(), poem.toString()])
+        setButtonLock(false)
     }
 
     // 
     useEffect(() => {
-        if (chapters.length && chapter !== undefined && number !== undefined) {
+        if (chapters.length && chapter !== undefined && poem !== undefined) {
             updatePrevNext(chapters)
         }
     }, [loc, chapters])
@@ -97,7 +116,6 @@ const PoemQuery = () => {
                     style={{ width:460 }}
                     value={chpSelect[1]}
                     onSelect={(value) => {
-                        console.log("Value ran!", value)
                         setChpSelect([true, value, chpSelect[2]])
                         setCount(Array.from({length: chapters[value-1].count}, (_, i) => i + 1))
                     }}
@@ -130,43 +148,48 @@ const PoemQuery = () => {
                             {ct}
                         </Option>
                     )}
-                </Select>
-                {/* Query Button */}
+                </Select>{/* Query Button */}
                 <Link
-                    href={`/poems/${chpSelect[1]}/${chpSelect[2]}`}
+                    href={`/poems/${chpSelect[1].toString() === undefined ? '' : chpSelect[1].toString()}/${chpSelect[2].toString() === undefined ? '' : chpSelect[2].toString()}`}
                 >
-                    <Button 
-                        disabled={typeof chpSelect[2] === 'undefined'}
-                        onClick={
-                            () => {
-                                setButtonLock(false)
+                    <div>
+                        <Button 
+                            disabled={chpSelect[0] === false}
+                            onClick={
+                                () => {
+                                    setButtonLock(false)
+                                }
                             }
-                        }
-                    >
-                        Query
-                    </Button>
+                        >
+                            Query
+                        </Button>
+                    </div>
                 </Link>
                 {/* Previous Poem Button */}
                 <Link
-                    href={`/poems/${prevNext[0][0]}/${prevNext[0][1]}`}    
+                    href={`/poems/${prevNext[0][0].toString() === undefined ? '' : prevNext[0][0].toString()}/${prevNext[0][1].toString() === undefined ? '' : prevNext[0][1].toString()}`}    
                 >
-                    <Button
-                        disabled={buttonLock}
-                        onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[0]) - 1].count}, (_, i) => i + 1))}
-                    >
-                        Previous
-                    </Button>
+                    <div>   
+                        <Button
+                            disabled={buttonLock}
+                            onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[0]) - 1].count}, (_, i) => i + 1))}
+                        >
+                            Previous
+                        </Button>
+                    </div>
                 </Link>
                 {/* Next Poem Button */}
                 <Link
-                    href={`/poems/${prevNext[1][0]}/${prevNext[1][1]}`}    
+                    href={`/poems/${prevNext[1][0].toString() === undefined ? '' : prevNext[1][0].toString()}/${prevNext[1][1].toString() === undefined ? '' : prevNext[1][1].toString()}`}    
                 >
-                    <Button
-                        disabled={buttonLock}
-                        onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[1]) - 1].count}, (_, i) => i + 1))}
-                    >
-                        Next
-                    </Button>
+                    <div>
+                        <Button
+                            disabled={buttonLock}
+                            onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[1]) - 1].count}, (_, i) => i + 1))}
+                        >
+                            Next
+                        </Button>
+                    </div>
                 </Link>
             </Col>
         </Row>

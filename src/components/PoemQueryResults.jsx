@@ -4,7 +4,7 @@ import { useMemo, useState, useReducer, useEffect } from 'react'
 import { Button, Col, Divider, Input, Row, Space, Select, Tag, } from 'antd';
 import 'antd/dist/antd.min.css';
 import TextArea from 'antd/lib/input/TextArea';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const PoemDisplay = ({ poemData }) => {
     /*
@@ -214,13 +214,11 @@ useEffect(() => {
 			setAddressee(exchange.map(e => e.end.properties.name))
 			setJPRM([exchange[0].segments[0].end.properties.Japanese, exchange[0].segments[0].end.properties.Romaji])
 			setNotes(exchange[0].segments[0].end.properties.notes)
-			//let transTemp = res.records.map(e => toNativeTypes(e.get('trans'))).map(e => [e.end.properties.name, e.segments[0].end.properties.translation, e.segments[1].start.properties.WaleyPageNum])
 			transTemp.forEach(e =>
 					setTrans(prev => ({
 							...prev,
 							[e[0]]: e[0] !== 'Waley' ? e[1] : [e[1], e[2]]
 					})))
-			//let sources = resHonkaInfo.records.map(e => [Object.values(toNativeTypes(e.get('honka'))).join(''), Object.values(toNativeTypes(e.get('title'))).join(''), Object.values(toNativeTypes(e.get('romaji'))).join(''), Object.values(toNativeTypes(e.get('poet'))).join(''), Object.values(toNativeTypes(e.get('order'))).join(''), Object.values(toNativeTypes(e.get('translator'))).join(''), Object.values(toNativeTypes(e.get('translation'))).join(''), e.get('notes') !== null ? Object.values(toNativeTypes(e.get('notes'))).join('') : 'N/A'])
 			let src_obj = []
 			let index = 0
 			let entered_honka = []
@@ -397,7 +395,7 @@ useEffect(() => {
                 <Col span={24}>
                     {rel.map(e =>
                         <Link 
-                            to={`/poems/${parseInt(e[0].substring(0, 2))}/${parseInt(e[0].substring(4, 6))}`}
+                            href={`/poems/${e[0].substring == undefined ? '' : parseInt(e[0].substring(0, 2))}/${e[0].substring(4, 6) == undefined ? '' : parseInt(e[0].substring(4, 6))}`}
                             target="_blank"
                             onClick={(event) => auth ? event.preventDefault() : event}
                         >

@@ -4,9 +4,9 @@ import AllusionTable from '@/components/AllusionTable'
 
 const page = () => {
 	return (
-	<div>
-		<AllusionTable/>
-	</div>
+		<div>
+			<AllusionTable/>
+		</div>
 	)
 }
 
