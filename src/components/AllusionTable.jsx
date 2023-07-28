@@ -11,6 +11,7 @@ export default function AllusionTable() {
     const [pnum, setPnum] = useState([{ value: '', label: '' }])
     const [rerender, setRerender] = useState(0)
     // data is the state variable that fills the table
+    const [chapters, setChapters] = useState([])
     const [data, setData] = useState([])
     const [selectedPnum, setSelectedPnum] = useState('')
     const [query, setQuery] = useState([])
@@ -179,7 +180,6 @@ export default function AllusionTable() {
         return [updated, newRow.key, newRow.Honka, newRow.Romaji, newRow.translations[selectedTranslation], newRow.notes, newTrans]
     }
   
-    const chapters = getChpList()
     const vincent = [process.env.REACT_APP_USERNAME, process.env.REACT_APP_PASSWORD]
     const defaultColumns = [
         {
@@ -629,6 +629,10 @@ export default function AllusionTable() {
     useEffect(() => {
         const _ = async () => {
             const response = await fetch(`/api/allusions/allusionQuery`)
+
+            const chapters = await getChpList()
+            setChapters(chapters)
+            
             const data = await response.json()
             
             setTranslators(data.translators)
@@ -637,7 +641,7 @@ export default function AllusionTable() {
             setEditOrder(data.init_order)
             setPnum(data.ls)
             setAllusion(data.links)
-            console.log("THIS is LINKS:", data.links)
+            console.log("THIS is Chap list:", chapters)
             setPoet(data.poets)
             setSource(data.sources)
 
