@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useMemo, useState, useReducer, useRef } f
 import { Col, BackTop, Button, Divider, Form, Input, Row, Select, Space, Table, Tag, Tooltip } from 'antd';
 import 'antd/dist/antd.min.css';
 import TextArea from 'antd/lib/input/TextArea';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export default function AllusionTable() {
     const [pnum, setPnum] = useState([{ value: '', label: '' }])
@@ -94,7 +94,7 @@ export default function AllusionTable() {
                     notes = ' '
                 }
                 if (updated) {
-                   /* initDriver(process.env.REACT_APP_NEO4J_URI,
+                    /* initDriver(process.env.REACT_APP_NEO4J_URI,
                         process.env.REACT_APP_NEO4J_USERNAME,
                         process.env.REACT_APP_NEO4J_PASSWORD)
                     const driver = getDriver()
@@ -362,7 +362,7 @@ export default function AllusionTable() {
                             ? allusion[record.key].map(e => 
                                 <>
                                     <Link 
-                                        to={`/poems/${parseInt(e[0].substring(0, 2))}/${parseInt(e[0].substring(4, 6))}`}
+                                        href={`/poems/${parseInt(e[0].substring(0, 2))}/${parseInt(e[0].substring(4, 6))}`}
                                         target="_blank"
                                         onClick={(event) => auth ? event.preventDefault() : event}
                                     >

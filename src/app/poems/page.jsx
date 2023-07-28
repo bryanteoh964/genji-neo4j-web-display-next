@@ -8,9 +8,9 @@ const page = () => {
 	<div>
 		<PoemQuery />
 		<section className="section_frame">
-		<div className="styles.section_container">
-			<h1>Welcome to the Poem Page</h1>
-		</div>
+			<div className="styles.section_container">
+				<h1>Welcome to the Poem Page</h1>
+			</div>
 		</section>
 	</div>
   )
