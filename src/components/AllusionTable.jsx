@@ -627,119 +627,23 @@ export default function AllusionTable() {
 
     // table content
     useEffect(() => {
-        let getHonka = 'match (a:Honka) return (a) as honka'
-        let getPnum = 'match (g:Genji_Poem) return g.pnum as pnum'
-        let getPoemHonka = 'MATCH (n:Honka)-[r:ALLUDES_TO]-(p:Genji_Poem) RETURN n.id as id, p.pnum as pnum, r.notes as notes'
-        let getPoet = 'match (p:People) return p.name as poet'
-        let getHonkaPoet = 'match (h:Honka)<-[:AUTHOR_OF]-(p:People) return h.id as id, p.name as name'
-        let getSource = 'match (s:Source) return s.title as source'
-        let getHonkaSource = 'match (h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source) return h.id as id, r.order as order, s.title as title'
-        let getTrans = 'match (h:Honka)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) return h.id as id, t.translation as trans, p.name as name'
         const _ = async () => {
-            initDriver(process.env.REACT_APP_NEO4J_URI,
-                process.env.REACT_APP_NEO4J_USERNAME,
-                process.env.REACT_APP_NEO4J_PASSWORD)
-            const driver = getDriver()
-            const session = driver.session()
-            const resHonka = await session.readTransaction(tx => tx.run(getHonka))
-            const resPnum = await session.readTransaction(tx => tx.run(getPnum))
-            const resPoemHonka = await session.readTransaction(tx => tx.run(getPoemHonka))
-            const resPoet = await session.readTransaction(tx => tx.run(getPoet))
-            const resPoetEdge = await session.readTransaction(tx => tx.run(getHonkaPoet))
-            const resSrc = await session.readTransaction(tx => tx.run(getSource))
-            const resSourceEdge = await session.readTransaction(tx => tx.run(getHonkaSource))
-            const resTrans = await session.readTransaction(tx => tx.run(getTrans))
-            let ans = []
-            let max = 0
-            let key = 0
-            let translators = new Set()
-            let transLs = resTrans.records.map(e => [concatObj(toNativeTypes(e.get('id'))), concatObj(toNativeTypes(e.get('trans'))), concatObj(toNativeTypes(e.get('name')))])
-            let transObj = {}
-            transLs.forEach(e => {
-                translators.add(e[2])
-                if (transObj[e[0]] === undefined) {
-                    transObj[e[0]] = {}
-                    transObj[e[0]][e[2]] = e[1]
-                } else {
-                    transObj[e[0]][e[2]] = e[1]
-                }
-            })
-            translators = Array.from(translators).map(e => ({value: e, label: e}))
-            setTranslators(translators)
-            resHonka.records.map(e => toNativeTypes(e.get('honka'))).forEach(e => {
-                delete Object.assign(e.properties, { ['key']: e.properties['id'] })['id']
-                e.properties.translations = transObj[e.properties.key]
-                ans.push(e.properties)
-                key = parseInt(e.properties.key.slice(1))
-                if (max < key) {
-                    max = key
-                }
-            })
-            let tempEdgeList = resSourceEdge.records.map(e => [concatObj(toNativeTypes(e.get('id'))), concatObj(toNativeTypes(e.get('title'))), concatObj(toNativeTypes(e.get('order')))])
-            let tempEdgeObj = {}
-            tempEdgeList.forEach(e => {
-                if (tempEdgeObj[e[0]] === undefined) {
-                    tempEdgeObj[e[0]] = [[e[1], e[2], true]]
-                } else {
-                    tempEdgeObj[e[0]].push([e[1], e[2], true])
-                }
-            })
-            ans.forEach(e => {
-                if (tempEdgeObj[e.key] !== undefined) {
-                    e.Source = tempEdgeObj[e.key]
-                } 
-            })
-            let poetEdge = resPoetEdge.records.map(e => [concatObj(toNativeTypes(e.get('id'))), concatObj(toNativeTypes(e.get('name')))])
-            poetEdge.forEach(e => {
-                let index = ans.findIndex(ele => ele.key === e[0])
-                ans[index].Poet = e[1]
-            })
-            setData(ans)
-            if (maxID !== max) {
-                setMaxID(max)
+            const response = await fetch(`/api/allusions/allusionQuery`)
+            const data = await response.json()
+            
+            setTranslators(data.translators)
+            setData(data.ans)
+            setEditSource(data.init_src)
+            setEditOrder(data.init_order)
+            setPnum(data.ls)
+            setAllusion(data.links)
+            console.log("THIS is LINKS:", data.links)
+            setPoet(data.poets)
+            setSource(data.sources)
+
+            if (maxID !== data.max) {
+                setMaxID(data.max)
             }
-            let init_src = {}
-            let init_order = {}
-            for (let i = 0; i < max; i ++) {
-                init_src['H'+JSON.stringify(i)] = ''
-                init_order['H'+JSON.stringify(i)] = 'N/A'
-            }
-            setEditSource(init_src)
-            setEditOrder(init_order)
-            let temp = resPnum.records.map(e => e.get('pnum'))
-            let ls = []
-            temp.forEach(e => {
-                if (e !== null) {
-                    ls.push({ value: e, label: e })
-                }
-            })
-            ls = sortPnumsFromObjList(ls)
-            setPnum(ls)
-            // ll is a temporary variable parsing a list of allusion properties out of the result
-            let ll = Array.from(new Set(resPoemHonka.records.map(e => JSON.stringify([e.get('id'), e.get('pnum'), e.get('notes')])))).map(e => JSON.parse(e))
-            let links = {}
-            ll.forEach(e => {
-                if (e[0] in links) {
-                    links[e[0]].push([e[1], true, e[2]])
-                } else {
-                    links[e[0]] = [[e[1], true, e[2]]]
-                }
-            })
-            setAllusion(links)
-            temp = resPoet.records.map(e => e.get('poet'))
-            let poets = []
-            temp.forEach(e => {
-                poets.push({ value: e, label: e })
-            })
-            setPoet(poets)
-            temp = resSrc.records.map(e => e.get('source'))
-            let sources = []
-            temp.forEach(e => {
-                sources.push({ value: e, label: e })
-            })
-            setSource(sources)
-            session.close()
-            closeDriver()
         }
         _().catch(console.error)
     }, [rerender])
