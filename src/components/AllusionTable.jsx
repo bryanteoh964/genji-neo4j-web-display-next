@@ -601,7 +601,7 @@ export default function AllusionTable() {
 
     useMemo(() => {
         const _ = async () => {
-            initDriver(process.env.REACT_APP_NEO4J_URI,
+            /*initDriver(process.env.REACT_APP_NEO4J_URI,
                 process.env.REACT_APP_NEO4J_USERNAME,
                 process.env.REACT_APP_NEO4J_PASSWORD)
             const driver = getDriver()
@@ -609,7 +609,7 @@ export default function AllusionTable() {
             let write = await session.writeTransaction(tx => tx.run(query[0]))
             // console.log(write)
             session.close()
-            closeDriver()
+            closeDriver() */
             const response = await fetch(`/api/allusions/query?query=${query[0]}`)
 
         }
