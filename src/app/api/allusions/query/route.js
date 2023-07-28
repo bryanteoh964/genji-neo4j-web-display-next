@@ -6,9 +6,9 @@ export const GET = async (request )=> {
     const session = await getSession();
 
     const{searchParams} = new URL(request.url)
-    const query = searchParams.get('query')
-   
-   let write = await session.writeTransaction(tx => tx.run(query))
+    const key = searchParams.get('key')
+    let write = await session.writeTransaction(tx => tx.run('MATCH (h:Honka {id: $key})<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People {name:$selectedTranslation}) SET h.Honka = $honka, h.Romaji = $romaji, h.notes = $notes, t.translation = $translation return "OK"', {key: key, selectedTranslation: selectedTranslation, honka: honka, romaji: romaji, notes: notes, translation: translation}))
+    
     console.log('sucess',write)
     return new Response(JSON.stringify(write), {status: 200})
   }catch(error){
