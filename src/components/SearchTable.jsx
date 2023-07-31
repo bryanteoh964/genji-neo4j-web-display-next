@@ -120,13 +120,8 @@ export default function PoemTable({ query }) {
             updateLocalStates();
         }
         // _().catch(console.error)
-        try{
-            if(varsDefined){
-                _();
-            }
-        } catch (err) {
-            alert(err)
-            console.error(err)
+        if(varsDefined){
+            _();
         }
     }, [chapter, spkrGen, speaker, addrGen, addressee])
 

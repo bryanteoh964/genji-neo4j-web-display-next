@@ -173,7 +173,7 @@ const PoemDisplay = ({ poemData }) => {
         })
         const _ = async () => {
 			const fetchData = async (params = {}) => {
-                try {
+                
                 
                     const response = await fetch (`/api/poems?chapter=${chapter}&&number=${number}`);
                     const responseData = await response.json()
@@ -182,16 +182,13 @@ const PoemDisplay = ({ poemData }) => {
                             throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return responseData;
-				} catch (error) {
-						console.error(`There was an error! ${error}`);
-						throw error;
-				}
+				
 			};
 			
 			const _try = async () => {
                 // Initialize with default values
                 setTrans({ Waley: 'N/A', Seidensticker: 'N/A', Tyler: 'N/A', Washburn: 'N/A', Cranston: 'N/A' });
-                try {
+                
                     const response = await fetchData({ chapter, number });
                     const exchange = response[0]
                     const transTemp = response[1]
@@ -227,14 +224,10 @@ const PoemDisplay = ({ poemData }) => {
                     setTag(tags)
                     setTagType(ls)
                     setPnum(pls)
-                } catch (error) {
-                        console.error(error);
-
-                }
 			};  
-			_try().catch(console.error);
+			_try();
         }
-        _().catch(console.error)
+        _()
     }, [chapter, number])
 
 
@@ -244,19 +237,19 @@ const PoemDisplay = ({ poemData }) => {
             const _ = await fetch (`/api/poems/tag_query?query=${query[0]}`);
             if (query.length > 0) {
                 if (query[1] === 'create tag') {
-                    _().catch(console.error)
+                    _()
                     alert('tag created!')
                 } else if (query[1] === 'delete tag') {
-                    _().catch(console.error)
+                    _()
                     alert('tag deleted!')
                 } else if (query[1] === 'create rel') {
-                    _().catch(console.error)
+                    _()
                     alert('link created!')
                 } else if (query[1] === 'delete rel') {
-                    _().catch(console.error)
+                    _()
                     alert('link delete!')
                 } else if (query[1] === 'notes' && query[0] !== '') {
-                    _().catch(console.error)
+                    _()
                     alert('Notes updated!')
                     setQuery([])
                 }

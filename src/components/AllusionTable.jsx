@@ -84,40 +84,23 @@ export default function AllusionTable() {
             }
         };
         const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                let [updated, key, honka, romaji, translation, notes, newTrans] = handleSave({
-                    ...record,
-                    ...values,
-                });
-                if (notes === undefined) {
-                    notes = ' '
+            const values = await form.validateFields();
+            toggleEdit();
+            let [updated, key, honka, romaji, translation, notes, newTrans] = handleSave({
+                ...record,
+                ...values,
+            });
+            if (notes === undefined) {
+                notes = ' '
+            }
+            if (updated) {
+                if(newTrans){
+                    const response = await fetch(`/api/allusions/newTrans?key=${key}&&selectedTranslation=${selectedTranslation}&&translation=${translation}`)
+                }else{
+                    const response2 = await fetch(`/api/allusions/newOthers?key=${key}&&selectedTranslation=${selectedTranslation}&&honka=${honka}&&romaji=${romaji}&&notes=${notes}&&translation=${translation}`)
                 }
-                if (updated) {
-                    /* initDriver(process.env.REACT_APP_NEO4J_URI,
-                        process.env.REACT_APP_NEO4J_USERNAME,
-                        process.env.REACT_APP_NEO4J_PASSWORD)
-                    const driver = getDriver()
-                    const session = driver.session()
-                    if (newTrans) {
-                        let write = await session.writeTransaction(tx => tx.run('MATCH (h:Honka {id: $key}), (p:People {name:$selectedTranslation}) CREATE (t:Translation {translation: $translation}) MERGE (h)<-[:TRANSLATION_OF]-(t)<-[:TRANSLATOR_OF]-(p) return "OK"', {key: key, selectedTranslation: selectedTranslation, translation: translation}))
-                    } else {
-                        let write = await session.writeTransaction(tx => tx.run('MATCH (h:Honka {id: $key})<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People {name:$selectedTranslation}) SET h.Honka = $honka, h.Romaji = $romaji, h.notes = $notes, t.translation = $translation return "OK"', {key: key, selectedTranslation: selectedTranslation, honka: honka, romaji: romaji, notes: notes, translation: translation}))
-                    }
-                    session.close()
-                    closeDriver()
-                    */
-                    if(newTrans){
-                        const response = await fetch(`/api/allusions/newTrans?key=${key}&&selectedTranslation=${selectedTranslation}&&translation=${translation}`)
-                    }else{
-                        const response2 = await fetch(`/api/allusions/newOthers?key=${key}&&selectedTranslation=${selectedTranslation}&&honka=${honka}&&romaji=${romaji}&&notes=${notes}&&translation=${translation}`)
-                    }
-                } else {
-                    console.log('nothing changed')
-                }
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
+            } else {
+                console.log('nothing changed')
             }
         };
         let childNode = children;

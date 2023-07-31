@@ -205,13 +205,11 @@ export default class Search extends React.Component {
         chars.forEach(char => {
             let selectedChapters = [...this.state.selectedChapters]
             selectedChapters.splice(selectedChapters.indexOf(chp), 1)
-            try {
-                graph.shortestPath(char[0], chp)
-                selectedChapters = selectedChapters.map(sc => graph.lowestCommonAncestors(char[0], sc)[0] === sc)
-                if (!selectedChapters.includes(true)) {
-                    char[1] = !flag
-                }
-            } catch (e) { }
+            graph.shortestPath(char[0], chp)
+            selectedChapters = selectedChapters.map(sc => graph.lowestCommonAncestors(char[0], sc)[0] === sc)
+            if (!selectedChapters.includes(true)) {
+                char[1] = !flag
+            }
         })
         return chars
     }
