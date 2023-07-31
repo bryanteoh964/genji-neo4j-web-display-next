@@ -36,16 +36,10 @@ export default class Search extends React.Component {
             addresseeGenderList: ['male', 'female', 'multiple', 'nonhuman'],
             filterActiveKey: ['panel1'],
             openOptions: true,
-            username: 'default',
-            password: 'default',
-            auth: false,
             numOfPoems: 0,
             newCountNeeded: false,
             // backup: [],
         }
-        this.uri = process.env.REACT_APP_NEO4J_URI
-        this.user = process.env.REACT_APP_NEO4J_USERNAME
-        this.password = process.env.REACT_APP_NEO4J_PASSWORD
 
         this.chpFilterRef = React.createRef(null)
 
@@ -64,8 +58,6 @@ export default class Search extends React.Component {
         this.checkHasExchangeInChp = this.checkHasExchangeInChp.bind(this)
         this.getIntersection = this.getIntersection.bind(this)
         this.togglePanel = this.togglePanel.bind(this)
-        this.updateUsername = this.updateUsername.bind(this)
-        this.updatePassword = this.updatePassword.bind(this)
         this.updateCount = this.updateCount.bind(this)
         this.updateChapterDisplay = this.updateChapterDisplay.bind(this)
     }
@@ -602,18 +594,6 @@ export default class Search extends React.Component {
         })
     }
 
-    updateUsername(event) {
-        this.setState({
-            username: event.target.value
-        })
-    }
-
-    updatePassword(event) {
-        this.setState({
-            password: event.target.value
-        })
-    }
-
     updateCount(event) {
         this.setState({
             newCountNeeded: true
@@ -904,18 +884,6 @@ export default class Search extends React.Component {
                         {/* <Outlet /> */}
                     </Col>
                     <Col span={3}>
-                        <Space direction='vertical'>
-                            <Input
-                                placeholder="input username"
-                                onChange={this.updateUsername}
-                            />
-                            <Input.Password
-                                placeholder="input password"
-                                onChange={this.updatePassword}
-                            />
-                        </Space>
-                        <Button disabled={this.state.auth} onClick={() => this.setState({ auth: true })}>Login</Button>
-                        <Button disabled={!this.state.auth} onClick={() => this.setState({ auth: false })}>Logout</Button>
                         <BackTop>
                             <div>Back to top</div>
                         </BackTop>

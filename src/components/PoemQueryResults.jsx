@@ -66,13 +66,12 @@ const PoemDisplay = ({ poemData }) => {
     const [select, setSelect] = useState('')
     const [notes, setNotes] = useState("")
     const [auth, setAuth] = useState(false)
-    const [usr, setUsr] = useState('')
-    const [pwd, setPwd] = useState('')
+   
 
 
 	const forceUpdate = useReducer(x => x + 1, 0)[1]
     
-	const vincent = [process.env.REACT_APP_USERNAME, process.env.REACT_APP_PASSWORD]
+
 
 	if (number.length === 1) {
 		number = '0' + number.toString()
@@ -461,20 +460,7 @@ const PoemDisplay = ({ poemData }) => {
             </Row>
             <Divider></Divider>
             <Row align='middle'>
-                <Col offset={10}>
-                    <Space direction='vertical'>
-                        <Input
-                            placeholder="input username"
-                            onChange={(event) => setUsr(event.target.value)}
-                        />
-                        <Input.Password
-                            placeholder="input password"
-                            onChange={(event) => setPwd(event.target.value)}
-                        />
-                    </Space>
-                    <Button disabled={auth} onClick={() => (usr === vincent[0]) && (pwd === vincent[1]) ? setAuth(true) : null}>Login</Button>
-                    <Button disabled={!auth} onClick={() => setAuth(false)}>Logout</Button>
-                </Col>
+                
             </Row>
         </div>
     )

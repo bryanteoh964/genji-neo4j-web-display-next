@@ -161,7 +161,7 @@ export default function AllusionTable() {
         return [updated, newRow.key, newRow.Honka, newRow.Romaji, newRow.translations[selectedTranslation], newRow.notes, newTrans]
     }
   
-    const vincent = [process.env.REACT_APP_USERNAME, process.env.REACT_APP_PASSWORD]
+
     const defaultColumns = [
         {
             title: 'ID',
@@ -636,20 +636,11 @@ export default function AllusionTable() {
                     <Space direction='vertical' style={{
                         marginBottom: '2.5vh'
                     }}>
-                        <Input
-                            placeholder="input username"
-                            onChange={(event) => setUsr(event.target.value)}
-                        />
-                        <Input.Password
-                            placeholder="input password"
-                            onChange={(event) => setPwd(event.target.value)}
-                        />
+            
                     </Space>
                     <Space>
-                        <Button disabled={auth} onClick={() => (usr === vincent[0]) && (pwd === vincent[1]) ? setAuth(true) : null}>Login</Button>
-                        <Button disabled={!auth} onClick={() => setAuth(false)}>Logout</Button>
-                        <br />
-                        <Button disabled={!auth} onClick={() => setRerender(rerender + 1)}>Refresh Table</Button>
+
+                 
                     </Space>
                     {auth === true
                         ? <>

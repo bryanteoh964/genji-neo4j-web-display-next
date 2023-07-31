@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link';
-import Edit from '@/components/Edit';
+// import Edit from '@/components/Edit';
 import 'antd/dist/antd.min.css';
 
 export default function PoemTable({ query }) {
@@ -12,9 +12,6 @@ export default function PoemTable({ query }) {
     let [speaker, setSpeaker] = useState();
     let [addrGen, setAddrGender] = useState();
     let [addressee, setAddressee] = useState();
-    let [auth, setAuth] = useState();
-    let [username, setUsername] = useState();
-    let [password, setPassword] = useState();
 
     // The other variables
     const [metadata, setMetadata] = useState([])
@@ -38,24 +35,12 @@ export default function PoemTable({ query }) {
             setSpeaker(query.speaker);
             setAddrGender(query.addrGender);
             setAddressee(query.addressee);
-            setAuth(query.authorization);
-            setUsername(query.username);
-            setPassword(query.password);
         }
 
         setStateValues()
     }, [])
 
     useEffect(() => {
-        // Below is legacy code
-        if (auth === 'true') {
-            if (!(username === process.env.REACT_APP_USERNAME && password === process.env.REACT_APP_PASSWORD)) {
-                auth = false
-            } else {
-                auth = true
-            }
-        }
-
         // let allSpkrGen = ['male', 'female']
         // let allAddrGen = ['male', 'female', 'nonhuman', 'multiple']
         if (spkrGen && spkrGen.split(',').length === 2) {
@@ -64,7 +49,7 @@ export default function PoemTable({ query }) {
         if (addrGen && addrGen.split(',').length === 4) {
             addrGen = 'Any'
         }
-    }, [spkrGen, addrGen, auth, username, password])
+    }, [spkrGen, addrGen])
 
 
     useMemo(() => {
@@ -261,31 +246,25 @@ export default function PoemTable({ query }) {
                             Romaji
                         </th>
                         <th>
-                            {auth === true
-                                ? 'Cranston'
-                                : <select className={'ptcol3'} onChange={setColumnOptions}>
-                                    <option>Translation A</option>
-                                    <option>Cranston</option>
-                                    <option>Seidensticker</option>
-                                    <option>Tyler</option>
-                                    <option>Waley</option>
-                                    <option>Washburn</option>
-                                </select>}
+                            <select className={'ptcol3'} onChange={setColumnOptions}>
+                                <option>Translation A</option>
+                                <option>Cranston</option>
+                                <option>Seidensticker</option>
+                                <option>Tyler</option>
+                                <option>Waley</option>
+                                <option>Washburn</option>
+                            </select>
                         </th>
-                        <th>{auth === true
-                            ? 'Seidensticker'
-                            : <select className={'ptcol4'} onChange={setColumnOptions}>
+                        <th>
+                            <select className={'ptcol4'} onChange={setColumnOptions}>
                                 <option>Translation B</option>
                                 <option>Cranston</option>
                                 <option>Seidensticker</option>
                                 <option>Tyler</option>
                                 <option>Waley</option>
                                 <option>Washburn</option>
-                            </select>}
+                            </select>
                         </th>
-                        {auth === true ? <th>Tyler</th> : null}
-                        {auth === true ? <th>Waley</th> : null}
-                        {auth === true ? <th>Washburn</th> : null}
                     </tr>
                 </thead>
                 <tbody>
@@ -302,80 +281,24 @@ export default function PoemTable({ query }) {
                             }</td>
                             <td className='spkrCol'>
                                 {setCharColor(row[1])}
-                                {auth === true
-                                    && <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'name'}
-                                        name={row[1]}
-                                    />}
                             </td>
                             <td className='addrCol'>
                                 {setCharColor(row[2])}
-                                {auth === true
-                                    && <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'name'}
-                                        name={row[2]}
-                                    />}
                             </td>
                             <td className='ptcol1'>
-                                {auth === true
-                                    ? <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD} propertyName={'Japanese'}
-                                        currVal={entries[row[0]]['Japanese']}
-                                        pnum={row[0]}
-                                    />
-                                    : <p type='JP' className={row[0]} style={{ padding: "10px" }}>{entries[row[0]]['Japanese']}</p>}
+                                <p type='JP' className={row[0]} style={{ padding: "10px" }}>{entries[row[0]]['Japanese']}</p>
                             </td>
                             <td className='ptcol2'>
-                                {auth === true
-                                    ? <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'Romaji'}
-                                        currVal={entries[row[0]]['Romaji']}
-                                        pnum={row[0]}
-                                    />
-                                    : <p className={row[0]} style={{ padding: "10px" }}>{entries[row[0]]['Romaji']}</p>}
+                                <p className={row[0]} style={{ padding: "10px" }}>{entries[row[0]]['Romaji']}</p>
                             </td>
-                            {auth === true
-                                ? <td className='ptcol3'>
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'Cranston'}
-                                        currVal={entries[row[0]]['Cranston']}
-                                        pnum={row[0]}
-                                    />
-                                </td>
-                                : <td className='ptcol3'>
+                                <td className='ptcol3'>
                                     <select onChange={updateSelection}>
                                         <option>select:</option>
                                         {getOptions(row[0]).map((item) => <option key={entries[row[0]][item]}>{item}</option>)}
                                     </select>
                                     <br />
                                     <p className={row[0]}></p>
-                                </td>}
-                            {auth === true
-                                ? <td className='ptcol4'>
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'Seidensticker'}
-                                        currVal={entries[row[0]]['Seidensticker']}
-                                        pnum={row[0]}
-                                    />
                                 </td>
-                                :
                                 <td className='ptcol4'>
                                     <select onChange={updateSelection}>
                                         <option>select:</option>
@@ -383,50 +306,7 @@ export default function PoemTable({ query }) {
                                     </select>
                                     <br />
                                     <p className={row[0]}></p>
-                                </td>}
-                            {auth === true
-                                ? <td className='ptcol5'>
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD} propertyName={'Tyler'}
-                                        currVal={entries[row[0]]['Tyler']}
-                                        pnum={row[0]}
-                                    />
                                 </td>
-                                : null}
-                            {auth === true
-                                ? <td className='ptcol6'>
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'Waley'}
-                                        currVal={entries[row[0]]['Waley']}
-                                        pnum={row[0]}
-                                    />
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'page'}
-                                        currVal={entries[row[0]]['WaleyPageNum']}
-                                        pnum={row[0]}
-                                    />
-                                </td>
-                                : null}
-                            {auth === true
-                                ? <td className='ptcol7'>
-                                    <Edit
-                                        uri={process.env.REACT_APP_NEO4J_URI}
-                                        user={process.env.REACT_APP_NEO4J_USERNAME}
-                                        password={process.env.REACT_APP_NEO4J_PASSWORD}
-                                        propertyName={'Washburn'}
-                                        currVal={entries[row[0]]['Washburn']}
-                                        pnum={row[0]}
-                                    />
-                                </td>
-                                : null}
                         </tr>)}
                 </tbody>
             </table>
