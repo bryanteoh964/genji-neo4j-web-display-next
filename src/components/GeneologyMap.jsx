@@ -27,7 +27,9 @@ export default function GeneologyMap({l}) {
     const onEdgesChange = useCallback( (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),[] );
 
     return (
-        <ReactFlow className={styles.viewer_window}
+        <ReactFlow 
+            alt="Geneology map diagram"
+            className={styles.viewer_window}
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}

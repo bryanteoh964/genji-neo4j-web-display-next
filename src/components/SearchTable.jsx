@@ -235,10 +235,10 @@ export default function PoemTable({ query }) {
             <table>
                 <thead>
                     <tr>
-                        <th>Chapter</th>
-                        <th>Poem Number</th>
-                        <th className='spkrCol'>Speaker</th>
-                        <th className='addrCol'>Addressee</th>
+                        <th alt="Chapter column">Chapter</th>
+                        <th alt="Poem number column">Poem Number</th>
+                        <th className='spkrCol' alt="Speaker column">Speaker</th>
+                        <th className='addrCol' alt="Addressee column">Addressee</th>
                         <th>
                             Japanese
                         </th>

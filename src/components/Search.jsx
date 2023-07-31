@@ -733,7 +733,7 @@ export default class Search extends React.Component {
                         </p>
                     </Col>
                     <Col span={18}>
-                        <form>
+                        <form alt="Select chapter">
                             <p>Select chapter</p>
                             <Select
                                 ref={this.chpFilterRef}
@@ -775,7 +775,7 @@ export default class Search extends React.Component {
                                     </Option>)}
                             </Select>
                         </form>
-                        <form>
+                        <form alt="Select speaker">
                             <CheckboxGroup defaultValue={this.state.speakerGenderList} onChange={this.handleSpkrGenChange}>
                                 <Checkbox value={'male'} style={{ backgroundColor: 'rgba(72, 209, 204, 0.3)' }}>male</Checkbox>
                                 <Checkbox value={'female'} style={{ backgroundColor: 'rgba(255, 182, 193, 0.3)' }}>female</Checkbox>
@@ -819,7 +819,7 @@ export default class Search extends React.Component {
                                     </Option>)}
                             </Select>
                         </form>
-                        <form>
+                        <form alt="Select addressee">
                             <CheckboxGroup defaultValue={this.state.addresseeGenderList} onChange={this.handleAddrGenChange}>
                                 <Row justify="space-between">
                                     <Col>
@@ -880,11 +880,11 @@ export default class Search extends React.Component {
                                     </Option>)}
                             </Select>
                         </form>
-                        <Button onClick={this.handleQuery}>Query</Button>
+                        <Button onClick={this.handleQuery} alt="Query">Query</Button>
                         {/* <Outlet /> */}
                     </Col>
                     <Col span={3}>
-                        <BackTop>
+                        <BackTop alt="Back to Top">
                             <div>Back to top</div>
                         </BackTop>
                     </Col>

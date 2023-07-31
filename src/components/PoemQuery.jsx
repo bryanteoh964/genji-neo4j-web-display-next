@@ -100,6 +100,7 @@ const PoemQuery = () => {
             <Col span={24} className={styles.search_bar}>
                 {/* Chapter Select */}
                 <Select 
+                    alt="Select a chapter"
                     showSearch
                     placeholder="Select a chapter"
                     style={{ width:460 }}
@@ -120,6 +121,7 @@ const PoemQuery = () => {
                 </Select>
                 {/* Chapter Poem Select */}
                 <Select
+                    alt="Select a poem number"
                     showSearch
                     placeholder="#"
                     disabled={!chpSelect[0]}
@@ -137,8 +139,10 @@ const PoemQuery = () => {
                             {ct}
                         </Option>
                     )}
-                </Select>{/* Query Button */}
+                </Select>
+                {/* Query Button */}
                 <Link
+                    alt="Query Button"
                     href={`/poems/${chpSelect[1].toString() === undefined ? '' : chpSelect[1].toString()}/${chpSelect[2].toString() === undefined ? '' : chpSelect[2].toString()}`}
                 >
                     <div>
@@ -156,6 +160,7 @@ const PoemQuery = () => {
                 </Link>
                 {/* Previous Poem Button */}
                 <Link
+                    alt="Navigate to previous poem"
                     href={`/poems/${prevNext[0][0].toString() === undefined ? '' : prevNext[0][0].toString()}/${prevNext[0][1].toString() === undefined ? '' : prevNext[0][1].toString()}`}    
                 >
                     <div>   
@@ -169,6 +174,7 @@ const PoemQuery = () => {
                 </Link>
                 {/* Next Poem Button */}
                 <Link
+                    alt="Navigate to next poem"
                     href={`/poems/${prevNext[1][0].toString() === undefined ? '' : prevNext[1][0].toString()}/${prevNext[1][1].toString() === undefined ? '' : prevNext[1][1].toString()}`}    
                 >
                     <div>
