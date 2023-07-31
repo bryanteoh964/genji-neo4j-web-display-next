@@ -30,18 +30,7 @@ const PoemQuery = () => {
 
     // Temporary keep track of the state variables
     useEffect(() => {
-        console.log("Link 1 check: ", `/poems/${chpSelect[1]}/${chpSelect[2]}`)
-        console.log("Link 2 check: ", `/poems/${prevNext[0][0]}/${prevNext[0][1]}`)
-        console.log("Link 3 check: ", `/poems/${prevNext[1][0]}/${prevNext[1][1]}`)
         // check if any of the individual variabls above are undefined
-        console.log("chpSelect[1]:", chpSelect[1] === undefined)
-        console.log("chpSelect[2]:", chpSelect[2] === undefined)
-        console.log("prevNext[0][0]:", prevNext[0][0] === undefined)
-        console.log("prevNext[0][1]:", prevNext[0][1] === undefined)
-        console.log("prevNext[1][0]:", prevNext[1][0] === undefined)
-        console.log("prevNext[1][1]:", prevNext[1][1] === undefined)
-        console.log("chapter:", chapter === undefined)
-        console.log("poem:", poem === undefined)
     }, [chapters, chpSelect, count, prevNext, buttonLock, loc])
     /*
         Handles dropdown logic

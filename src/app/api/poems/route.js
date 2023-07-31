@@ -57,7 +57,6 @@ async function getData (chapter, number){
 		const data = [exchange, transTemp, sources, related, tags, ls, pls];
 		return (data);
 	} catch(error) {
-		console.error('Failed to execute queries in poems:', error);
 		result.status(500).json({ error: 'Failed to execute queries' });
 	} finally{
 		await session.close();

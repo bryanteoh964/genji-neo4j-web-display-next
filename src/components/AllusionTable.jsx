@@ -99,8 +99,6 @@ export default function AllusionTable() {
                 }else{
                     const response2 = await fetch(`/api/allusions/newOthers?key=${key}&&selectedTranslation=${selectedTranslation}&&honka=${honka}&&romaji=${romaji}&&notes=${notes}&&translation=${translation}`)
                 }
-            } else {
-                console.log('nothing changed')
             }
         };
         let childNode = children;
@@ -575,17 +573,7 @@ export default function AllusionTable() {
 
     useMemo(() => {
         const _ = async () => {
-            /*initDriver(process.env.REACT_APP_NEO4J_URI,
-                process.env.REACT_APP_NEO4J_USERNAME,
-                process.env.REACT_APP_NEO4J_PASSWORD)
-            const driver = getDriver()
-            const session = driver.session()
-            let write = await session.writeTransaction(tx => tx.run(query[0]))
-            // console.log(write)
-            session.close()
-            closeDriver() */
             const response = await fetch(`/api/allusions/query?query=${query[0]}`)
-
         }
         if (query.length > 0) {
             if (query[1] === 'entry') {
@@ -624,7 +612,6 @@ export default function AllusionTable() {
             setEditOrder(data.init_order)
             setPnum(data.ls)
             setAllusion(data.links)
-            console.log("THIS is Chap list:", chapters)
             setPoet(data.poets)
             setSource(data.sources)
 

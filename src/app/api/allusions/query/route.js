@@ -9,7 +9,6 @@ export const GET = async (request )=> {
     const query = searchParams.get('query')
    
    let write = await session.writeTransaction(tx => tx.run(query))
-    console.log('sucess',write)
     return new Response(JSON.stringify(write), {status: 200})
   }catch(error){
     return new Response(error,{status:500})

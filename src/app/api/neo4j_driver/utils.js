@@ -155,9 +155,6 @@ export function getPoemTableContent(poemRes, transTemp) {
             } else if (auth === 'Waley' && typeof(info[pnum]['WaleyPageNum']) !== 'number') {
                 info[pnum]['WaleyPageNum'] = 'N/A'
             }
-        } 
-        if (element[0].length === 1 ) {
-            console.log('DB entry issue at: '+element)
         }
     });
     Japanese.forEach(e => {
@@ -165,7 +162,6 @@ export function getPoemTableContent(poemRes, transTemp) {
         if (info[n] === undefined) {
             info[n] = {}
             info[n]['WaleyPageNum'] = 'N/A'
-            console.log('manually creating info object for '+n)
         }
         info[n].Japanese = e.Japanese
         info[n].Romaji = e.Romaji

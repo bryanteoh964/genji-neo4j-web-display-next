@@ -6,7 +6,6 @@ export const GET = async (request )=> {
 		const{searchParams} = new URL(request.url)
 		const sourceQuery = searchParams.get('sourceQuery')
 		let write = await session.writeTransaction(tx => tx.run(sourceQuery))
-		console.log('sucess',write)
 		return new Response(JSON.stringify(write), {status: 200})
 	}catch(error){
 		return new Response(error,{status:500})

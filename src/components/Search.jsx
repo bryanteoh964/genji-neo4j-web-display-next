@@ -615,7 +615,6 @@ export default class Search extends React.Component {
     }
 
     updateCount(event) {
-        console.log("Update count called!!!")
         this.setState({
             newCountNeeded: true
         })
@@ -736,7 +735,6 @@ export default class Search extends React.Component {
     handleQuery = () => {
         // Additional, update count
         this.updateCount()
-        console.log("handleQuery called")
         const query_info = `/search/${this.state.selectedChapters}/${this.state.selectedSpkrGen}/${this.state.selectedSpeaker}/${this.state.selectedAddrGen}/${this.state.selectedAddressee}/${this.state.auth}/${this.state.username}/${this.state.password}`
         this.props.updateQuery(query_info)
     }
