@@ -497,7 +497,7 @@ export default function AllusionTable() {
             const response = await fetch(`/api/allusions/sourceQuery?sourceQuery=${sourceQuery}`)
         }
         if (sourceQuery !== '') {
-            _().catch(console.error)
+            _()
             setSourceQuery('')
             alert('Link created!')
         }
@@ -591,18 +591,18 @@ export default function AllusionTable() {
             if (query[1] === 'entry') {
                 let bool = window.confirm('About to create a new Honka!')
                 if (bool) {
-                    _().catch(console.error)
+                    _()
                     setMaxID(maxID + 1)
                 }
                 alert('Honka created! Please refresh the honka table to see it.')
             } else if (query[1] === 'link') {
-                _().catch(console.error)
+                _()
                 alert('Linked created!')
             } else if (query[1] === 'delete') {
-                _().catch(console.error)
+                _()
                 alert('Linked deleted!')
             } else if (query[1] === 'allusionEdgeNotes') {
-                _().catch(console.error)
+                _()
                 alert('Allusion edge notes updated!')
             }
         }
@@ -632,7 +632,7 @@ export default function AllusionTable() {
                 setMaxID(data.max)
             }
         }
-        _().catch(console.error)
+        _()
     }, [rerender])
 
     return (

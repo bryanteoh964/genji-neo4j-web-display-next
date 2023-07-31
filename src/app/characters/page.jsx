@@ -16,7 +16,7 @@ const page = () => {
 
 		setIsLoading(false);
 	}
-	_().catch(console.error)
+	_()
 	},[]);
 
 

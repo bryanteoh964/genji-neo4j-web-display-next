@@ -119,8 +119,8 @@ export default function PoemTable({ query }) {
             };
             updateLocalStates();
         }
-        // _().catch(console.error)
-        if(varsDefined){
+        // _()
+        if(varsDefined) {
             _();
         }
     }, [chapter, spkrGen, speaker, addrGen, addressee])
