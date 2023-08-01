@@ -726,7 +726,7 @@ export default class Search extends React.Component {
                     <Col span={3}>
                         <Statistic title={'Queried Poems'} value={this.state.numOfPoems} />
                         <p>
-                            If the count is wrong, click "query" again.
+                            If the count is wrong, click &quot;query&quot; again.
                         </p>
                         <p>
                             Querying multiple options from one dropdown will become possible in the near future. For now, please have one option selected in each field to ensure a successful query.
