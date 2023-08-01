@@ -325,7 +325,7 @@ const PoemDisplay = ({ poemData }) => {
                 {source.length !== 0 ?
                 <>
                     {source.map(e => 
-                        <Row>
+                        <Row key ={e.id}>
                             <Col span={6}>
                                 <label><b>Poet</b></label>
                                 <br/>
@@ -355,7 +355,7 @@ const PoemDisplay = ({ poemData }) => {
                             <br/>
                             {
                                 e.translation.map(el => 
-                                    <Col flex={1}>
+                                    <Col flex={1} key={el.id}>
                                         <label><b>{el[0]}</b></label>
                                         <br/>
                                         <p>{el[1]}</p>
@@ -378,6 +378,7 @@ const PoemDisplay = ({ poemData }) => {
                 <Col span={24}>
                     {rel.map(e =>
                         <Link 
+                            key={e.id}
                             href={`/poems/${e[0].substring == undefined ? '' : parseInt(e[0].substring(0, 2))}/${e[0].substring(4, 6) == undefined ? '' : parseInt(e[0].substring(4, 6))}`}
                             target="_blank"
                             onClick={(event) => auth ? event.preventDefault() : event}
@@ -418,6 +419,7 @@ const PoemDisplay = ({ poemData }) => {
                 <Col span={24}>
                     {tag.map(e =>
                         <Tag 
+                            key={e.id}
                             visible={e[1]}
                             onClick={deleteTag(tag.indexOf(e))}
                         >
