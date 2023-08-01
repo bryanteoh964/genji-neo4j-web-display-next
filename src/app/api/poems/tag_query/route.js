@@ -1,4 +1,4 @@
-const { getSession } = require('../neo4j_driver/route.js');
+const { getSession } = require('../../neo4j_driver/route.js');
 
 
 export const GET = async () =>{
@@ -9,9 +9,9 @@ export const GET = async () =>{
 
         let write =  await session.writeTransaction(tx => tx.run(query));
             */
-           let write = undefined
+        let write = undefined
         return new Response(JSON.stringify(write), {status: 200})
     } catch (error) {
         return new Response(error, {status: 500})
     }
-} 
+}
