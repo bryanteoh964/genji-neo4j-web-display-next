@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { ReactFlowProvider } from 'reactflow';
 import GeneologyMap from '@/components/GeneologyMap';
 
-const page = () => {
+const Page = () => {
 	const [graph, setGraph] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
 
@@ -38,4 +38,4 @@ const page = () => {
 	);
 }
 
-export default page
+export default Page

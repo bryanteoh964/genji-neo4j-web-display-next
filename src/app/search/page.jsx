@@ -6,7 +6,7 @@ import SearchTable from '@/components/SearchTable';
 
 import styles from "../../styles/pages/search.module.css";
 
-const page = () => {
+const Page = () => {
 	const [query, setQuery] = useState()
 	let [queryMade, setQueryMade] = useState(false)
 	let [queryValid, setQueryValid] = useState(false)
@@ -57,4 +57,4 @@ const page = () => {
 	)
 }
 
-export default page
+export default Page
