@@ -263,6 +263,7 @@ export default function AllusionTable() {
                     <Col span={24}>
                         {text !== undefined ? text.map(e => 
                             <Tag
+                                key={e.id}
                                 visible={e[2]}
                                 onClick={(event) => deleteHonkaSourceLink(record.key, e[0], e[1])}
                             >
@@ -343,6 +344,7 @@ export default function AllusionTable() {
                             ? allusion[record.key].map(e => 
                                 <>
                                     <Link 
+                                    key ={e.id}
                                         href={`/poems/${parseInt(e[0].substring(0, 2))}/${parseInt(e[0].substring(4, 6))}`}
                                         target="_blank"
                                         onClick={(event) => auth ? event.preventDefault() : event}
@@ -370,7 +372,7 @@ export default function AllusionTable() {
                     <Col span={24}>
                         {allusion[record.key] !== undefined 
                         ? Array.from(new Set(allusion[record.key].map(e => chapters[parseInt(e[0].substring(0, 2)) - 1]))).map(e =>
-                            <Tag>
+                            <Tag key ={e.id}>
                                 {e}
                             </Tag>) 
                         : null}
