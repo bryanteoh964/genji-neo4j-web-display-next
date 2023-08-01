@@ -7,8 +7,8 @@ const page = () => {
 		<p>
 			The Genji Poetry Database is a project created by Professor J. Keith
 			Vincent and his students in LJ250 &ldquo;Masterpieces of Japanese
-			Literature" at Boston University. The database contains all 795 poems
-			in Murasaki Shikibu's tenth century masterpiece,{" "}
+			Literature&rdquo; at Boston University. The database contains all 795 poems
+			in Murasaki Shikibu&apos;s tenth century masterpiece,{" "}
 			<i>The Tale of Genji</i>. The poems are searchable by chapter,
 			speaker, and addressee and can be accessed in the original Japanese,
 			in transliterated Roman letters (&lt;i&gt;romaji&lt;/i&gt;), and in five different
