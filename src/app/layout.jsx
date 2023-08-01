@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 
 import Header from '../components/Header';
-import Nav from '../components/nav';
+import Nav from '../components/Nav';
 
 const layout = ({ children }) => {
 	return (

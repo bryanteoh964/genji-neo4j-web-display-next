@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import styles from '../styles/nav.module.css'
+import styles from '../styles/Nav.module.css'
 
 
 const Nav =()=> {
