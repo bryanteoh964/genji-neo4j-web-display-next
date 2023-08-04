@@ -2,6 +2,14 @@
   "name": "genji-neo4j-web-display-next",
   "version": "0.1.0",
   "private": true,
+  "files": [
+    "package.json",
+    "next.config.js",
+    "src",
+    "jsconfig.json",
+    ".env",
+    "next.config.js"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
