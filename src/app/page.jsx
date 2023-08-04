@@ -11,7 +11,7 @@ const page = () => {
 			in Murasaki Shikibu&apos;s tenth century masterpiece,{" "}
 			<i>The Tale of Genji</i>. The poems are searchable by chapter,
 			speaker, and addressee and can be accessed in the original Japanese,
-			in transliterated Roman letters (&lt;i&gt;romaji&lt;/i&gt;), and in five different
+			in transliterated Roman letters (<i>romaji</i>), and in five different
 			English translations by Arthur Waley, Edward Seidensticker, Royall
 			Tyler, Dennis Washburn, and Edwin Cranston.
         </p>
