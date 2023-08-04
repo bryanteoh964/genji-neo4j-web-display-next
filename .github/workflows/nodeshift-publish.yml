@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}" >> .env
           echo "NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}" >> .env
-          echo "NEO4J_URL=${{ secrets.NEO4J_URL }}" >> .env
+          echo "NEO4J_URI=${{ secrets.NEO4J_URI }}" >> .env
       - name: Nodeshift deploy
         run: |
           npx nodeshift NPM_RUN="npm start" --deploy.port 3000 --expose \
