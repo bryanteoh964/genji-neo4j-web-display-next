@@ -1,0 +1,32 @@
+name: Push source to openshift and trigger a build and deploy
+
+on:
+  push:
+    branches:
+      - main
+      - openshift
+jobs:
+  build:
+    name: Provision environment variables and deploy to OpenShift with nodeshift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      - name: Create .env with secret environment variables
+        run: |
+          echo "NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}" >> .env
+          echo "NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}" >> .env
+          echo "NEO4J_URL=${{ secrets.NEO4J_URL }}" >> .env
+      - name: Nodeshift deploy
+        run: |
+          npx nodeshift NPM_RUN="npm start" --deploy.port 3000 --expose \
+            --username=${{ secrets.OC_USERNAME }} --password="${{ secrets.OC_PASSWORD }}" \
+            --server=${{ secrets.OC_SERVER }} \
+            --namespace.name ${{ secrets.OC_NAMESPACE }}
+
