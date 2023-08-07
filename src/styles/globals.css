@@ -15,7 +15,7 @@ body {
 	font-style: normal;
 	font-weight: 400;
 	font-size: 1rem;
-	line-height: 1.5;
+	line-height: 22px;
 	text-align: center;
 
 	-webkit-font-smoothing: antialiased;
@@ -24,6 +24,7 @@ body {
 
 body p {
 	font-size: 14px;
+	color: rgba(0, 0, 0, 0.85);
 } 
 
 .main {
@@ -45,8 +46,9 @@ body p {
 
 .section_container {
 	margin: 80px 0;
-	width: 720px;
+	width: 920px;
 	min-height: 460px;
+	text-align: left;
 }
 
 .section_container a {
