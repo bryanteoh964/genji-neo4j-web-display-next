@@ -1,37 +1,53 @@
 'use client'
 
 import React from "react";
+import { useState }	from "react";
+
+import styles from "../../styles/pages/security.module.css";
+
 const PasswordProtectPage = () => {
-  return (
-    <div className="container">
-      <div className="grid place-content-center min-h-screen">
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-2xl">This Page is Under Development... </h1>
+	const [password, setPassword] = useState("start");
 
-          <p>Enter Password:</p>
-          <form action="/api/password-protect" method="post">
-            <div className="form-control">
-           
-        {error && (
-          <label className="label">
-            <span className="label-text text-error">{error}</span>
-          </label>
-        )}
+	const submitInput = async () => {
+		const response = await fetch("/api/password-protect", {
+			method: "POST",
+			body: JSON.stringify({ password }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		})
+		const data = await response.json()
+	}
 
-    
-              <div className="input-group">
-                <input
-                  type="text"
-                  name="password"
-                  className="input input-bordered"
-                />
-                <button className="btn">Login</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className={styles.container}>
+			<div className={styles.screen}>
+				<div className={styles.screen_content}>
+					<h1 className="text-2xl">This Website is Under Development... </h1>
+
+					<p>Enter Password:</p>
+					{/* <form action="/api/password-protect" method="POST"> */}
+					<form>
+						<div className={styles.form_control}>
+							{/* {error && (
+								<label className={styles.form_label}>
+									<span className="label-text text-error">{error}</span>
+								</label>
+							)} */}
+							<div className={styles.form_inputs}>
+								<input
+									type="text"
+									name="password"
+									className="input input-bordered"
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+								<button className="btn" onClick={submitInput}>Login</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	);
 };
 export default PasswordProtectPage;

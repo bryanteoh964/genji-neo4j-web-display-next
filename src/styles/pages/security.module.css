@@ -1,0 +1,22 @@
+.container {
+
+}
+
+.screen {
+    display: grid;
+    place-content: center;
+    height: 100vh;
+}
+
+.screen_content {
+    display: flex; 
+    flex-direction: column; 
+    gap: 1rem; 
+    align-items: center; 
+}
+
+.form_control {}
+
+.form_label {}
+
+.form_inputs {}

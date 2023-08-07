@@ -3,7 +3,8 @@
 
 
 function TextBlock({ text, searchTerm, data }) {
-  const height = Math.min(text.length, 500);  // Adjust max value as needed
+  const height = Math.min(text.length, 500); 
+  const weidth = text.length  // Adjust max value as needed
   const blockSize = height /text.length;
   
   // Generate an array to count the number of occurrences at each character index
@@ -17,7 +18,7 @@ function TextBlock({ text, searchTerm, data }) {
   });
 
   return (
-    <div style={{ height: `${height}px`, width: '50px', background: 'lightgray', position: 'relative' }}>
+    <div style={{ height: `${height}px`, width: '500px', background: 'lightgray', position: 'relative' }}>
       {charOccurrence.map((occurrence, index) => (
         <div
           key={index}
