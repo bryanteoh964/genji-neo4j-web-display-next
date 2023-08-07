@@ -116,6 +116,7 @@ export default class Search extends React.Component {
             } else {
                 curr_ls = this.state.selectedAddressee
             }
+            let counter = 0
             for (let i = 0; i < chars.length; i++) {
                 for (let j = 0; j < curr_ls.length; j++) {
                     let char = this.checkHasExchange(chars[i], curr_ls[j], this.state.graph)
@@ -125,6 +126,11 @@ export default class Search extends React.Component {
                     }
                 }
                 charFiltered.push([chars[i][0], 0])
+                // temporary fix for infinite loop bug: chars variable is overflowing
+                counter++
+                if (counter > 200) {
+                    break
+                }
             }
         } else {
             // if either spkr/addr is any
@@ -194,13 +200,19 @@ export default class Search extends React.Component {
 
     // sets the characters of a chapter to flag and returns the character list. flag should be false for select, true for deselect
     checkCharsInChp(chars, graph, chp, flag) {
+        function nodeExists(node) {
+            const allNodes = graph.nodes();
+            return allNodes.includes(node);
+        }
         chars.forEach(char => {
             let selectedChapters = [...this.state.selectedChapters]
             selectedChapters.splice(selectedChapters.indexOf(chp), 1)
-            graph.shortestPath(char[0], chp)
-            selectedChapters = selectedChapters.map(sc => graph.lowestCommonAncestors(char[0], sc)[0] === sc)
-            if (!selectedChapters.includes(true)) {
-                char[1] = !flag
+            if (nodeExists(chp) && nodeExists(char[0])) {
+                graph.shortestPath(char[0], chp)
+                selectedChapters = selectedChapters.map(sc => graph.lowestCommonAncestors(char[0], sc)[0] === sc)
+                if (!selectedChapters.includes(true)) {
+                    char[1] = !flag
+                }
             }
         })
         return chars
@@ -718,7 +730,7 @@ export default class Search extends React.Component {
         const query_info = `/search/${this.state.selectedChapters}/${this.state.selectedSpkrGen}/${this.state.selectedSpeaker}/${this.state.selectedAddrGen}/${this.state.selectedAddressee}/${this.state.auth}/${this.state.username}/${this.state.password}`
         this.props.updateQuery(query_info)
     }
-
+    
     render() {
         return (
             <div>
@@ -777,8 +789,12 @@ export default class Search extends React.Component {
                         </form>
                         <form alt="Select speaker">
                             <CheckboxGroup defaultValue={this.state.speakerGenderList} onChange={this.handleSpkrGenChange}>
-                                <Checkbox value={'male'} style={{ backgroundColor: 'rgba(72, 209, 204, 0.3)' }}>male</Checkbox>
-                                <Checkbox value={'female'} style={{ backgroundColor: 'rgba(255, 182, 193, 0.3)' }}>female</Checkbox>
+                                <Row>
+                                    <Col>
+                                        <Checkbox value={'male'} style={{ backgroundColor: 'rgba(72, 209, 204, 0.3)' }}>male</Checkbox>
+                                        <Checkbox value={'female'} style={{ backgroundColor: 'rgba(255, 182, 193, 0.3)' }}>female</Checkbox>
+                                    </Col>
+                                </Row>
                             </CheckboxGroup>
                             <br />
                             <br />
