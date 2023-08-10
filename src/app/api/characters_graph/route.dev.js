@@ -1,5 +1,5 @@
-const { getSession } = require('../neo4j_driver/route.js');
-const { toNativeTypes,generateGeneology,concatObj } = require('../neo4j_driver/utils.js');
+const { getSession } = require('../neo4j_driver/route.dev.js');
+const { toNativeTypes,generateGeneology,concatObj } = require('../neo4j_driver/utils.dev.js');
 
 export const GET = async () =>{
 	try {   

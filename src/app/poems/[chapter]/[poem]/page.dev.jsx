@@ -1,6 +1,6 @@
 'use client'
 
-import PoemQueryResults from '@/components/PoemQueryResults'
+import PoemQueryResults from '@/components/PoemQueryResults.dev'
 
 import styles from "../../../../styles/pages/poems.module.css"
 

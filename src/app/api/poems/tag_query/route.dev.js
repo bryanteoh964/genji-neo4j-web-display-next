@@ -1,4 +1,4 @@
-const { getSession } = require('../../neo4j_driver/route.js');
+const { getSession } = require('../../neo4j_driver/route.dev.js');
 
 
 export const GET = async () =>{

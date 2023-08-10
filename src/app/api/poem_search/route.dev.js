@@ -1,6 +1,6 @@
-const { getSession, getChpList } = require('../neo4j_driver/route.js');
+const { getSession, getChpList } = require('../neo4j_driver/route.dev.js');
 
-import { toNativeTypes } from '../neo4j_driver/utils.js';
+import { toNativeTypes } from '../neo4j_driver/utils.dev.js';
 
 async function getData (){
     const session = await getSession()
