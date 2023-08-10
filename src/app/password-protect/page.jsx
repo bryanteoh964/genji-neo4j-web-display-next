@@ -2,12 +2,15 @@
 
 import React from "react";
 import { useState }	from "react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import styles from "../../styles/pages/security.module.css";
 
 const PasswordProtectPage = () => {
 	const [password, setPassword] = useState("start");
 
+	const router = useRouter()
 	const submitInput = async () => {
 		const response = await fetch("/api/password-protect", {
 			method: "POST",
@@ -16,7 +19,9 @@ const PasswordProtectPage = () => {
 				"Content-Type": "application/json",
 			},
 		})
-		const data = await response.json()
+		console.log("Response: ", response)
+		console.log("Response: ", response.url)
+		router.replace(response.url)
 	}
 
 	return (
@@ -27,6 +32,7 @@ const PasswordProtectPage = () => {
 
 					<p>Enter Password:</p>
 					{/* <form action="/api/password-protect" method="POST"> */}
+					<button className="btn" onClick={submitInput}>Login</button>
 					<form>
 						<div className={styles.form_control}>
 							{/* {error && (

@@ -4,9 +4,12 @@ import { serialize } from 'cookie';
 import { NextResponse } from 'next/server';
 import { redirect } from 'next/navigation';
 
-async function handler(req, res) {
+export async function POST(req, res) {
+    // return NextResponse.redirect('http://localhost:3000/');
+    // res.redirect(307, '/');
+    // console.log("THE requested method is", req.method)
     if (req.method !== "POST") {
-        return new NextResponse(405).text("Method Not Allowed");
+        return new NextResponse(405).text("Method NOT Allowed");
     }
     const body = await req.json()
     const password = body.password;
@@ -20,21 +23,23 @@ async function handler(req, res) {
         // });
         // const response = new NextResponse(null);
         // response.headers.set('Set-Cookie', cookie);
-        console.log("--------------Origin URL--------------", req.nextUrl.pathname)
-        const loginUrl = new URL('/', req.nextUrl.pathname);
-        loginUrl.searchParams.set('from', req.nextUrl.pathname);
-        console.log("--------------LOGIN URL--------------", loginUrl)
+        console.log("--------------Origin URL--------------", req.nextUrl.origin)
+        const loginUrl = new URL('/', req.nextUrl.origin);
+        loginUrl.searchParams.set('from', req.nextUrl.origin);
+        // console.l og("--------------LOGIN URL--------------", loginUrl)
         // return NextResponse.redirect(redirectUrl.toString());
-        return NextResponse.redirect(loginUrl);
+        console.log("This ran 1")
+        const response = NextResponse.redirect('http://localhost:3000/');
+        response.cookies.set('login', 'true')
+        return response
     } else {
         console.log("--------------PASSWORD IS WRONG--------------", password)
+        redirect('/password-protect');
         const url = req.nextUrl.clone(); 
         url.pathname = "/password-protect";
         return NextResponse.redirect(url.toString());
     }
 }
-
-export {handler as POST}
 
 
 // import { serialize } from 'cookie';

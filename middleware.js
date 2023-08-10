@@ -1,3 +1,26 @@
+import { NextResponse } from 'next/server'
+
+export const config = {
+  matcher: ['/', '/index'],
+}
+
+export function middleware(req) {
+  const basicAuth = req.headers.get('authorization')
+  const url = req.nextUrl
+
+  if (basicAuth) {
+    const authValue = basicAuth.split(' ')[1]
+    const [user, pwd] = atob(authValue).split(':')
+
+    if (user === '4dmin' && pwd === 'testpwd123') {
+      return NextResponse.next()
+    }
+  }
+  url.pathname = '/api/auth'
+
+  return NextResponse.rewrite(url)
+}
+
 // import { NextRequest, NextResponse } from "next/server";
 
 
@@ -11,6 +34,7 @@
 //     }
 //     return NextResponse.next()
 // }
+
 // export const config = {
 //     matcher: [
 //       /*
@@ -19,6 +43,7 @@
 //        * - _next/static (static files)
 //        * - favicon.ico (favicon file)
 //        */
-//       '/((?!api|_next/static|favicon.ico|under-development.svg).*)',
+//         '/((?!_next/static|favicon.ico|login|).*)',
+//     //   '/((?!api|_next/static|favicon.ico|under-development.svg).*)',
 //     ],
 //   }
