@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 
-import Header from '../components/Header.dev';
-import Nav from '../components/Nav.dev';
+import Header from '../components/Header.prod';
+import Nav from '../components/Nav.prod';
 
 const layout = ({ children }) => {
 	return (
