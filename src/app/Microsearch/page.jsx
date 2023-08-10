@@ -14,7 +14,7 @@ export default function Home() {
       const getdata = await fetch(`/api/micro_search`);
       const dataS = await getdata.json()
       setData(dataS)
-      console.log('dictionary', data)
+      
     }
     _()
     },[]);

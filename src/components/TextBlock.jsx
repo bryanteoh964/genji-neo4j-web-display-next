@@ -5,6 +5,7 @@ function TextBlock({ text, searchTerm, data }) {
   const minOpacity = 0.5;  // This ensures a single occurrence is still visible
 
   const occurrences = data[searchTerm] || [];
+  console.log('occ', occurrences)
   const textLength = 7000;
 
   const dotsPerRow = Math.floor(maxDisplayWidth / (dotSize + 1));
@@ -20,10 +21,12 @@ function TextBlock({ text, searchTerm, data }) {
 
       let opacity = Math.min(closeOccurrences / 10, 10);
       opacity = Math.max(opacity, minOpacity);  // Ensure it's at least the minimum opacity
-
+    
       return `rgba(255, 0, 0, ${opacity})`;
   };
 
+
+  
   return (
       <div style={{ height: `${displayHeight}px`, width: `${maxDisplayWidth}px`, background: 'lightgray', position: 'relative' }}>
           {occurrences.map((position, index) => {
@@ -31,7 +34,6 @@ function TextBlock({ text, searchTerm, data }) {
 
               const row = Math.floor(position / dotsPerRow);
               const col = position % dotsPerRow;
-
               return (
                   <div
                       key={index}
@@ -43,6 +45,7 @@ function TextBlock({ text, searchTerm, data }) {
                           position: 'absolute',
                           top: `${row * (dotSize + 1)}px`,
                           left: `${col * (dotSize + 1)}px`
+            
                       }}
                   ></div>
               );
