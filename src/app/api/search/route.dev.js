@@ -1,6 +1,6 @@
-const { getSession } = require('../neo4j_driver/route.js');
+const { getSession } = require('../neo4j_driver/route.dev.js');
 
-import { toNativeTypes, getPoemTableContent } from '../neo4j_driver/utils.js';
+import { toNativeTypes, getPoemTableContent } from '../neo4j_driver/utils.dev.js';
 
 async function getCharQuery (query){
     const session = await getSession();

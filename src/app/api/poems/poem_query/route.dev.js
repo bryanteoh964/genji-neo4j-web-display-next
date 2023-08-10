@@ -1,5 +1,5 @@
-const { getSession } = require('../../neo4j_driver/route.js');
-const { toNativeTypes, valueToNativeType, getChpList } = require('../../neo4j_driver/utils.js');
+const { getSession } = require('../../neo4j_driver/route.dev.js');
+const { toNativeTypes, valueToNativeType, getChpList } = require('../../neo4j_driver/utils.dev.js');
 
 // Query for getting chapter information
 async function getChapterInfo() {

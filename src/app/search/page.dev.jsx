@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import PoemSearch from '@/components/Search';
-import SearchTable from '@/components/SearchTable';
+import PoemSearch from '@/components/Search.dev';
+import SearchTable from '@/components/SearchTable.dev';
 
 import styles from "../../styles/pages/search.module.css";
 

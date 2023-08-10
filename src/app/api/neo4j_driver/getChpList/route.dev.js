@@ -1,4 +1,4 @@
-import { getChpList } from '../utils.js';
+import { getChpList } from '../utils.dev.js';
 
 export const GET = async (request) =>{
 	try {
