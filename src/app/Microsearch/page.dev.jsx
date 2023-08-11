@@ -13,6 +13,7 @@ export default function Home() {
     const _ = async()=>{
       const getdata = await fetch(`/api/micro_search`);
       const dataS = await getdata.json()
+      console.log('sucess')
       setData(dataS)
       
     }
