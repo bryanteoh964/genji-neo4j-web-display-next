@@ -1,4 +1,4 @@
-import data from '../micro_search/data'
+import data from './data'
 
 export const GET = async (request)=> {
 	try{
