@@ -9,9 +9,9 @@ const Nav =()=> {
         <div className={styles.nav_frame}>
             <nav className={styles.nav_container}>
                 <Link href="/" alt="Home Page">Home</Link>
-                {/* <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
+                <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
                 <Link href="/characters" alt="Genji characters display">Characters</Link>
-                <Link href="/search" alt="Search character poem interactions">Search</Link> */}
+                <Link href="/search" alt="Search character poem interactions">Search</Link>
                 {/* <Link href="/allusions">Allusions</Link> */}
                 {/* <Link href="/characters">Characters</Link>
                 

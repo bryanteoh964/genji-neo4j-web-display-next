@@ -1,19 +1,4 @@
-/** @type {import('next').NextConfig} */
-
-const REDIRECT_PATHS = [
-	'/',
-	'/about',
-]
-
-async function redirects() {
-	return [
-		{
-			source: '/about',
-			destination: '/password-protect',
-			permanent: false,
-		},
-	]
-}
+/** @type {import('next').NextConfig} **/
 
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 
