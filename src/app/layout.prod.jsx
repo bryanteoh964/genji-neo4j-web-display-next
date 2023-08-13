@@ -6,7 +6,12 @@ import Header from '../components/Header.prod';
 import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
 
-const layout = ({ children }) => {
+export const metadata = {
+	title: 'The Tale of Genji Poem Database',
+	description: 'The Tale of Genji Poem Database Website',
+}
+
+const Layout = ({ children }) => {
 	const router = usePathname();
 	const showHeader = router === '/password-protect' ? false : true;
 
@@ -30,4 +35,4 @@ const layout = ({ children }) => {
 	)
 }
 
-export default layout
+export default Layout

@@ -9,14 +9,41 @@
 }
 
 .screen_content {
+    min-height: 240px;
     display: flex; 
     flex-direction: column; 
     gap: 1rem; 
     align-items: center; 
+    border: 1px solid black;
+    padding: 20px;
 }
 
-.form_control {}
+.instruction {
+    font-size: 20px;
+    margin: 0px;
+}
 
-.form_label {}
+.form {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    border: 1px solid black;
+    padding: 5px 10px;
+    margin: 0px 20px;
+}
 
-.form_inputs {}
+.input_bar {
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.button {
+    height: 45px;
+    width: 80px;
+    border-radius: 0px 5px 5px 0px;
+}
+.button:hover {
+    cursor: pointer;
+}
