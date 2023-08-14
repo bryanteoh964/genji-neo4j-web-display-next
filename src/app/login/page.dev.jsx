@@ -2,11 +2,10 @@
 
 import React from "react";
 import { useState, useEffect }	from "react";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import styles from "../../styles/pages/security.module.css";
+import styles from "../../styles/pages/login.module.css";
 
 const PasswordProtectPage = () => {
 	const [password, setPassword] = useState("start");
@@ -52,18 +51,20 @@ const PasswordProtectPage = () => {
 		<div className={styles.container}>
 			<div className={styles.screen}>
 				<div className={styles.screen_content}>
-					<h1>Explore the Tale of Genji Database</h1>
-					<p className={styles.instruction}>Enter Password:</p>
-					<div className={styles.form}>
-						<input
-							type="text"
-							name="password"
-							className={styles.input_bar}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-						<button className={styles.button} onClick={submitInput}>Login</button>
-					</div>
+					<h1>Welcome to the Tale of Genji Database</h1>
+					<div className={styles.screen_bottom}>
+						<p>Enter Password to Proceed:</p>
+						<div className={styles.form}>
+							<input
+								type="text"
+								name="password"
+								className={styles.input_bar}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+							<button className={styles.button} onClick={submitInput}>Login</button>
+						</div>
 				</div>
+					</div>
 			</div>
 		</div>
 	);
