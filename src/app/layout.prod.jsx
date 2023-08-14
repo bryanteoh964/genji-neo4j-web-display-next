@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import Header from '../components/Header.prod';
 import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
+import Head from 'next/head';
 
 export const metadata = {
 	title: 'The Tale of Genji Poem Database',
@@ -17,6 +18,9 @@ const Layout = ({ children }) => {
 
 	return (
 		<html className="html" lang="en">
+			<Head>
+				<title>Home</title>
+			</Head>
 			<body className="main">				
 				{ showHeader ? (
 						<div className="top">
