@@ -5,9 +5,9 @@ const isPasswordEnabled = !!process.env.PASSWORD_PROTECT;
 // Note: Cookie and cookie check isn't secure yet
 export function middleware(req) {
 	const isLoggedIn = req.cookies.has('login');
-	const isPathPasswordProtect = req.nextUrl.pathname.startsWith("/password-protect");
+	const isPathPasswordProtect = req.nextUrl.pathname.startsWith("/login");
 	if (isPasswordEnabled && !isLoggedIn && !isPathPasswordProtect) {
-		req.nextUrl.pathname = "/password-protect";
+		req.nextUrl.pathname = "/login";
 		return NextResponse.redirect(req.nextUrl);
 	}
 	return NextResponse.next();

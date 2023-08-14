@@ -26,7 +26,7 @@ const PasswordProtectPage = () => {
 
 		setLimiter(prevLimiter => prevLimiter + 1);
 
-		const response = await fetch("/api/password-protect", {
+		const response = await fetch("/api/login", {
 			method: "POST",
 			body: JSON.stringify({ password }),
 			headers: {

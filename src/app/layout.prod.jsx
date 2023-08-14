@@ -13,7 +13,7 @@ export const metadata = {
 
 const Layout = ({ children }) => {
 	const router = usePathname();
-	const showHeader = router === '/password-protect' ? false : true;
+	const showHeader = router === '/login' ? false : true;
 
 	return (
 		<html className="html" lang="en">

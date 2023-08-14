@@ -1,5 +1,3 @@
-// api/password-protect.js
-
 import { serialize } from 'cookie';
 import { NextResponse } from 'next/server';
 import { redirect } from 'next/navigation';
@@ -24,6 +22,6 @@ export async function POST(req, res) {
         response.cookies.set("login", cookie)
         return response
     } else {
-        redirect('/password-protect');
+        redirect('/login');
     }
 }
