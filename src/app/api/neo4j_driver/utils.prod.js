@@ -1,5 +1,5 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
-const traj = require('./traj.dev')
+const traj = require('./traj.prod')
 
 // tag::toNativeTypes[]
 /**

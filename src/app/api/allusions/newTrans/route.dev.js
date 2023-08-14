@@ -1,4 +1,4 @@
-const { getSession } = require('../../neo4j_driver/route.dev.js');
+const { getSession } = require('../../neo4j_driver/route.prod.js');
 
 export const POST = async (request)=> {
 	try{

@@ -1,7 +1,7 @@
 'use client';
 
 import "../../../../styles/globals.css";
-import PoemQuery from "@/components/PoemQuery.dev";
+import PoemQuery from "@/components/PoemQuery.prod";
 
 const layout = ({ children }) => {
   	return (

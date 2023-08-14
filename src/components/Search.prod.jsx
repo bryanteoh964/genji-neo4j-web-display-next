@@ -621,7 +621,7 @@ export default class Search extends React.Component {
     }
 
     async getData () {
-        const response = await fetch(`/api/poem_search`);
+        const response = await fetch(`/api/search/search_table`);
         const data = await response.json();
         return data;
     }
