@@ -1,57 +1,64 @@
 function TextBlock({ text, searchTerm, data }) {
-  const maxDisplayWidth = 800;
-  const maxDisplayHeight = 300;
-  const dotSize = 5;
-  const minOpacity = 0.5;  // This ensures a single occurrence is still visible
+    const maxDisplayWidth = 800;
+    const maxDisplayHeight = 300;
+    const dotSize = 5;
+    const minOpacity = 0.5;  // Minimum opacity for a single occurrence
 
-  const occurrences = data[searchTerm] || [];
-  console.log('occ', occurrences)
-  const textLength = 7000;
+    const textLength = 10000;  // Use text length
+    const occurrences = data[searchTerm] || [];
 
-  const dotsPerRow = Math.floor(maxDisplayWidth / (dotSize + 1));
-  const totalRows = Math.ceil(textLength / dotsPerRow);
-  const displayHeight = Math.min(totalRows * (dotSize + 1), maxDisplayHeight);
+    const maxDotsInWidth = Math.floor(maxDisplayWidth / dotSize);
+    const maxDotsInHeight = Math.floor(maxDisplayHeight / dotSize);
 
-  const getColor = (position) => {
-      const range = Math.ceil(textLength / dotsPerRow);
-      
-      const closeOccurrences = occurrences.filter(
-          pos => pos > position - range && pos < position + range
-      ).length;
+    // Normalize the positions to fit within the max dimensions
+    const normalizePosition = (position) => {
+        const normalizedRow = Math.floor(position / maxDotsInWidth) % maxDotsInHeight;
+        const normalizedCol = position % maxDotsInWidth;
+        return { row: normalizedRow, col: normalizedCol };
+    };
 
-      let opacity = Math.min(closeOccurrences / 10, 10);
-      opacity = Math.max(opacity, minOpacity);  // Ensure it's at least the minimum opacity
-    
-      return `rgba(255, 0, 0, ${opacity})`;
-  };
+    // Frequency map for overlapping dots
+    const frequencyMap = {};
 
+    occurrences.forEach((position) => {
+        const { row, col } = normalizePosition(position);
+        const key = `${row}-${col}`;
+        frequencyMap[key] = (frequencyMap[key] || 0) + 1;
+    });
 
-  
-  return (
-      <div style={{ height: `${displayHeight}px`, width: `${maxDisplayWidth}px`, background: 'lightgray', position: 'relative' }}>
-          {occurrences.map((position, index) => {
-              const relativePosition = (position / textLength) * displayHeight;
+    const getColor = (count) => {
+        let opacity = Math.min(count / 10, 1);
+        opacity = Math.max(opacity, minOpacity);
+        return `rgba(255, 0, 0, ${opacity})`;
+    };
 
-              const row = Math.floor(position / dotsPerRow);
-              const col = position % dotsPerRow;
-              return (
-                  <div
-                      key={index}
-                      style={{
-                          height: `${dotSize}px`,
-                          width: `${dotSize}px`,
-                          background: getColor(position),
-                          borderRadius: '50%',
-                          position: 'absolute',
-                          top: `${row * (dotSize + 1)}px`,
-                          left: `${col * (dotSize + 1)}px`
-            
-                      }}
-                  ></div>
-              );
-          })}
-      </div>
-  );
+    return (
+        <div style={{ 
+            height: `${maxDisplayHeight}px`, 
+            width: `${maxDisplayWidth}px`, 
+            background: 'lightgray', 
+            position: 'relative' 
+        }}>
+            {Object.keys(frequencyMap).map((key, index) => {
+                const [row, col] = key.split('-').map(Number);
+                const count = frequencyMap[key];
+                return (
+                    <div
+                        key={index}
+                        style={{
+                            height: `${dotSize}px`,
+                            width: `${dotSize}px`,
+                            background: getColor(count),
+                            borderRadius: '50%',
+                            position: 'absolute',
+                            top: `${row * dotSize}px`,
+                            left: `${col * dotSize}px`
+                        }}
+                    ></div>
+                );
+            })}
+        </div>
+    );
 }
 
 export default TextBlock;
