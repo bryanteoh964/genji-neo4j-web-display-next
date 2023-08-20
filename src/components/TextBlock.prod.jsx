@@ -1,17 +1,17 @@
-function TextBlock({ text, searchTerm, data }) {
+function TextBlock({ searchTerms, data }) {
     const maxDisplayWidth = 800;
     const maxDisplayHeight = 300;
     const dotSize = 5;
     const minOpacity = 0.5;
-    const grayRowHeight = 10;  // Adjust this as needed
-    const whiteRowHeight = 5;  // Adjust this as needed
+    const grayRowHeight = 10;
+    const whiteRowHeight = 5;
     const totalRowHeight = grayRowHeight + whiteRowHeight;
-
-    const textLength = 1000;
-    const occurrences = data[searchTerm] || [];
 
     const maxDotsInWidth = Math.floor(maxDisplayWidth / dotSize);
     const maxDotsInHeight = Math.floor(maxDisplayHeight / totalRowHeight);
+    const centeringOffset = (grayRowHeight - dotSize) / 2;
+
+    const allOccurrences = searchTerms.flatMap(term => data[term] || []);
 
     const normalizePosition = (position) => {
         const normalizedRow = Math.floor(position / maxDotsInWidth) % maxDotsInHeight;
@@ -20,7 +20,7 @@ function TextBlock({ text, searchTerm, data }) {
     };
 
     const frequencyMap = {};
-    occurrences.forEach((position) => {
+    allOccurrences.forEach((position) => {
         const { row, col } = normalizePosition(position);
         const key = `${row}-${col}`;
         frequencyMap[key] = (frequencyMap[key] || 0) + 1;
@@ -31,16 +31,13 @@ function TextBlock({ text, searchTerm, data }) {
         return `rgba(255, 0, 0, ${opacity})`;
     };
 
-    const numRows = Math.floor(maxDisplayHeight / totalRowHeight);
-    const centeringOffset = (grayRowHeight - dotSize) / 2;
-
     return (
         <div style={{ 
             height: `${maxDisplayHeight}px`, 
             width: `${maxDisplayWidth}px`, 
             position: 'relative' 
         }}>
-            {Array.from({ length: numRows }).map((_, rowIndex) => (
+            {Array.from({ length: maxDotsInHeight }).map((_, rowIndex) => (
                 <div key={rowIndex}
                     style={{
                         height: `${grayRowHeight}px`,

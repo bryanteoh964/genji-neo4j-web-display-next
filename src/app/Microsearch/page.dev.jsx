@@ -1,37 +1,66 @@
 // pages/index.js
 'use client'
-import { useState,useEffect } from 'react';
-import TextBlock from '../../components/TextBlock.prod'
-
-
-
+import { useState, useEffect } from 'react';
+import TextBlock from '../../components/TextBlock.prod';
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [currentTerm, setCurrentTerm] = useState('');
+  const [lockedTerms, setLockedTerms] = useState([]);
   const [data, setData] = useState([]);
-  useEffect(() =>{
-    const _ = async()=>{
-      const getdata = await fetch(`/api/micro_search`);
-      const dataS = await getdata.json()
-      console.log('sucess')
-      setData(dataS)
-      
-    }
-    _()
-    },[]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const getData = await fetch(`/api/micro_search`);
+      const dataFetched = await getData.json();
+      setData(dataFetched);
+    };
+    fetchData();
+  }, []);
+
+
+const lockTerm = () => {
+  if (lockedTerms.length < 5) {
+      setLockedTerms([...lockedTerms, currentTerm]);
+      setCurrentTerm('');
+  } else {
+      alert("Maximum of 5 terms can be locked.");
+  }
+};
+
+
+
+
+  const deleteTerm = (index) => {
+    const newLockedTerms = [...lockedTerms];
+    newLockedTerms.splice(index, 1);
+    setLockedTerms(newLockedTerms);
+  };
+
   return (
     <div>
-      <input list="words" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search..." />
+      <input 
+        list="words" 
+        value={currentTerm} 
+        onChange={(e) => setCurrentTerm(e.target.value)} 
+        placeholder="Search..." 
+      />
+      <button onClick={lockTerm}>Lock Term</button>
+      <ul>
+        {lockedTerms.map((term, index) => (
+          <li key={index}>
+            {term} <button onClick={() => deleteTerm(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
       <datalist id="words">
-  {Object.keys(data)
-    .filter(word => isNaN(word[0])) // Exclude keys that start with a number
-    .map(word => (
-      <option key={word} value={word} />
-    ))
-  }
-</datalist>
-
-      <TextBlock searchTerm={searchTerm} data={data} />
+        {Object.keys(data)
+          .filter(word => isNaN(word[0]))
+          .map(word => (
+            <option key={word} value={word} />
+          ))
+        }
+      </datalist>
+      <TextBlock searchTerms={lockedTerms} data={data} />
     </div>
   );
 }
