@@ -23,10 +23,13 @@ export default function Home() {
     <div>
       <input list="words" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search..." />
       <datalist id="words">
-        {Object.keys(data).map(word => (
-          <option key={word} value={word} />
-        ))}
-      </datalist>
+  {Object.keys(data)
+    .filter(word => isNaN(word[0])) // Exclude keys that start with a number
+    .map(word => (
+      <option key={word} value={word} />
+    ))
+  }
+</datalist>
 
       <TextBlock searchTerm={searchTerm} data={data} />
     </div>
