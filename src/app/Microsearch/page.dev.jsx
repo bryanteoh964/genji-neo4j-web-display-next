@@ -1,7 +1,7 @@
 // pages/index.js
 'use client'
 import { useState,useEffect } from 'react';
-import TextBlock from '../../components/TextBlock'
+import TextBlock from '../../components/TextBlock.prod'
 
 
 
