@@ -63,9 +63,9 @@ async function getData (chapter, number){
 	}
 }
 
-export const GET = async (request) =>{
+export const GET = async (request) => {
 	try {   
-		const{searchParams} = new URL(request.url);
+		const {searchParams} = new URL(request.url);
 		const chapter = searchParams.get('chapter')
 		const number = searchParams.get('number')
 		const data = await getData(chapter, number)
