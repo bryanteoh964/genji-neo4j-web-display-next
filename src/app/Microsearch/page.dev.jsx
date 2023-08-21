@@ -44,14 +44,19 @@ const lockTerm = () => {
         onChange={(e) => setCurrentTerm(e.target.value)} 
         placeholder="Search..." 
       />
-      <button onClick={lockTerm}>Lock Term</button>
+      <button onClick={lockTerm}>Enter</button>
       <ul>
-        {lockedTerms.map((term, index) => (
-          <li key={index}>
-            {term} <button onClick={() => deleteTerm(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+  {lockedTerms.map((term, index) => (
+    <li key={index} style={{ display: 'flex' }}>
+      <p style={{ margin: '0 16px 0 0' }}>
+        {data[term] ? `${data[term].length} occurrences` : '0 occurrences'}
+      </p>
+      <span style={{ margin: '0 8px 0 0' }}>{term}</span>
+      <button onClick={() => deleteTerm(index)}>Delete</button>
+    </li>
+  ))}
+</ul>
+
       <datalist id="words">
         {Object.keys(data)
           .filter(word => isNaN(word[0]))
