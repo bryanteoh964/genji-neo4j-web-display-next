@@ -1,52 +1,66 @@
 // pages/index.js
 'use client'
-
 import { useState, useEffect } from 'react';
-import Display from '../../components/MicroSearchDisplay.dev'
-import Search from '../../components/MicroSearchSearch.dev'
-import styles from "../../styles/pages/microsearch.module.css";
+import TextBlock from '../../components/TextBlock.prod';
 
-const page = () => {
-	const [searchTerm, setSearchTerm] = useState('');
-	const [data, setData] = useState([]);
+export default function Home() {
+  const [currentTerm, setCurrentTerm] = useState('');
+  const [lockedTerms, setLockedTerms] = useState([]);
+  const [data, setData] = useState([]);
 
-	useEffect(() =>{
-    	const _ = async()=>{
-			const getData = await fetch(`/api/micro_search`);
-			const response = await getData.json()
-			setData(response)
-		}
-		_()
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const getData = await fetch(`/api/micro_search`);
+      const dataFetched = await getData.json();
+      setData(dataFetched);
+    };
+    fetchData();
+  }, []);
 
-	return (
-		<div className={styles.frame}>
-			<div className={styles.window}>
-				<div className={styles.left_frame}>
-					<div className={styles.left_pane}>
-						<Search data={data} />
-						<input 
-							className={styles.search}
-							list="words"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)} 
-							placeholder="Search..." 
-						/>
-						<datalist id="words">
-							{Object.keys(data).map(word => (
-								<option key={word} value={word} />
-							))}
-						</datalist>
-					</div>
-				</div>
-				<div className={styles.right_frame}>
-					<div className={styles.right_pane}>
-						<Display searchTerm={searchTerm} data={data} />
-					</div>
-				</div>
-			</div>
-		</div>
-	); 
+
+const lockTerm = () => {
+  if (lockedTerms.length < 5) {
+      setLockedTerms([...lockedTerms, currentTerm]);
+      setCurrentTerm('');
+  } else {
+      alert("Maximum of 5 terms can be locked.");
+  }
+};
+
+
+
+
+  const deleteTerm = (index) => {
+    const newLockedTerms = [...lockedTerms];
+    newLockedTerms.splice(index, 1);
+    setLockedTerms(newLockedTerms);
+  };
+
+  return (
+    <div>
+      <input 
+        list="words" 
+        value={currentTerm} 
+        onChange={(e) => setCurrentTerm(e.target.value)} 
+        placeholder="Search..." 
+      />
+      <button onClick={lockTerm}>Lock Term</button>
+      <ul>
+        {lockedTerms.map((term, index) => (
+          <li key={index}>
+            {term} <button onClick={() => deleteTerm(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      <datalist id="words">
+        {Object.keys(data)
+          .filter(word => isNaN(word[0]))
+          .map(word => (
+            <option key={word} value={word} />
+          ))
+        }
+      </datalist>
+      <TextBlock searchTerms={lockedTerms} data={data} />
+    </div>
+  );
 }
-
-export default page

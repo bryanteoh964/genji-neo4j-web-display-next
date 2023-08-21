@@ -1,4 +1,4 @@
-function MicroSearch({ searchTerms, data }) {
+function TextBlock({ searchTerms, data }) {
     const maxDisplayWidth = 800;
     const maxDisplayHeight = 300;
     const dotSize = 5;
@@ -71,4 +71,4 @@ function MicroSearch({ searchTerms, data }) {
     );
 }
 
-export default MicroSearch;
+export default TextBlock;
