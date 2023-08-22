@@ -1,4 +1,4 @@
-function TextBlock({ searchTerms, data }) {
+function TextBlock({ searchTerms, data, textLength }) {
     const maxDisplayWidth = 800;
     const maxDisplayHeight = 300;
     const dotSize = 5;
@@ -6,7 +6,7 @@ function TextBlock({ searchTerms, data }) {
     const grayRowHeight = 10;
     const whiteRowHeight = 5;
     const totalRowHeight = grayRowHeight + whiteRowHeight;
-    const colors = ["255, 0, 0", "0, 128, 128", "0, 0, 255", "128, 0, 128", "255, 165, 0"]; // RGB values of colors
+    const colors = ["255, 0, 0", "0, 128, 128", "0, 0, 255", "128, 0, 128", "255, 165, 0"];
 
     const maxDotsInWidth = Math.floor(maxDisplayWidth / dotSize);
     const maxDotsInHeight = Math.floor(maxDisplayHeight / totalRowHeight);
@@ -15,21 +15,34 @@ function TextBlock({ searchTerms, data }) {
     const frequencyMap = {};
     const colorMap = {};
 
-    searchTerms.forEach((term, index) => {
+    let maxPosition = 0;
+    for (let term in data) {
         const occurrences = data[term] || [];
-        occurrences.forEach((position) => {
-            const normalizedRow = Math.floor(position / maxDotsInWidth) % maxDotsInHeight;
-            const normalizedCol = position % maxDotsInWidth;
-            const key = `${normalizedRow}-${normalizedCol}`;
-            frequencyMap[key] = (frequencyMap[key] || 0) + 1;
-            colorMap[key] = colors[index % colors.length];
-        });
-    });
-
+        for (let position of occurrences) {
+            if (position > maxPosition) {
+                maxPosition = position;
+            }
+        }
+    }
     const getColor = (count, color) => {
         let opacity = Math.min(1, minOpacity + Math.log(count + 1) / 10);
         return `rgba(${color}, ${opacity})`;
     };
+
+    searchTerms.forEach((term, index) => {
+        const occurrences = data[term] || [];
+        const color = colors[index % colors.length];
+
+        occurrences.forEach((position) => {
+            const normalizedPosition = Math.floor((position / maxPosition) * (maxDotsInWidth * maxDotsInHeight));
+            const normalizedRow = Math.floor(normalizedPosition / maxDotsInWidth) % maxDotsInHeight;
+            const normalizedCol = normalizedPosition % maxDotsInWidth;
+            const key = `${normalizedRow}-${normalizedCol}`;
+
+            frequencyMap[key] = (frequencyMap[key] || 0) + 1;
+            colorMap[key] = color;
+        });
+    });
 
     return (
         <div style={{ 
@@ -72,3 +85,4 @@ function TextBlock({ searchTerms, data }) {
 }
 
 export default TextBlock;
+
