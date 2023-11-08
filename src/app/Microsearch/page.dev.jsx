@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react';
 
 import "../../styles/globals.css";
+import styles from "../../styles/pages/microsearch.module.css";
+import MicroSearch from "../../components/MicroSearch.dev.jsx";
 
 const page = () => {
   return (
 	<div>
-		<section className="section_frame">
-			<div className="styles.section_container">
+		<section className={styles.viewport_container}>
 				<h1>Welcome to the MicroSearch Page</h1>
-			</div>
+        <MicroSearch />
 		</section>
 	</div>
   )
