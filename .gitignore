@@ -3,7 +3,7 @@
 # data files
 /src/app/api/micro_search/waley_sentences.json
 /src/app/api/micro_search/waley_indexes.json
-
+/src/app/api/micro_search/data.js
 # dependencies
 /node_modules
 /.pnp
