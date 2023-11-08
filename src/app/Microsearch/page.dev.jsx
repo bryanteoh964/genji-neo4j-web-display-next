@@ -1,5 +1,6 @@
 // pages/index.js
 'use client'
+import '../../styles/globals.css';
 import { useState, useEffect } from 'react';
 import TextBlock from '../../components/TextBlock.prod';
 
