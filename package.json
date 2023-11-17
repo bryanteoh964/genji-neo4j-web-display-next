@@ -17,8 +17,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "antd": "^4.24.12",
     "cookie": "^0.5.0",
+    "d3": "^7.8.5",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
     "graph-data-structure": "^3.3.0",

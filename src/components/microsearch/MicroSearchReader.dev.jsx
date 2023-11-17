@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styles from "../styles/pages/microsearch.module.css";
+import styles from "../../styles/pages/microsearch.module.css";
 
 const MS_Reader = () => {
     return (

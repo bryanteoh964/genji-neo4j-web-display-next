@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import "../../styles/globals.css";
 import styles from "../../styles/pages/microsearch.module.css";
-import MicroSearch from "../../components/MicroSearch.dev.jsx";
+import MicroSearch from "../../components/microsearch/MicroSearch.dev.jsx";
 
 const page = () => {
   return (

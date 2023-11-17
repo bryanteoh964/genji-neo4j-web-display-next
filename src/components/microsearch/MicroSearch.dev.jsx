@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styles from "../styles/pages/microsearch.module.css";
+import styles from "../../styles/pages/microsearch.module.css";
 
-import Search from '../components/MicroSearchSearch.dev.jsx';
-import Display from '../components/MicroSearchDisplay.dev.jsx';
-import Reader from '../components/MicroSearchReader.dev.jsx';
+import Search from './MicroSearchSearch.dev.jsx';
+import Display from './MicroSearchDisplay.dev.jsx';
+import Reader from './MicroSearchReader.dev.jsx';
 
 const MicroSearch = () => {
     return (

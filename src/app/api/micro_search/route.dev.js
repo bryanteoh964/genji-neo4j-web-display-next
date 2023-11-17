@@ -1,4 +1,4 @@
-import data from './data'
+import data from './waley_indexes.json'
 
 export const GET = async (request) => {
 	try{

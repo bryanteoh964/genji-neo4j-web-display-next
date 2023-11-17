@@ -59,3 +59,32 @@
     height: 250px;
     border: 1px solid black;
 }
+
+
+
+/* display*/
+
+
+  
+.pattern-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .row {
+    height: 10px; /* Set the height of each row */
+  }
+  
+  .black-row {
+    background-color: black; /* Set the background color for the black row */
+  }
+  
+  .white-row {
+    background-color: white; /* Set the background color for the white row */
+  }
+ 
+  
+  
+  
+  
+  
