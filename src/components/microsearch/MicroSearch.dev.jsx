@@ -8,22 +8,19 @@ import Display from './MicroSearchDisplay.dev.jsx';
 import Reader from './MicroSearchReader.dev.jsx';
 
 const MicroSearch = () => {
-    const[sentenceIndex, setSentenceIndex] = useState(0)
- 
-    useEffect(() => {
-        console.log("s Index",sentenceIndex)
-      }, [sentenceIndex]);
+    const[sentenceIndex, setSentenceIndex] = useState([])
+
     return (
         <div className={styles.background}>
             <div className={styles.screen}>
                 <div className={styles.search}>
                     <Search />
                 </div>
-                <div >
+                <div className={styles.display}  >
                 <Display sentenceIndex={sentenceIndex} setSentenceIndex={setSentenceIndex} />
                 </div>
-                <div  >
-                    <Reader sentenceIndex={sentenceIndex} setSentenceIndex={setSentenceIndex} />
+                <div className={styles.reader} >
+                    <Reader sentenceIndex={sentenceIndex} setSentenceIndex={setSentenceIndex}  />
                 </div>
             </div>
         </div>
