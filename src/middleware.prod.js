@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const isPasswordEnabled = !!process.env.PASSWORD_PROTECT;
+const isPasswordEnabled = !!process.env.PASSWORD_PROTECT && false;
 
 // Note: Cookie and cookie check isn't secure yet
 export function middleware(req) {
