@@ -4,21 +4,20 @@ const Reader1 = ({sentenceIndex,setSentenceIndex}) => {
 useEffect(() => {
   console.log("display",sentenceIndex);
 }, [sentenceIndex]);
+
+
+useEffect(() => {
+  fetchData();
+}, []);
+//use a usestate to store it for effcience for sure ***
 const fetchData = async () => {
-  const wordToTrack = 'winter'; // Word to track in the dataset
+ 
+  const response = await fetch(`/api/micro_search/sentences`);
+  const senIndices = await response.json();
+  console.log('sentence Indices:', senIndices); // Log the word indices to check the API response
 
-  // Fetching logic
-  const response = await fetch(`/api/micro_search`);
-  const wordIndices = await response.json();
-  console.log('Word Indices:', wordIndices); // Log the word indices to check the API response
-
-  if (wordToTrack.toLowerCase() in wordIndices) {
-    console.log(`${wordToTrack} exists in the data.`); // Log if the word to track exists
-    processWordIndices(wordIndices[wordToTrack.toLowerCase()]);
-  } else {
-    console.error(`${wordToTrack} not found in the data.`);
-  }
 };
+
   return (
       <div >
       <h2>Block Index: </h2>
