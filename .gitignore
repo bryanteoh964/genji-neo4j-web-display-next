@@ -2,6 +2,7 @@
 
 # data files
 /src/app/api/micro_search/waley_sentences.json
+/src/app/api/micro_search/sentences/waley_sentences.json
 /src/app/api/micro_search/waley_indexes.json
 
 # dependencies
