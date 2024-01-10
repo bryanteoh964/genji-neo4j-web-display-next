@@ -15,18 +15,17 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   }, []);
 
   const fetchData = async () => {
-    const wordToTrack = 'winter'; // Word to track in the dataset
-
+    const wordToTrack = 'winter'.toLowerCase(); // Word to track in the dataset
+    const words = wordToTrack
+    const translation = 'waley'
     // Fetching logic
-    const response = await fetch(`/api/micro_search`);
+    const response = await fetch(`/api/micro_search?words=${words}&&translation=${translation}`);
     const wordIndices = await response.json();
     console.log('Word Indices:', wordIndices); // Log the word indices to check the API response
 
-    if (wordToTrack.toLowerCase() in wordIndices) {
+    if (wordToTrack in wordIndices) {
       console.log(`${wordToTrack} exists in the data.`); // Log if the word to track exists
-      processWordIndices(wordIndices[wordToTrack.toLowerCase()]);
-    } else {
-      console.error(`${wordToTrack} not found in the data.`);
+      processWordIndices(wordIndices[wordToTrack]);
     }
   };
 
@@ -117,16 +116,18 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
     blockIndex = blockY * gridSize + blockX;
 
     // Adjust blockIndex if necessary
-    let cnt = 0;
-    while (cnt < 150 && (blockIndices[blockIndex]?.length === 0)) {
+    let count = 0;
+    while (count < 150 && (blockIndices[blockIndex]?.length === 0)) {
       blockIndex--;
-      cnt++;
+      count++;
       if (blockIndices[blockIndex]?.length !== 0) {
         break;
       }
     }
     setSentenceIndex(blockIndices[blockIndex]);
     console.log('Block clicked!', blockIndex, blockIndices[blockIndex]);
+    console.log(blockIndices)
+    console.log(sentenceIndex)
   };
 
   return <svg ref={svgRef}></svg>;
