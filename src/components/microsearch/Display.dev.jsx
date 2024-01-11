@@ -10,10 +10,6 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   const totalWords = 580000;
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     const wordToTrack = 'winter'.toLowerCase(); // Word to track in the dataset
     const words = wordToTrack
@@ -30,6 +26,7 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   };
 
   const processWordIndices = (wordIndicesArray) => {
+    console.log("processWordIndices called")
     const occurrences = Array(gridSize * gridSize).fill(0);
     const newBlockIndices = Array(gridSize * gridSize).fill(null).map(() => []);
 
@@ -45,6 +42,7 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   };
 
   const createHeatmap = (occurrences) => {
+    console.log("createHeatmap called")
     const margin = { top: 10, right: 20, bottom: 30, left: 30 };
     const width = 375 - margin.left - margin.right;
     const height = 550 - margin.top - margin.bottom;
@@ -130,7 +128,12 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
     console.log(sentenceIndex)
   };
 
-  return <svg ref={svgRef}></svg>;
+  return (
+    <div>
+      <button onClick={fetchData}>Load Data</button>
+      <svg ref={svgRef}></svg>
+    </div>
+  );
 };
 
 export default SimpleHeatmap;
