@@ -6,10 +6,9 @@ import styles from "../../styles/pages/microsearch.module.css";
 import Search from './MicroSearchSearch.dev.jsx';
 import Display from './MicroSearchDisplay.dev.jsx';
 import Reader from './MicroSearchReader.dev.jsx';
-import { ThingsProvider, ThingsContext } from './context.dev.js';
+import { ThingsProvider } from './context.dev.js';
 
 const MicroSearch = () => {
-    const [sentenceIndex, setSentenceIndex] = useState([])
 
     return (
         <ThingsProvider>
@@ -19,10 +18,10 @@ const MicroSearch = () => {
                         <Search/>
                     </div>
                     <div className={styles.display}  >
-                    <Display sentenceIndex={sentenceIndex} setSentenceIndex={setSentenceIndex} />
+                    <Display/>
                     </div>
                     <div className={styles.reader} >
-                        <Reader sentenceIndex={sentenceIndex} setSentenceIndex={setSentenceIndex}  />
+                        <Reader/>
                     </div>
                 </div>
             </div>

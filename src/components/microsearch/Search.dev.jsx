@@ -12,11 +12,11 @@ const SearchComponent = () => {
   const [tagIdCounter, setTagIdCounter] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [query, setQuery] = useState("start");
-  const { value, updateValue } = useContext(ThingsContext);
+  const [query, setQuery] = useState("winter");
+  const { value1, updateValue1 } = useContext(ThingsContext);
 
   useEffect(() => {
-    updateValue(query)
+    updateValue1(query)
   }, [query])
 
   const handleSearch = () => {

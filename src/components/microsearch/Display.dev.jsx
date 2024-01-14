@@ -5,7 +5,7 @@ import { ThingsContext } from './context.dev.js';
 
 import Reader1 from './MicroSearchReader1.dev';
 
-const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
+const SimpleHeatmap = () => {
   const svgRef = useRef(null);
   const gridSize = 50;
   const totalWords = 580000;
@@ -15,11 +15,15 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
-  const { value, setValue } = useContext(ThingsContext);
+  const { value1, setValue1 } = useContext(ThingsContext);
   useEffect(() => {
-    setWordToTrack(value)
-    console.log("value updated")
-  }, [value]);
+    setWordToTrack(value1)
+  }, [value1]);
+  const [sentenceIndex, setSentenceIndex] = useState("");
+  const { value2, updateValue2 } = useContext(ThingsContext);
+  useEffect(() => {
+    updateValue2(sentenceIndex)
+  }, [sentenceIndex]);
 
   const fetchData = async () => {
     const words = wordToTrack
@@ -134,11 +138,11 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
         break;
       }
     }
-    setSentenceIndex(blockIndices[blockIndex]);
     console.log('Block clicked!', blockIndex, blockIndices[blockIndex]);
     // console.log(blockIndices)
     // console.log(sentenceIndex)
     setBlock(JSON.stringify(blockIndex))
+    setSentenceIndex(blockIndices[blockIndex][0][1])
     setSentenceIndices(JSON.stringify(blockIndices[blockIndex]))
   };
 
@@ -149,6 +153,7 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
       <h5>Occurences: {occurences}</h5>
       <h5>Block Index: {block}</h5>
       <h5>Sentence Indices: {sentenceIndices}</h5>
+      <h5>Sentence Index: {sentenceIndex}</h5>
       <svg ref={svgRef}></svg>
     </div>
   );
