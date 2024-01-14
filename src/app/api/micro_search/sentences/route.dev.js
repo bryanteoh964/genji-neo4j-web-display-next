@@ -1,4 +1,4 @@
-import sentence from './waley_sentences.json' 
+import sentence from '../waley_sentences.json' 
 
 export const GET = async (request) => {
 	try{
