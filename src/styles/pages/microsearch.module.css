@@ -56,7 +56,8 @@
 
 .readerView{
     margin: 10px;
-    height: 250px;
+    min-height: 250px;
+    height: auto;
     border: 1px solid black;
 }
 

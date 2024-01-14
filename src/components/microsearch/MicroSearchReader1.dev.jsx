@@ -27,7 +27,7 @@ const Reader1 = () => {
         <div >
 
           <h3>Sentence Index: {sentenceIndex}</h3>
-          <p>data: {data[sentenceIndex+2]}</p>
+          <p>Sentence: {data[sentenceIndex+2]}</p>
         </div>
     )
 }
