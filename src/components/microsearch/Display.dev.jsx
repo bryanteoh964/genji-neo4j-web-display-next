@@ -8,10 +8,13 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   const svgRef = useRef(null);
   const gridSize = 50;
   const totalWords = 580000;
+  const [wordToTrack, setWordToTrack] = useState('winter');
+  const [block, setBlock] = useState("");
+  const [occurences, setOccurences] = useState("");
+  const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
   const fetchData = async () => {
-    const wordToTrack = 'winter'.toLowerCase(); // Word to track in the dataset
     const words = wordToTrack
     const translation = 'waley'
     // Fetching logic
@@ -22,6 +25,8 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
     if (wordToTrack in wordIndices) {
       console.log(`${wordToTrack} exists in the data.`); // Log if the word to track exists
       processWordIndices(wordIndices[wordToTrack]);
+      setOccurences(wordIndices[wordToTrack].length)
+      // setOccurences(JSON.stringify(wordIndices[wordToTrack]))
     }
   };
 
@@ -124,13 +129,19 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
     }
     setSentenceIndex(blockIndices[blockIndex]);
     console.log('Block clicked!', blockIndex, blockIndices[blockIndex]);
-    console.log(blockIndices)
-    console.log(sentenceIndex)
+    // console.log(blockIndices)
+    // console.log(sentenceIndex)
+    setBlock(JSON.stringify(blockIndex))
+    setSentenceIndices(JSON.stringify(blockIndices[blockIndex]))
   };
 
   return (
     <div>
       <button onClick={fetchData}>Load Data</button>
+      <h5>Word: {wordToTrack}</h5>
+      <h5>Occurences: {occurences}</h5>
+      <h5>Block Index: {block}</h5>
+      <h5>Sentence Indices: {sentenceIndices}</h5>
       <svg ref={svgRef}></svg>
     </div>
   );
