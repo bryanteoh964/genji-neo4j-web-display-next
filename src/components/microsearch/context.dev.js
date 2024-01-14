@@ -1,7 +1,7 @@
 import React from 'react'
 const ThingsContext = React.createContext();
 const ThingsProvider = (props) => {
-    const [value, setValue] = React.useState(1);
+    const [value, setValue] = React.useState("");
     const updateValue = (newValue) => {
         setValue(newValue);
     }

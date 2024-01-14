@@ -15,7 +15,11 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
-  const { value, updateValue } = useContext(ThingsContext);
+  const { value, setValue } = useContext(ThingsContext);
+  useEffect(() => {
+    setWordToTrack(value)
+    console.log("value updated")
+  }, [value]);
 
   const fetchData = async () => {
     const words = wordToTrack
@@ -140,7 +144,6 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
 
   return (
     <div>
-      <h5>Value: {value}</h5>
       <button onClick={fetchData}>Load Data</button>
       <h5>Word: {wordToTrack}</h5>
       <h5>Occurences: {occurences}</h5>
