@@ -1,6 +1,5 @@
 // pages/index.js
 'use client'
-import { useState, useEffect } from 'react';
 
 import "../../styles/globals.css";
 import styles from "../../styles/pages/microsearch.module.css";
@@ -11,7 +10,7 @@ const page = () => {
 	<div>
 		<section className={styles.viewport_container}>
 			<h1>Welcome to the MicroSearch Page</h1>
-        <MicroSearch />
+        	<MicroSearch />
 		</section>
 	</div>
   )

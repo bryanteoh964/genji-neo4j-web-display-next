@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AutoComplete, Input, Tag, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { ThingsContext } from './context.dev.js';
 import 'antd/dist/antd.min.css';
 
 const SearchComponent = () => {
@@ -11,6 +12,13 @@ const SearchComponent = () => {
   const [tagIdCounter, setTagIdCounter] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [count, setCount] = useState(0);
+  const { value, updateValue } = useContext(ThingsContext);
+
+  useEffect(() => {
+    updateValue(count)
+  }, [count])
+
   const handleSearch = () => {
     if (currentInput.trim() !== '' && totalCount < 5) {
       setSearches([...searches, { id: tagIdCounter, value: currentInput.trim() }]);
@@ -18,6 +26,8 @@ const SearchComponent = () => {
       
       setTotalCount(totalCount + 1);
       setTagIdCounter(tagIdCounter + 1);
+
+      updateValue(currentInput)
     } else if (totalCount >= 5) {
       setErrorMessage('You need to delete a word before continuing to search.');
     }
@@ -32,6 +42,9 @@ const SearchComponent = () => {
 
   return (
     <div>
+      <h5>Count: {count}</h5>
+      <h5>Value: {value}</h5>
+      <button onClick={() => setCount(count + 1)}>+</button>
       <AutoComplete
         style={{ width: '100%' }}
         

@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import * as d3 from 'd3';
+import { ThingsContext } from './context.dev.js';
 
 
 import Reader1 from './MicroSearchReader1.dev';
@@ -13,6 +14,8 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
   const [occurences, setOccurences] = useState("");
   const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
+
+  const { value, updateValue } = useContext(ThingsContext);
 
   const fetchData = async () => {
     const words = wordToTrack
@@ -137,6 +140,7 @@ const SimpleHeatmap = ({ sentenceIndex, setSentenceIndex }) => {
 
   return (
     <div>
+      <h5>Value: {value}</h5>
       <button onClick={fetchData}>Load Data</button>
       <h5>Word: {wordToTrack}</h5>
       <h5>Occurences: {occurences}</h5>
