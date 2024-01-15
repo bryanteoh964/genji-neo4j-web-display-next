@@ -44,23 +44,18 @@ const SearchComponent = () => {
     <div>
       <AutoComplete
         style={{ width: '100%' }}
-        
         value={currentInput}
         onChange={(value) => setCurrentInput(value)}
         onSelect={handleSearch}
       >
         <Input placeholder="Search..."
           suffix={
-            
             <Button type="primary" onClick={handleSearch}>
               Search<SearchOutlined/>
             </Button>
-            
           }
         />
-        
       </AutoComplete>
-      
       <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column' }}>
         {searches.map((tag) => (
           <Tag key={tag.id} closable onClose={() => handleTagClose(tag.id)}>

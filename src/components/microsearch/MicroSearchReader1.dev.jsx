@@ -19,13 +19,12 @@ const Reader1 = () => {
     const response = await fetch(`/api/micro_search/sentences`);
      const senIndices = await response.json();
      setData(senIndices)
-    console.log('sentence Indices:', senIndices); // Log the word indices to check the API response
+     console.log('sentence Indices:', senIndices); // Log the word indices to check the API response
 
   };
 
     return (
-        <div >
-
+        <div>
           <h3>Sentence Index: {sentenceIndex}</h3>
           <p>Sentence: {data[sentenceIndex+2]}</p>
         </div>

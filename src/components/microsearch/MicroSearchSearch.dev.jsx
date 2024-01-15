@@ -5,7 +5,7 @@ import styles from "../../styles/pages/microsearch.module.css";
 import Search from "./Search.dev"
 const MS_Search = () => {
     return (
-        <div>
+        <div className={styles.searchPanel}>
             <div className={styles.toggle}>
                 Toggle
             </div>
