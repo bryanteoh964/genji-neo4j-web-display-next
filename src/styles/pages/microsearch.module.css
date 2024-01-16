@@ -47,7 +47,7 @@
 
 .displayPanel {
     background-color: white;
-    height: 70vh;
+    min-height: 70vh;
     width: 96%;
     border: 1px solid black;
     display: flex;
@@ -68,6 +68,7 @@
 }
 .displayView{
     min-height: 100%;
+    padding: 10px;
     border: 1px solid blue;
 }
 .reader{
