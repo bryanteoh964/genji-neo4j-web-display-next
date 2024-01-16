@@ -14,7 +14,11 @@ const ThingsProvider = (props) => {
         setValue2(newValue);
     }
     return (
-        <ThingsContext.Provider value={{ value1, updateValue1, value2, updateValue2 }}>
+        <ThingsContext.Provider value={
+                { 
+                    value1, updateValue1, 
+                    value2, updateValue2
+                }}>
             {props.children}
         </ThingsContext.Provider>
     );

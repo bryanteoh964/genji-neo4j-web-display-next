@@ -9,7 +9,6 @@ const page = () => {
   return (
 	<div>
 		<section className={styles.viewport_container}>
-			<h1>Welcome to the MicroSearch Page</h1>
         	<MicroSearch />
 		</section>
 	</div>
