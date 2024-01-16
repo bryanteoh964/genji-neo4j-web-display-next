@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { ThingsContext } from './context.dev.js';
 
 
-import Reader1 from './MicroSearchReader1.dev';
+import Reader1 from './MicroSearchReaderOne.dev.jsx';
 
 const SimpleHeatmap = () => {
   const svgRef = useRef(null);
@@ -15,10 +15,12 @@ const SimpleHeatmap = () => {
   const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
+  // Listen to wordquery updates from useContext in Search
   const { value1, setValue1 } = useContext(ThingsContext);
   useEffect(() => {
     setWordToTrack(value1)
   }, [value1]);
+  // Send sentence index updates to useContext to access from MicroSearchReaderOne
   const [sentenceIndex, setSentenceIndex] = useState("");
   const { value2, updateValue2 } = useContext(ThingsContext);
   useEffect(() => {

@@ -91,6 +91,7 @@
     min-height: 49%;
     padding: 10px;
     border: 1px solid black;
+    overflow-y:auto;
 }
 
 
