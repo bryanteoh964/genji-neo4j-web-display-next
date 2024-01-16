@@ -15,7 +15,7 @@ const Reader1 = () => {
   // Send sentence updates to useContext to access from MicroSearchReaderOne
   const { value3, updateValue3 } = useContext(ThingsContext);
   useEffect(() => {
-    updateValue3(sentence)
+    updateValue3({translator: "waley", sentenceIndex: sentenceIndex, sentence: sentence})
   }, [sentence]);
 
   useEffect(() => {

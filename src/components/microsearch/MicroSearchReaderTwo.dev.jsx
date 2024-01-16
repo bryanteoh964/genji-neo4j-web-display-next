@@ -14,8 +14,13 @@ const MicroSearchReaderTwo = () => {
 
     return (
         <div>
-            {sentences.map(sentence => (
-                <p>{sentence}</p>
+            {sentences.map((sentence, index) => (
+                sentence.translator && sentence.sentenceIndex && sentence.sentence ?  
+                    <div key={index}>
+                        <h3>{sentence.translator}: {sentence.sentenceIndex}</h3>
+                        <p>{sentence.sentence}</p>
+                    </div>
+                : null
             ))}
         </div>
     )
