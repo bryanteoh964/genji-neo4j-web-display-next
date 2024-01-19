@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react';
 import * as d3 from 'd3';
 import { ThingsContext } from './context.dev.js';
 
+import { LeftOutlined,RightOutlined  } from '@ant-design/icons';
 
 import Reader1 from './MicroSearchReader1.dev';
 
@@ -12,6 +13,7 @@ const SimpleHeatmap = () => {
   const [wordToTrack, setWordToTrack] = useState('winter');
   const [block, setBlock] = useState("");
   const [occurences, setOccurences] = useState("");
+  const [gWordIndices,setGWordIndices] = useState([])
   const [sentenceIndices, setSentenceIndices] = useState("");
   const [blockIndices, setBlockIndices] = useState(Array.from({ length: gridSize * gridSize }, () => []));
 
@@ -32,7 +34,7 @@ const SimpleHeatmap = () => {
     const response = await fetch(`/api/micro_search?words=${words}&&translation=${translation}`);
     const wordIndices = await response.json();
     console.log('Word Indices:', wordIndices); // Log the word indices to check the API response
-
+    setGWordIndices(wordIndices)
     if (wordToTrack in wordIndices) {
       console.log(`${wordToTrack} exists in the data.`); // Log if the word to track exists
       processWordIndices(wordIndices[wordToTrack]);
@@ -138,14 +140,45 @@ const SimpleHeatmap = () => {
         break;
       }
     }
-    console.log('Block clicked!', blockIndex, blockIndices[blockIndex]);
+    console.log('Block clicked!', blockIndex, blockIndices[blockIndex][0][1]);
     // console.log(blockIndices)
     // console.log(sentenceIndex)
     setBlock(JSON.stringify(blockIndex))
     setSentenceIndex(blockIndices[blockIndex][0][1])
     setSentenceIndices(JSON.stringify(blockIndices[blockIndex]))
+    console.log("index", blockIndices[blockIndex][0][1])
+    console.log("indices", JSON.stringify(blockIndices[blockIndex]))
   };
+  const forwardIndex =()=>{
+    const word = Object.keys(gWordIndices)[0]
+    console.log("cool",gWordIndices[word].length)
+    let targetIndex = -1;
+    for (let i = 0; i < gWordIndices[word].length; i++) {
+      console.log("cool",gWordIndices[word][i][1])
+      if (gWordIndices[word][i][1] === sentenceIndex) {
+        targetIndex = i;
+        console.log("t",targetIndex)
+        break;
+        
+      }
+      
+    }
+    //console.log("tttt",gWordIndices[word][gWordIndices[word].length-1][1])
+    
+    if(targetIndex === 0){
+      targetIndex = gWordIndices[word][gWordIndices[word].length-1][1];
+    }else{
+      targetIndex = gWordIndices[word][targetIndex-1][1];
+    }
+    //targetIndex = gWordIndices[word][targetIndex-1][1];
 
+    
+  
+    console.log(targetIndex)
+    setSentenceIndex(targetIndex)
+
+
+  }
   return (
     <div>
       <button onClick={fetchData}>Load Data</button>
@@ -155,6 +188,8 @@ const SimpleHeatmap = () => {
       <h5>Sentence Indices: {sentenceIndices}</h5>
       <h5>Sentence Index: {sentenceIndex}</h5>
       <svg ref={svgRef}></svg>
+      <button onClick={forwardIndex}><LeftOutlined /></button>
+      <button onClick={fetchData}><RightOutlined /></button>
     </div>
   );
 };
