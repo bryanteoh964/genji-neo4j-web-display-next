@@ -173,14 +173,39 @@ const SimpleHeatmap = () => {
       targetIndex = gWordIndices[word][targetIndex-1][1];
     }
     //targetIndex = gWordIndices[word][targetIndex-1][1];
-
-    
-  
-    console.log(targetIndex)
     setSentenceIndex(targetIndex)
 
 
   }
+
+  const backwardIndex =()=>{
+    const word = Object.keys(gWordIndices)[0]
+    console.log("cool",gWordIndices[word].length)
+    let targetIndex = -1;
+    for (let i = 0; i < gWordIndices[word].length; i++) {
+      console.log("cool",gWordIndices[word][i][1])
+      if (gWordIndices[word][i][1] === sentenceIndex) {
+        targetIndex = i;
+        
+        break;
+        
+      }
+      
+    }
+    //console.log("tttt",gWordIndices[word][gWordIndices[word].length-1][1])
+    
+    if(targetIndex === gWordIndices[word].length-1){
+      targetIndex = gWordIndices[word][0][1];
+    }else{
+      targetIndex = gWordIndices[word][targetIndex+1][1];
+    }
+    //targetIndex = gWordIndices[word][targetIndex-1][1];
+    setSentenceIndex(targetIndex)
+
+
+  }
+
+
   return (
     <div>
       <button onClick={fetchData}>Load Data</button>
@@ -191,7 +216,7 @@ const SimpleHeatmap = () => {
       <h5>Sentence Index: {sentenceIndex}</h5>
       <svg ref={svgRef}></svg>
       <button onClick={forwardIndex}><LeftOutlined /></button>
-      <button onClick={fetchData}><RightOutlined /></button>
+      <button onClick={backwardIndex}><RightOutlined /></button>
     </div>
   );
 };
