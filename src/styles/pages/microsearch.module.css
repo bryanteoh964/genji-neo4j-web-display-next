@@ -9,56 +9,89 @@
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 1px solid black;
-} 
+}
 
-.screen {
-    background-color: white;
-    height: 90vh;
-    width: 90%;
-    margin: 10px 0;
+
+.search{
+    height: 160px;
+    min-width: 96%;
+    border: 1px solid black;
+    width: 30%;
+}
+.searchPanel{
+    min-height: 100%;
+    width: 100%;
     border: 1px solid black;
     display: flex;
     flex-direction: rows;
 }
-
-.search{
-    border: 1px solid black;
-    width: 30%;
-}
-.display{
-    border: 1px solid black;
-    width: 40%;
-}
-.reader{
-    border: 1px solid black;
-    width: 30%;
-}
-
 .toggle{
+    min-height: 100%;
+    width: 50%;
     margin: 10px;
-    height: 250px;
+    padding: 10px;
     border: 1px solid black;
 }
 .wordSearch{
-    margin: 10px;
-    height: 250px;
-    border: 1px solid black;
-}
-
-.displayView{
-    margin: 10px;
-    height: 600px;
-    border: 1px solid black;
-}
-
-.readerView{
-    margin: 10px;
-    min-height: 250px;
     height: auto;
+    width: 50%;
+    margin: 10px;
+    padding: 10px;
     border: 1px solid black;
+}
+
+
+.displayPanel {
+    background-color: white;
+    min-height: 70vh;
+    width: 96%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: rows;
+    border: 1px solid black;
+}
+.display{
+    min-height: 100%;
+    width: 70%;
+    padding: 10px;
+    border: 1px solid green;
+}
+.display2{
+    min-height: 100%;
+    width: 35%;
+    padding: 10px;
+    border: 1px solid green;
+}
+.displayView{
+    min-height: 100%;
+    padding: 10px;
+    border: 1px solid blue;
+}
+.reader{
+    min-height: 100%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid red;
+}
+.readerPanel{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+    border: 1px solid red;
+}
+.readerView{
+    min-height: 49%;
+    padding: 10px;
+    border: 1px solid black;
+    overflow-y:auto;
 }
 
 
@@ -84,7 +117,6 @@
     background-color: white; /* Set the background color for the white row */
   }
  
-  
 div.tooltip {
     position: absolute;			
     text-align: center;								

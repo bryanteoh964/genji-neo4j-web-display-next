@@ -1,18 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import styles from "../../styles/pages/microsearch.module.css";
-import Reader1 from "./MicroSearchReader1.dev"
+import ReaderOne from "./MicroSearchReaderOne.dev"
+import ReaderTwo from "./MicroSearchReaderTwo.dev"
 const MS_Reader = () => {
     return (
-        <div>
+        <div className={styles.reader}>
+            <div className={styles.readerPanel}>
                 <div className={styles.readerView}>
-                    Reader 1
-                    <Reader1/>
+                    <ReaderOne/>
                 </div>
                 <div className={styles.readerView}>
-                    Reader 2
+                    <h2>Saved Sentences</h2>
+                    <ReaderTwo/>
                 </div>
+            </div>
         </div>
     )
 }
