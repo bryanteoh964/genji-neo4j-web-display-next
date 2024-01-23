@@ -38,6 +38,7 @@ export const GET = async (request) => {
 		const words = searchParams.get('words')
 		const translation = searchParams.get('translation')
 		const data = await getData(words, translation);
+        
 		return new Response(JSON.stringify(data), {status: 200})
 	} catch(error){
 		return new Response(error,{status:500})
