@@ -1,0 +1,38 @@
+# This is the buildspec used by CodeBuild to generate the image
+#
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      # Authenticate with ECR
+      - $(aws ecr get-login --no-include-email )
+
+      # Construct image name and tag
+      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+      - IMAGEURI="${REPOSITORY_URI}:${TAG}"
+
+  build:
+    commands:
+      - |
+        echo "[url \"https://${GITHUB_TOKEN_OWNER}:${GITHUB_TOKEN_VALUE}@github.com/\"]
+          insteadOf = git@github.com:
+        " > ~/.gitconfig
+      - git init
+      - git add .
+      - git rm -rf .
+      - git remote add origin $GITHUB_REPO
+      - git fetch
+      - git checkout -t origin/$GITHUB_BRANCH
+
+      - docker build -f Dockerfile --tag "$IMAGEURI" .
+
+  post_build:
+    commands:
+      - docker push "$IMAGEURI"
+      - docker tag "$IMAGEURI" "${REPOSITORY_URI}:latest"
+      - docker push "${REPOSITORY_URI}:latest"
+      - printf '[{"name":"nextjs-container", "imageUri":"%s"}]' "$IMAGEURI" > build.json
+artifacts:
+  files:
+    - images.json
+  discard-paths: 'yes'
