@@ -1,6 +1,9 @@
 # This is the buildspec used by CodeBuild to generate the image
 #
 version: 0.2
+env:
+  secrets-manager:
+    APP_SECRETS: "arn:aws:secretsmanager:us-east-1:115619461932:secret:phpbin/genji/app-k6jiR5"
 phases:
   pre_build:
     commands:
@@ -24,7 +27,7 @@ phases:
       - git fetch
       - git checkout -t origin/$GITHUB_BRANCH
 
-      - docker build -f Dockerfile --tag "$IMAGEURI" .
+      - docker build --build-arg APP_SECRETS="$APP_SECRETS" -f Dockerfile --tag "$IMAGEURI" .
 
   post_build:
     commands:
