@@ -11,7 +11,6 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import styles from '../styles/pages/characters.module.css';
-import { Button } from 'antd';
 
 /**
  * @param {Array} l the array of edges
@@ -28,7 +27,7 @@ export default function GeneologyMap() {
 			{ id: 'Fujitsubo', position: { x: 62, y: 100 }, data: { label: 'Fujitsubo' }, draggable: true, style: {border: '2px solid #c47a2f'}, hidden: true},
 			{ id: 'Genji', position: { x: -213, y: 168 }, data: { label: 'Genji' }, draggable: true, style: {border: '2px solid #e0dd22'}, hidden: true},
 			{ id: 'Prince Hyōbu', position: { x: 280, y: 95 }, data: { label: 'Prince Hyōbu' }, draggable: true, style: {border: '2px solid #5f9945'}, hidden: true},
-			{ id: 'Murasaki', position: { x: 62, y: 205 }, data: { label: 'Murasaki' }, draggable: true, style: {border: '2px solid #c603fc'}, hidden: true},
+			{ id: 'Murasaki no Ue', position: { x: 62, y: 205 }, data: { label: 'Murasaki no Ue' }, draggable: true, style: {border: '2px solid #c603fc'}, hidden: true},
 			{ id: 'Emperor Reizei', position: { x: -100, y: 320 }, data: { label: 'Emperor Reizei' }, draggable: true, style: {border: '2px solid #fc44ad'}, hidden: true},
 			{ id: 'A Minister', position: { x: -530, y: -75 }, data: { label: 'A Minister' }, draggable: true, style: {border: '2px solid #445a69'}, hidden: true},
 			{ id: 'Akashi Nun', position: { x: -460, y: 0 }, data: { label: 'Akashi Nun' }, draggable: true, style: {border: '2px solid #4e6158'}, hidden: true},
@@ -49,7 +48,7 @@ export default function GeneologyMap() {
 			{ id: 'Minister of the Right', position: { x: 655, y: -285 }, data: { label: 'Minister of the Right' }, draggable: true, style: {border: '2px solid #40e3a7'}, hidden: true},
 			{ id: 'Oborozukiyo', position: { x: -725, y: 168  }, data: { label: 'Oborozukiyo' }, draggable: true, style: {border: '2px solid #b5d468'}, hidden: true},
 			{ id: 'Kumoi no Kari\'s Mother', position: { x: 612, y: 95 }, data: { label: 'Kumoi no Kari\'s Mother' }, draggable: true, style: {border: '2px solid #756f56'}, hidden: true},
-			{ id: 'Azechi no Dainagon\'s Daughter', position: { x: 400, y: 205 }, data: { label: 'Azechi no Dainagon\'s Daughter' }, draggable: true, style: {border: '2px solid #92ba61'}, hidden: true},
+			{ id: 'Murasaki\'s Mother', position: { x: 400, y: 205 }, data: { label: 'Murasaki\'s Mother' }, draggable: true, style: {border: '2px solid #92ba61'}, hidden: true},
 			{ id: 'Kitayama no Amagimi', position: { x: 475, y: -10 }, data: { label: 'Kitayama no Amagimi' }, draggable: true, style: {border: '2px solid #c2af91'}, hidden: true},
 			{ id: 'The Lady of Jokyoden Palace', position: { x: -500, y: 290 }, data: { label: 'The Lady of Jokyoden Palace' }, draggable: true, style: {border: '2px solid #1f4f28'}, hidden: true},
 			{ id: 'Higekuro', position: { x: 458, y:  465 }, data: { label: 'Higekuro' }, draggable: true, style: {border: '2px solid #543a00'}, hidden: true},
@@ -77,13 +76,13 @@ export default function GeneologyMap() {
 			{ id: 'Gosechi Dancer', position: { x: -1000, y: 225 }, data: { label: 'Gosechi Dancer' }, draggable: true, style: {border: '2px solid #309ae6'}, hidden: true},
 			{ id: 'Prince Hotaru', position: { x: 886, y: 546 }, data: { label: 'Prince Hotaru' }, draggable: true, style: {border: '2px solid #c2e37b'}, hidden: true},
 			{ id: 'Makibashira', position: { x: 587, y: 600 }, data: { label: 'Makibashira' }, draggable: true, style: {border: '2px solid #c57be3'}, hidden: true},
-			{ id: 'Omi Lady', position: {x: 972, y: 223 }, data: { label: 'Omi Lady' }, draggable: true, style: {border: '2px solid #ccb285'}, hidden: true},
+			{ id: 'Ōmi Lady', position: {x: 972, y: 223 }, data: { label: 'Ōmi Lady' }, draggable: true, style: {border: '2px solid #ccb285'}, hidden: true},
 			{ id: 'Kobai', position: {x: 765, y: 370 }, data: { label: 'Kobai' }, draggable: true, style: {border: '2px solid #c76554'}, hidden: true},
 			{ id: 'The Second Princess', position: { x: 5, y: 530 }, data: { label: 'The Second Princess' }, draggable: true, style: {border: '2px solid #8c4c7b'}, hidden: true},
 			{ id: 'Emperor Kinjo', position: {x: -500, y: 430 }, data: { label: 'Emperor Kinjo' }, draggable: true, style: {border: '2px solid #0fff0f'}, hidden: true},
 			{ id: 'The Maiden of the Dance', position: {x: -210, y: 520 }, data: { label: 'The Maiden of the Dance' }, draggable: true, style: {border: '2px solid #fc8114'}, hidden: true},
 			{ id: 'Kaoru', position: {x: -257, y: 835 }, data: { label: 'Kaoru' }, draggable: true, style: {border: '2px solid #3273a8'}, hidden: true},
-			{ id: 'The Eighth Prince\'s Wife', position: { x: -850, y: 635 }, data: { label: 'The Eighth Prince\'s Wife' }, draggable: true, style: {border: '2px solid #7a9c5c'}, hidden: true},
+			{ id: 'Eighth Prince\'s Wife', position: { x: -850, y: 635 }, data: { label: 'Eighth Prince\'s Wife' }, draggable: true, style: {border: '2px solid #7a9c5c'}, hidden: true},
 			{ id: 'Agemaki', position: { x: -850, y: 800 }, data: { label: 'Agemaki' }, draggable: true, style: {border: '2px solid #5c9c71'}, hidden: true},
 			{ id: 'Kozeri', position: { x: -685, y: 835 }, data: { label: 'Kozeri' }, draggable: true, style: {border: '2px solid #ba59a2'}, hidden: true},
 			{ id: 'Ukifune', position: { x: -625, y: 740 }, data: { label: 'Ukifune' }, draggable: true, style: {border: '2px solid #ff5f4a'}, hidden: true},
@@ -93,12 +92,12 @@ export default function GeneologyMap() {
 			{ id: 'Omyōbu', position: { x: 277, y: 615 }, data: { label: 'Omyōbu' }, draggable: true, style: {border: '2px solid #997112'}, hidden: true},
 			{ id: 'Yoshikiyo', position: { x: -844, y: -5 }, data: { label: 'Yoshikiyo' }, draggable: true, style: {border: '2px solid #994a12'}, hidden: true},
 			{ id: 'Shōnagon', position: { x: 77, y: 760 }, data: { label: 'Shōnagon' }, draggable: true, style: {border: '2px solid #6ddeba'}, hidden: true},
-			{ id: 'Gen no Naishi', position: { x: -705, y: 445 }, data: { label: 'Gen no Naishinosuke' }, draggable: true, style: {border: '2px solid #8d9181'}, hidden: true},
+			{ id: 'Gen no Naishi', position: { x: -705, y: 445 }, data: { label: 'Gen no Naishi' }, draggable: true, style: {border: '2px solid #8d9181'}, hidden: true},
 			{ id: 'Bishop of Yokawa', position: { x: -475, y: 933 }, data: { label: 'Bishop of Yokawa' }, draggable: true, style: {border: '2px solid #dbb98a'}, hidden: true},
 			{ id: 'Chūjō no Kimi', position: { x: -575, y: 640 }, data: { label: 'Chūjō no Kimi' }, draggable: true, style: {border: '2px solid #36188f'}, hidden: true},
 			{ id: 'Kiritsubo Consort + Kiritsubo Emperor', position: { x: -83, y: 111 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Kiritsubo Emperor + Fujitsubo', position: { x: -25, y: 111 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
-			{ id: 'Genji + Murasaki', position: { x: 60, y: 325 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
+			{ id: 'Genji + Murasaki no Ue', position: { x: 60, y: 325 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Fujitsubo', position: { x: 0, y: 175 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Novitate + Akashi Nun', position: { x: -390, y: 110 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + The Akashi Lady', position: { x: -282, y: 250 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
@@ -108,7 +107,7 @@ export default function GeneologyMap() {
 			{ id: 'Genji + Lady Rokujō', position: { x: -300, y: -69 }, data: { label: '💔' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Yūgao', position: { x: 185, y: 313 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Tō no Chūjō + Yūgao', position: { x: 350, y: 375 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
-			{ id: 'Prince Hyōbu + Azechi no Dainagon\'s Daughter', position: { x: 364, y: 190 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
+			{ id: 'Prince Hyōbu + Murasaki\'s Mother', position: { x: 364, y: 190 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Emperor Suzaku + Oborozukiyo', position: { x: -585, y: 250 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Oborozukiyo', position: { x: -355, y: 310 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Emperor Suzaku + The Lady of Jokyoden Palace', position: { x: -480, y: 250 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
@@ -136,7 +135,7 @@ export default function GeneologyMap() {
 			{ id: 'The Second Princess + Yūgiri', position: { x: -50, y: 635 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Kumoi no Kari + Yūgiri', position: { x: -50, y: 500 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Emperor Kinjo + Akashi Princess', position: {x:-340, y: 535 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
-			{ id: 'The Eighth Prince + The Eighth Prince\'s Wife', position: {x:-720, y: 750 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
+			{ id: 'The Eighth Prince + Eighth Prince\'s Wife', position: {x:-720, y: 750 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Niou + Ukifune', position: { x: -420, y: 800 }, data: { label: '💔' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Kaoru + Ukifune', position: { x: -385, y: 870 }, data: { label: '💔' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Niou + Kozeri', position: { x: -550, y: 930 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
@@ -166,9 +165,9 @@ export default function GeneologyMap() {
 			{ id: 'Genji - Ki no Kami', source: 'Genji', target: 'Ki no Kami', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: 'retainer', hidden: true},
 			{ id: 'Lady Rokujō - Aoi', source: 'Lady Rokujō', target: 'Aoi', label: '💀', style:{ stroke: '#fc1717', strokeWidth: '2'}, hidden: true},
 			{ id: 'Prince Hyōbu - Fujitsubo', source: 'Fujitsubo', target: 'Prince Hyōbu', label: 'full-brother', style:{ stroke: '#c47a2f', strokeWidth: '2'}, hidden: true},
-			{ id: 'Murasaki - 💍', source: 'Murasaki', target: 'Genji + Murasaki', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + Murasaki', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Akashi Princess', source: 'Genji + Murasaki', target: 'Akashi Princess', style:{ stroke: '#c603fc', strokeWidth: '2'}, label: 'adopted daughter', hidden: true},
+			{ id: 'Murasaki no Ue - 💍', source: 'Murasaki no Ue', target: 'Genji + Murasaki no Ue', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + Murasaki no Ue', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: '💍 -> Akashi Princess', source: 'Genji + Murasaki no Ue', target: 'Akashi Princess', style:{ stroke: '#c603fc', strokeWidth: '2'}, label: 'adopted daughter', hidden: true},
 			{ id: 'Genji - Tamakazura', source: 'Genji', target: 'Tamakazura', label: 'adopted daughter', style:{ stroke: '#e0dd22', strokeWidth: '2'}, hidden: true},
 			{ id: 'Fujitsubo - ❤️', source: 'Fujitsubo', target: 'Genji + Fujitsubo', style:{ stroke: '#c47a2f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Fujitsubo', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
@@ -205,10 +204,10 @@ export default function GeneologyMap() {
 			{ id: 'Minister of the Right - Kokiden Consort', source: 'Minister of the Right', target: 'Kokiden Consort', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Minister of the Right - The Fourth Princess', source: 'Minister of the Right', target: 'The Fourth Princess', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Minister of the Right - Oborozukiyo', source: 'Minister of the Right', target: 'Oborozukiyo', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Murasaki', source: 'Prince Hyōbu + Azechi no Dainagon\'s Daughter', target: 'Murasaki', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Prince Hyōbu - 💍', source: 'Prince Hyōbu', target: 'Prince Hyōbu + Azechi no Dainagon\'s Daughter', style:{ stroke: '#5f9945', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Azechi no Dainagon\'s Daughter - 💍', source: 'Azechi no Dainagon\'s Daughter', target: 'Prince Hyōbu + Azechi no Dainagon\'s Daughter', style:{ stroke: '#92ba61', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kitayama no Amagimi - Azechi no Dainagon\'s Daughter', source: 'Kitayama no Amagimi', target: 'Azechi no Dainagon\'s Daughter', label: 'daughter', style:{ stroke: '#c2af91', strokeWidth: '2'}, hidden: true},
+			{ id: '💍 -> Murasaki no Ue', source: 'Prince Hyōbu + Murasaki\'s Mother', target: 'Murasaki no Ue', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'straight', hidden: true},
+			{ id: 'Prince Hyōbu - 💍', source: 'Prince Hyōbu', target: 'Prince Hyōbu + Murasaki\'s Mother', style:{ stroke: '#5f9945', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Murasaki\'s Mother - 💍', source: 'Murasaki\'s Mother', target: 'Prince Hyōbu + Murasaki\'s Mother', style:{ stroke: '#92ba61', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kitayama no Amagimi - Murasaki\'s Mother', source: 'Kitayama no Amagimi', target: 'Murasaki\'s Mother', label: 'daughter', style:{ stroke: '#c2af91', strokeWidth: '2'}, hidden: true},
 			{ id: 'Oborozukiyo - 💍', source: 'Oborozukiyo', target: 'Emperor Suzaku + Oborozukiyo', style:{ stroke: '#b5d468', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Emperor Suzaku - 💍', source: 'Emperor Suzaku', target: 'Emperor Suzaku + Oborozukiyo', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Oborozukiyo - ❤️', source: 'Oborozukiyo', target: 'Genji + Oborozukiyo', style:{ stroke: '#b5d468', strokeWidth: '2'},type: 'smoothstep', hidden: true},
@@ -250,12 +249,12 @@ export default function GeneologyMap() {
 			{ id: 'Kogimi - ❤️', source: 'Kogimi', target: 'Genji + Kogimi', style:{ stroke: '#5abaed', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Utsusemi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Utsusemi - ❤️', source: 'Utsusemi', target: 'Genji + Utsusemi', style:{ stroke: '#b56804', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kogimi - Utsusemi', source: 'Kogimi', target: 'Utsusemi', label: 'half-sister', style:{ stroke: '#5abaed', strokeWidth: '2'}, hidden: true},
+			{ id: 'Kogimi - Utsusemi', source: 'Kogimi', target: 'Utsusemi', label: 'older sister', style:{ stroke: '#5abaed', strokeWidth: '2'}, hidden: true},
 			{ id: 'Iyo no Suke - 💍', source: 'Iyo no Suke', target: 'Iyo no Suke + Utsusemi', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Utsusemi - 💍', source: 'Utsusemi', target: 'Iyo no Suke + Utsusemi', style:{ stroke: '#b56804', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Iyo no Suke - Ki no Kami', source: 'Iyo no Suke', target: 'Ki no Kami', label: 'son', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Utsusemi - Nokiba no Ogi', source: 'Utsusemi', target: 'Nokiba no Ogi', label: 'daughter', style:{ stroke: '#b56804', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Nokiba no Ogi - Ki no Kami', source: 'Nokiba no Ogi', target: 'Ki no Kami', label: 'step-brother', style:{ stroke: '#e675de', strokeWidth: '2'}, hidden: true},
+			{ id: 'Iyo no Suke - Nokiba no Ogi', source: 'Iyo no Suke', target: 'Nokiba no Ogi', label: 'daughter', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Nokiba no Ogi - Ki no Kami', source: 'Nokiba no Ogi', target: 'Ki no Kami', label: 'older brother', style:{ stroke: '#e675de', strokeWidth: '2'}, hidden: true},
 			{ id: 'Emperor Reizei - 💍', source: 'Emperor Reizei', target: 'Emperor Reizei + Kokiden Consort II', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kokiden Consort II - 💍', source: 'Kokiden Consort II', target: 'Emperor Reizei + Kokiden Consort II', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Kokiden Consort II', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kokiden Consort II', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'straight', hidden: true},
@@ -275,7 +274,7 @@ export default function GeneologyMap() {
 			{ id: 'Prince Hotaru - 💔', source: 'Prince Hotaru', target: 'Prince Hotaru + Tamakazura', style:{ stroke: '#c2e37b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Prince Hotaru - 💍', source: 'Prince Hotaru', target: 'Prince Hotaru + Makibashira', style:{ stroke: '#c2e37b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Makibashira - 💍', source: 'Makibashira', target: 'Prince Hotaru + Makibashira', style:{ stroke: '#c57be3', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Tō no Chūjō - Omi Lady', source: 'Tō no Chūjō', target: 'Omi Lady', label: 'lost daughter', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Tō no Chūjō - Ōmi Lady', source: 'Tō no Chūjō', target: 'Ōmi Lady', label: 'lost daughter', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Kobai', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kobai', style:{ stroke: '#c76554', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Makibashira - 💍', source: 'Makibashira', target: 'Kobai + Makibashira', style:{ stroke: '#c57be3', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kobai - 💍', source: 'Kobai', target: 'Kobai + Makibashira', style:{ stroke: '#c76554', strokeWidth: '2'},type: 'smoothstep', hidden: true},
@@ -292,10 +291,10 @@ export default function GeneologyMap() {
 			{ id: 'Koremitsu - The Maiden of the Dance', source: 'Koremitsu', target: 'The Maiden of the Dance', label: 'daughter', style:{ stroke: '#8002ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '❤️ -> Kaoru', source: 'The Third Princess + Kashiwagi', target: 'Kaoru', style:{ stroke: '#3273a8', strokeWidth: '2'}, type: 'straight', hidden: true},
 			{ id: '❤️ -> Kaoru', source: 'Genji + The Third Princess', target: 'Kaoru', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: 'ostensible child', type: 'straight', hidden: true},
-			{ id: 'The Eighth Prince\'s Wife - 💍', source: 'The Eighth Prince\'s Wife', target: 'The Eighth Prince + The Eighth Prince\'s Wife', style:{ stroke: '#7a9c5c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'The Eighth Prince - 💍', source: 'The Eighth Prince', target: 'The Eighth Prince + The Eighth Prince\'s Wife', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Agemaki', source: 'The Eighth Prince + The Eighth Prince\'s Wife', target: 'Agemaki', style:{ stroke: '#5c9c71', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: '💍 -> Kozeri', source: 'The Eighth Prince + The Eighth Prince\'s Wife', target: 'Kozeri', style:{ stroke: '#ba59a2', strokeWidth: '2'},type: 'straight', hidden: true},
+			{ id: 'Eighth Prince\'s Wife - 💍', source: 'Eighth Prince\'s Wife', target: 'The Eighth Prince + Eighth Prince\'s Wife', style:{ stroke: '#7a9c5c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'The Eighth Prince - 💍', source: 'The Eighth Prince', target: 'The Eighth Prince + Eighth Prince\'s Wife', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: '💍 -> Agemaki', source: 'The Eighth Prince + Eighth Prince\'s Wife', target: 'Agemaki', style:{ stroke: '#5c9c71', strokeWidth: '2'},type: 'straight', hidden: true},
+			{ id: '💍 -> Kozeri', source: 'The Eighth Prince + Eighth Prince\'s Wife', target: 'Kozeri', style:{ stroke: '#ba59a2', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Kozeri - Ukifune', source: 'Kozeri', target: 'Ukifune', label: 'half-sister', style:{ stroke: '#ba59a2', strokeWidth: '2'}, hidden: true},
 			{ id: '💍 -> Niou', source: 'Emperor Kinjo + Akashi Princess', target: 'Niou', style:{ stroke: '#186328', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Kaoru - 💔', source: 'Kaoru', target: 'Kaoru + Ukifune', style:{ stroke: '#3273a8', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
@@ -311,11 +310,11 @@ export default function GeneologyMap() {
 			{ id: 'The Sixth Princess - 💍', source: 'The Sixth Princess', target: 'Niou + The Sixth Princess', style:{ stroke: '#b85876', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
 			{ id: 'Higekuro - 💍', source: 'Higekuro', target: 'Higekuro + Tamakazura', style:{ stroke: '#543a00', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Tamakazura - 💍', source: 'Tamakazura', target: 'Higekuro + Tamakazura', style:{ stroke: '#d64f6c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Nakatsukasa - Murasaki', source: 'Nakatsukasa', target: 'Murasaki', style:{ stroke: '#9c79ed', strokeWidth: '2'}, label: 'serves', hidden: true},
+			{ id: 'Nakatsukasa - Murasaki no Ue', source: 'Nakatsukasa', target: 'Murasaki no Ue', style:{ stroke: '#9c79ed', strokeWidth: '2'}, label: 'serves', hidden: true},
 			{ id: 'Omyōbu - Fujitsubo', source: 'Omyōbu', target: 'Fujitsubo', style:{ stroke: '#997112', strokeWidth: '2'}, label: 'serves', hidden: true},
 			{ id: 'The Akashi Lady - 💔', source: 'The Akashi Lady', target: 'The Akashi Lady + Yoshikiyo', style:{ stroke: '#3acc1d', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Yoshikiyo - 💔', source: 'Yoshikiyo', target: 'The Akashi Lady + Yoshikiyo', style:{ stroke: '#994a12', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Shōnagon - Murasaki', source: 'Shōnagon', target: 'Murasaki', style:{ stroke: '#6ddeba', strokeWidth: '2'}, label: 'wet nurse', hidden: true},
+			{ id: 'Shōnagon - Murasaki no Ue', source: 'Shōnagon', target: 'Murasaki no Ue', style:{ stroke: '#6ddeba', strokeWidth: '2'}, label: 'wet nurse', hidden: true},
 			{ id: 'Genji - Tō no Chūjō', source: 'Genji', target: 'Tō no Chūjō', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: '👊', hidden: true},
 			{ id: 'Ukifune - Bishop of Yokawa', source: 'Ukifune', target: 'Bishop of Yokawa', style:{ stroke: '#ff5f4a', strokeWidth: '2'}, label: 'saved by', hidden: true},
 			{ id: 'The Eighth Prince - 💍', source: 'The Eighth Prince', target: 'The Eighth Prince + Chūjō no Kimi', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
@@ -437,7 +436,6 @@ export default function GeneologyMap() {
 								}
 							}
 						}
-						break
 					}
 				}
 			}
@@ -551,7 +549,7 @@ export default function GeneologyMap() {
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch9" onChange={(e) => enableDisable(9, e.target.checked)} />
 				<select onChange={(e) => changeNodeLabelName(9, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Murasaki" selected>Murasaki</option>
+                  <option value="Murasaki no Ue" selected>Murasaki no Ue</option>
                   <option value="紫の上">紫の上（むらさきのうえ）</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch10" onChange={(e) => enableDisable(10, e.target.checked)} />
@@ -602,7 +600,7 @@ export default function GeneologyMap() {
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch19" onChange={(e) => enableDisable(19, e.target.checked)} />
 				<select onChange={(e) => changeNodeLabelName(19, e.target.value)} style={{fontSize: "large", width: "175px"}}>
                   <option value="Kokiden Consort" selected>Kokiden Consort</option>
-                  <option value="弘徽殿女御（桐壺帝の妃）">弘徽殿女御（こきでんのにょうご）</option>
+                  <option value="弘徽殿女御【桐壺帝の妃】">弘徽殿女御（こきでんのにょうご）</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch20" onChange={(e) => enableDisable(20, e.target.checked)} />
 				<select onChange={(e) => changeNodeLabelName(20, e.target.value)} style={{fontSize: "large", width: "175px"}}>
@@ -657,8 +655,9 @@ export default function GeneologyMap() {
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch30" onChange={(e) => enableDisable(30, e.target.checked)} />
 				<select onChange={(e) => changeNodeLabelName(30, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Azechi no Dainagon's Daughter" selected>Azechi no Dainagon's Daughter</option>
+                  <option value="Murasaki's Mother" selected>Murasaki's Mother</option>
                   <option value="按察使大納言の娘">按察使大納言の娘（あぜちだいなごんのむすめ）</option>
+				  <option value="Azechi no Dainagon's Daughter">Azechi no Dainagon's Daughter</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch31" onChange={(e) => enableDisable(31, e.target.checked)} />
 				<select onChange={(e) => changeNodeLabelName(31, e.target.value)} style={{fontSize: "large", width: "175px"}}>
@@ -712,77 +711,190 @@ export default function GeneologyMap() {
                   <option value="柏木">柏木（かしわぎ）</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch41" onChange={(e) => enableDisable(41, e.target.checked)} />
-                <label>The Eighth Prince</label>
+				<select onChange={(e) => changeNodeLabelName(41, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="The Eighth Prince" selected>The Eighth Prince</option>
+                  <option value="宇治八の宮">宇治八の宮（うじはちのみや）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch42" onChange={(e) => enableDisable(42, e.target.checked)} />
-                <label>Prince Hitachi</label>
+				<select onChange={(e) => changeNodeLabelName(42, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Prince Hitachi" selected>Prince Hitachi</option>
+                  <option value="常陸宮">常陸宮（ひたちのみ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch43" onChange={(e) => enableDisable(43, e.target.checked)} />
-                <label>Suetsumuhana</label>
+				<select onChange={(e) => changeNodeLabelName(43, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Suetsumuhana" selected>Suetsumuhana</option>
+                  <option value="末摘花">末摘花（すえつむはな）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch44" onChange={(e) => enableDisable(44, e.target.checked)} />
-                <label>Reikeiden Consort</label>
+				<select onChange={(e) => changeNodeLabelName(44, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Reikeiden Consort" selected>Reikeiden Consort</option>
+                  <option value="麗景殿の女御">麗景殿の女御（れいけいでんのにょうご）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch45" onChange={(e) => enableDisable(45, e.target.checked)} />
-                <label>The Lady of the Falling Flowers</label>
+				<select onChange={(e) => changeNodeLabelName(45, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="The Lady of the Falling Flowers" selected>The Lady of the Falling Flowers</option>
+                  <option value="花散里">花散里（はなちるさと）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch46" onChange={(e) => enableDisable(46, e.target.checked)} />
-                <label>Kogimi</label>
+				<select onChange={(e) => changeNodeLabelName(46, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Kogimi" selected>Kogimi</option>
+                  <option value="小君">小君（こぎみ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch47" onChange={(e) => enableDisable(47, e.target.checked)} />
-                <label>Utsusemi</label>
+				<select onChange={(e) => changeNodeLabelName(47, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Utsusemi" selected>Utsusemi</option>
+                  <option value="空蝉">空蝉（うつせみ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch48" onChange={(e) => enableDisable(48, e.target.checked)} />
-                <label>Iyo no Suke</label>
+				<select onChange={(e) => changeNodeLabelName(48, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Iyo no Suke" selected>Iyo no Suke</option>
+                  <option value="伊予介">伊予介（いよのすけ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch49" onChange={(e) => enableDisable(49, e.target.checked)} />
-                <label>Ki no Kami</label>
+				<select onChange={(e) => changeNodeLabelName(49, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Ki no Kami" selected>Ki no Kami</option>
+                  <option value="紀伊守">紀伊守（きのかみ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch50" onChange={(e) => enableDisable(50, e.target.checked)} />
-                <label>Nokiba no Ogi</label>
+				<select onChange={(e) => changeNodeLabelName(50, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Nokiba no Ogi" selected>Nokiba no Ogi</option>
+                  <option value="軒端荻">軒端荻（のきばのおぎ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch51" onChange={(e) => enableDisable(51, e.target.checked)} />
-                <label>Kokiden Consort II</label>
+				<select onChange={(e) => changeNodeLabelName(51, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Kokiden Consort II" selected>Kokiden Consort II</option>
+                  <option value="弘徽殿女御【冷泉帝の妃】">弘徽殿女御（こきでんのにょうご）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch52" onChange={(e) => enableDisable(52, e.target.checked)} />
-                <label>Asagao</label>
+				<select onChange={(e) => changeNodeLabelName(52, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Asagao" selected>Asagao</option>
+                  <option value="朝顔">朝顔（あさがお）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch53" onChange={(e) => enableDisable(53, e.target.checked)} />
-                <label>Genji's Horse</label>
+				<select onChange={(e) => changeNodeLabelName(53, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Genji's Horse" selected>Genji's Horse</option>
+                  <option value="🐎">🐎</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch54" onChange={(e) => enableDisable(54, e.target.checked)} />
-                <label>Cat</label>
+				<select onChange={(e) => changeNodeLabelName(54, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Cat" selected>Cat</option>
+                  <option value="🐈">🐈</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch55" onChange={(e) => enableDisable(55, e.target.checked)} />
-                <label>Gosechi Dancer</label>
+				<select onChange={(e) => changeNodeLabelName(55, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Gosechi Dancer" selected>Gosechi Dancer</option>
+                  <option value="筑紫の五節">筑紫の五節（つくしのごせつ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch56" onChange={(e) => enableDisable(56, e.target.checked)} />
-                <label>Prince Hotaru</label>
+				<select onChange={(e) => changeNodeLabelName(56, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Prince Hotaru" selected>Prince Hotaru</option>
+                  <option value="蛍兵部卿宮">蛍兵部卿宮（ほたるひょうぶきょうのみや）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch57" onChange={(e) => enableDisable(57, e.target.checked)} />
-                <label>Makibashira</label>
+				<select onChange={(e) => changeNodeLabelName(57, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Makibashira" selected>Makibashira</option>
+                  <option value="真木柱">真木柱（まきばしら）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch58" onChange={(e) => enableDisable(58, e.target.checked)} />
-                <label>Omi Lady</label>
+				<select onChange={(e) => changeNodeLabelName(58, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Ōmi Lady" selected>Ōmi Lady</option>
+                  <option value="近江の君">近江の君（おうみのきみ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch59" onChange={(e) => enableDisable(59, e.target.checked)} />
-                <label>Kobai</label>
+				<select onChange={(e) => changeNodeLabelName(59, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Kobai" selected>Kobai</option>
+                  <option value="紅梅">紅梅（こうばい）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch60" onChange={(e) => enableDisable(60, e.target.checked)} />
-                <label>The Second Princess</label>
+				<select onChange={(e) => changeNodeLabelName(60, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="The Second Princess" selected>The Second Princess</option>
+                  <option value="落葉の宮">落葉の宮（おちばのみや）</option>
+				  <option value="Ochiba no Miya">Ochiba no Miya</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch61" onChange={(e) => enableDisable(61, e.target.checked)} />
-                <label>Emperor Kinjo</label>
+				<select onChange={(e) => changeNodeLabelName(61, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Emperor Kinjo" selected>Emperor Kinjo</option>
+                  <option value="今上帝">今上帝（きんじょうてい）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch62" onChange={(e) => enableDisable(62, e.target.checked)} />
-                <label>The Maiden of the Dance</label>
+				<select onChange={(e) => changeNodeLabelName(62, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="The Maiden of the Dance" selected>The Maiden of the Dance</option>
+                  <option value="藤典侍">藤典侍（とうのないしのすけ）</option>
+				  <option value="Naishi no Suke">Naishi no Suke</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch63" onChange={(e) => enableDisable(63, e.target.checked)} />
-                <label>Kaoru</label>
+				<select onChange={(e) => changeNodeLabelName(63, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Kaoru" selected>Kaoru</option>
+                  <option value="薫">薫（かおる）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch64" onChange={(e) => enableDisable(64, e.target.checked)} />
-                <label>The Eighth Prince's Wife</label>
+				<select onChange={(e) => changeNodeLabelName(64, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Eighth Prince's Wife" selected>Eighth Prince's Wife</option>
+                  <option value="八の宮の北の方">八の宮と北の方（はちのみやのきたのかた）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch65" onChange={(e) => enableDisable(65, e.target.checked)} />
-                <label>Agemaki</label>
+				<select onChange={(e) => changeNodeLabelName(65, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Agemaki" selected>Agemaki</option>
+                  <option value="大君">大君（おおいぎみ）</option>
+				  <option value="Ōigimi" selected>Ōigimi</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch66" onChange={(e) => enableDisable(66, e.target.checked)} />
-                <label>Kozeri</label>
+				<select onChange={(e) => changeNodeLabelName(66, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Kozeri" selected>Kozeri</option>
+                  <option value="中君">中君（なかのきみ）</option>
+				  <option value="Naka no Kimi">Naka no Kimi）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch67" onChange={(e) => enableDisable(67, e.target.checked)} />
-                <label>Ukifune</label>
+				<select onChange={(e) => changeNodeLabelName(67, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Ukifune" selected>Ukifune</option>
+                  <option value="浮舟">浮舟（うきふね）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch68" onChange={(e) => enableDisable(68, e.target.checked)} />
-                <label>Niou</label>
+				<select onChange={(e) => changeNodeLabelName(68, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Niou" selected>Niou</option>
+                  <option value="匂宮">匂宮（におうのみや）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch69" onChange={(e) => enableDisable(69, e.target.checked)} />
-                <label>The Sixth Princess</label>
+				<select onChange={(e) => changeNodeLabelName(69, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="The Sixth Princess" selected>The Sixth Princess</option>
+                  <option value="六の君">六の君（ろくのきみ）</option>
+				  <option value="Roku no Kimi" selected>Roku no Kimi</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch70" onChange={(e) => enableDisable(70, e.target.checked)} />
-                <label>Nakatsukasa</label>
+				<select onChange={(e) => changeNodeLabelName(70, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Nakatsukasa" selected>Nakatsukasa</option>
+                  <option value="中務 ">中務 （なかつかさ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch71" onChange={(e) => enableDisable(71, e.target.checked)} />
-                <label>Omyōbu</label>
+				<select onChange={(e) => changeNodeLabelName(71, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Omyōbu" selected>Omyōbu</option>
+                  <option value="王命婦">王命婦（おうみょうぶ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch72" onChange={(e) => enableDisable(72, e.target.checked)} />
-                <label>Yoshikiyo</label>
+				<select onChange={(e) => changeNodeLabelName(72, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Yoshikiyo" selected>Yoshikiyo</option>
+                  <option value="源良清">源良清（みなもとのよしきよ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch73" onChange={(e) => enableDisable(73, e.target.checked)} />
-                <label>Shōnagon</label>
+				<select onChange={(e) => changeNodeLabelName(73, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Shōnagon" selected>Shōnagon</option>
+                  <option value="少納言">少納言（しょうなごん）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch74" onChange={(e) => enableDisable(74, e.target.checked)} />
-                <label>Gen no Naishi</label>
+				<select onChange={(e) => changeNodeLabelName(74, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Gen no Naishi" selected>Gen no Naishi</option>
+                  <option value="源典侍">源典侍（げんのないしのすけ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch75" onChange={(e) => enableDisable(75, e.target.checked)} />
-                <label>Bishop of Yokawa</label>
+				<select onChange={(e) => changeNodeLabelName(75, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Bishop of Yokawa" selected>Bishop of Yokawa</option>
+                  <option value="横川の僧都">横川の僧都（よかわのそうづ）</option>
+               </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch76" onChange={(e) => enableDisable(76, e.target.checked)} />
-                <label>Chūjō no Kimi</label>
+				<select onChange={(e) => changeNodeLabelName(76, e.target.value)} style={{fontSize: "large", width: "175px"}}>
+                  <option value="Chūjō no Kimi" selected>Chūjō no Kimi</option>
+                  <option value="中将の君">中将の君（ちゅうじょうのきみ）</option>
+               </select>
             </div>
             <br></br>
             <ReactFlow 
