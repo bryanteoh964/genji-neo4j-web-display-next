@@ -344,8 +344,86 @@ export default function GeneologyMap() {
     const onNodesChange = useCallback( (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),[] );
     const onEdgesChange = useCallback( (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),[] );
 
-	//Note: please increase character_count if new characters are added
-	const character_count = 77 
+	//Note: different names for each character in different translations
+	const character_names = [
+		["Previous Emperor", "天皇（てんのう）"],
+		["Kiritsubo Emperor", "桐壺帝（きりつぼてい）"],
+		["Kiritsubo Consort", "桐壺更衣（きりつぼのこうい）"],
+		["Azechi", "按察使（あぜち）"],
+		["Princess Omiya", "大宮（おおみや）"],
+		["Momozono Shikubu no Miya", "桃園式部卿宮（ももぞのしきぶきょうのみや）"],
+		["Fujitsubo", "藤壺（ふじつぼ）"],
+		["Genji", "光源氏（ひかるげんじ）"],
+		["Prince Hyōbu", "兵部卿宮（ひょうぶきょうのみや）"],
+		["Murasaki no Ue", "紫の上（むらさきのうえ）"],
+		["Emperor Reizei", "冷泉帝（れいぜいてい）"],
+		["A Minister", "中務省（なかつかさしょう）"],
+		["Akashi Nun", "明石の尼君（あかしのあまきみ）"],
+		["Novitate", "明石の入道（あかしのにゅうどう）"],
+		["The Akashi Lady", "明石の御方（あかしのおんかた）"],
+		["Minister of the Left", "左大臣（さだいじん）"],
+		["Aoi", "葵の上（あおいのうえ）"],
+		["Yūgiri", "夕霧（ゆうぎり）"],
+		["Akashi Princess", "明石の姫君（あかしのひめぎみ）"],
+		["Kokiden Consort", "弘徽殿女御【桐壺帝の妃】（こきでんのにょうご）"],
+		["Emperor Suzaku", "朱雀帝（すざくてい）"],
+		["Zenbō", "前坊（ぜんぼう）"],
+		["Lady Rokujō", "六条御息所（ろくじょうのみやす）"],
+		["Tō no Chūjō", "頭中将（とうのちゅうじょう）"],
+		["Yūgao", "夕顔（ゆうがお）"],
+		["Tamakazura", "玉鬘（たまかずら）"],
+		["The Fourth Princess", "四の君（よんのきみ）"],
+		["Minister of the Right", "右大臣（うだいじん）"],
+		["Oborozukiyo", "朧月夜（おぼろづきよ）"],
+		["Kumoi no Kari's Mother", "雲居の雁の母（くもいのかりのはは）"],
+		["Murasaki's Mother", "按察使大納言の娘（あぜちだいなごんのむすめ）"],
+		["Kitayama no Amagimi", "北山の尼君（きたやまのあまぎみ）"],
+		["The Lady of Jokyoden Palace", "承香殿の女御（じょうきょうでんのにょうご）"],
+		["Higekuro", "髭黒（ひげくろ）"],
+		["Higekuro's Wife", "髭黒の北の方 （ひげくろのきたのかた）"],
+		["Ukon", "右近（うこん）"],
+		["Kumoi no Kari", "雲居の雁（くもいのかり）"],
+		["Akikonomu", "秋好中宮（あきこのむちゅうぐう）"],
+		["Koremitsu", "藤原惟光（ふじわらのこれみつ）"],
+		["The Third Princess", "女三宮（おんなさんのみや）"],
+		["Kashiwagi", "柏木（かしわぎ）"],
+		["The Eighth Prince", "宇治八の宮（うじはちのみや）"],
+		["Prince Hitachi", "常陸宮（ひたちのみ）"],
+		["Suetsumuhana", "末摘花（すえつむはな）"],
+		["Reikeiden Consort", "麗景殿の女御（れいけいでんのにょうご）"],
+		["The Lady of the Falling Flowers", "花散里（はなちるさと）"],
+		["Kogimi", "小君（こぎみ）"],
+		["Utsusemi", "空蝉（うつせみ）"],
+		["Iyo no Suke", "伊予介（いよのすけ）"],
+		["Ki no Kami", "紀伊守（きのかみ）"],
+		["Nokiba no Ogi", "軒端荻（のきばのおぎ）"],
+		["Kokiden Consort II", "弘徽殿女御【冷泉帝の妃】（こきでんのにょうご）"],
+		["Asagao", "朝顔（あさがお）"],
+		["Genji's Horse", "光源氏の🐎"],
+		["Cat", "🐈"],
+		["Gosechi Dancer", "筑紫の五節（つくしのごせつ）"],
+		["Prince Hotaru", "蛍兵部卿宮（ほたるひょうぶきょうのみや）"],
+		["Makibashira", "真木柱（まきばしら）"],
+		["Ōmi Lady", "近江の君（おうみのきみ）"],
+		["Kobai", "紅梅（こうばい）"],
+		["The Second Princess", "落葉の宮（おちばのみや）"],
+		["Emperor Kinjo", "今上帝（きんじょうてい）"],
+		["The Maiden of the Dance", "藤典侍（とうのないしのすけ）"],
+		["Kaoru", "薫（かおる）"],
+		["Eighth Prince's Wife", "八の宮と北の方（はちのみやのきたのかた"],
+		["Agemaki", "大君（おおいぎみ）"],
+		["Kozeri", "中君（なかのきみ）"],
+		["Ukifune", "浮舟（うきふね）"],
+		["Niou", "匂宮（におうのみや）"],
+		["The Sixth Princess", "六の君（ろくのきみ）"],
+		["Nakatsukasa", "中務 （なかつかさ）"],
+		["Omyōbu", "王命婦（おうみょうぶ）"],
+		["Yoshikiyo", "源良清（みなもとのよしきよ）"],
+		["Shōnagon", "少納言（しょうなごん）"],
+		["Gen no Naishi", "源典侍（げんのないしのすけ）"],
+		["Bishop of Yokawa", "横川の僧都（よかわのそうづ）"],
+		["Chūjō no Kimi", "中将の君（ちゅうじょうのきみ）"]
+	]
 
 	const enableDisable = (num, bool) => {
 		var new_nodes = [...nodes]
@@ -448,7 +526,7 @@ export default function GeneologyMap() {
     const showAll = () => {
 		var new_nodes = [...nodes]
 		var new_edges = [...edges]
-		for (let i = 0; i < character_count; i++) {
+		for (let i = 0; i < character_names.length; i++) {
 			document.getElementById("ch" + i.toString()).checked = true
 		}
 		for (const ch of new_nodes) {
@@ -468,7 +546,7 @@ export default function GeneologyMap() {
 	const disableAll = () => {
 		var new_nodes = [...nodes]
 		var new_edges = [...edges]
-		for (let i = 0; i < character_count; i++) {
+		for (let i = 0; i < character_names.length; i++) {
 			document.getElementById("ch" + i.toString()).checked = false
 		}
 		for (const ch of new_nodes) {
@@ -483,13 +561,19 @@ export default function GeneologyMap() {
 
 	const changeNodeLabelName = (num, val) => {
 		var new_nodes = [...nodes]
-		for (let i = 0; i < new_nodes.length; i++) {
-			if (characters.current[num].id == new_nodes[i].id) {
-				new_nodes[i].data = {label: val}
-				break
-			}
-		}
+		new_nodes[num].data = {label: val}
 		setNodes(new_nodes)
+	}
+
+	const changeLanguage = (ver) => {
+		for (let i = 0; i < character_names.length; i++) {
+			if (ver == "jp") {
+				document.getElementById("dd" + i.toString()).value = character_names[i][1].slice(0, character_names[i][1].indexOf("（"))
+			} else if (ver == "en") {
+				document.getElementById("dd" + i.toString()).value = character_names[i][0]
+			}
+			changeNodeLabelName(i, document.getElementById("dd" + i.toString()).value)
+		}
 	}
 
     return (
@@ -498,402 +582,397 @@ export default function GeneologyMap() {
             <div>
                 <button onClick={() => showAll()} style={{fontSize: "large"}}>Show All</button>
 				<button onClick={() => disableAll()} style={{fontSize: "large"}}>Disable All</button>
+				<select onChange={(e) => changeLanguage(e.target.value)} style={{marginLeft: "10px", fontSize: "large", width: "175px"}}>
+                  <option value="en" selected>English</option>
+                  <option value="jp" >Japanese</option>
+               </select>
             </div>
             <br></br>
-            <div style={{overflowX: "scroll", display: "block", overflow: "auto", whiteSpace: "nowrap", scrollbarWidth: "none"}}>
+            <div style={{overflowX: "scroll", display: "block", overflow: "auto", whiteSpace: "nowrap", paddingBottom: "5px"}}>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch0" onChange={(e) => enableDisable(0, e.target.checked)} />
-                <select onChange={(e) => changeNodeLabelName(0, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Previous Emperor" selected>Previous Emperor</option>
-                  <option value="天皇">天皇（てんのう）</option>
+                <select onChange={(e) => changeNodeLabelName(0, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd0">
+                  <option value={character_names[0][0]} selected>{character_names[0][0]}</option>
+                  <option value={character_names[0][1].slice(0, character_names[0][1].indexOf("（"))}>{character_names[0][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch1" onChange={(e) => enableDisable(1, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(1, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kiritsubo Emperor" selected>Kiritsubo Emperor</option>
-                  <option value="桐壺帝">桐壺帝（きりつぼてい）</option>
+				<select onChange={(e) => changeNodeLabelName(1, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd1">
+				<option value={character_names[1][0]} selected>{character_names[1][0]}</option>
+				<option value={character_names[1][1].slice(0, character_names[1][1].indexOf("（"))}>{character_names[1][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch2" onChange={(e) => enableDisable(2, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(2, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kiritsubo Consort" selected>Kiritsubo Consort</option>
-                  <option value="桐壺更衣">桐壺更衣（きりつぼのこうい）</option>
+				<select onChange={(e) => changeNodeLabelName(2, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd2">
+                <option value={character_names[2][0]} selected>{character_names[2][0]}</option>
+				<option value={character_names[2][1].slice(0, character_names[2][1].indexOf("（"))}>{character_names[2][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch3" onChange={(e) => enableDisable(3, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(3, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Azechi" selected>Azechi</option>
-                  <option value="按察使">按察使（あぜち）</option>
+				<select onChange={(e) => changeNodeLabelName(3, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd3">
+                <option value={character_names[3][0]} selected>{character_names[3][0]}</option>
+				<option value={character_names[3][1].slice(0, character_names[3][1].indexOf("（"))}>{character_names[3][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch4" onChange={(e) => enableDisable(4, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(4, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Princess Omiya" selected>Princess Omiya</option>
-                  <option value="大宮">大宮（おおみや）</option>
+				<select onChange={(e) => changeNodeLabelName(4, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd4">
+                <option value={character_names[4][0]} selected>{character_names[4][0]}</option>
+				<option value={character_names[4][1].slice(0, character_names[4][1].indexOf("（"))}>{character_names[4][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch5" onChange={(e) => enableDisable(5, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(5, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Momozono Shikubu no Miya" selected>Momozono Shikubu no Miya</option>
-                  <option value="桃園式部卿宮">桃園式部卿宮（ももぞのしきぶきょうのみや）</option>
+				<select onChange={(e) => changeNodeLabelName(5, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd5">
+                <option value={character_names[5][0]} selected>{character_names[5][0]}</option>
+				<option value={character_names[5][1].slice(0, character_names[5][1].indexOf("（"))}>{character_names[5][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch6" onChange={(e) => enableDisable(6, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(6, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Fujitsubo" selected>Fujitsubo</option>
-                  <option value="藤壺">藤壺（ふじつぼ）</option>
+				<select onChange={(e) => changeNodeLabelName(6, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd6">
+                <option value={character_names[6][0]} selected>{character_names[6][0]}</option>
+				<option value={character_names[6][1].slice(0, character_names[6][1].indexOf("（"))}>{character_names[6][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch7" onChange={(e) => enableDisable(7, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(7, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Genji" selected>Genji</option>
-                  <option value="光源氏">光源氏（ひかるげんじ）</option>
-				  <option value="The Shining Prince">The Shining Prince</option>
+				<select onChange={(e) => changeNodeLabelName(7, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd7">
+                <option value={character_names[7][0]} selected>{character_names[7][0]}</option>
+				<option value={character_names[7][1].slice(0, character_names[7][1].indexOf("（"))}>{character_names[7][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch8" onChange={(e) => enableDisable(8, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(8, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Prince Hyōbu" selected>Prince Hyōbu</option>
-                  <option value="兵部卿宮">兵部卿宮（ひょうぶきょうのみや）</option>
+				<select onChange={(e) => changeNodeLabelName(8, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd8">
+                <option value={character_names[8][0]} selected>{character_names[8][0]}</option>
+				<option value={character_names[8][1].slice(0, character_names[8][1].indexOf("（"))}>{character_names[8][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch9" onChange={(e) => enableDisable(9, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(9, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Murasaki no Ue" selected>Murasaki no Ue</option>
-                  <option value="紫の上">紫の上（むらさきのうえ）</option>
+				<select onChange={(e) => changeNodeLabelName(9, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd9">
+                <option value={character_names[9][0]} selected>{character_names[9][0]}</option>
+				<option value={character_names[9][1].slice(0, character_names[9][1].indexOf("（"))}>{character_names[9][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch10" onChange={(e) => enableDisable(10, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(10, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Emperor Reizei" selected>Emperor Reizei</option>
-                  <option value="冷泉帝">冷泉帝（れいぜいてい）</option>
+				<select onChange={(e) => changeNodeLabelName(10, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd10">
+                <option value={character_names[10][0]} selected>{character_names[10][0]}</option>
+				<option value={character_names[10][1].slice(0, character_names[10][1].indexOf("（"))}>{character_names[10][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch11" onChange={(e) => enableDisable(11, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(11, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="A Minister" selected>A Minister</option>
-                  <option value="中務省">中務省（なかつかさしょう）</option>
+				<select onChange={(e) => changeNodeLabelName(11, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd11">
+                <option value={character_names[11][0]} selected>{character_names[11][0]}</option>
+				<option value={character_names[11][1].slice(0, character_names[11][1].indexOf("（"))}>{character_names[11][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch12" onChange={(e) => enableDisable(12, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(12, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Akashi Nun" selected>Akashi Nun</option>
-                  <option value="明石の尼君">明石の尼君（あかしのあまきみ）</option>
+				<select onChange={(e) => changeNodeLabelName(12, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd12">
+                <option value={character_names[12][0]} selected>{character_names[12][0]}</option>
+				<option value={character_names[12][1].slice(0, character_names[12][1].indexOf("（"))}>{character_names[12][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch13" onChange={(e) => enableDisable(13, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(13, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Novitate" selected>Novitate</option>
-                  <option value="明石の入道">明石の入道（あかしのにゅうどう）</option>
+				<select onChange={(e) => changeNodeLabelName(13, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd13">
+                <option value={character_names[13][0]} selected>{character_names[13][0]}</option>
+				<option value={character_names[13][1].slice(0, character_names[13][1].indexOf("（"))}>{character_names[13][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch14" onChange={(e) => enableDisable(14, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(14, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Akashi Lady" selected>The Akashi Lady</option>
-                  <option value="明石の御方">明石の御方（あかしのおんかた）</option>
+				<select onChange={(e) => changeNodeLabelName(14, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd14">
+                <option value={character_names[14][0]} selected>{character_names[14][0]}</option>
+				<option value={character_names[14][1].slice(0, character_names[14][1].indexOf("（"))}>{character_names[14][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch15" onChange={(e) => enableDisable(15, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(15, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Minister of the Left" selected>Minister of the Left</option>
-                  <option value="左大臣">左大臣（さだいじん）</option>
+				<select onChange={(e) => changeNodeLabelName(15, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd15">
+                <option value={character_names[15][0]} selected>{character_names[15][0]}</option>
+				<option value={character_names[15][1].slice(0, character_names[15][1].indexOf("（"))}>{character_names[15][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch16" onChange={(e) => enableDisable(16, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(16, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Aoi" selected>Aoi</option>
-                  <option value="葵の上">葵の上（あおいのうえ）</option>
+				<select onChange={(e) => changeNodeLabelName(16, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd16">
+                <option value={character_names[16][0]} selected>{character_names[16][0]}</option>
+				<option value={character_names[16][1].slice(0, character_names[16][1].indexOf("（"))}>{character_names[16][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch17" onChange={(e) => enableDisable(17, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(17, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Yūgiri" selected>Yūgiri</option>
-                  <option value="夕霧">夕霧（ゆうぎり）</option>
+				<select onChange={(e) => changeNodeLabelName(17, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd17">
+                <option value={character_names[17][0]} selected>{character_names[17][0]}</option>
+				<option value={character_names[17][1].slice(0, character_names[17][1].indexOf("（"))}>{character_names[17][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch18" onChange={(e) => enableDisable(18, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(18, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Akashi Princess" selected>Akashi Princess</option>
-                  <option value="明石の姫君">明石の姫君（あかしのひめぎみ））</option>
+				<select onChange={(e) => changeNodeLabelName(18, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd18">
+                <option value={character_names[18][0]} selected>{character_names[18][0]}</option>
+				<option value={character_names[18][1].slice(0, character_names[18][1].indexOf("（"))}>{character_names[18][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch19" onChange={(e) => enableDisable(19, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(19, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kokiden Consort" selected>Kokiden Consort</option>
-                  <option value="弘徽殿女御【桐壺帝の妃】">弘徽殿女御（こきでんのにょうご）</option>
+				<select onChange={(e) => changeNodeLabelName(19, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd19">
+                <option value={character_names[19][0]} selected>{character_names[19][0]}</option>
+				<option value={character_names[19][1].slice(0, character_names[19][1].indexOf("（"))}>{character_names[19][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch20" onChange={(e) => enableDisable(20, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(20, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Emperor Suzaku" selected>Emperor Suzaku</option>
-                  <option value="朱雀帝">朱雀帝（すざくてい）</option>
+				<select onChange={(e) => changeNodeLabelName(20, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd20">
+                <option value={character_names[20][0]} selected>{character_names[20][0]}</option>
+				<option value={character_names[20][1].slice(0, character_names[20][1].indexOf("（"))}>{character_names[20][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch21" onChange={(e) => enableDisable(21, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(21, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Zenbō" selected>Zenbō</option>
-                  <option value="前坊">前坊（ぜんぼう）</option>
+				<select onChange={(e) => changeNodeLabelName(21, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd21">
+                <option value={character_names[21][0]} selected>{character_names[21][0]}</option>
+				<option value={character_names[21][1].slice(0, character_names[21][1].indexOf("（"))}>{character_names[21][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch22" onChange={(e) => enableDisable(22, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(22, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Lady Rokujō" selected>Lady Rokujō</option>
-                  <option value="六条御息所">六条御息所（ろくじょうのみやす）</option>
+				<select onChange={(e) => changeNodeLabelName(22, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd22">
+                <option value={character_names[22][0]} selected>{character_names[22][0]}</option>
+				<option value={character_names[22][1].slice(0, character_names[22][1].indexOf("（"))}>{character_names[22][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch23" onChange={(e) => enableDisable(23, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(23, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Tō no Chūjō" selected>Tō no Chūjō</option>
-                  <option value="頭中将">頭中将（とうのちゅうじょう）</option>
+				<select onChange={(e) => changeNodeLabelName(23, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd23">
+                <option value={character_names[23][0]} selected>{character_names[23][0]}</option>
+				<option value={character_names[23][1].slice(0, character_names[23][1].indexOf("（"))}>{character_names[23][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch24" onChange={(e) => enableDisable(24, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(24, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Yūgao" selected>Yūgao</option>
-                  <option value="夕顔">夕顔（ゆうがお）</option>
+				<select onChange={(e) => changeNodeLabelName(24, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd24">
+                <option value={character_names[24][0]} selected>{character_names[24][0]}</option>
+				<option value={character_names[24][1].slice(0, character_names[24][1].indexOf("（"))}>{character_names[24][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch25" onChange={(e) => enableDisable(25, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(25, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Tamakazura" selected>Tamakazura</option>
-                  <option value="玉鬘">玉鬘（たまかずら）</option>
+				<select onChange={(e) => changeNodeLabelName(25, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd25">
+                <option value={character_names[25][0]} selected>{character_names[25][0]}</option>
+				<option value={character_names[25][1].slice(0, character_names[25][1].indexOf("（"))}>{character_names[25][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch26" onChange={(e) => enableDisable(26, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(26, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Fourth Princess" selected>The Fourth Princess</option>
-                  <option value="四の君">四の君（よんのきみ）</option>
-				  <option value="Yon no Kimi">Yon no Kimi</option>
+				<select onChange={(e) => changeNodeLabelName(26, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd26">
+                <option value={character_names[26][0]} selected>{character_names[26][0]}</option>
+				<option value={character_names[26][1].slice(0, character_names[26][1].indexOf("（"))}>{character_names[26][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch27" onChange={(e) => enableDisable(27, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(27, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Minister of the Right" selected>Minister of the Right</option>
-                  <option value="右大臣">右大臣（うだいじん）</option>
+				<select onChange={(e) => changeNodeLabelName(27, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd27">
+                <option value={character_names[27][0]} selected>{character_names[27][0]}</option>
+				<option value={character_names[27][1].slice(0, character_names[27][1].indexOf("（"))}>{character_names[27][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch28" onChange={(e) => enableDisable(28, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(28, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Oborozukiyo" selected>Oborozukiyo</option>
-                  <option value="朧月夜">朧月夜（おぼろづきよ）</option>
+				<select onChange={(e) => changeNodeLabelName(28, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd28">
+                <option value={character_names[28][0]} selected>{character_names[28][0]}</option>
+				<option value={character_names[28][1].slice(0, character_names[28][1].indexOf("（"))}>{character_names[28][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch29" onChange={(e) => enableDisable(29, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(29, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kumoi no Kari's Mother" selected>Kumoi no Kari's Mother</option>
-                  <option value="雲居の雁の母">雲居の雁の母（くもいのかりのはは）</option>
+				<select onChange={(e) => changeNodeLabelName(29, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd29">
+                <option value={character_names[29][0]} selected>{character_names[29][0]}</option>
+				<option value={character_names[29][1].slice(0, character_names[29][1].indexOf("（"))}>{character_names[29][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch30" onChange={(e) => enableDisable(30, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(30, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Murasaki's Mother" selected>Murasaki's Mother</option>
-                  <option value="按察使大納言の娘">按察使大納言の娘（あぜちだいなごんのむすめ）</option>
-				  <option value="Azechi no Dainagon's Daughter">Azechi no Dainagon's Daughter</option>
+				<select onChange={(e) => changeNodeLabelName(30, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd30">
+                <option value={character_names[30][0]} selected>{character_names[30][0]}</option>
+				<option value={character_names[30][1].slice(0, character_names[30][1].indexOf("（"))}>{character_names[30][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch31" onChange={(e) => enableDisable(31, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(31, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kitayama no Amagimi" selected>Kitayama no Amagimi</option>
-                  <option value="北山の尼君">北山の尼君（きたやまのあまぎみ）</option>
+				<select onChange={(e) => changeNodeLabelName(31, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd31">
+                <option value={character_names[31][0]} selected>{character_names[31][0]}</option>
+				<option value={character_names[31][1].slice(0, character_names[31][1].indexOf("（"))}>{character_names[31][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch32" onChange={(e) => enableDisable(32, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(32, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Lady of Jokyoden Palace" selected>The Lady of Jokyoden Palace</option>
-                  <option value="">承香殿の女御（じょうきょうでんのにょうご）</option>
+				<select onChange={(e) => changeNodeLabelName(32, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd32">
+                <option value={character_names[32][0]} selected>{character_names[32][0]}</option>
+				<option value={character_names[32][1].slice(0, character_names[32][1].indexOf("（"))}>{character_names[32][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch33" onChange={(e) => enableDisable(33, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(33, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Higekuro" selected>Higekuro</option>
-                  <option value="髭黒">髭黒（ひげくろ）</option>
+				<select onChange={(e) => changeNodeLabelName(33, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd33">
+                <option value={character_names[33][0]} selected>{character_names[33][0]}</option>
+				<option value={character_names[33][1].slice(0, character_names[33][1].indexOf("（"))}>{character_names[33][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch34" onChange={(e) => enableDisable(34, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(34, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Higekuro's Wife" selected>Higekuro's Wife</option>
-                  <option value="髭黒の北の方 ">髭黒の北の方 （ひげくろのきたのかた）</option>
+				<select onChange={(e) => changeNodeLabelName(34, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd34">
+                <option value={character_names[34][0]} selected>{character_names[34][0]}</option>
+				<option value={character_names[34][1].slice(0, character_names[34][1].indexOf("（"))}>{character_names[34][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch35" onChange={(e) => enableDisable(35, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(35, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Ukon" selected>Ukon</option>
-                  <option value="右近">右近（うこん）</option>
+				<select onChange={(e) => changeNodeLabelName(35, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd35">
+                <option value={character_names[35][0]} selected>{character_names[35][0]}</option>
+				<option value={character_names[35][1].slice(0, character_names[35][1].indexOf("（"))}>{character_names[35][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch36" onChange={(e) => enableDisable(36, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(36, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kumoi no Kari" selected>Kumoi no Kari</option>
-                  <option value="雲居の雁">雲居の雁（くもいのかり）</option>
+				<select onChange={(e) => changeNodeLabelName(36, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd36">
+                <option value={character_names[36][0]} selected>{character_names[36][0]}</option>
+				<option value={character_names[36][1].slice(0, character_names[36][1].indexOf("（"))}>{character_names[36][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch37" onChange={(e) => enableDisable(37, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(37, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Akikonomu" selected>Akikonomu</option>
-                  <option value="秋好中宮">秋好中宮（あきこのむちゅうぐう）</option>
+				<select onChange={(e) => changeNodeLabelName(37, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd37">
+                <option value={character_names[37][0]} selected>{character_names[37][0]}</option>
+				<option value={character_names[37][1].slice(0, character_names[37][1].indexOf("（"))}>{character_names[37][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch38" onChange={(e) => enableDisable(38, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(38, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Koremitsu" selected>Koremitsu</option>
-                  <option value="藤原惟光">藤原惟光（ふじわらのこれみつ）</option>
+				<select onChange={(e) => changeNodeLabelName(38, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd38">
+                <option value={character_names[38][0]} selected>{character_names[38][0]}</option>
+				<option value={character_names[38][1].slice(0, character_names[38][1].indexOf("（"))}>{character_names[38][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch39" onChange={(e) => enableDisable(39, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(39, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Third Princess" selected>The Third Princess</option>
-                  <option value="女三宮">女三宮（おんなさんのみや）</option>
-				  <option value="Onna San no Miya">Onna San no Miya</option>
+				<select onChange={(e) => changeNodeLabelName(39, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd39">
+                <option value={character_names[39][0]} selected>{character_names[39][0]}</option>
+				<option value={character_names[39][1].slice(0, character_names[39][1].indexOf("（"))}>{character_names[39][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch40" onChange={(e) => enableDisable(40, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(40, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kashiwagi" selected>Kashiwagi</option>
-                  <option value="柏木">柏木（かしわぎ）</option>
+				<select onChange={(e) => changeNodeLabelName(40, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd40">
+                <option value={character_names[40][0]} selected>{character_names[40][0]}</option>
+				<option value={character_names[40][1].slice(0, character_names[40][1].indexOf("（"))}>{character_names[40][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch41" onChange={(e) => enableDisable(41, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(41, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Eighth Prince" selected>The Eighth Prince</option>
-                  <option value="宇治八の宮">宇治八の宮（うじはちのみや）</option>
+				<select onChange={(e) => changeNodeLabelName(41, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd41">
+                <option value={character_names[41][0]} selected>{character_names[41][0]}</option>
+				<option value={character_names[41][1].slice(0, character_names[41][1].indexOf("（"))}>{character_names[41][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch42" onChange={(e) => enableDisable(42, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(42, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Prince Hitachi" selected>Prince Hitachi</option>
-                  <option value="常陸宮">常陸宮（ひたちのみ）</option>
+				<select onChange={(e) => changeNodeLabelName(42, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd42">
+                <option value={character_names[42][0]} selected>{character_names[42][0]}</option>
+				<option value={character_names[42][1].slice(0, character_names[42][1].indexOf("（"))}>{character_names[42][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch43" onChange={(e) => enableDisable(43, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(43, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Suetsumuhana" selected>Suetsumuhana</option>
-                  <option value="末摘花">末摘花（すえつむはな）</option>
+				<select onChange={(e) => changeNodeLabelName(43, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd43">
+                <option value={character_names[43][0]} selected>{character_names[43][0]}</option>
+				<option value={character_names[43][1].slice(0, character_names[43][1].indexOf("（"))}>{character_names[43][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch44" onChange={(e) => enableDisable(44, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(44, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Reikeiden Consort" selected>Reikeiden Consort</option>
-                  <option value="麗景殿の女御">麗景殿の女御（れいけいでんのにょうご）</option>
+				<select onChange={(e) => changeNodeLabelName(44, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd44">
+                <option value={character_names[44][0]} selected>{character_names[44][0]}</option>
+				<option value={character_names[44][1].slice(0, character_names[44][1].indexOf("（"))}>{character_names[44][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch45" onChange={(e) => enableDisable(45, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(45, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Lady of the Falling Flowers" selected>The Lady of the Falling Flowers</option>
-                  <option value="花散里">花散里（はなちるさと）</option>
+				<select onChange={(e) => changeNodeLabelName(45, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd45">
+                <option value={character_names[45][0]} selected>{character_names[45][0]}</option>
+				<option value={character_names[45][1].slice(0, character_names[45][1].indexOf("（"))}>{character_names[45][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch46" onChange={(e) => enableDisable(46, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(46, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kogimi" selected>Kogimi</option>
-                  <option value="小君">小君（こぎみ）</option>
+				<select onChange={(e) => changeNodeLabelName(46, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd46">
+                <option value={character_names[46][0]} selected>{character_names[46][0]}</option>
+				<option value={character_names[46][1].slice(0, character_names[46][1].indexOf("（"))}>{character_names[46][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch47" onChange={(e) => enableDisable(47, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(47, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Utsusemi" selected>Utsusemi</option>
-                  <option value="空蝉">空蝉（うつせみ）</option>
+				<select onChange={(e) => changeNodeLabelName(47, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd47">
+                <option value={character_names[47][0]} selected>{character_names[47][0]}</option>
+				<option value={character_names[47][1].slice(0, character_names[47][1].indexOf("（"))}>{character_names[47][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch48" onChange={(e) => enableDisable(48, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(48, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Iyo no Suke" selected>Iyo no Suke</option>
-                  <option value="伊予介">伊予介（いよのすけ）</option>
+				<select onChange={(e) => changeNodeLabelName(48, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd48">
+                <option value={character_names[48][0]} selected>{character_names[48][0]}</option>
+				<option value={character_names[48][1].slice(0, character_names[48][1].indexOf("（"))}>{character_names[48][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch49" onChange={(e) => enableDisable(49, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(49, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Ki no Kami" selected>Ki no Kami</option>
-                  <option value="紀伊守">紀伊守（きのかみ）</option>
+				<select onChange={(e) => changeNodeLabelName(49, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd49">
+                <option value={character_names[49][0]} selected>{character_names[49][0]}</option>
+				<option value={character_names[49][1].slice(0, character_names[49][1].indexOf("（"))}>{character_names[49][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch50" onChange={(e) => enableDisable(50, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(50, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Nokiba no Ogi" selected>Nokiba no Ogi</option>
-                  <option value="軒端荻">軒端荻（のきばのおぎ）</option>
+				<select onChange={(e) => changeNodeLabelName(50, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd50">
+				<option value={character_names[50][0]} selected>{character_names[50][0]}</option>
+				<option value={character_names[50][1].slice(0, character_names[50][1].indexOf("（"))}>{character_names[50][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch51" onChange={(e) => enableDisable(51, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(51, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kokiden Consort II" selected>Kokiden Consort II</option>
-                  <option value="弘徽殿女御【冷泉帝の妃】">弘徽殿女御（こきでんのにょうご）</option>
+				<select onChange={(e) => changeNodeLabelName(51, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd51">
+                <option value={character_names[51][0]} selected>{character_names[51][0]}</option>
+				<option value={character_names[51][1].slice(0, character_names[51][1].indexOf("（"))}>{character_names[51][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch52" onChange={(e) => enableDisable(52, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(52, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Asagao" selected>Asagao</option>
-                  <option value="朝顔">朝顔（あさがお）</option>
+				<select onChange={(e) => changeNodeLabelName(52, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd52">
+                <option value={character_names[52][0]} selected>{character_names[52][0]}</option>
+				<option value={character_names[52][1].slice(0, character_names[52][1].indexOf("（"))}>{character_names[52][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch53" onChange={(e) => enableDisable(53, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(53, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Genji's Horse" selected>Genji's Horse</option>
-                  <option value="🐎">🐎</option>
+				<select onChange={(e) => changeNodeLabelName(53, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd53">
+                <option value={character_names[53][0]} selected>{character_names[53][0]}</option>
+				<option value={character_names[53][1].slice(0, character_names[53][1].indexOf("（"))}>{character_names[53][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch54" onChange={(e) => enableDisable(54, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(54, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Cat" selected>Cat</option>
-                  <option value="🐈">🐈</option>
+				<select onChange={(e) => changeNodeLabelName(54, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd54">
+                <option value={character_names[54][0]} selected>{character_names[54][0]}</option>
+				<option value={character_names[54][1].slice(0, character_names[54][1].indexOf("（"))}>{character_names[54][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch55" onChange={(e) => enableDisable(55, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(55, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Gosechi Dancer" selected>Gosechi Dancer</option>
-                  <option value="筑紫の五節">筑紫の五節（つくしのごせつ）</option>
+				<select onChange={(e) => changeNodeLabelName(55, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd55">
+                <option value={character_names[55][0]} selected>{character_names[55][0]}</option>
+				<option value={character_names[55][1].slice(0, character_names[55][1].indexOf("（"))}>{character_names[55][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch56" onChange={(e) => enableDisable(56, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(56, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Prince Hotaru" selected>Prince Hotaru</option>
-                  <option value="蛍兵部卿宮">蛍兵部卿宮（ほたるひょうぶきょうのみや）</option>
+				<select onChange={(e) => changeNodeLabelName(56, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd56">
+                <option value={character_names[56][0]} selected>{character_names[56][0]}</option>
+				<option value={character_names[56][1].slice(0, character_names[56][1].indexOf("（"))}>{character_names[56][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch57" onChange={(e) => enableDisable(57, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(57, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Makibashira" selected>Makibashira</option>
-                  <option value="真木柱">真木柱（まきばしら）</option>
+				<select onChange={(e) => changeNodeLabelName(57, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd57">
+                <option value={character_names[57][0]} selected>{character_names[57][0]}</option>
+				<option value={character_names[57][1].slice(0, character_names[57][1].indexOf("（"))}>{character_names[57][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch58" onChange={(e) => enableDisable(58, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(58, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Ōmi Lady" selected>Ōmi Lady</option>
-                  <option value="近江の君">近江の君（おうみのきみ）</option>
+				<select onChange={(e) => changeNodeLabelName(58, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd58">
+                <option value={character_names[58][0]} selected>{character_names[58][0]}</option>
+				<option value={character_names[58][1].slice(0, character_names[58][1].indexOf("（"))}>{character_names[58][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch59" onChange={(e) => enableDisable(59, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(59, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kobai" selected>Kobai</option>
-                  <option value="紅梅">紅梅（こうばい）</option>
+				<select onChange={(e) => changeNodeLabelName(59, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd59">
+                <option value={character_names[59][0]} selected>{character_names[59][0]}</option>
+				<option value={character_names[59][1].slice(0, character_names[59][1].indexOf("（"))}>{character_names[59][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch60" onChange={(e) => enableDisable(60, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(60, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Second Princess" selected>The Second Princess</option>
-                  <option value="落葉の宮">落葉の宮（おちばのみや）</option>
-				  <option value="Ochiba no Miya">Ochiba no Miya</option>
+				<select onChange={(e) => changeNodeLabelName(60, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd60">
+                <option value={character_names[60][0]} selected>{character_names[60][0]}</option>
+				<option value={character_names[60][1].slice(0, character_names[60][1].indexOf("（"))}>{character_names[60][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch61" onChange={(e) => enableDisable(61, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(61, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Emperor Kinjo" selected>Emperor Kinjo</option>
-                  <option value="今上帝">今上帝（きんじょうてい）</option>
+				<select onChange={(e) => changeNodeLabelName(61, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd61">
+                <option value={character_names[61][0]} selected>{character_names[61][0]}</option>
+				<option value={character_names[61][1].slice(0, character_names[61][1].indexOf("（"))}>{character_names[61][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch62" onChange={(e) => enableDisable(62, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(62, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Maiden of the Dance" selected>The Maiden of the Dance</option>
-                  <option value="藤典侍">藤典侍（とうのないしのすけ）</option>
-				  <option value="Naishi no Suke">Naishi no Suke</option>
+				<select onChange={(e) => changeNodeLabelName(62, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd62">
+                <option value={character_names[62][0]} selected>{character_names[62][0]}</option>
+				<option value={character_names[62][1].slice(0, character_names[62][1].indexOf("（"))}>{character_names[62][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch63" onChange={(e) => enableDisable(63, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(63, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kaoru" selected>Kaoru</option>
-                  <option value="薫">薫（かおる）</option>
+				<select onChange={(e) => changeNodeLabelName(63, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd63">
+                <option value={character_names[63][0]} selected>{character_names[63][0]}</option>
+				<option value={character_names[63][1].slice(0, character_names[63][1].indexOf("（"))}>{character_names[63][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch64" onChange={(e) => enableDisable(64, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(64, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Eighth Prince's Wife" selected>Eighth Prince's Wife</option>
-                  <option value="八の宮の北の方">八の宮と北の方（はちのみやのきたのかた）</option>
+				<select onChange={(e) => changeNodeLabelName(64, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd64">
+                <option value={character_names[64][0]} selected>{character_names[64][0]}</option>
+				<option value={character_names[64][1].slice(0, character_names[64][1].indexOf("（"))}>{character_names[64][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch65" onChange={(e) => enableDisable(65, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(65, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Agemaki" selected>Agemaki</option>
-                  <option value="大君">大君（おおいぎみ）</option>
-				  <option value="Ōigimi" selected>Ōigimi</option>
+				<select onChange={(e) => changeNodeLabelName(65, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd65">
+                <option value={character_names[65][0]} selected>{character_names[65][0]}</option>
+				<option value={character_names[65][1].slice(0, character_names[65][1].indexOf("（"))}>{character_names[65][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch66" onChange={(e) => enableDisable(66, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(66, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Kozeri" selected>Kozeri</option>
-                  <option value="中君">中君（なかのきみ）</option>
-				  <option value="Naka no Kimi">Naka no Kimi）</option>
+				<select onChange={(e) => changeNodeLabelName(66, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd66">
+                <option value={character_names[66][0]} selected>{character_names[66][0]}</option>
+				<option value={character_names[66][1].slice(0, character_names[66][1].indexOf("（"))}>{character_names[66][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch67" onChange={(e) => enableDisable(67, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(67, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Ukifune" selected>Ukifune</option>
-                  <option value="浮舟">浮舟（うきふね）</option>
+				<select onChange={(e) => changeNodeLabelName(67, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd67">
+                <option value={character_names[67][0]} selected>{character_names[67][0]}</option>
+				<option value={character_names[67][1].slice(0, character_names[67][1].indexOf("（"))}>{character_names[67][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch68" onChange={(e) => enableDisable(68, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(68, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Niou" selected>Niou</option>
-                  <option value="匂宮">匂宮（におうのみや）</option>
+				<select onChange={(e) => changeNodeLabelName(68, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd68">
+                <option value={character_names[68][0]} selected>{character_names[68][0]}</option>
+				<option value={character_names[68][1].slice(0, character_names[68][1].indexOf("（"))}>{character_names[68][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch69" onChange={(e) => enableDisable(69, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(69, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="The Sixth Princess" selected>The Sixth Princess</option>
-                  <option value="六の君">六の君（ろくのきみ）</option>
-				  <option value="Roku no Kimi" selected>Roku no Kimi</option>
+				<select onChange={(e) => changeNodeLabelName(69, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd69">
+                <option value={character_names[69][0]} selected>{character_names[69][0]}</option>
+				<option value={character_names[69][1].slice(0, character_names[69][1].indexOf("（"))}>{character_names[69][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch70" onChange={(e) => enableDisable(70, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(70, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Nakatsukasa" selected>Nakatsukasa</option>
-                  <option value="中務 ">中務 （なかつかさ）</option>
+				<select onChange={(e) => changeNodeLabelName(70, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd70">
+                <option value={character_names[70][0]} selected>{character_names[70][0]}</option>
+				<option value={character_names[70][1].slice(0, character_names[70][1].indexOf("（"))}>{character_names[70][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch71" onChange={(e) => enableDisable(71, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(71, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Omyōbu" selected>Omyōbu</option>
-                  <option value="王命婦">王命婦（おうみょうぶ）</option>
+				<select onChange={(e) => changeNodeLabelName(71, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd71">
+                <option value={character_names[71][0]} selected>{character_names[71][0]}</option>
+				<option value={character_names[71][1].slice(0, character_names[71][1].indexOf("（"))}>{character_names[71][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch72" onChange={(e) => enableDisable(72, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(72, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Yoshikiyo" selected>Yoshikiyo</option>
-                  <option value="源良清">源良清（みなもとのよしきよ）</option>
+				<select onChange={(e) => changeNodeLabelName(72, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd72">
+                <option value={character_names[72][0]} selected>{character_names[72][0]}</option>
+				<option value={character_names[72][1].slice(0, character_names[72][1].indexOf("（"))}>{character_names[72][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch73" onChange={(e) => enableDisable(73, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(73, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Shōnagon" selected>Shōnagon</option>
-                  <option value="少納言">少納言（しょうなごん）</option>
+				<select onChange={(e) => changeNodeLabelName(73, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd73">
+                <option value={character_names[73][0]} selected>{character_names[73][0]}</option>
+				<option value={character_names[73][1].slice(0, character_names[73][1].indexOf("（"))}>{character_names[73][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch74" onChange={(e) => enableDisable(74, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(74, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Gen no Naishi" selected>Gen no Naishi</option>
-                  <option value="源典侍">源典侍（げんのないしのすけ）</option>
+				<select onChange={(e) => changeNodeLabelName(74, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd74">
+                <option value={character_names[74][0]} selected>{character_names[74][0]}</option>
+				<option value={character_names[74][1].slice(0, character_names[74][1].indexOf("（"))}>{character_names[74][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch75" onChange={(e) => enableDisable(75, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(75, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Bishop of Yokawa" selected>Bishop of Yokawa</option>
-                  <option value="横川の僧都">横川の僧都（よかわのそうづ）</option>
+				<select onChange={(e) => changeNodeLabelName(75, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd75">
+                <option value={character_names[75][0]} selected>{character_names[75][0]}</option>
+				<option value={character_names[75][1].slice(0, character_names[75][1].indexOf("（"))}>{character_names[75][1]}</option>
                </select>
                 <input type="checkbox" style ={{marginLeft: "10px"}} id="ch76" onChange={(e) => enableDisable(76, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(76, e.target.value)} style={{fontSize: "large", width: "175px"}}>
-                  <option value="Chūjō no Kimi" selected>Chūjō no Kimi</option>
-                  <option value="中将の君">中将の君（ちゅうじょうのきみ）</option>
+				<select onChange={(e) => changeNodeLabelName(76, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd76">
+                <option value={character_names[76][0]} selected>{character_names[76][0]}</option>
+				<option value={character_names[76][1].slice(0, character_names[76][1].indexOf("（"))}>{character_names[76][1]}</option>
                </select>
             </div>
             <br></br>
