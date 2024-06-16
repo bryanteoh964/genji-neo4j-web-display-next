@@ -11,6 +11,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import styles from '../styles/pages/characters.module.css';
+import CustomEdge from "../../CustomEdge.tsx";
 
 /**
  * @param {Array} l the array of edges
@@ -37,7 +38,7 @@ export default function GeneologyMap() {
 			{ id: 'Aoi', position: { x: 230, y: 205 }, data: { label: 'Aoi' }, draggable: true, style: {border: '2px solid #00c8fa'}, hidden: true},
 			{ id: 'Yūgiri', position: {x: -130, y: 425 }, data: { label: 'Yūgiri' }, draggable: true, style: {border: '2px solid #578fff'}, hidden: true},
 			{ id: 'Akashi Princess', position: { x: -300, y: 290  }, data: { label: 'Akashi Princess' }, draggable: true, style: {border: '2px solid #7cdb53'}, hidden: true},
-			{ id: 'Kokiden Consort', position: { x: -630, y: 85 }, data: { label: 'Kokiden Consort' }, draggable: true, style: {border: '2px solid #db537c'}, hidden: true},
+			{ id: 'Kokiden Consort 1', position: { x: -630, y: 85 }, data: { label: 'Kokiden Consort 1' }, draggable: true, style: {border: '2px solid #db537c'}, hidden: true},
 			{ id: 'Emperor Suzaku', position: { x: -550, y: 168  }, data: { label: 'Emperor Suzaku' }, draggable: true, style: {border: '2px solid #d98e04'}, hidden: true},
 			{ id: 'Zenbō', position: {x: -385, y: -200 }, data: { label: 'Zenbō' }, draggable: true, style: {border: '2px solid #82708c'}, hidden: true},
 			{ id: 'Lady Rokujō', position: {x: -647.734, y: -241.997 }, data: { label: 'Lady Rokujō' }, draggable: true, style: {border: '2px solid #fc1717'}, hidden: true},
@@ -49,10 +50,10 @@ export default function GeneologyMap() {
 			{ id: 'Oborozukiyo', position: { x: -725, y: 168  }, data: { label: 'Oborozukiyo' }, draggable: true, style: {border: '2px solid #b5d468'}, hidden: true},
 			{ id: 'Kumoi no Kari\'s Mother', position: { x: 612, y: 95 }, data: { label: 'Kumoi no Kari\'s Mother' }, draggable: true, style: {border: '2px solid #756f56'}, hidden: true},
 			{ id: 'Murasaki\'s Mother', position: { x: 400, y: 205 }, data: { label: 'Murasaki\'s Mother' }, draggable: true, style: {border: '2px solid #92ba61'}, hidden: true},
-			{ id: 'Kitayama no Amagimi', position: { x: 475, y: -10 }, data: { label: 'Kitayama no Amagimi' }, draggable: true, style: {border: '2px solid #c2af91'}, hidden: true},
+			{ id: 'Kitayama no Amagimi', position: { x: 550, y: -125 }, data: { label: 'Kitayama no Amagimi' }, draggable: true, style: {border: '2px solid #c2af91'}, hidden: true},
 			{ id: 'The Lady of Jokyoden Palace', position: { x: -500, y: 290 }, data: { label: 'The Lady of Jokyoden Palace' }, draggable: true, style: {border: '2px solid #1f4f28'}, hidden: true},
 			{ id: 'Higekuro', position: { x: 458, y:  465 }, data: { label: 'Higekuro' }, draggable: true, style: {border: '2px solid #543a00'}, hidden: true},
-			{ id: 'Higekuro\'s Wife', position: { x: 615, y: 445 }, data: { label: 'Higekuro\'s Wife' }, draggable: true, style: {border: '2px solid #00542b'}, hidden: true},
+			{ id: 'Higekuro\'s Wife', position: { x: 655, y: 400 }, data: { label: 'Higekuro\'s Wife' }, draggable: true, style: {border: '2px solid #00542b'}, hidden: true},
 			{ id: 'Ukon', position: { x: 420, y: 300 }, data: { label: 'Ukon' }, draggable: true, style: {border: '2px solid #496b62'}, hidden: true},
 			{ id: 'Kumoi no Kari', position: { x: 33, y: 425 }, data: { label: 'Kumoi no Kari' }, draggable: true, style: {border: '2px solid #4da392'}, hidden: true},
 			{ id: 'Akikonomu', position: { x: -570, y: 515  }, data: { label: 'Akikonomu' }, draggable: true, style: {border: '2px solid #2e3cbf'}, hidden: true},
@@ -68,8 +69,8 @@ export default function GeneologyMap() {
 			{ id: 'Utsusemi', position: { x: -885, y: 422 }, data: { label: 'Utsusemi' }, draggable: true, style: {border: '2px solid #b56804'}, hidden: true},
 			{ id: 'Iyo no Suke', position: { x: -1075, y: 422 }, data: { label: 'Iyo no Suke' }, draggable: true, style: {border: '2px solid #005c0b'}, hidden: true},
 			{ id: 'Ki no Kami', position: { x: -1109, y: 608 }, data: { label: 'Ki no Kami' }, draggable: true, style: {border: '2px solid #80231b'}, hidden: true},
-			{ id: 'Nokiba no Ogi', position: { x: -865, y: 550 }, data: { label: 'Nokiba no Ogi' }, draggable: true, style: {border: '2px solid #e675de'}, hidden: true},
-			{ id: 'Kokiden Consort II', position: { x: 505, y: 370 }, data: { label: 'Kokiden Consort II' }, draggable: true, style: {border: '2px solid #0ee39f'}, hidden: true},
+			{ id: 'Nokiba no Ogi', position: { x: -836, y: 558 }, data: { label: 'Nokiba no Ogi' }, draggable: true, style: {border: '2px solid #e675de'}, hidden: true},
+			{ id: 'Kokiden Consort 2', position: { x: 505, y: 370 }, data: { label: 'Kokiden Consort 2' }, draggable: true, style: {border: '2px solid #0ee39f'}, hidden: true},
 			{ id: 'Asagao', position: { x: -708, y: -96 }, data: { label: 'Asagao' }, draggable: true, style: {border: '2px solid #c0ff99'}, hidden: true},
 			{ id: 'Genji\'s Horse', position: { x: -1000, y: 350 }, data: { label: 'Genji\'s Horse' }, draggable: true, style: {border: '2px solid #b4d68b'}, hidden: true},
 			{ id: 'Cat', position: { x: -10, y: 685 }, data: { label: 'Cat' }, draggable: true, style: {border: '2px solid #c98a00'}, hidden: true},
@@ -103,7 +104,7 @@ export default function GeneologyMap() {
 			{ id: 'Genji + The Akashi Lady', position: { x: -282, y: 250 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Princess Omiya + Minister of the Left', position: { x: 425, y: 27 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Aoi', position: { x: 125, y: 305 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
-			{ id: 'Kiritsubo Emperor + Kokiden Consort', position: { x: -360, y: 80 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
+			{ id: 'Kiritsubo Emperor + Kokiden Consort 1', position: { x: -360, y: 80 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Lady Rokujō', position: { x: -300, y: -69 }, data: { label: '💔' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Yūgao', position: { x: 185, y: 313 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Tō no Chūjō + Yūgao', position: { x: 350, y: 375 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
@@ -124,7 +125,7 @@ export default function GeneologyMap() {
 			{ id: 'Genji + Kogimi', position: { x: -665, y: 395 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Utsusemi', position: { x: -750, y: 485 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Iyo no Suke + Utsusemi', position: { x: -940, y: 520 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
-			{ id: 'Emperor Reizei + Kokiden Consort II', position: { x: 187, y: 433 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
+			{ id: 'Emperor Reizei + Kokiden Consort 2', position: { x: 187, y: 433 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Asagao', position: { x: -700, y: 115 }, data: { label: '💔' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Genji + Gosechi Dancer', position: { x: -840, y: 297 }, data: { label: '❤️' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
 			{ id: 'Higekuro + Higekuro\'s Wife', position: { x: 590, y: 540 }, data: { label: '💍' }, draggable: true, style: { height: 50, width: 50, border: 50, borderRadius: 50, marginLeft:0, background: 'transparent'}, sourcePosition: 'top', hidden: true},
@@ -149,182 +150,181 @@ export default function GeneologyMap() {
 
 		//relationships 
 		var relationships = useRef([
-			{ id: 'Previous Emperor - Kiritsubo Emperor', source: 'Previous Emperor', target: 'Kiritsubo Emperor', label: 'son', style:{ stroke: '#2c3e78', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Previous Emperor - Princess Omiya', source: 'Previous Emperor', target: 'Princess Omiya', label: 'daughter', style:{ stroke: '#2c3e78', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kiritsubo Emperor - Princess Omiya', source: 'Kiritsubo Emperor', target: 'Princess Omiya', label: 'full-sister', style:{ stroke: '#782c4b', strokeWidth: '2'}, hidden: true},
-			{ id: 'Kiritsubo Emperor - Momozono Shikubu no Miya', source: 'Kiritsubo Emperor', target: 'Momozono Shikubu no Miya', label: 'half-brother', style:{ stroke: '#782c4b', strokeWidth: '2'}, hidden: true},
-			{ id: 'Kiritsubo Emperor - Zenbō', source: 'Kiritsubo Emperor', target: 'Zenbō', label: 'half-brother', style:{ stroke: '#782c4b', strokeWidth: '2'}, hidden: true},
-			{ id: 'Kiritsubo Emperor - Prince Hotaru', source: 'Kiritsubo Emperor', target: 'Prince Hotaru', label: 'son', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kiritsubo Emperor - 💍', source: 'Kiritsubo Emperor', target: 'Kiritsubo Consort + Kiritsubo Emperor', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Previous Emperor - Kiritsubo Emperor', source: 'Previous Emperor', target: 'Kiritsubo Emperor', style:{ stroke: '#2c3e78', strokeWidth: '2'}, data:{type: 'smoothstep', label: 'son', }, hidden: true, type: 'custom'},
+			{ id: 'Previous Emperor - Princess Omiya', source: 'Previous Emperor', target: 'Princess Omiya',  style:{ stroke: '#2c3e78', strokeWidth: '2'}, data:{type: 'smoothstep', label: 'daughter',}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - Princess Omiya', source: 'Kiritsubo Emperor', target: 'Princess Omiya', style:{ stroke: '#782c4b', strokeWidth: '2'}, data:{label: 'full-sister',}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - Momozono Shikubu no Miya', source: 'Kiritsubo Emperor', target: 'Momozono Shikubu no Miya', style:{ stroke: '#782c4b', strokeWidth: '2'}, data:{label: 'half-brother',}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - Zenbō', source: 'Kiritsubo Emperor', target: 'Zenbō', style:{ stroke: '#782c4b', strokeWidth: '2'}, data:{label: 'half-brother', }, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - Prince Hotaru', source: 'Kiritsubo Emperor', target: 'Prince Hotaru', style:{ stroke: '#782c4b', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'son',}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - 💍 - 1', source: 'Kiritsubo Emperor', target: 'Kiritsubo Consort + Kiritsubo Emperor', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kiritsubo Consort - 💍', source: 'Kiritsubo Consort', target: 'Kiritsubo Consort + Kiritsubo Emperor', style:{ stroke: '#1e5e3b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kiritsubo Consort - Azechi', source: 'Azechi', target: 'Kiritsubo Consort', label: 'daughter', style:{ stroke: '#7d6227', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kiritsubo Consort - Azechi', source: 'Azechi', target: 'Kiritsubo Consort', style:{ stroke: '#7d6227', strokeWidth: '2'}, data:{type: 'smoothstep', label: 'daughter',}, hidden: true, type: 'custom'},
 			{ id: 'Fujitsubo - 💍', source: 'Fujitsubo', target: 'Kiritsubo Emperor + Fujitsubo', style:{ stroke: '#c47a2f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kiritsubo Emperor - 💍', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Fujitsubo', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kiritsubo Emperor - 💍 - 2', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Fujitsubo', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Genji', source: 'Kiritsubo Consort + Kiritsubo Emperor', target: 'Genji', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Genji - Yoshikiyo', source: 'Genji', target: 'Yoshikiyo', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: 'retainer', hidden: true},
-			{ id: 'Genji - Ki no Kami', source: 'Genji', target: 'Ki no Kami', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: 'retainer', hidden: true},
-			{ id: 'Lady Rokujō - Aoi', source: 'Lady Rokujō', target: 'Aoi', label: '💀', style:{ stroke: '#fc1717', strokeWidth: '2'}, hidden: true},
-			{ id: 'Prince Hyōbu - Fujitsubo', source: 'Fujitsubo', target: 'Prince Hyōbu', label: 'full-brother', style:{ stroke: '#c47a2f', strokeWidth: '2'}, hidden: true},
+			{ id: 'Genji - Yoshikiyo', source: 'Genji', target: 'Yoshikiyo', style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'retainer',}, hidden: true, type: 'custom'},
+			{ id: 'Lady Rokujō - Aoi', source: 'Lady Rokujō', target: 'Aoi', style:{ stroke: '#fc1717', strokeWidth: '2'}, data:{label: '💀', }, hidden: true, type: 'custom'},
+			{ id: 'Prince Hyōbu - Fujitsubo', source: 'Fujitsubo', target: 'Prince Hyōbu', style:{ stroke: '#c47a2f', strokeWidth: '2'}, data:{label: 'full-brother', }, hidden: true, type: 'custom'},
 			{ id: 'Murasaki no Ue - 💍', source: 'Murasaki no Ue', target: 'Genji + Murasaki no Ue', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + Murasaki no Ue', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Akashi Princess', source: 'Genji + Murasaki no Ue', target: 'Akashi Princess', style:{ stroke: '#c603fc', strokeWidth: '2'}, label: 'adopted daughter', hidden: true},
-			{ id: 'Genji - Tamakazura', source: 'Genji', target: 'Tamakazura', label: 'adopted daughter', style:{ stroke: '#e0dd22', strokeWidth: '2'}, hidden: true},
+			{ id: 'Genji - 💍 - 1', source: 'Genji', target: 'Genji + Murasaki no Ue', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: '💍 -> Akashi Princess (adopted)', source: 'Genji + Murasaki no Ue', target: 'Akashi Princess', style:{ stroke: '#c603fc', strokeWidth: '2'}, data:{label: 'adopted daughter',}, hidden: true, type: 'custom'},
+			{ id: 'Genji - Tamakazura', source: 'Genji', target: 'Tamakazura', style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'adopted daughter',}, hidden: true, type: 'custom'},
 			{ id: 'Fujitsubo - ❤️', source: 'Fujitsubo', target: 'Genji + Fujitsubo', style:{ stroke: '#c47a2f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Fujitsubo', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 1', source: 'Genji', target: 'Genji + Fujitsubo', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '❤️ -> Emperor Reizei', source: 'Genji + Fujitsubo', target: 'Emperor Reizei', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Kiritsubo Emperor - The Eighth Prince', source: 'Kiritsubo Emperor', target: 'The Eighth Prince', label: 'son', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kiritsubo Emperor - Emperor Reizei', source: 'Kiritsubo Emperor', target: 'Emperor Reizei', style:{ stroke: '#782c4b', strokeWidth: '2'}, label: 'ostensible child', type: 'straight', hidden: true},
-			{ id: 'A Minister - Novitate', source: 'A Minister', target: 'Novitate', style:{ stroke: '#445a69', strokeWidth: '2'}, label: 'son',type: 'smoothstep', hidden: true},
+			{ id: 'Kiritsubo Emperor - The Eighth Prince', source: 'Kiritsubo Emperor', target: 'The Eighth Prince', style:{ stroke: '#782c4b', strokeWidth: '2'},data:{type: 'smoothstep', label: 'son',}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - Emperor Reizei', source: 'Kiritsubo Emperor', target: 'Emperor Reizei', style:{ stroke: '#782c4b', strokeWidth: '2'}, data:{label: 'ostensible child', type: 'straight'}, hidden: true, type: 'custom'},
+			{ id: 'A Minister - Novitate', source: 'A Minister', target: 'Novitate', style:{ stroke: '#445a69', strokeWidth: '2'}, data:{label: 'son',type: 'smoothstep',}, hidden: true, type: 'custom'},
 			{ id: 'Novitate - 💍', source: 'Novitate', target: 'Novitate + Akashi Nun', style:{ stroke: '#918d56', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Akashi Nun - 💍', source: 'Akashi Nun', target: 'Novitate + Akashi Nun', style:{ stroke: '#4e6158', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> The Akashi Lady', source: 'Novitate + Akashi Nun', target: 'The Akashi Lady', style:{ stroke: '#3acc1d', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'A Minister - Azechi', source: 'A Minister', target: 'Azechi', label: 'brother', style:{ stroke: '#445a69', strokeWidth: '2'}, hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + The Akashi Lady', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'A Minister - Azechi', source: 'A Minister', target: 'Azechi',  style:{ stroke: '#445a69', strokeWidth: '2'}, data:{label: 'half-brother',}, hidden: true, type: 'custom'},
+			{ id: 'Genji - 💍 - 2', source: 'Genji', target: 'Genji + The Akashi Lady', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'The Akashi Lady - 💍', source: 'The Akashi Lady', target: 'Genji + The Akashi Lady', style:{ stroke: '#3acc1d', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Princess Omiya - 💍', source: 'Princess Omiya', target: 'Princess Omiya + Minister of the Left', style:{ stroke: '#91ab80', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Minister of the Left - 💍', source: 'Minister of the Left', target: 'Princess Omiya + Minister of the Left', style:{ stroke: '#745b85', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Aoi', source: 'Princess Omiya + Minister of the Left', target: 'Aoi', style:{ stroke: '#00c8fa', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + Aoi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - 💍 - 3', source: 'Genji', target: 'Genji + Aoi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Aoi - 💍', source: 'Aoi', target: 'Genji + Aoi', style:{ stroke: '#00c8fa', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Gen no Naishi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 2', source: 'Genji', target: 'Genji + Gen no Naishi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Gen no Naishi - ❤️', source: 'Gen no Naishi', target: 'Genji + Gen no Naishi', style:{ stroke: '#8d9181', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Yūgiri', source: 'Genji + Aoi', target: 'Yūgiri', style:{ stroke: '#578fff', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: '💍 -> Akashi Princess', source: 'Genji + The Akashi Lady', target: 'Akashi Princess', style:{ stroke: '#7cdb53', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Kiritsubo Emperor - 💍', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Kokiden Consort', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kokiden Consort - 💍', source: 'Kokiden Consort', target: 'Kiritsubo Emperor + Kokiden Consort', style:{ stroke: '#db537c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Emperor Suzaku', source: 'Kiritsubo Emperor + Kokiden Consort', target: 'Emperor Suzaku', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Genji - 💔', source: 'Genji', target: 'Genji + Lady Rokujō', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kiritsubo Emperor - 💍 - 3', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Kokiden Consort 1', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kokiden Consort 1 - 💍', source: 'Kokiden Consort 1', target: 'Kiritsubo Emperor + Kokiden Consort 1', style:{ stroke: '#db537c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: '💍 -> Emperor Suzaku', source: 'Kiritsubo Emperor + Kokiden Consort 1', target: 'Emperor Suzaku', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'straight', hidden: true},
+			{ id: 'Genji - 💔 - 1', source: 'Genji', target: 'Genji + Lady Rokujō', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Lady Rokujō - 💔', source: 'Lady Rokujō', target: 'Genji + Lady Rokujō', style:{ stroke: '#fc1717', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Tō no Chūjō', source: 'Princess Omiya + Minister of the Left', target: 'Tō no Chūjō', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Yūgao', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 3', source: 'Genji', target: 'Genji + Yūgao', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Yūgao - ❤️', source: 'Yūgao', target: 'Genji + Yūgao', style:{ stroke: '#f56ee5', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Yūgao - 💍', source: 'Yūgao', target: 'Tō no Chūjō + Yūgao', style:{ stroke: '#f56ee5', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Tō no Chūjō - 💍', source: 'Tō no Chūjō', target: 'Tō no Chūjō + Yūgao', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Tō no Chūjō - 💍 - 1', source: 'Tō no Chūjō', target: 'Tō no Chūjō + Yūgao', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Tamakazura', source: 'Tō no Chūjō + Yūgao', target: 'Tamakazura', style:{ stroke: '#d64f6c', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Minister of the Right - Kokiden Consort', source: 'Minister of the Right', target: 'Kokiden Consort', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Minister of the Right - The Fourth Princess', source: 'Minister of the Right', target: 'The Fourth Princess', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Minister of the Right - Oborozukiyo', source: 'Minister of the Right', target: 'Oborozukiyo', label: 'daughter', style:{ stroke: '#40e3a7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Minister of the Right - Kokiden Consort 1', source: 'Minister of the Right', target: 'Kokiden Consort 1', style:{ stroke: '#40e3a7', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'daughter',},  hidden: true, type: 'custom'},
+			{ id: 'Minister of the Right - The Fourth Princess', source: 'Minister of the Right', target: 'The Fourth Princess', style:{ stroke: '#40e3a7', strokeWidth: '2'},data:{type: 'smoothstep',label: 'daughter',},  hidden: true, type: 'custom'},
+			{ id: 'Minister of the Right - Oborozukiyo', source: 'Minister of the Right', target: 'Oborozukiyo', style:{ stroke: '#40e3a7', strokeWidth: '2'},data:{type: 'smoothstep',label: 'daughter',}, hidden: true, type: 'custom'},
 			{ id: '💍 -> Murasaki no Ue', source: 'Prince Hyōbu + Murasaki\'s Mother', target: 'Murasaki no Ue', style:{ stroke: '#c603fc', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Prince Hyōbu - 💍', source: 'Prince Hyōbu', target: 'Prince Hyōbu + Murasaki\'s Mother', style:{ stroke: '#5f9945', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Murasaki\'s Mother - 💍', source: 'Murasaki\'s Mother', target: 'Prince Hyōbu + Murasaki\'s Mother', style:{ stroke: '#92ba61', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kitayama no Amagimi - Murasaki\'s Mother', source: 'Kitayama no Amagimi', target: 'Murasaki\'s Mother', label: 'daughter', style:{ stroke: '#c2af91', strokeWidth: '2'}, hidden: true},
+			{ id: 'Kitayama no Amagimi - Murasaki\'s Mother', source: 'Kitayama no Amagimi', target: 'Murasaki\'s Mother', style:{ stroke: '#c2af91', strokeWidth: '2'}, data:{label: 'daughter',}, hidden: true, type: 'custom'},
 			{ id: 'Oborozukiyo - 💍', source: 'Oborozukiyo', target: 'Emperor Suzaku + Oborozukiyo', style:{ stroke: '#b5d468', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Suzaku - 💍', source: 'Emperor Suzaku', target: 'Emperor Suzaku + Oborozukiyo', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Suzaku - 💍 - 1', source: 'Emperor Suzaku', target: 'Emperor Suzaku + Oborozukiyo', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Oborozukiyo - ❤️', source: 'Oborozukiyo', target: 'Genji + Oborozukiyo', style:{ stroke: '#b5d468', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Oborozukiyo', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 4', source: 'Genji', target: 'Genji + Oborozukiyo', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'The Lady of Jokyoden Palace - 💍', source: 'The Lady of Jokyoden Palace', target: 'Emperor Suzaku + The Lady of Jokyoden Palace', style:{ stroke: '#1f4f28', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Suzaku - 💍', source: 'Emperor Suzaku', target: 'Emperor Suzaku + The Lady of Jokyoden Palace', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'The Lady of Jokyoden Palace - Higekuro', source: 'The Lady of Jokyoden Palace', target: 'Higekuro', style:{ stroke: '#1f4f28', strokeWidth: '2'}, label: 'full-brother', hidden: true},
-			{ id: 'Prince Hyōbu - Higekuro\'s Wife', source: 'Prince Hyōbu', target: 'Higekuro\'s Wife', style:{ stroke: '#5f9945', strokeWidth: '2'}, label: 'daughter',type: 'smoothstep', hidden: true},
-			{ id: 'Ukon - Yūgao', source: 'Ukon', target: 'Yūgao', style:{ stroke: '#496b62', strokeWidth: '2'}, label: 'serves', type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Suzaku - 💍 - 2', source: 'Emperor Suzaku', target: 'Emperor Suzaku + The Lady of Jokyoden Palace', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'The Lady of Jokyoden Palace - Higekuro', source: 'The Lady of Jokyoden Palace', target: 'Higekuro', style:{ stroke: '#1f4f28', strokeWidth: '2'}, data:{label: 'full-brother',}, hidden: true, type: 'custom'},
+			{ id: 'Prince Hyōbu - Higekuro\'s Wife', source: 'Prince Hyōbu', target: 'Higekuro\'s Wife', style:{ stroke: '#5f9945', strokeWidth: '2'}, data:{label: 'daughter',}, type: 'smoothstep', hidden: true, type: 'custom'},
+			{ id: 'Yūgao - Ukon', source: 'Yūgao', target: 'Ukon', style:{ stroke: '#496b62', strokeWidth: '2'},  type: 'smoothstep', data:{label: 'servant',}, hidden: true, type: 'custom'},
 			{ id: 'Lady Rokujō - 💍', source: 'Lady Rokujō', target: 'Zenbō + Lady Rokujō', style:{ stroke: '#fc1717', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Zenbō - 💍', source: 'Zenbō', target: 'Zenbō + Lady Rokujō', style:{ stroke: '#82708c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Tō no Chūjō - 💍', source: 'Tō no Chūjō', target: 'Tō no Chūjō + The Fourth Princess', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Tō no Chūjō - 💍 - 2', source: 'Tō no Chūjō', target: 'Tō no Chūjō + The Fourth Princess', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'The Fourth Princess - 💍', source: 'The Fourth Princess', target: 'Tō no Chūjō + The Fourth Princess', style:{ stroke: '#c2de6d', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Tō no Chūjō - 💍', source: 'Tō no Chūjō', target: 'Tō no Chūjō + Kumoi no Kari\'s Mother', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Tō no Chūjō - 💍 - 3', source: 'Tō no Chūjō', target: 'Tō no Chūjō + Kumoi no Kari\'s Mother', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kumoi no Kari\'s Mother - 💍', source: 'Kumoi no Kari\'s Mother', target: 'Tō no Chūjō + Kumoi no Kari\'s Mother', style:{ stroke: '#756f56', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Kumoi no Kari', source: 'Tō no Chūjō + Kumoi no Kari\'s Mother', target: 'Kumoi no Kari', style:{ stroke: '#4da392', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: '💍 -> Akikonomu', source: 'Zenbō + Lady Rokujō', target: 'Akikonomu', style:{ stroke: '#2e3cbf', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Akikonomu - 💍', source: 'Akikonomu', target: 'Akikonomu + Emperor Reizei', style:{ stroke: '#2e3cbf', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Reizei - 💍', source: 'Emperor Reizei', target: 'Akikonomu + Emperor Reizei', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Koremitsu - Genji', source: 'Koremitsu', target: 'Genji', label: 'serves', style:{ stroke: '#8002ad', strokeWidth: '2'}, hidden: true},
-			{ id: 'Emperor Suzaku - The Third Princess', source: 'Emperor Suzaku', target: 'The Third Princess', label: 'daughter', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Reizei - 💍 - 1', source: 'Emperor Reizei', target: 'Akikonomu + Emperor Reizei', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Koremitsu - Genji', source: 'Koremitsu', target: 'Genji',  style:{ stroke: '#8002ad', strokeWidth: '2'},data:{label: 'servant',},  hidden: true, type: 'custom'},
+			{ id: 'Emperor Suzaku - The Third Princess', source: 'Emperor Suzaku', target: 'The Third Princess',  style:{ stroke: '#d98e04', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'daughter',}, hidden: true, type: 'custom'},
 			{ id: '💍 -> Kashiwagi', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kashiwagi', style:{ stroke: '#b2fc72', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'The Third Princess - ❤️', source: 'The Third Princess', target: 'The Third Princess + Kashiwagi', style:{ stroke: '#ff4f9e', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kashiwagi - ❤️', source: 'Kashiwagi', target: 'The Third Princess + Kashiwagi', style:{ stroke: '#b2fc72', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Suzaku - The Eighth Prince', source: 'Emperor Suzaku', target: 'The Eighth Prince', label: 'half-brother', style:{ stroke: '#d98e04', strokeWidth: '2'}, hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + Suetsumuhana', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Suzaku - The Eighth Prince', source: 'Emperor Suzaku', target: 'The Eighth Prince', style:{ stroke: '#d98e04', strokeWidth: '2'}, data:{label: 'half-brother',}, hidden: true, type: 'custom'},
+			{ id: 'Genji - 💍 - 4', source: 'Genji', target: 'Genji + Suetsumuhana', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Suetsumuhana - 💍', source: 'Suetsumuhana', target: 'Genji + Suetsumuhana', style:{ stroke: '#d1884f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Prince Hitachi - Suetsumuhana', source: 'Prince Hitachi', target: 'Suetsumuhana', label: 'daughter', style:{ stroke: '#879c62', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Reikeiden Consort - The Lady of the Falling Flowers', source: 'Reikeiden Consort', target: 'The Lady of the Falling Flowers', label: 'younger sister', style:{ stroke: '#95dadb', strokeWidth: '2'}, hidden: true},
-			{ id: 'Kiritsubo Emperor - 💍', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Reikeiden Consort', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Prince Hitachi - Suetsumuhana', source: 'Prince Hitachi', target: 'Suetsumuhana', style:{ stroke: '#879c62', strokeWidth: '2'}, data:{label: 'daughter',type: 'smoothstep',}, hidden: true, type: 'custom'},
+			{ id: 'Reikeiden Consort - The Lady of the Falling Flowers', source: 'Reikeiden Consort', target: 'The Lady of the Falling Flowers', data:{label: 'younger sister',}, style:{ stroke: '#95dadb', strokeWidth: '2'}, hidden: true, type: 'custom'},
+			{ id: 'Kiritsubo Emperor - 💍 - 4', source: 'Kiritsubo Emperor', target: 'Kiritsubo Emperor + Reikeiden Consort', style:{ stroke: '#782c4b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Reikeiden Consort - 💍', source: 'Reikeiden Consort', target: 'Kiritsubo Emperor + Reikeiden Consort', style:{ stroke: '#95dadb', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'The Lady of the Falling Flowers - 💍', source: 'The Lady of the Falling Flowers', target: 'Genji + The Lady of the Falling Flowers', style:{ stroke: '#4b65db', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + The Lady of the Falling Flowers', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - 💍', source: 'Genji', target: 'Genji + The Third Princess', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - 💍 - 5', source: 'Genji', target: 'Genji + The Lady of the Falling Flowers', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - 💍 - 6', source: 'Genji', target: 'Genji + The Third Princess', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'The Third Princess - 💍', source: 'The Third Princess', target: 'Genji + The Third Princess', style:{ stroke: '#ff4f9e', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Reizei - 💍', source: 'Emperor Reizei', target: 'Akashi Princess + Emperor Reizei', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Akashi Princess - 💍', source: 'Akashi Princess', target: 'Akashi Princess + Emperor Reizei', style:{ stroke: '#7cdb53', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Kogimi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Reizei - 💍 - 2', source: 'Emperor Reizei', target: 'Akashi Princess + Emperor Reizei', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Akashi Princess - 💍 - 1', source: 'Akashi Princess', target: 'Akashi Princess + Emperor Reizei', style:{ stroke: '#7cdb53', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 5', source: 'Genji', target: 'Genji + Kogimi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kogimi - ❤️', source: 'Kogimi', target: 'Genji + Kogimi', style:{ stroke: '#5abaed', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Utsusemi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - ❤️ - 6', source: 'Genji', target: 'Genji + Utsusemi', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Utsusemi - ❤️', source: 'Utsusemi', target: 'Genji + Utsusemi', style:{ stroke: '#b56804', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kogimi - Utsusemi', source: 'Kogimi', target: 'Utsusemi', label: 'older sister', style:{ stroke: '#5abaed', strokeWidth: '2'}, hidden: true},
+			{ id: 'Kogimi - Utsusemi', source: 'Kogimi', target: 'Utsusemi',style:{ stroke: '#5abaed', strokeWidth: '2'}, data:{label: 'older sister', }, hidden: true, type: 'custom'},
 			{ id: 'Iyo no Suke - 💍', source: 'Iyo no Suke', target: 'Iyo no Suke + Utsusemi', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Utsusemi - 💍', source: 'Utsusemi', target: 'Iyo no Suke + Utsusemi', style:{ stroke: '#b56804', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Iyo no Suke - Ki no Kami', source: 'Iyo no Suke', target: 'Ki no Kami', label: 'son', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Iyo no Suke - Nokiba no Ogi', source: 'Iyo no Suke', target: 'Nokiba no Ogi', label: 'daughter', style:{ stroke: '#005c0b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Nokiba no Ogi - Ki no Kami', source: 'Nokiba no Ogi', target: 'Ki no Kami', label: 'older brother', style:{ stroke: '#e675de', strokeWidth: '2'}, hidden: true},
-			{ id: 'Emperor Reizei - 💍', source: 'Emperor Reizei', target: 'Emperor Reizei + Kokiden Consort II', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kokiden Consort II - 💍', source: 'Kokiden Consort II', target: 'Emperor Reizei + Kokiden Consort II', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: '💍 -> Kokiden Consort II', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kokiden Consort II', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Genji - Akikonomu', source: 'Genji', target: 'Akikonomu', label: 'adopted daughter', style:{ stroke: '#e0dd22', strokeWidth: '2'}, hidden: true},
-			{ id: 'Momozono Shikubu no Miya - Asagao', source: 'Momozono Shikubu no Miya', target: 'Asagao', label: 'daughter', style:{ stroke: '#8f9945', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - 💔', source: 'Genji', target: 'Genji + Asagao', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Iyo no Suke - Ki no Kami', source: 'Iyo no Suke', target: 'Ki no Kami',  style:{ stroke: '#005c0b', strokeWidth: '2'}, data:{label: 'son',type: 'smoothstep',}, hidden: true,type: 'custom'},
+			{ id: 'Iyo no Suke - Nokiba no Ogi', source: 'Iyo no Suke', target: 'Nokiba no Ogi', style:{ stroke: '#005c0b', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'daughter',}, hidden: true,type: 'custom'},
+			{ id: 'Nokiba no Ogi - Ki no Kami', source: 'Nokiba no Ogi', target: 'Ki no Kami',  style:{ stroke: '#e675de', strokeWidth: '2'}, data:{label: 'older brother',}, hidden: true,type: 'custom'},
+			{ id: 'Emperor Reizei - 💍 - 3', source: 'Emperor Reizei', target: 'Emperor Reizei + Kokiden Consort 2', style:{ stroke: '#fc44ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kokiden Consort 2 - 💍', source: 'Kokiden Consort 2', target: 'Emperor Reizei + Kokiden Consort 2', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: '💍 -> Kokiden Consort 2', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kokiden Consort 2', style:{ stroke: '#0ee39f', strokeWidth: '2'},type: 'straight', hidden: true},
+			{ id: 'Genji - Akikonomu', source: 'Genji', target: 'Akikonomu',  style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'adopted daughter',}, hidden: true,type: 'custom'},
+			{ id: 'Momozono Shikubu no Miya - Asagao', source: 'Momozono Shikubu no Miya', target: 'Asagao', style:{ stroke: '#8f9945', strokeWidth: '2'}, data:{label: 'daughter',type: 'smoothstep',}, hidden: true,type: 'custom'},
+			{ id: 'Genji - 💔 - 2', source: 'Genji', target: 'Genji + Asagao', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Asagao - 💔', source: 'Asagao', target: 'Genji + Asagao', style:{ stroke: '#c0ff99', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - Genji\'s Horse', source: 'Genji', target: 'Genji\'s Horse', label: 'pet', style:{ stroke: '#e0dd22', strokeWidth: '2'}, hidden: true},
-			{ id: 'The Third Princess - Cat', source: 'The Third Princess', target: 'Cat', label: 'pet', style:{ stroke: '#ff4f9e', strokeWidth: '2'}, hidden: true},
-			{ id: 'Genji - ❤️', source: 'Genji', target: 'Genji + Gosechi Dancer', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - Genji\'s Horse', source: 'Genji', target: 'Genji\'s Horse',  style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'pet',}, hidden: true,type: 'custom'},
+			{ id: 'The Third Princess - Cat', source: 'The Third Princess', target: 'Cat', style:{ stroke: '#ff4f9e', strokeWidth: '2'}, data:{label: 'pet',}, hidden: true,type: 'custom'},
+			{ id: 'Genji - ❤️ - 7', source: 'Genji', target: 'Genji + Gosechi Dancer', style:{ stroke: '#e0dd22', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Gosechi Dancer - ❤️', source: 'Gosechi Dancer', target: 'Genji + Gosechi Dancer', style:{ stroke: '#309ae6', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Genji - Prince Hotaru', source: 'Genji', target: 'Prince Hotaru', label: 'half-brother', style:{ stroke: '#e0dd22', strokeWidth: '2'}, hidden: true},
-			{ id: 'Higekuro - 💍', source: 'Higekuro', target: 'Higekuro + Higekuro\'s Wife', style:{ stroke: '#543a00', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Genji - Prince Hotaru', source: 'Genji', target: 'Prince Hotaru', style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'half-brother', }, hidden: true,type: 'custom'},
+			{ id: 'Higekuro - 💍 - 1', source: 'Higekuro', target: 'Higekuro + Higekuro\'s Wife', style:{ stroke: '#543a00', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Higekuro\'s Wife - 💍', source: 'Higekuro\'s Wife', target: 'Higekuro + Higekuro\'s Wife', style:{ stroke: '#00542b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Makibashira', source: 'Higekuro + Higekuro\'s Wife', target: 'Makibashira', style:{ stroke: '#c57be3', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Tamakazura - 💔', source: 'Tamakazura', target: 'Prince Hotaru + Tamakazura', style:{ stroke: '#d64f6c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Prince Hotaru - 💔', source: 'Prince Hotaru', target: 'Prince Hotaru + Tamakazura', style:{ stroke: '#c2e37b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Prince Hotaru - 💍', source: 'Prince Hotaru', target: 'Prince Hotaru + Makibashira', style:{ stroke: '#c2e37b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Makibashira - 💍', source: 'Makibashira', target: 'Prince Hotaru + Makibashira', style:{ stroke: '#c57be3', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Tō no Chūjō - Ōmi Lady', source: 'Tō no Chūjō', target: 'Ōmi Lady', label: 'lost daughter', style:{ stroke: '#5300c7', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Tō no Chūjō - Ōmi Lady', source: 'Tō no Chūjō', target: 'Ōmi Lady', style:{ stroke: '#5300c7', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'lost daughter',},  hidden: true,type: 'custom'},
 			{ id: '💍 -> Kobai', source: 'Tō no Chūjō + The Fourth Princess', target: 'Kobai', style:{ stroke: '#c76554', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Makibashira - 💍', source: 'Makibashira', target: 'Kobai + Makibashira', style:{ stroke: '#c57be3', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Kobai - 💍', source: 'Kobai', target: 'Kobai + Makibashira', style:{ stroke: '#c76554', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Emperor Suzaku - The Second Princess', source: 'Emperor Suzaku', target: 'The Second Princess', label: 'daughter', style:{ stroke: '#d98e04', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'The Second Princess', source: 'The Second Princess', target: 'The Second Princess + Kashiwagi', style:{ stroke: '#8c4c7b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kashiwagi', source: 'Kashiwagi', target: 'The Second Princess + Kashiwagi', style:{ stroke: '#b2fc72', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'The Second Princess', source: 'The Second Princess', target: 'The Second Princess + Yūgiri', style:{ stroke: '#8c4c7b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Yūgiri', source: 'Yūgiri', target: 'The Second Princess + Yūgiri', style:{ stroke: '#578fff', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Kumoi no Kari', source: 'Kumoi no Kari', target: 'Kumoi no Kari + Yūgiri', style:{ stroke: '#4da392', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Yūgiri', source: 'Yūgiri', target: 'Kumoi no Kari + Yūgiri', style:{ stroke: '#578fff', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Emperor Suzaku - The Second Princess', source: 'Emperor Suzaku', target: 'The Second Princess',  style:{ stroke: '#d98e04', strokeWidth: '2'}, data:{type: 'smoothstep',label: 'daughter',}, hidden: true,type: 'custom'},
+			{ id: 'The Second Princess- 💍 - 1', source: 'The Second Princess', target: 'The Second Princess + Kashiwagi', style:{ stroke: '#8c4c7b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kashiwagi- 💍', source: 'Kashiwagi', target: 'The Second Princess + Kashiwagi', style:{ stroke: '#b2fc72', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'The Second Princess- 💍 0 2', source: 'The Second Princess', target: 'The Second Princess + Yūgiri', style:{ stroke: '#8c4c7b', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Yūgiri- 💍 - 1', source: 'Yūgiri', target: 'The Second Princess + Yūgiri', style:{ stroke: '#578fff', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Kumoi no Kari- 💍', source: 'Kumoi no Kari', target: 'Kumoi no Kari + Yūgiri', style:{ stroke: '#4da392', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Yūgiri- 💍 - 2', source: 'Yūgiri', target: 'Kumoi no Kari + Yūgiri', style:{ stroke: '#578fff', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Emperor Kinjo', source: 'Emperor Suzaku + The Lady of Jokyoden Palace', target: 'Emperor Kinjo', style:{ stroke: '#0fff0f', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Akashi Princess - 💍', source: 'Akashi Princess', target: 'Emperor Kinjo + Akashi Princess', style:{ stroke: '#7cdb53', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Akashi Princess - 💍 - 2', source: 'Akashi Princess', target: 'Emperor Kinjo + Akashi Princess', style:{ stroke: '#7cdb53', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Emperor Kinjo - 💍', source: 'Emperor Kinjo', target: 'Emperor Kinjo + Akashi Princess', style:{ stroke: '#0fff0f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Koremitsu - The Maiden of the Dance', source: 'Koremitsu', target: 'The Maiden of the Dance', label: 'daughter', style:{ stroke: '#8002ad', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Koremitsu - The Maiden of the Dance', source: 'Koremitsu', target: 'The Maiden of the Dance',  style:{ stroke: '#8002ad', strokeWidth: '2'},data:{type: 'smoothstep',label: 'daughter',}, hidden: true,type: 'custom'},
 			{ id: '❤️ -> Kaoru', source: 'The Third Princess + Kashiwagi', target: 'Kaoru', style:{ stroke: '#3273a8', strokeWidth: '2'}, type: 'straight', hidden: true},
-			{ id: '❤️ -> Kaoru', source: 'Genji + The Third Princess', target: 'Kaoru', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: 'ostensible child', type: 'straight', hidden: true},
+			{ id: '❤️ -> Kaoru', source: 'Genji + The Third Princess', target: 'Kaoru', style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: 'ostensible child', type: 'straight',}, hidden: true,type: 'custom'},
 			{ id: 'Eighth Prince\'s Wife - 💍', source: 'Eighth Prince\'s Wife', target: 'The Eighth Prince + Eighth Prince\'s Wife', style:{ stroke: '#7a9c5c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'The Eighth Prince - 💍', source: 'The Eighth Prince', target: 'The Eighth Prince + Eighth Prince\'s Wife', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'The Eighth Prince - 💍 - 1', source: 'The Eighth Prince', target: 'The Eighth Prince + Eighth Prince\'s Wife', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Agemaki', source: 'The Eighth Prince + Eighth Prince\'s Wife', target: 'Agemaki', style:{ stroke: '#5c9c71', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: '💍 -> Kozeri', source: 'The Eighth Prince + Eighth Prince\'s Wife', target: 'Kozeri', style:{ stroke: '#ba59a2', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Kozeri - Ukifune', source: 'Kozeri', target: 'Ukifune', label: 'half-sister', style:{ stroke: '#ba59a2', strokeWidth: '2'}, hidden: true},
+			{ id: 'Kozeri - Ukifune', source: 'Kozeri', target: 'Ukifune',  style:{ stroke: '#ba59a2', strokeWidth: '2'}, data:{label: 'half-sister',}, hidden: true, type: 'custom'},
 			{ id: '💍 -> Niou', source: 'Emperor Kinjo + Akashi Princess', target: 'Niou', style:{ stroke: '#186328', strokeWidth: '2'},type: 'straight', hidden: true},
 			{ id: 'Kaoru - 💔', source: 'Kaoru', target: 'Kaoru + Ukifune', style:{ stroke: '#3273a8', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
-			{ id: 'Ukifune - 💔', source: 'Ukifune', target: 'Kaoru + Ukifune', style:{ stroke: '#ff5f4a', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Ukifune - 💔 - 1', source: 'Ukifune', target: 'Kaoru + Ukifune', style:{ stroke: '#ff5f4a', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Niou - 💔', source: 'Niou', target: 'Niou + Ukifune', style:{ stroke: '#186328', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
-			{ id: 'Ukifune - 💔', source: 'Ukifune', target: 'Niou + Ukifune', style:{ stroke: '#ff5f4a', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Niou - 💍', source: 'Niou', target: 'Niou + Kozeri', style:{ stroke: '#186328', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
+			{ id: 'Ukifune - 💔 - 2', source: 'Ukifune', target: 'Niou + Ukifune', style:{ stroke: '#ff5f4a', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Niou - 💍 - 1', source: 'Niou', target: 'Niou + Kozeri', style:{ stroke: '#186328', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
 			{ id: 'Kozeri - 💍', source: 'Kozeri', target: 'Niou + Kozeri', style:{ stroke: '#ba59a2', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Yūgiri - 💍', source: 'Yūgiri', target: 'Yūgiri + The Maiden of the Dance', style:{ stroke: '#578fff', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
+			{ id: 'Yūgiri - 💍 - 3', source: 'Yūgiri', target: 'Yūgiri + The Maiden of the Dance', style:{ stroke: '#578fff', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
 			{ id: 'The Maiden of the Dance - 💍', source: 'The Maiden of the Dance', target: 'Yūgiri + The Maiden of the Dance', style:{ stroke: '#fc8114', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
 			{ id: '💍 -> The Sixth Princess', source: 'Yūgiri + The Maiden of the Dance', target: 'The Sixth Princess', style:{ stroke: '#b85876', strokeWidth: '2'},type: 'straight', hidden: true},
-			{ id: 'Niou - 💍', source: 'Niou', target: 'Niou + The Sixth Princess', style:{ stroke: '#186328', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
+			{ id: 'Niou - 💍 - 2', source: 'Niou', target: 'Niou + The Sixth Princess', style:{ stroke: '#186328', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
 			{ id: 'The Sixth Princess - 💍', source: 'The Sixth Princess', target: 'Niou + The Sixth Princess', style:{ stroke: '#b85876', strokeWidth: '2'}, type: 'smoothstep', hidden: true},
-			{ id: 'Higekuro - 💍', source: 'Higekuro', target: 'Higekuro + Tamakazura', style:{ stroke: '#543a00', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Higekuro - 💍 - 2', source: 'Higekuro', target: 'Higekuro + Tamakazura', style:{ stroke: '#543a00', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Tamakazura - 💍', source: 'Tamakazura', target: 'Higekuro + Tamakazura', style:{ stroke: '#d64f6c', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Nakatsukasa - Murasaki no Ue', source: 'Nakatsukasa', target: 'Murasaki no Ue', style:{ stroke: '#9c79ed', strokeWidth: '2'}, label: 'serves', hidden: true},
-			{ id: 'Omyōbu - Fujitsubo', source: 'Omyōbu', target: 'Fujitsubo', style:{ stroke: '#997112', strokeWidth: '2'}, label: 'serves', hidden: true},
+			{ id: 'Nakatsukasa - Murasaki no Ue', source: 'Murasaki no Ue', target: 'Nakatsukasa', style:{ stroke: '#9c79ed', strokeWidth: '2'}, data:{label: 'servant',}, hidden: true,type: 'custom'},
+			{ id: 'Fujitsubo - Omyōbu', source: 'Fujitsubo', target: 'Omyōbu', style:{ stroke: '#997112', strokeWidth: '2'}, data:{label: 'servant',}, hidden: true,type: 'custom'},
 			{ id: 'The Akashi Lady - 💔', source: 'The Akashi Lady', target: 'The Akashi Lady + Yoshikiyo', style:{ stroke: '#3acc1d', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Yoshikiyo - 💔', source: 'Yoshikiyo', target: 'The Akashi Lady + Yoshikiyo', style:{ stroke: '#994a12', strokeWidth: '2'},type: 'smoothstep', hidden: true},
-			{ id: 'Shōnagon - Murasaki no Ue', source: 'Shōnagon', target: 'Murasaki no Ue', style:{ stroke: '#6ddeba', strokeWidth: '2'}, label: 'wet nurse', hidden: true},
-			{ id: 'Genji - Tō no Chūjō', source: 'Genji', target: 'Tō no Chūjō', style:{ stroke: '#e0dd22', strokeWidth: '2'}, label: '👊', hidden: true},
-			{ id: 'Ukifune - Bishop of Yokawa', source: 'Ukifune', target: 'Bishop of Yokawa', style:{ stroke: '#ff5f4a', strokeWidth: '2'}, label: 'saved by', hidden: true},
-			{ id: 'The Eighth Prince - 💍', source: 'The Eighth Prince', target: 'The Eighth Prince + Chūjō no Kimi', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
+			{ id: 'Murasaki no Ue - Shōnagon', source: 'Murasaki no Ue', target: 'Shōnagon', style:{ stroke: '#6ddeba', strokeWidth: '2'}, data:{label: 'wet nurse',}, hidden: true,type: 'custom'},
+			{ id: 'Genji - Tō no Chūjō', source: 'Genji', target: 'Tō no Chūjō', style:{ stroke: '#e0dd22', strokeWidth: '2'}, data:{label: '👊',}, hidden: true,type: 'custom'},
+			{ id: 'Ukifune - Bishop of Yokawa', source: 'Bishop of Yokawa', target: 'Ukifune', style:{ stroke: '#dbb98a', strokeWidth: '2'}, data:{label: 'saved by',}, hidden: true,type: 'custom'},
+			{ id: 'The Eighth Prince - 💍 - 2', source: 'The Eighth Prince', target: 'The Eighth Prince + Chūjō no Kimi', style:{ stroke: '#54e8c0', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: 'Chūjō no Kimi - 💍', source: 'Chūjō no Kimi', target: 'The Eighth Prince + Chūjō no Kimi', style:{ stroke: '#36188f', strokeWidth: '2'},type: 'smoothstep', hidden: true},
 			{ id: '💍 -> Ukifune', source: 'The Eighth Prince + Chūjō no Kimi', target: 'Ukifune', style:{ stroke: '#ff5f4a', strokeWidth: '2'},type: 'straight', hidden: true},
 		])
 
 	var extra_edges = [...relationships.current]
 	for (const ch of extra_edges) {
-		if (ch.source.includes(" + ")) {
+		if (ch.source.includes(" + ") && !(ch.id.includes("(adopted)"))) {
 			const people1 = ch.source.slice(0, ch.source.indexOf(" + "))
 			const people2 = ch.source.slice(ch.source.indexOf(" + ")+3)
 			extra_edges.push({ id: people1 + " ~ " + ch.target, source: people1, target: ch.target, style:{strokeWidth: '2'}, hidden: true, label: "parent", animated: true})
@@ -346,7 +346,7 @@ export default function GeneologyMap() {
 
 	//Note: different names for each character in different translations
 	const character_names = [
-		["Previous Emperor", "天皇（てんのう）"],
+		["Previous Emperor", "先皇 （せんてい）"],
 		["Kiritsubo Emperor", "桐壺帝（きりつぼてい）"],
 		["Kiritsubo Consort", "桐壺更衣（きりつぼのこうい）"],
 		["Azechi", "按察使（あぜち）"],
@@ -365,7 +365,7 @@ export default function GeneologyMap() {
 		["Aoi", "葵の上（あおいのうえ）"],
 		["Yūgiri", "夕霧（ゆうぎり）"],
 		["Akashi Princess", "明石の姫君（あかしのひめぎみ）"],
-		["Kokiden Consort", "弘徽殿女御【桐壺帝の妃】（こきでんのにょうご）"],
+		["Kokiden Consort 1", "弘徽殿女御【桐壺帝の妃】（こきでんのにょうご）"],
 		["Emperor Suzaku", "朱雀帝（すざくてい）"],
 		["Zenbō", "前坊（ぜんぼう）"],
 		["Lady Rokujō", "六条御息所（ろくじょうのみやす）"],
@@ -397,10 +397,10 @@ export default function GeneologyMap() {
 		["Iyo no Suke", "伊予介（いよのすけ）"],
 		["Ki no Kami", "紀伊守（きのかみ）"],
 		["Nokiba no Ogi", "軒端荻（のきばのおぎ）"],
-		["Kokiden Consort II", "弘徽殿女御【冷泉帝の妃】（こきでんのにょうご）"],
+		["Kokiden Consort 2", "弘徽殿女御【冷泉帝の妃】（こきでんのにょうご）"],
 		["Asagao", "朝顔（あさがお）"],
-		["Genji's Horse", "光源氏の🐎"],
-		["Cat", "🐈"],
+		["Genji's Horse", "光源氏の馬🐎（ひかるげんじのうま）"],
+		["Cat", "猫🐈（ねこ）"],
 		["Gosechi Dancer", "筑紫の五節（つくしのごせつ）"],
 		["Prince Hotaru", "蛍兵部卿宮（ほたるひょうぶきょうのみや）"],
 		["Makibashira", "真木柱（まきばしら）"],
@@ -424,6 +424,101 @@ export default function GeneologyMap() {
 		["Bishop of Yokawa", "横川の僧都（よかわのそうづ）"],
 		["Chūjō no Kimi", "中将の君（ちゅうじょうのきみ）"]
 	]
+	const showedAll = useRef(false)
+
+	//all relationships of that character  
+	const allRel = (num) => {
+		var new_nodes = [...nodes]
+		var new_edges = [...edges]
+
+		//disable all first after showAll
+		if (showedAll.current) {
+			for (const ch of new_nodes) {
+				ch.hidden = true
+			}
+			for (const ch of new_edges) {
+				ch.hidden = true
+			}
+			showedAll.current = false
+		}
+
+		for (const e1 of new_edges) {
+			if (e1.source.includes(" + ")) {
+				const people1 = e1.source.slice(0, e1.source.indexOf(" + "))
+				const people2 = e1.source.slice(e1.source.indexOf(" + ")+3)
+				const offspring = e1.target
+				const linkage = e1.source
+				if (people1 == characters.current[num].id || people2 == characters.current[num].id) {
+					for (const n1 of new_nodes) {
+						if (n1.id == offspring || n1.id == linkage || n1.id == people1 || n1.id == people2) {
+							n1.hidden = false
+						}
+					}
+					e1.hidden = false
+					e1.animated = true
+				} else if (offspring == characters.current[num].id) {
+					for (const n1 of new_nodes) {
+						if (n1.id == people1 || n1.id == people2 || n1.id == linkage) {
+							n1.hidden = false
+						}
+					}
+					for (const e2 of new_edges) {
+						if ((e2.source == people1 || e2.source == people2) && e2.target == linkage) {
+							e2.hidden = false
+							e2.animated = true
+						}
+					}
+					e1.hidden = false
+					e1.animated = true
+				} 
+			} else if (e1.source == characters.current[num].id || e1.target == characters.current[num].id) {
+				for (const n1 of new_nodes) {
+					if (n1.id == e1.source || n1.id == e1.target) {
+						n1.hidden = false
+					}
+				}
+				e1.hidden = false
+				e1.animated = true
+			}
+			if (e1.label == "parent") {
+				e1.hidden = true
+			}
+		}
+
+		for (const n1 of new_nodes) {
+			if (n1.id.includes(" + ") && n1.id.includes(characters.current[num].id)) {
+				const people1 = n1.id.slice(0, n1.id.indexOf(" + "))
+				const people2 = n1.id.slice(n1.id.indexOf(" + ")+3)
+				const linkage = n1.id
+				for (const n2 of new_nodes) {
+					if (n2.id == people1 || n2.id == people2) {
+						n2.hidden = false
+					}
+				}
+				for (const e1 of new_edges) {
+					if (e1.target == linkage) {
+						e1.hidden = false
+						e1.animated = true
+					} 
+					if (e1.label == "parent") {
+						e1.hidden = true
+					}
+				}
+			}
+		}
+
+		//check and uncheckboxes
+		for (let i = 0; i < character_names.length; i++) {
+			if (new_nodes[i].hidden == false) {
+				document.getElementById("ch" + i.toString()).checked = true
+			} else {
+				document.getElementById("ch" + i.toString()).checked = false
+			}
+		}
+
+		setNodes(new_nodes)
+		setEdges(new_edges)
+	}
 
 	const enableDisable = (num, bool) => {
 		var new_nodes = [...nodes]
@@ -524,6 +619,7 @@ export default function GeneologyMap() {
 	}
 
     const showAll = () => {
+		showedAll.current = true
 		var new_nodes = [...nodes]
 		var new_edges = [...edges]
 		for (let i = 0; i < character_names.length; i++) {
@@ -544,6 +640,7 @@ export default function GeneologyMap() {
     }
 
 	const disableAll = () => {
+		showedAll.current = false
 		var new_nodes = [...nodes]
 		var new_edges = [...edges]
 		for (let i = 0; i < character_names.length; i++) {
@@ -576,408 +673,114 @@ export default function GeneologyMap() {
 		}
 	}
 
+	const enableFlow = () => {
+		var new_edges = [...edges]
+		for (const e1 of new_edges) {
+			e1.animated = true
+		}
+		setEdges(new_edges)
+	}
+
+	const disableFlow = () => {
+		var new_edges = [...edges]
+		for (const e1 of new_edges) {
+			if (e1.label != 'parent') {
+				e1.animated = false
+			}
+		}
+		setEdges(new_edges)
+	}
+
+	function myFunction(query) {
+		// Declare variables 
+		var filter = query.toUpperCase()
+		var li = document.getElementsByTagName("li")
+	  
+		// Loop through all list items, and hide those who don't match the search query
+		for (var i = 0; i < li.length; i++) {
+		  var a = li[i].getElementsByClassName("a")[0];
+		  if (a.id.toUpperCase().indexOf(filter) > -1) {
+			li[i].style.display = "";
+		  } else {
+			li[i].style.display = "none";
+		  }
+		}
+	}
+
+	//expand | shrink
+	const expand_counter = useRef(null);
+  
+	function expand_start() {
+		expand_counter.current = setInterval(function() {
+			var new_nodes = [...nodes]
+			for (const n1 of new_nodes) {
+				n1.position.x *= 1.01
+				n1.position.y *= 1.01
+			}
+			setNodes(new_nodes)
+		}, 50);
+	}
+	function expand_end() {
+		clearInterval(expand_counter.current)
+	}
+
+	const shrink_counter = useRef(null);
+  
+	function shrink_start() {
+		shrink_counter.current = setInterval(function() {
+			var new_nodes = [...nodes]
+			for (const n1 of new_nodes) {
+				n1.position.x *= 0.99
+				n1.position.y *= 0.99
+			}
+			setNodes(new_nodes)
+		}, 50);
+	}
+	function shrink_end() {
+		clearInterval(shrink_counter.current)
+	}
+
     return (
         <div style={{fontSize: "large"}}>
             <br></br>
-            <div>
-                <button onClick={() => showAll()} style={{fontSize: "large"}}>Show All</button>
-				<button onClick={() => disableAll()} style={{fontSize: "large"}}>Disable All</button>
-				<select onChange={(e) => changeLanguage(e.target.value)} style={{marginLeft: "10px", fontSize: "large", width: "175px"}}>
+            <div >
+                <button onClick={() => showAll()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', fontWeight: 'bold'}}>Show All</button>
+				<button onClick={() => disableAll()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', fontWeight: 'bold'}}>Disable All</button>
+				<button onClick={() => enableFlow()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>Enable Flow</button>
+				<button onClick={() => disableFlow()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>Disable Flow</button>
+				<select onChange={(e) => changeLanguage(e.target.value)} style={{marginLeft: "10px", fontSize: "large", width: "175px", marginRight: "10px",}}>
                   <option value="en" selected>English</option>
                   <option value="jp" >Japanese</option>
                </select>
             </div>
-            <br></br>
-            <div style={{overflowX: "scroll", display: "block", overflow: "auto", whiteSpace: "nowrap", paddingBottom: "5px"}}>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch0" onChange={(e) => enableDisable(0, e.target.checked)} />
-                <select onChange={(e) => changeNodeLabelName(0, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd0">
-                  <option value={character_names[0][0]} selected>{character_names[0][0]}</option>
-                  <option value={character_names[0][1].slice(0, character_names[0][1].indexOf("（"))}>{character_names[0][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch1" onChange={(e) => enableDisable(1, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(1, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd1">
-				<option value={character_names[1][0]} selected>{character_names[1][0]}</option>
-				<option value={character_names[1][1].slice(0, character_names[1][1].indexOf("（"))}>{character_names[1][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch2" onChange={(e) => enableDisable(2, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(2, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd2">
-                <option value={character_names[2][0]} selected>{character_names[2][0]}</option>
-				<option value={character_names[2][1].slice(0, character_names[2][1].indexOf("（"))}>{character_names[2][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch3" onChange={(e) => enableDisable(3, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(3, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd3">
-                <option value={character_names[3][0]} selected>{character_names[3][0]}</option>
-				<option value={character_names[3][1].slice(0, character_names[3][1].indexOf("（"))}>{character_names[3][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch4" onChange={(e) => enableDisable(4, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(4, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd4">
-                <option value={character_names[4][0]} selected>{character_names[4][0]}</option>
-				<option value={character_names[4][1].slice(0, character_names[4][1].indexOf("（"))}>{character_names[4][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch5" onChange={(e) => enableDisable(5, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(5, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd5">
-                <option value={character_names[5][0]} selected>{character_names[5][0]}</option>
-				<option value={character_names[5][1].slice(0, character_names[5][1].indexOf("（"))}>{character_names[5][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch6" onChange={(e) => enableDisable(6, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(6, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd6">
-                <option value={character_names[6][0]} selected>{character_names[6][0]}</option>
-				<option value={character_names[6][1].slice(0, character_names[6][1].indexOf("（"))}>{character_names[6][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch7" onChange={(e) => enableDisable(7, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(7, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd7">
-                <option value={character_names[7][0]} selected>{character_names[7][0]}</option>
-				<option value={character_names[7][1].slice(0, character_names[7][1].indexOf("（"))}>{character_names[7][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch8" onChange={(e) => enableDisable(8, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(8, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd8">
-                <option value={character_names[8][0]} selected>{character_names[8][0]}</option>
-				<option value={character_names[8][1].slice(0, character_names[8][1].indexOf("（"))}>{character_names[8][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch9" onChange={(e) => enableDisable(9, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(9, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd9">
-                <option value={character_names[9][0]} selected>{character_names[9][0]}</option>
-				<option value={character_names[9][1].slice(0, character_names[9][1].indexOf("（"))}>{character_names[9][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch10" onChange={(e) => enableDisable(10, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(10, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd10">
-                <option value={character_names[10][0]} selected>{character_names[10][0]}</option>
-				<option value={character_names[10][1].slice(0, character_names[10][1].indexOf("（"))}>{character_names[10][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch11" onChange={(e) => enableDisable(11, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(11, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd11">
-                <option value={character_names[11][0]} selected>{character_names[11][0]}</option>
-				<option value={character_names[11][1].slice(0, character_names[11][1].indexOf("（"))}>{character_names[11][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch12" onChange={(e) => enableDisable(12, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(12, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd12">
-                <option value={character_names[12][0]} selected>{character_names[12][0]}</option>
-				<option value={character_names[12][1].slice(0, character_names[12][1].indexOf("（"))}>{character_names[12][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch13" onChange={(e) => enableDisable(13, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(13, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd13">
-                <option value={character_names[13][0]} selected>{character_names[13][0]}</option>
-				<option value={character_names[13][1].slice(0, character_names[13][1].indexOf("（"))}>{character_names[13][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch14" onChange={(e) => enableDisable(14, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(14, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd14">
-                <option value={character_names[14][0]} selected>{character_names[14][0]}</option>
-				<option value={character_names[14][1].slice(0, character_names[14][1].indexOf("（"))}>{character_names[14][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch15" onChange={(e) => enableDisable(15, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(15, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd15">
-                <option value={character_names[15][0]} selected>{character_names[15][0]}</option>
-				<option value={character_names[15][1].slice(0, character_names[15][1].indexOf("（"))}>{character_names[15][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch16" onChange={(e) => enableDisable(16, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(16, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd16">
-                <option value={character_names[16][0]} selected>{character_names[16][0]}</option>
-				<option value={character_names[16][1].slice(0, character_names[16][1].indexOf("（"))}>{character_names[16][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch17" onChange={(e) => enableDisable(17, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(17, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd17">
-                <option value={character_names[17][0]} selected>{character_names[17][0]}</option>
-				<option value={character_names[17][1].slice(0, character_names[17][1].indexOf("（"))}>{character_names[17][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch18" onChange={(e) => enableDisable(18, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(18, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd18">
-                <option value={character_names[18][0]} selected>{character_names[18][0]}</option>
-				<option value={character_names[18][1].slice(0, character_names[18][1].indexOf("（"))}>{character_names[18][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch19" onChange={(e) => enableDisable(19, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(19, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd19">
-                <option value={character_names[19][0]} selected>{character_names[19][0]}</option>
-				<option value={character_names[19][1].slice(0, character_names[19][1].indexOf("（"))}>{character_names[19][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch20" onChange={(e) => enableDisable(20, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(20, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd20">
-                <option value={character_names[20][0]} selected>{character_names[20][0]}</option>
-				<option value={character_names[20][1].slice(0, character_names[20][1].indexOf("（"))}>{character_names[20][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch21" onChange={(e) => enableDisable(21, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(21, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd21">
-                <option value={character_names[21][0]} selected>{character_names[21][0]}</option>
-				<option value={character_names[21][1].slice(0, character_names[21][1].indexOf("（"))}>{character_names[21][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch22" onChange={(e) => enableDisable(22, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(22, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd22">
-                <option value={character_names[22][0]} selected>{character_names[22][0]}</option>
-				<option value={character_names[22][1].slice(0, character_names[22][1].indexOf("（"))}>{character_names[22][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch23" onChange={(e) => enableDisable(23, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(23, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd23">
-                <option value={character_names[23][0]} selected>{character_names[23][0]}</option>
-				<option value={character_names[23][1].slice(0, character_names[23][1].indexOf("（"))}>{character_names[23][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch24" onChange={(e) => enableDisable(24, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(24, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd24">
-                <option value={character_names[24][0]} selected>{character_names[24][0]}</option>
-				<option value={character_names[24][1].slice(0, character_names[24][1].indexOf("（"))}>{character_names[24][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch25" onChange={(e) => enableDisable(25, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(25, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd25">
-                <option value={character_names[25][0]} selected>{character_names[25][0]}</option>
-				<option value={character_names[25][1].slice(0, character_names[25][1].indexOf("（"))}>{character_names[25][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch26" onChange={(e) => enableDisable(26, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(26, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd26">
-                <option value={character_names[26][0]} selected>{character_names[26][0]}</option>
-				<option value={character_names[26][1].slice(0, character_names[26][1].indexOf("（"))}>{character_names[26][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch27" onChange={(e) => enableDisable(27, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(27, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd27">
-                <option value={character_names[27][0]} selected>{character_names[27][0]}</option>
-				<option value={character_names[27][1].slice(0, character_names[27][1].indexOf("（"))}>{character_names[27][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch28" onChange={(e) => enableDisable(28, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(28, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd28">
-                <option value={character_names[28][0]} selected>{character_names[28][0]}</option>
-				<option value={character_names[28][1].slice(0, character_names[28][1].indexOf("（"))}>{character_names[28][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch29" onChange={(e) => enableDisable(29, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(29, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd29">
-                <option value={character_names[29][0]} selected>{character_names[29][0]}</option>
-				<option value={character_names[29][1].slice(0, character_names[29][1].indexOf("（"))}>{character_names[29][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch30" onChange={(e) => enableDisable(30, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(30, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd30">
-                <option value={character_names[30][0]} selected>{character_names[30][0]}</option>
-				<option value={character_names[30][1].slice(0, character_names[30][1].indexOf("（"))}>{character_names[30][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch31" onChange={(e) => enableDisable(31, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(31, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd31">
-                <option value={character_names[31][0]} selected>{character_names[31][0]}</option>
-				<option value={character_names[31][1].slice(0, character_names[31][1].indexOf("（"))}>{character_names[31][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch32" onChange={(e) => enableDisable(32, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(32, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd32">
-                <option value={character_names[32][0]} selected>{character_names[32][0]}</option>
-				<option value={character_names[32][1].slice(0, character_names[32][1].indexOf("（"))}>{character_names[32][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch33" onChange={(e) => enableDisable(33, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(33, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd33">
-                <option value={character_names[33][0]} selected>{character_names[33][0]}</option>
-				<option value={character_names[33][1].slice(0, character_names[33][1].indexOf("（"))}>{character_names[33][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch34" onChange={(e) => enableDisable(34, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(34, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd34">
-                <option value={character_names[34][0]} selected>{character_names[34][0]}</option>
-				<option value={character_names[34][1].slice(0, character_names[34][1].indexOf("（"))}>{character_names[34][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch35" onChange={(e) => enableDisable(35, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(35, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd35">
-                <option value={character_names[35][0]} selected>{character_names[35][0]}</option>
-				<option value={character_names[35][1].slice(0, character_names[35][1].indexOf("（"))}>{character_names[35][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch36" onChange={(e) => enableDisable(36, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(36, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd36">
-                <option value={character_names[36][0]} selected>{character_names[36][0]}</option>
-				<option value={character_names[36][1].slice(0, character_names[36][1].indexOf("（"))}>{character_names[36][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch37" onChange={(e) => enableDisable(37, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(37, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd37">
-                <option value={character_names[37][0]} selected>{character_names[37][0]}</option>
-				<option value={character_names[37][1].slice(0, character_names[37][1].indexOf("（"))}>{character_names[37][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch38" onChange={(e) => enableDisable(38, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(38, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd38">
-                <option value={character_names[38][0]} selected>{character_names[38][0]}</option>
-				<option value={character_names[38][1].slice(0, character_names[38][1].indexOf("（"))}>{character_names[38][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch39" onChange={(e) => enableDisable(39, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(39, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd39">
-                <option value={character_names[39][0]} selected>{character_names[39][0]}</option>
-				<option value={character_names[39][1].slice(0, character_names[39][1].indexOf("（"))}>{character_names[39][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch40" onChange={(e) => enableDisable(40, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(40, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd40">
-                <option value={character_names[40][0]} selected>{character_names[40][0]}</option>
-				<option value={character_names[40][1].slice(0, character_names[40][1].indexOf("（"))}>{character_names[40][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch41" onChange={(e) => enableDisable(41, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(41, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd41">
-                <option value={character_names[41][0]} selected>{character_names[41][0]}</option>
-				<option value={character_names[41][1].slice(0, character_names[41][1].indexOf("（"))}>{character_names[41][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch42" onChange={(e) => enableDisable(42, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(42, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd42">
-                <option value={character_names[42][0]} selected>{character_names[42][0]}</option>
-				<option value={character_names[42][1].slice(0, character_names[42][1].indexOf("（"))}>{character_names[42][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch43" onChange={(e) => enableDisable(43, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(43, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd43">
-                <option value={character_names[43][0]} selected>{character_names[43][0]}</option>
-				<option value={character_names[43][1].slice(0, character_names[43][1].indexOf("（"))}>{character_names[43][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch44" onChange={(e) => enableDisable(44, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(44, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd44">
-                <option value={character_names[44][0]} selected>{character_names[44][0]}</option>
-				<option value={character_names[44][1].slice(0, character_names[44][1].indexOf("（"))}>{character_names[44][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch45" onChange={(e) => enableDisable(45, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(45, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd45">
-                <option value={character_names[45][0]} selected>{character_names[45][0]}</option>
-				<option value={character_names[45][1].slice(0, character_names[45][1].indexOf("（"))}>{character_names[45][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch46" onChange={(e) => enableDisable(46, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(46, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd46">
-                <option value={character_names[46][0]} selected>{character_names[46][0]}</option>
-				<option value={character_names[46][1].slice(0, character_names[46][1].indexOf("（"))}>{character_names[46][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch47" onChange={(e) => enableDisable(47, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(47, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd47">
-                <option value={character_names[47][0]} selected>{character_names[47][0]}</option>
-				<option value={character_names[47][1].slice(0, character_names[47][1].indexOf("（"))}>{character_names[47][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch48" onChange={(e) => enableDisable(48, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(48, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd48">
-                <option value={character_names[48][0]} selected>{character_names[48][0]}</option>
-				<option value={character_names[48][1].slice(0, character_names[48][1].indexOf("（"))}>{character_names[48][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch49" onChange={(e) => enableDisable(49, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(49, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd49">
-                <option value={character_names[49][0]} selected>{character_names[49][0]}</option>
-				<option value={character_names[49][1].slice(0, character_names[49][1].indexOf("（"))}>{character_names[49][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch50" onChange={(e) => enableDisable(50, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(50, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd50">
-				<option value={character_names[50][0]} selected>{character_names[50][0]}</option>
-				<option value={character_names[50][1].slice(0, character_names[50][1].indexOf("（"))}>{character_names[50][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch51" onChange={(e) => enableDisable(51, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(51, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd51">
-                <option value={character_names[51][0]} selected>{character_names[51][0]}</option>
-				<option value={character_names[51][1].slice(0, character_names[51][1].indexOf("（"))}>{character_names[51][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch52" onChange={(e) => enableDisable(52, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(52, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd52">
-                <option value={character_names[52][0]} selected>{character_names[52][0]}</option>
-				<option value={character_names[52][1].slice(0, character_names[52][1].indexOf("（"))}>{character_names[52][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch53" onChange={(e) => enableDisable(53, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(53, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd53">
-                <option value={character_names[53][0]} selected>{character_names[53][0]}</option>
-				<option value={character_names[53][1].slice(0, character_names[53][1].indexOf("（"))}>{character_names[53][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch54" onChange={(e) => enableDisable(54, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(54, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd54">
-                <option value={character_names[54][0]} selected>{character_names[54][0]}</option>
-				<option value={character_names[54][1].slice(0, character_names[54][1].indexOf("（"))}>{character_names[54][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch55" onChange={(e) => enableDisable(55, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(55, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd55">
-                <option value={character_names[55][0]} selected>{character_names[55][0]}</option>
-				<option value={character_names[55][1].slice(0, character_names[55][1].indexOf("（"))}>{character_names[55][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch56" onChange={(e) => enableDisable(56, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(56, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd56">
-                <option value={character_names[56][0]} selected>{character_names[56][0]}</option>
-				<option value={character_names[56][1].slice(0, character_names[56][1].indexOf("（"))}>{character_names[56][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch57" onChange={(e) => enableDisable(57, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(57, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd57">
-                <option value={character_names[57][0]} selected>{character_names[57][0]}</option>
-				<option value={character_names[57][1].slice(0, character_names[57][1].indexOf("（"))}>{character_names[57][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch58" onChange={(e) => enableDisable(58, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(58, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd58">
-                <option value={character_names[58][0]} selected>{character_names[58][0]}</option>
-				<option value={character_names[58][1].slice(0, character_names[58][1].indexOf("（"))}>{character_names[58][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch59" onChange={(e) => enableDisable(59, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(59, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd59">
-                <option value={character_names[59][0]} selected>{character_names[59][0]}</option>
-				<option value={character_names[59][1].slice(0, character_names[59][1].indexOf("（"))}>{character_names[59][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch60" onChange={(e) => enableDisable(60, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(60, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd60">
-                <option value={character_names[60][0]} selected>{character_names[60][0]}</option>
-				<option value={character_names[60][1].slice(0, character_names[60][1].indexOf("（"))}>{character_names[60][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch61" onChange={(e) => enableDisable(61, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(61, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd61">
-                <option value={character_names[61][0]} selected>{character_names[61][0]}</option>
-				<option value={character_names[61][1].slice(0, character_names[61][1].indexOf("（"))}>{character_names[61][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch62" onChange={(e) => enableDisable(62, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(62, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd62">
-                <option value={character_names[62][0]} selected>{character_names[62][0]}</option>
-				<option value={character_names[62][1].slice(0, character_names[62][1].indexOf("（"))}>{character_names[62][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch63" onChange={(e) => enableDisable(63, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(63, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd63">
-                <option value={character_names[63][0]} selected>{character_names[63][0]}</option>
-				<option value={character_names[63][1].slice(0, character_names[63][1].indexOf("（"))}>{character_names[63][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch64" onChange={(e) => enableDisable(64, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(64, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd64">
-                <option value={character_names[64][0]} selected>{character_names[64][0]}</option>
-				<option value={character_names[64][1].slice(0, character_names[64][1].indexOf("（"))}>{character_names[64][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch65" onChange={(e) => enableDisable(65, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(65, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd65">
-                <option value={character_names[65][0]} selected>{character_names[65][0]}</option>
-				<option value={character_names[65][1].slice(0, character_names[65][1].indexOf("（"))}>{character_names[65][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch66" onChange={(e) => enableDisable(66, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(66, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd66">
-                <option value={character_names[66][0]} selected>{character_names[66][0]}</option>
-				<option value={character_names[66][1].slice(0, character_names[66][1].indexOf("（"))}>{character_names[66][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch67" onChange={(e) => enableDisable(67, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(67, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd67">
-                <option value={character_names[67][0]} selected>{character_names[67][0]}</option>
-				<option value={character_names[67][1].slice(0, character_names[67][1].indexOf("（"))}>{character_names[67][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch68" onChange={(e) => enableDisable(68, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(68, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd68">
-                <option value={character_names[68][0]} selected>{character_names[68][0]}</option>
-				<option value={character_names[68][1].slice(0, character_names[68][1].indexOf("（"))}>{character_names[68][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch69" onChange={(e) => enableDisable(69, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(69, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd69">
-                <option value={character_names[69][0]} selected>{character_names[69][0]}</option>
-				<option value={character_names[69][1].slice(0, character_names[69][1].indexOf("（"))}>{character_names[69][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch70" onChange={(e) => enableDisable(70, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(70, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd70">
-                <option value={character_names[70][0]} selected>{character_names[70][0]}</option>
-				<option value={character_names[70][1].slice(0, character_names[70][1].indexOf("（"))}>{character_names[70][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch71" onChange={(e) => enableDisable(71, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(71, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd71">
-                <option value={character_names[71][0]} selected>{character_names[71][0]}</option>
-				<option value={character_names[71][1].slice(0, character_names[71][1].indexOf("（"))}>{character_names[71][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch72" onChange={(e) => enableDisable(72, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(72, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd72">
-                <option value={character_names[72][0]} selected>{character_names[72][0]}</option>
-				<option value={character_names[72][1].slice(0, character_names[72][1].indexOf("（"))}>{character_names[72][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch73" onChange={(e) => enableDisable(73, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(73, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd73">
-                <option value={character_names[73][0]} selected>{character_names[73][0]}</option>
-				<option value={character_names[73][1].slice(0, character_names[73][1].indexOf("（"))}>{character_names[73][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch74" onChange={(e) => enableDisable(74, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(74, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd74">
-                <option value={character_names[74][0]} selected>{character_names[74][0]}</option>
-				<option value={character_names[74][1].slice(0, character_names[74][1].indexOf("（"))}>{character_names[74][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch75" onChange={(e) => enableDisable(75, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(75, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd75">
-                <option value={character_names[75][0]} selected>{character_names[75][0]}</option>
-				<option value={character_names[75][1].slice(0, character_names[75][1].indexOf("（"))}>{character_names[75][1]}</option>
-               </select>
-                <input type="checkbox" style ={{marginLeft: "10px"}} id="ch76" onChange={(e) => enableDisable(76, e.target.checked)} />
-				<select onChange={(e) => changeNodeLabelName(76, e.target.value)} style={{fontSize: "large", width: "175px"}} id="dd76">
-                <option value={character_names[76][0]} selected>{character_names[76][0]}</option>
-				<option value={character_names[76][1].slice(0, character_names[76][1].indexOf("（"))}>{character_names[76][1]}</option>
-               </select>
-            </div>
-            <br></br>
+			<br></br>
+			<button id="disableMenuButton" style={{borderRadius: "50%", margin: '4px', visibility: 'hidden'}} title="disable menu" onClick={() => {document.getElementById('myMenu').style.display = 'none'; document.getElementById('disableMenuButton').style.visibility = 'hidden'; document.getElementById('mySearch').value = ""}}>✖</button>
+			<input type="text" id="mySearch" onKeyUp={(e) => myFunction(e.target.value)} title="Type in a category" onSelectCapture={() => {document.getElementById('myMenu').style.display = 'block';  document.getElementById('disableMenuButton').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "1px solid #ddd", marginBottom: '10px'}}/>
+			<button onMouseDown={() => shrink_start()} onMouseUp={() => shrink_end()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>❇️</button>
+			<button onMouseDown={() => expand_start()} onMouseUp={() => expand_end()} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>✳️</button>
+			<div style={{position: 'relative', height:0, width: 0, left:'50%',transform:'translate(-50)', marginLeft:'-135px'}}>
+				<div style={{position: 'absolute', height:'0px', width: '320px', zIndex: 1,}}>
+					<ul id="myMenu" style={{listStyle: "none inside", margin: 0,width: 'fit-content',  height: 'fit-cotent', maxHeight: '225px', overflowY: 'scroll', display: 'none', scrollbarWidth: 'none', background: 'white', marginLeft: 0, paddingLeft:0}} >
+					{
+						character_names.map(
+							function(names, i) {
+								return <li><div className="a" id={names[0]+names[1]} style={{margin: '4px'}}>
+										<input type="checkbox" id={"ch"+i.toString()} onChange={(e) => enableDisable(i, e.target.checked)} />
+										<select onChange={(e) => changeNodeLabelName(i, e.target.value)} style={{fontSize: "large", width: "175px"}} id={"dd" + +i.toString()}>
+											<option value={names[0]} selected>{names[0]}</option>
+											<option value={names[1].slice(0, names[1].indexOf("（"))}>{names[1]}</option>
+										</select>
+										<button id={"display_all_rels_"+i.toString()} style={{borderRadius: "95%", margin: '4px', background: '#bdbdbd'}} title={"display all relationships for " + names[0]} onClick={() => {allRel(i)}}>📌</button>
+									</div></li>
+							}
+						)
+					}
+					</ul>
+				</div>
+			</div>
+			
             <ReactFlow 
-            alt="Geneology map diagram"
+			alt="Geneology map diagram"
             className={styles.viewer_window}
             nodes={nodes}
             edges={edges}
@@ -987,6 +790,7 @@ export default function GeneologyMap() {
             onInit={onInit}
             fitView
             attributionPosition="top-right"
+			edgeTypes={{'custom': CustomEdge}}
         >
             <MiniMap style={minimapStyle} zoomable pannable />
             <Controls />
