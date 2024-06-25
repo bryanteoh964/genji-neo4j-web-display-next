@@ -110,7 +110,7 @@ const CustomEdge: FC<EdgeProps> = ({
             border: "2px solid " + style.stroke,
             fontWeight: "normal"
           }}>
-            {target + " is " + rel + " of " + source + "."}
+            {target + " is " + rel + " of " + source.replace(' + ', ' and ') + "."}
           </span>
           </div>
         </div>
