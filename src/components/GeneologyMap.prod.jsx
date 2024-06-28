@@ -395,7 +395,7 @@ export default function GeneologyMap() {
 		["Azechi no Dainagon I", "按察使の大納言（あぜちのだいなごん）"],
 		["Princess Omiya", "大宮（おおみや）"],
 		["Momozono Shikubu no Miya", "桃園式部卿宮（ももぞのしきぶきょうのみや）"],
-		["Fujitsubo", "藤壺（ふじつぼ）"],
+		["Fujitsubo", "藤壺中宮（ふじつぼのちゅうぐう）"],
 		["Genji", "光源氏（ひかるげんじ）"],
 		["Prince Hyōbu", "兵部卿宮（ひょうぶきょうのみや）"],
 		["Murasaki no Ue", "紫の上（むらさきのうえ）"],
