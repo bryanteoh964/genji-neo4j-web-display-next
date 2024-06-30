@@ -870,14 +870,18 @@ export default function GeneologyMap() {
 					{
 						character_names.map(
 							function(names, i) {
-								return <li><div className="a" id={names[0]+names[1]} style={{margin: '4px'}}>
-										<input type="checkbox" id={"ch"+i.toString()} onChange={(e) => enableDisable(i, e.target.checked)} />
-										<select onChange={(e) => changeNodeLabelName(i, e.target.value)} style={{fontSize: "large", width: "175px"}} id={"dd" + +i.toString()}>
-											<option value={names[0]} selected>{names[0]}</option>
-											<option value={names[1].slice(0, names[1].indexOf("（"))}>{names[1]}</option>
-										</select>
-										<button id={"display_all_rels_"+i.toString()} style={{borderRadius: "95%", margin: '4px', background: '#bdbdbd'}} title={"display all relationships for " + names[0]} onClick={() => {allRel(i)}}>📌</button>
-									</div></li>
+								return (
+									<li>
+										<div className="a" id={names[0]+names[1]} style={{margin: '4px'}}>
+											<input type="checkbox" id={"ch"+i.toString()} onChange={(e) => enableDisable(i, e.target.checked)} />
+											<select onChange={(e) => changeNodeLabelName(i, e.target.value)} style={{fontSize: "large", width: "175px"}} id={"dd" + +i.toString()}>
+												<option value={names[0]} selected>{names[0]}</option>
+												<option value={names[1].slice(0, names[1].indexOf("（"))}>{names[1]}</option>
+											</select>
+											<button id={"display_all_rels_"+i.toString()} style={{borderRadius: "95%", margin: '4px', background: '#bdbdbd'}} title={"display all relationships for " + names[0]} onClick={() => {allRel(i)}}>📌</button>
+										</div>
+									</li>
+									)
 							}
 						)
 					}
