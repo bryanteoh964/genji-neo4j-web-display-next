@@ -1,8 +1,11 @@
-export default function CharacterPage({ params }) {
-    return (
-      <div>
-        <h1>Character: {params.name}</h1>
-        {/* 这里添加角色详细信息的展示逻辑 */}
-      </div>
-    );
-  }
+'use client'
+
+import { useParams } from 'next/navigation';
+import CharacterDetail from '../../../components/CharacterDetail';
+
+export default function CharacterPage() {
+    const params = useParams();
+    const name = params.name;
+
+    return <CharacterDetail name={decodeURIComponent(name)} />;
+}
