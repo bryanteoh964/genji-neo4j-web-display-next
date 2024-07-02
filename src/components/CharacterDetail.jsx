@@ -15,7 +15,10 @@ export default function CharacterDetail({ name }) {
                     }
                     return response.json();
                 })
-                .then(data => setCharacterData(data))
+                .then(data => {
+                    console.log('Received character data:', data);
+                    setCharacterData(data);
+                })
                 .catch(error => setError(error.message));
         }
     }, [name]);
@@ -35,7 +38,7 @@ export default function CharacterDetail({ name }) {
             
             <h2>Related Characters</h2>
             <ul>
-                {characterData.relatedCharacters.map((related, index) => (
+                {Object.entries(characterData.relatedCharacters).map((related, index) => (
                     <li key={index}>
                         {related.name} - {related.relationship}
                     </li>
