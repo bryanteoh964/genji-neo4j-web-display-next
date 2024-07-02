@@ -1,6 +1,8 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
 const traj = require('./traj.prod')
 
+const { getSession } = require('../neo4j_driver/route.prod.js');
+
 // tag::toNativeTypes[]
 /**
  * Convert Neo4j Properties back into JavaScript types
@@ -241,4 +243,35 @@ export function generateGeneology(l) {
   }
   
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
+// func to get character data for character page
+  async function getCharacterData(characterName) {
+    const session = await getSession();
+    try {
+        const result = await session.run(
+            `
+            MATCH (c:Character {name: $name})
+            OPTIONAL MATCH (c)-[r]-(related:Character)
+            RETURN c as character, 
+                   collect(DISTINCT {name: related.name, relationship: type(r)}) as relatedCharacters
+            `,
+            { name: characterName }
+        );
+
+        if (result.records.length > 0) {
+            const record = result.records[0];
+            const character = toNativeTypes(record.get('character').properties);
+            const related = record.get('relatedCharacters').map(r => ({
+                name: r.name,
+                relationship: r.relationship
+            }));
+
+            return { character, relatedCharacters: related };
+        } else {
+            return null;
+        }
+    } finally {
+        await session.close();
+    }
+}
+
+module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, getCharacterData }
