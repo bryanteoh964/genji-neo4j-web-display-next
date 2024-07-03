@@ -1,6 +1,8 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
 const traj = require('./traj.prod')
 
+const { getSession } = require('../neo4j_driver/route.prod.js');
+
 // tag::toNativeTypes[]
 /**
  * Convert Neo4j Properties back into JavaScript types
@@ -240,5 +242,7 @@ export function generateGeneology(l) {
     return [nodes, edges]
   }
   
+
+
 
 module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
