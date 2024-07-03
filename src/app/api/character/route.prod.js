@@ -11,7 +11,7 @@ async function getCharacterData(name) {
         const query = `
             MATCH (c:Character)
             WHERE toLower(c.name) = toLower($name) 
-            OPTIONAL MATCH (c)-[r]-(related:Character)
+            OPTIONAL MATCH (c)-[r]->(related:Character)
             RETURN c as character, 
                 collect(DISTINCT {name: related.name, relationship: type(r)}) as relatedCharacters
         `;
