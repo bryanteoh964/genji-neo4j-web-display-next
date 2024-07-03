@@ -1,6 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react';
+import styles from '../styles/pages/CharacterDetail.module.css';
+
+function formatRelationship(relationship) {
+    return relationship
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
 
 export default function CharacterDetail({ name }) {
     const [characterData, setCharacterData] = useState(null);
@@ -15,45 +23,44 @@ export default function CharacterDetail({ name }) {
                     }
                     return response.json();
                 })
-                .then(data => {
-                    console.log('Received character data:', data);
-                    console.log('Related characters:', Object.keys(data.relatedCharacters).length);
-                    console.log('characters:', data.relatedCharacters[0].name);
-                    console.log('characters rel:', data.relatedCharacters);
-                    setCharacterData(data);
-                })
-                .catch(error => setError(error.message));
+                .then(setCharacterData)
+                .catch(setError);
         }
     }, [name]);
 
-    if (error) return <div>Error: {error}</div>;
-    if (!characterData) return <div>Loading...</div>;
+    if (error) return <div className={styles.error}>Error: {error.message}</div>;
+    if (!characterData) return <div className={styles.loading}>Loading...</div>;
+
+    const { character, relatedCharacters } = characterData;
 
     return (
-        <div>
-            <h1>{characterData.character.name}</h1>
-            <h2>Properties</h2>
-            <ul>
-                {Object.entries(characterData.character).map(([key, value]) => (
-                    <li key={key}>{key}: {value ? value.toString() : 'N/A'}</li>
-                ))}
-            </ul>
-            
-            <h2>Related Characters</h2>
-            <ul>
-            {Object.entries(characterData.relatedCharacters).map(([index, item]) => (
-            <li key={index}>
-                <span>{index}:</span>{' '}
-                <ul>
-                {Object.entries(item).map(([key, value]) => (
-                    <li key={key}>
-                    {key}: {value ? value.toString() : 'N/A'}
-                    </li>
-                ))}
+        <div className={styles.container}>
+            <h1 className={styles.title}>{character.name}</h1>
+            <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Properties</h2>
+                <ul className={styles.propertyList}>
+                    {Object.entries(character).map(([key, value]) => (
+                        <li key={key} className={styles.propertyItem}>
+                            <span className={styles.propertyKey}>{key}:</span>
+                            <span className={styles.propertyValue}>{value || 'N/A'}</span>
+                        </li>
+                    ))}
                 </ul>
-            </li>
-            ))}
-            </ul>
+            </div>
+            
+            <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Related Characters</h2>
+                <ul className={styles.relatedList}>
+                    {Object.entries(relatedCharacters).map(([index, { name, relationship }]) => (
+                        <li key={index} className={styles.relatedItem}>
+                            <span className={styles.relatedName}>{name}</span>
+                            <span className={styles.relatedRelationship}>
+                                {formatRelationship(relationship)}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }
