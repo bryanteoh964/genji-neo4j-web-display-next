@@ -5,7 +5,7 @@ const { toNativeTypes } = require('../neo4j_driver/utils.prod.js');
 async function getCharacterData(name) {
     try {
         const session = await getSession();
-        console.log(`Searching for character: ${name}`);
+        
         
         // Neo4j cypher query to fetch character data, related characters, and related poems
         const query = `

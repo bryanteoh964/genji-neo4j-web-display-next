@@ -5,7 +5,7 @@ import styles from '../styles/pages/CharacterDetail.module.css';
 
 // Funct to format relationship names (delete '_' in relation)
 function formatRelationship(relationship) {
-    if (!relationship) return 'N/A'; 
+    if (!relationship) return 'No related charaters found'; 
     return relationship
         .split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -16,6 +16,7 @@ export default function CharacterDetail({ name }) {
     const [characterData, setCharacterData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [characterExists, setCharacterExists] = useState(true);
 
     // Fetch character data
     useEffect(() => {
@@ -24,12 +25,17 @@ export default function CharacterDetail({ name }) {
             fetch(`/api/character?name=${encodeURIComponent(name)}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to fetch character data');
+                        if (response.status === 404) {
+                            setCharacterExists(false); 
+                        } else {
+                            throw new Error('Failed to fetch character data');
+                        } 
+                    } else {
+                        setCharacterExists(true);
+                        return response.json();
                     }
-                    return response.json();
                 })
                 .then(data => {
-                    console.log('Received character data:', data);
                     setCharacterData(data);
                 })
                 .catch(error => setError(error.message))
@@ -40,6 +46,7 @@ export default function CharacterDetail({ name }) {
     // Handle loading, error, and no data
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>Error: {error}</div>;
+    if (!characterExists) return <div className={styles.error}>Character not found.</div>;
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
 
     const { character, relatedCharacters, relatedPoems } = characterData;
