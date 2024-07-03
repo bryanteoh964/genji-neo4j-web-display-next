@@ -7,14 +7,27 @@ async function getCharacterData(name) {
         const session = await getSession();
         console.log(`Searching for character: ${name}`);
         
-        // Run query
         const query = `
             MATCH (c:Character)
             WHERE toLower(c.name) = toLower($name) 
-            OPTIONAL MATCH (c)-[r]->(related:Character)
-            RETURN c as character, 
-                collect(DISTINCT {name: related.name, relationship: type(r)}) as relatedCharacters
+            OPTIONAL MATCH (c)-[r1]->(related:Character)
+            OPTIONAL MATCH (c)-[r2:ADDRESS_OF|MESSENGER_OF|SPEAKER_OF]->(poem:Genji_Poem)-[:INCLUDED_IN]->(chapter:Chapter)
+            WITH c, related, r1, poem, chapter, r2,
+                 count(poem) + 1 as poemCountInChapter
+            WITH c,
+                collect(DISTINCT {name: related.name, relationship: type(r1)}) as relatedCharacters,
+                collect(DISTINCT {
+                    poem: poem,
+                    chapter: chapter,
+                    relationship: type(r2),
+                    poemNumber: poemCountInChapter,
+                    chapterNumber: chapter.chapter_number
+                }) as unsortedPoems
+            RETURN c as character,
+                relatedCharacters,
+                apoc.coll.sortMulti(unsortedPoems, ['chapterNumber', 'poemNumber']) as relatedPoems
         `;
+        
         const res = await session.readTransaction(tx => tx.run(query, { name }));
 
         await session.close();
@@ -23,8 +36,31 @@ async function getCharacterData(name) {
             const record = res.records[0];
             const character = toNativeTypes(record.get('character').properties);
             const relatedCharacters = toNativeTypes(record.get('relatedCharacters'));
+            const rawRelatedPoems = toNativeTypes(record.get('relatedPoems'));
 
-            return { character, relatedCharacters };
+            const relatedPoems = Object.values(rawRelatedPoems)
+                .filter(poem => poem && poem.poem && poem.chapter)
+                .map(poem => {
+                    const pnum = poem.poem.properties.pnum;
+                    const chapterNum = pnum.substring(0, 2);
+                    const poemNum = pnum.substring(4);
+                    return {
+                        ...poem,
+                        poem: poem.poem.properties,
+                        chapter: poem.chapter.properties,
+                        chapterNum,
+                        poemNum,
+                        url: `/poems/${parseInt(chapterNum)}/${parseInt(poemNum)}`
+                    };
+                })
+                .sort((a, b) => {
+                    if (a.chapterNum !== b.chapterNum) {
+                        return parseInt(a.chapterNum) - parseInt(b.chapterNum);
+                    }
+                    return parseInt(a.poemNum) - parseInt(b.poemNum);
+                });
+                
+            return { character, relatedCharacters, relatedPoems };
         } else {
             console.log(`No character found with name: ${name}`);
             return null;
@@ -34,7 +70,6 @@ async function getCharacterData(name) {
         return { "error": "Error in getCharacterData()", "message": error.toString() };
     }
 }
-
 // Export data from API endpoint
 export const GET = async (request) => {
     const { searchParams } = new URL(request.url);

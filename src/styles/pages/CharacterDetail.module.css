@@ -20,12 +20,12 @@
     margin-bottom: 15px;
 }
 
-.propertyList, .relatedList {
+.propertyList, .relatedList, .poemList {
     list-style-type: none;
     padding: 0;
 }
 
-.propertyItem, .relatedItem {
+.propertyItem, .relatedItem, .poemItem {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -33,21 +33,69 @@
     margin-bottom: 10px;
 }
 
-.propertyKey, .relatedName {
+.propertyKey, .relatedName, .poemChapter {
     font-weight: bold;
     margin-right: 10px;
 }
 
-.propertyValue, .relatedRelationship {
+.propertyValue, .relatedRelationship, .poemNumber, .poemRelationship {
     color: #666;
 }
 
-.relatedName {
+.relatedName, .poemChapter {
     display: block;
     margin-bottom: 5px;
 }
 
-.relatedRelationship {
+.relatedRelationship, .poemRelationship {
+    font-style: italic;
+}
+
+.poemItem {
+    position: relative;
+    overflow: hidden;
+}
+
+.poemItem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: left 0.3s ease;
+    pointer-events: none;
+}
+
+.poemItem:hover::before {
+    left: 100%;
+}
+
+.poemLink {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s ease;
+}
+
+.poemLink:hover {
+    background-color: #f0f0f0;
+}
+
+.poemJapanese {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.poemRomaji {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.noRelatedMessage {
+    color: #666;
     font-style: italic;
 }
 
