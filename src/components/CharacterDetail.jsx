@@ -17,6 +17,9 @@ export default function CharacterDetail({ name }) {
                 })
                 .then(data => {
                     console.log('Received character data:', data);
+                    console.log('Related characters:', Object.keys(data.relatedCharacters).length);
+                    console.log('characters:', data.relatedCharacters[0].name);
+                    console.log('characters rel:', data.relatedCharacters);
                     setCharacterData(data);
                 })
                 .catch(error => setError(error.message));
@@ -32,17 +35,24 @@ export default function CharacterDetail({ name }) {
             <h2>Properties</h2>
             <ul>
                 {Object.entries(characterData.character).map(([key, value]) => (
-                    <li key={key}>{key}: {value.toString()}</li>
+                    <li key={key}>{key}: {value ? value.toString() : 'N/A'}</li>
                 ))}
             </ul>
             
             <h2>Related Characters</h2>
             <ul>
-                {Object.entries(characterData.relatedCharacters).map((related, index) => (
-                    <li key={index}>
-                        {related.name} - {related.relationship}
+            {Object.entries(characterData.relatedCharacters).map(([index, item]) => (
+            <li key={index}>
+                <span>{index}:</span>{' '}
+                <ul>
+                {Object.entries(item).map(([key, value]) => (
+                    <li key={key}>
+                    {key}: {value ? value.toString() : 'N/A'}
                     </li>
                 ))}
+                </ul>
+            </li>
+            ))}
             </ul>
         </div>
     );
