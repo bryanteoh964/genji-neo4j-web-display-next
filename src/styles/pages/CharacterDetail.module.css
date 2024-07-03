@@ -42,6 +42,17 @@
     color: #666;
 }
 
+.relatedLink, .poemLink {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s ease;
+}
+
+.relatedLink:hover, .poemLink:hover {
+    background-color: #f0f0f0;
+}
+
 .relatedName, .poemChapter {
     display: block;
     margin-bottom: 5px;
@@ -75,13 +86,6 @@
 .poemLink {
     display: block;
     padding: 10px;
-    text-decoration: none;
-    color: inherit;
-    transition: background-color 0.3s ease;
-}
-
-.poemLink:hover {
-    background-color: #f0f0f0;
 }
 
 .poemJapanese {

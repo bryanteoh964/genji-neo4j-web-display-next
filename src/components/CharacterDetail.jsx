@@ -64,11 +64,13 @@ export default function CharacterDetail({ name }) {
                     <ul className={styles.relatedList}>
                         {Object.entries(relatedCharacters).map(([index, { name, relationship }]) => (
                             <li key={index} className={styles.relatedItem}>
+                            <a href={`/characters/${encodeURIComponent(name)}`} className={styles.relatedLink}>
                                 <span className={styles.relatedRelationship}>
                                     {formatRelationship(relationship)}
                                 </span>
                                 <span className={styles.relatedName}>{name}</span>
-                            </li>
+                            </a>
+                        </li>
                         ))}
                     </ul>
                 ) : (
