@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/pages/CharacterDetail.module.css';
 
+// Funct to format relationship names (delete '_' in relation)
 function formatRelationship(relationship) {
     if (!relationship) return 'N/A'; 
     return relationship
@@ -16,6 +17,7 @@ export default function CharacterDetail({ name }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Fetch character data
     useEffect(() => {
         if (name) {
             setLoading(true);
@@ -35,6 +37,7 @@ export default function CharacterDetail({ name }) {
         }
     }, [name]);
 
+    // Handle loading, error, and no data
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>Error: {error}</div>;
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
@@ -43,10 +46,13 @@ export default function CharacterDetail({ name }) {
     const hasRelatedCharacters = relatedCharacters && Object.keys(relatedCharacters).length > 0;
 
     return (
+        
         <div className={styles.container}>
             <h1 className={styles.title}>{character.name}</h1>
+
+             {/* Character information section */}
             <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>Properties</h2>
+                <h2 className={styles.sectionTitle}>Information</h2>
                 <ul className={styles.propertyList}>
                     {Object.entries(character).map(([key, value]) => (
                         <li key={key} className={styles.propertyItem}>
@@ -57,7 +63,7 @@ export default function CharacterDetail({ name }) {
                 </ul>
             </div>
             
-            
+            {/* Related characters section */}
             <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>Related Characters</h2>
                 {hasRelatedCharacters ? (
@@ -78,6 +84,7 @@ export default function CharacterDetail({ name }) {
                 )}
             </div>
             
+            {/* Related poems section */}
             <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Related Poems</h2>
                 {relatedPoems.length > 0 ? (

@@ -7,6 +7,7 @@ async function getCharacterData(name) {
         const session = await getSession();
         console.log(`Searching for character: ${name}`);
         
+        // Neo4j cypher query to fetch character data, related characters, and related poems
         const query = `
             MATCH (c:Character)
             WHERE toLower(c.name) = toLower($name) 
@@ -32,6 +33,7 @@ async function getCharacterData(name) {
 
         await session.close();
 
+         // Format and sort related poems
         if (res.records.length > 0) {
             const record = res.records[0];
             const character = toNativeTypes(record.get('character').properties);
@@ -59,7 +61,7 @@ async function getCharacterData(name) {
                     }
                     return parseInt(a.poemNum) - parseInt(b.poemNum);
                 });
-                
+
             return { character, relatedCharacters, relatedPoems };
         } else {
             console.log(`No character found with name: ${name}`);
@@ -70,6 +72,7 @@ async function getCharacterData(name) {
         return { "error": "Error in getCharacterData()", "message": error.toString() };
     }
 }
+
 // Export data from API endpoint
 export const GET = async (request) => {
     const { searchParams } = new URL(request.url);
