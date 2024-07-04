@@ -1,8 +1,6 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
 const traj = require('./traj.prod')
 
-const { getSession } = require('../neo4j_driver/route.prod.js');
-
 // tag::toNativeTypes[]
 /**
  * Convert Neo4j Properties back into JavaScript types
