@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import styles from '../styles/pages/CharacterDetail.module.css';
+import styles from '../styles/pages/characterProfile.module.css';
 
 // Funct to format relationship names (delete '_' in relation)
 function formatRelationship(relationship) {
@@ -22,7 +22,7 @@ export default function CharacterDetail({ name }) {
     useEffect(() => {
         if (name) {
             setLoading(true);
-            fetch(`/api/character?name=${encodeURIComponent(name)}`)
+            fetch(`/api/character_profile?name=${encodeURIComponent(name)}`)
                 .then(response => {
                     if (!response.ok) {
                         if (response.status === 404) {
@@ -46,7 +46,7 @@ export default function CharacterDetail({ name }) {
     // Handle loading, error, and no data
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>Error: {error}</div>;
-    if (!characterExists) return <div className={styles.error}>Character not found.</div>;
+    if (!characterExists) return <div className={styles.error}>Character does not exist.</div>;
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
 
     const { character, relatedCharacters, relatedPoems } = characterData;

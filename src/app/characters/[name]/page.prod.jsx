@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
-import CharacterDetail from '../../../components/CharacterDetail';
+import CharacterDetail from '../../../components/CharacterProfile';
 
 export default function CharacterPage() {
     const params = useParams();
