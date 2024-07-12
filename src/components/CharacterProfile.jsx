@@ -1,16 +1,44 @@
-'use client'
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/pages/characterProfile.module.css';
 
-// Funct to format relationship names (delete '_' in relation)
+// Function to format relationship names (delete '_' in relation)
 function formatRelationship(relationship) {
-    if (!relationship) return 'No related charaters found'; 
+    if (!relationship) return 'No related characters found'; 
     return relationship
         .split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 }
+
+// New component for collapsible chapter
+const CollapsibleChapter = ({ chapterNum, chapterName, poems }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.chapterContainer}>
+            <button 
+                className={styles.chapterToggle} 
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                Chapter {chapterNum}: {chapterName} {isOpen ? '▼' : '►'}
+            </button>
+            {isOpen && (
+                <ul className={styles.poemList}>
+                    {poems.map((poem, index) => (
+                        <li key={index} className={styles.poemItem}>
+                            <a href={poem.url} className={styles.poemLink}>
+                                <div className={styles.poemRelationship}>{formatRelationship(poem.relationship)}</div>
+                                <div className={styles.poemNumber}>Poem {poem.poemNum}</div>
+                                <div className={styles.poemJapanese}>{poem.poem.Japanese}</div>
+                                <div className={styles.poemRomaji}>{poem.poem.Romaji}</div>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
 
 export default function CharacterDetail({ name }) {
     const [characterData, setCharacterData] = useState(null);
@@ -52,12 +80,21 @@ export default function CharacterDetail({ name }) {
     const { character, relatedCharacters, relatedPoems } = characterData;
     const hasRelatedCharacters = relatedCharacters && Object.keys(relatedCharacters).length > 0;
 
+    // Group poems by chapter
+    const poemsByChapter = relatedPoems.reduce((acc, poem) => {
+        const chapterKey = `${poem.chapterNum}: ${poem.chapter.chapter_name}`;
+        if (!acc[chapterKey]) {
+            acc[chapterKey] = [];
+        }
+        acc[chapterKey].push(poem);
+        return acc;
+    }, {});
+
     return (
-        
         <div className={styles.container}>
             <h1 className={styles.title}>{character.name}</h1>
 
-             {/* Character information section */}
+            {/* Character information section */}
             <div className={styles.section}>
                 <h2 className={styles.sectionTitle}>Information</h2>
                 <ul className={styles.propertyList}>
@@ -77,13 +114,13 @@ export default function CharacterDetail({ name }) {
                     <ul className={styles.relatedList}>
                         {Object.entries(relatedCharacters).map(([index, { name, relationship }]) => (
                             <li key={index} className={styles.relatedItem}>
-                            <a href={`/characters/${encodeURIComponent(name)}`} className={styles.relatedLink}>
-                                <span className={styles.relatedRelationship}>
-                                    {formatRelationship(relationship)}
-                                </span>
-                                <span className={styles.relatedName}>{name}</span>
-                            </a>
-                        </li>
+                                <a href={`/characters/${encodeURIComponent(name)}`} className={styles.relatedLink}>
+                                    <span className={styles.relatedRelationship}>
+                                        {formatRelationship(relationship)}
+                                    </span>
+                                    <span className={styles.relatedName}>{name}</span>
+                                </a>
+                            </li>
                         ))}
                     </ul>
                 ) : (
@@ -93,25 +130,23 @@ export default function CharacterDetail({ name }) {
             
             {/* Related poems section */}
             <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Related Poems</h2>
-                {relatedPoems.length > 0 ? (
-                    <ul className={styles.poemList}>
-                        {relatedPoems.map((poem, index) => (
-                            <li key={index} className={styles.poemItem}>
-                                <a href={poem.url} className={styles.poemLink}>
-                                    <div className={styles.poemRelationship}>{formatRelationship(poem.relationship)}</div>
-                                    <div className={styles.poemChapter}>Chapter {poem.chapterNum}: {poem.chapter.chapter_name}</div>
-                                    <div className={styles.poemNumber}>Poem {poem.poemNum}</div>
-                                    <div className={styles.poemJapanese}>{poem.poem.Japanese}</div>
-                                    <div className={styles.poemRomaji}>{poem.poem.Romaji}</div>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                <h2 className={styles.sectionTitle}>Related Poems</h2>
+                {Object.keys(poemsByChapter).length > 0 ? (
+                    Object.entries(poemsByChapter).map(([chapterKey, poems]) => {
+                        const [chapterNum, chapterName] = chapterKey.split(': ');
+                        return (
+                            <CollapsibleChapter 
+                                key={chapterKey}
+                                chapterNum={chapterNum}
+                                chapterName={chapterName}
+                                poems={poems}
+                            />
+                        );
+                    })
                 ) : (
                     <p>No related poems found.</p>
                 )}
-        </div>
+            </div>
         </div>
     );
 }
