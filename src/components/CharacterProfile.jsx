@@ -19,8 +19,9 @@ const CollapsibleChapter = ({ chapterNum, chapterName, poems }) => {
             <button 
                 className={styles.chapterToggle} 
                 onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
             >
-                Chapter {chapterNum}: {chapterName} {isOpen ? '▼' : '►'}
+                Chapter {chapterNum}: {chapterName}
             </button>
             {isOpen && (
                 <ul className={styles.poemList}>
