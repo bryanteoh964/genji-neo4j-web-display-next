@@ -3,8 +3,10 @@
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 
 const nextConfig = (phase) => ({
+	output: 'standalone',
 	experimental: {
-		scrollRestoration: true,  
+		scrollRestoration: true,
+		appDir: true
 	},
 	pageExtensions: ['js', 'jsx']
 		.map((extension) => {
