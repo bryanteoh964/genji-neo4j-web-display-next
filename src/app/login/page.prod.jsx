@@ -12,7 +12,7 @@ const PasswordProtectPage = () => {
 	const [limiter, setLimiter] = useState(0);
 	const [timestamp, setTimestamp] = useState(Date.now());
 
-	const router = useRouter()
+	const { push } = useRouter()
 
 	const submitInput = async () => {
 		// Check limiter value before API call, 10 times a minute
@@ -32,7 +32,7 @@ const PasswordProtectPage = () => {
 				"Content-Type": "application/json",
 			},
 		})
-		router.replace(response.url)
+		push(response.url)
 	}
 
 	// useEffect hook to monitor and reset limiter
