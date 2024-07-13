@@ -2,7 +2,7 @@ import { redirect } from "next/dist/server/api-utils";
 import { NextResponse } from "next/server";
 import { useRouter } from "next/navigation";
 
-const isPasswordEnabled = !!process.env.PASSWORD_PROTECT;
+const isPasswordEnabled = !!process.env.PASSWORD_PROTECT && false;
 
 // Note: Cookie and cookie check isn't secure yet
 export function middleware(req) {

@@ -36,8 +36,8 @@ body p {
 }
 
 .bottom {
-	min-height: 80vh;
-	}
+	min-height: 80vh;	
+}
 
 .section_frame {
 	display: flex;

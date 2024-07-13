@@ -1,11 +1,9 @@
 import { isInt, isDate, isDateTime, isTime, isLocalDateTime, isLocalTime, isDuration } from 'neo4j-driver'
 const neo4j = require('neo4j-driver');
 
-const secrets = JSON.parse( process.env.APP_SECRETS );
-
-const DB_URI = secrets.NEO4J_URI;
-const DB_USER = secrets.NEO4J_USERNAME;
-const DB_PASSWORD = secrets.NEO4J_PASSWORD;
+const DB_URI = process.env.NEO4J_URI;
+const DB_USER = process.env.NEO4J_USERNAME;
+const DB_PASSWORD = process.env.NEO4J_PASSWORD;
 
 let driver = neo4j.driver(DB_URI, neo4j.auth.basic(DB_USER, DB_PASSWORD));
 

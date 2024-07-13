@@ -172,8 +172,6 @@ const PoemDisplay = ({ poemData }) => {
         })
         const _ = async () => {
 			const fetchData = async (params = {}) => {
-                
-                
                     const response = await fetch (`/api/poems?chapter=${chapter}&&number=${number}`);
                     const responseData = await response.json()
                     // Check if response was successful
