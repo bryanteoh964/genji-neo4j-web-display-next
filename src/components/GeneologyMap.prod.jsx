@@ -68,7 +68,7 @@ export default function GeneologyMap() {
 			new Character("Genji", "Genji", "光源氏（ひかるげんじ）", -213, 168, "#e0dd22", "Genji"), 
 			new Character("Prince Hyōbu", "Prince Hyōbu", "兵部卿宮（ひょうぶきょうのみや）", 280, 95, "#5f9945", "Prince Hyōbu"), 
 			new Character("Murasaki no Ue", "Murasaki no Ue", "紫の上（むらさきのうえ）", -13, 205, "#c603fc", "Murasaki"), 
-			new Character("Emperor Reizei", "Emperor Reizei", "冷泉帝（れいぜいてい）", -100, 320, "#fc44ad", "Reizei"), 
+			new Character("Emperor Reizei", "Emperor Reizei", "冷泉帝（れいぜいてい）", -100, 320, "#fc44ad", "Emperor Reizei"), 
 			new Character("A Minister", "A Minister", "大臣（だいじん）", -530, -75, "#445a69", "A Minister"),  
 			new Character("Akashi Nun", "Akashi Nun", "明石の尼君（あかしのあまきみ）", -538, -5, "#4e6158", "Akashi Nun"),
 			new Character("Novitiate", "Novitiate", "明石の入道（あかしのにゅうどう）", -693, -5, "#918d56", "Novitiate"), 
