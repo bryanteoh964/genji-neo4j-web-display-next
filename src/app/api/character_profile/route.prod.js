@@ -12,7 +12,7 @@ async function getCharacterData(name) {
             MATCH (c:Character)
             WHERE toLower(c.name) = toLower($name) 
             OPTIONAL MATCH (c)-[r1]->(related:Character)
-            OPTIONAL MATCH (c)-[r2:ADDRESS_OF|MESSENGER_OF|SPEAKER_OF]->(poem:Genji_Poem)-[:INCLUDED_IN]->(chapter:Chapter)
+            OPTIONAL MATCH (c)-[r2:ADDRESSEE_OF|MESSENGER_OF|SPEAKER_OF]->(poem:Genji_Poem)-[:INCLUDED_IN]->(chapter:Chapter)
             WITH c, related, r1, poem, chapter, r2,
                  count(poem) + 1 as poemCountInChapter
             WITH c,
