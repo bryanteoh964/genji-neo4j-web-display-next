@@ -147,7 +147,7 @@ const PoemQuery = () => {
                 >
                     <div>
                         <Button 
-                            disabled={chpSelect[0] === false}
+                            disabled={chpSelect[0] === false||!chpSelect[2]}
                             onClick={
                                 () => {
                                     setButtonLock(false)
