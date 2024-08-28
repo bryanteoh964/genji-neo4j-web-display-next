@@ -9,6 +9,17 @@ function formatRelationship(relationship) {
         .join(' ');
 }
 
+function groupRelatedCharacters(relatedCharacters) {
+    return Object.entries(relatedCharacters).reduce((acc, [, character]) => {
+        const relationship = formatRelationship(character.relationship);
+        if (!acc[relationship]) {
+            acc[relationship] = [];
+        }
+        acc[relationship].push(character);
+        return acc;
+    }, {});
+}
+
 const CollapsibleChapter = ({ chapterNum, chapterName, poems }) => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -75,7 +86,9 @@ export default function CharacterDetail({ name }) {
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
 
     const { character, relatedCharacters, relatedPoems } = characterData;
+    console.log(characterData);
     const hasRelatedCharacters = relatedCharacters && Object.keys(relatedCharacters).length > 0;
+    const groupedRelatedCharacters = groupRelatedCharacters(relatedCharacters);
 
     const poemsByChapter = relatedPoems.reduce((acc, poem) => {
         const chapterKey = `${poem.chapterNum}: ${poem.chapter.chapter_name}`;
@@ -106,27 +119,33 @@ export default function CharacterDetail({ name }) {
                         <p>{character.introduction || 'N/A'}</p>
                     </div>
                 </div>
+
                 <div className={styles.divider}></div>
+                
                 <div className={styles.section}>
                     <h2 className={styles.sectionTitle}>Related Characters</h2>
-                    {hasRelatedCharacters ? (
-                        <ul className={styles.relatedList}>
-                            {Object.entries(relatedCharacters).map(([index, { name, relationship }]) => (
-                                <li key={index} className={styles.relatedItem}>
-                                    <a href={`/characters/${encodeURIComponent(name)}`} className={styles.relatedLink}>
-                                        <span className={styles.relatedRelationship}>
-                                            {formatRelationship(relationship)}
-                                        </span>
-                                        <span className={styles.relatedName}>{name}</span>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                    {Object.keys(groupedRelatedCharacters).length > 0 ? (
+                        Object.entries(groupedRelatedCharacters).map(([relationship, characters]) => (
+                            <div key={relationship} className={styles.relationshipGroup}>
+                                <h3 className={styles.relationshipTitle}>{relationship}</h3>
+                                <ul className={styles.relatedList}>
+                                    {characters.map((character, index) => (
+                                        <li key={index} className={styles.relatedItem}>
+                                            <a href={`/characters/${encodeURIComponent(character.name)}`} className={styles.relatedLink}>
+                                                <span className={styles.relatedName}>{character.name}</span>
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
                     ) : (
                         <p className={styles.noRelatedMessage}>No related characters found.</p>
                     )}
                 </div>
+
                 <div className={styles.divider}></div>
+
                 <div className={styles.section}>
                     <h2 className={styles.sectionTitle}>Related Poems</h2>
                     {Object.keys(poemsByChapter).length > 0 ? (
