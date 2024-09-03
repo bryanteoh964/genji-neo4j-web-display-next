@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/pages/characterProfile.module.css';
 
+// format the database relationships into easy read text
 function formatRelationship(relationship) {
     if (!relationship) return 'No related characters found';
     return relationship
@@ -9,6 +10,7 @@ function formatRelationship(relationship) {
         .join(' ');
 }
 
+// group charaters with same relatioships into one group
 function groupRelatedCharacters(relatedCharacters) {
     return Object.entries(relatedCharacters).reduce((acc, [, character]) => {
         const relationship = formatRelationship(character.relationship);
@@ -50,11 +52,51 @@ const CollapsibleChapter = ({ chapterNum, chapterName, poems }) => {
     );
 };
 
+const TableOfContents = ({ sections }) => {
+    return (
+        <nav className={styles.tableOfContents}>
+            <h2>Contents</h2>
+            <ul>
+                {sections.map((section, index) => (
+                    <li key={index}>
+                        <a href={`#${section.id}`}>{section.title}</a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+};
+
 export default function CharacterDetail({ name }) {
     const [characterData, setCharacterData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [characterExists, setCharacterExists] = useState(true);
+    const [sections, setSections] = useState([]);
+    const mainContentRef = useRef(null);
+
+    useEffect(() => {
+        if (characterData) {
+            setSections([
+                { id: 'introduction', title: 'Introduction' },
+                { id: 'related-characters', title: 'Related Characters' },
+                { id: 'related-poems', title: 'Related Poems' }
+            ]);
+        }
+    }, [characterData]);
+
+    useEffect(() => {
+        const handleHashChange = () => {
+            const id = window.location.hash.slice(1);
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
 
     useEffect(() => {
         if (name) {
@@ -102,28 +144,30 @@ export default function CharacterDetail({ name }) {
     return (
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
             <h1 className={styles.title}>{character.name}</h1>
-            <div className={styles.content}>
-                <div className={styles.mainSection}>
-                    <div className={styles.infoCard}>
-                        <div className={styles.characterImage}>
-                            <img src={character.image_url || '/placeholder-image.jpg'} alt={character.name} />
+            <div className={styles.contentWrapper}>
+                <TableOfContents sections={sections} />
+                <div className={styles.mainContent} ref={mainContentRef}>
+                    <div className={styles.mainSection}>
+                        <div className={styles.infoCard}>
+                            <div className={styles.characterImage}>
+                                <img src={character.image_url || '/placeholder-image.jpg'} alt={character.name} />
+                            </div>
+                            <div className={styles.characterInfo}>
+                                <p><strong>Alternative Names:</strong> {character.alternative_names || 'N/A'}</p>
+                                <p><strong>Gender:</strong> {character.gender || 'N/A'}</p>
+                                <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
+                            </div>
                         </div>
-                        <div className={styles.characterInfo}>
-                            <p><strong>Gender:</strong> {character.gender || 'N/A'}</p>
-                            <p><strong>Alternative Names:</strong> {character.alternative_names || 'N/A'}</p>
-                            <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
+                        <div id="introduction" className={styles.introduction}>
+                            <h2 className={styles.sectionTitle}>Character Introduction</h2>
+                            <p>{character.introduction || 'N/A'}</p>
                         </div>
                     </div>
-                    <div className={styles.introduction}>
-                        <h2 className={styles.sectionTitle}>Character Introduction</h2>
-                        <p>{character.introduction || 'N/A'}</p>
-                    </div>
-                </div>
 
-                <div className={styles.divider}></div>
-                
-                <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Related Characters</h2>
+                    <div className={styles.divider}></div>
+
+                    <div id="related-characters" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Related Characters</h2>
                     {Object.keys(groupedRelatedCharacters).length > 0 ? (
                         Object.entries(groupedRelatedCharacters).map(([relationship, characters]) => (
                             <div key={relationship} className={styles.relationshipGroup}>
@@ -144,25 +188,26 @@ export default function CharacterDetail({ name }) {
                     )}
                 </div>
 
-                <div className={styles.divider}></div>
+                    <div className={styles.divider}></div>
 
-                <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Related Poems</h2>
-                    {Object.keys(poemsByChapter).length > 0 ? (
-                        Object.entries(poemsByChapter).map(([chapterKey, poems]) => {
-                            const [chapterNum, chapterName] = chapterKey.split(': ');
-                            return (
-                                <CollapsibleChapter 
-                                    key={chapterKey}
-                                    chapterNum={chapterNum}
-                                    chapterName={chapterName}
-                                    poems={poems}
-                                />
-                            );
-                        })
-                    ) : (
-                        <p>No related poems found.</p>
-                    )}
+                    <div id="related-poems" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Related Poems</h2>
+                        {Object.keys(poemsByChapter).length > 0 ? (
+                            Object.entries(poemsByChapter).map(([chapterKey, poems]) => {
+                                const [chapterNum, chapterName] = chapterKey.split(': ');
+                                return (
+                                    <CollapsibleChapter 
+                                        key={chapterKey}
+                                        chapterNum={chapterNum}
+                                        chapterName={chapterName}
+                                        poems={poems}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <p>No related poems found.</p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
