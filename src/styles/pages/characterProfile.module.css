@@ -195,6 +195,51 @@
     margin-top: 50px;
 }
 
+.contentWrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.tableOfContents {
+    width: 200px;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tableOfContents h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: var(--character-color);
+}
+
+.tableOfContents ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tableOfContents li {
+    margin-bottom: 10px;
+}
+
+.tableOfContents a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.tableOfContents a:hover {
+    color: var(--character-color);
+}
+
+.mainContent {
+    flex: 1;
+}
+
 @media (max-width: 768px) {
     .mainSection {
         flex-direction: column;
