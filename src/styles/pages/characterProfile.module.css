@@ -12,6 +12,22 @@
     margin-bottom: 30px;
     border-bottom: 2px solid var(--character-color);
     padding-bottom: 10px;
+    display: flex;
+    flex-direction: column; /*stack two titles*/
+    align-items: center;
+}
+
+.nameEnglish {
+    margin-bottom: 0.8em;
+}
+
+.nameJapanese {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.title:hover .nameJapanese {
+    opacity: 1;
 }
 
 .content {
@@ -239,6 +255,8 @@
 .mainContent {
     flex: 1;
 }
+
+
 
 @media (max-width: 768px) {
     .mainSection {

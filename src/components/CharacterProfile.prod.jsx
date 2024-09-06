@@ -52,6 +52,7 @@ const CollapsibleChapter = ({ chapterNum, chapterName, poems }) => {
     );
 };
 
+// navigation table
 const TableOfContents = ({ sections }) => {
     return (
         <nav className={styles.tableOfContents}>
@@ -143,7 +144,10 @@ export default function CharacterDetail({ name }) {
 
     return (
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
-            <h1 className={styles.title}>{character.name}</h1>
+            <h1 className={styles.title}>
+                <span className={styles.nameEnglish}>{character.name}</span>
+                <span className={styles.nameJapanese}>{character.japanese_name}</span>
+            </h1>
             <div className={styles.contentWrapper}>
                 <TableOfContents sections={sections} />
                 <div className={styles.mainContent} ref={mainContentRef}>
