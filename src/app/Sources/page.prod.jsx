@@ -16,19 +16,19 @@ const page = () => {
             <li> <a href="https://wwnorton.com/books/9780393353396" target="_blank">The Tale of Genji, translated by Dennis Washburn. Norton, 2016.</a> </li>
             <li> <a href="https://www.penguinrandomhouse.com/books/530271/the-tale-of-genji-by-murasaki-shikibu/" target="_blank">The Tale of Genji, translated by Royall Tyler. Penguin, 2002.</a> </li>
             <li>The Tale of Genji, translated by Edward Seidensticker, Knopf, 1976. 
-              <a href="https://www.penguinrandomhouse.com/books/625140/the-tale-of-genji-by-murasaki-shikibu-translated-and-introduction-by-edward-g-seidensticker/" target="_blank">Reissued by Everyman's Library, 1993.</a>
+              <a href="https://www.penguinrandomhouse.com/books/625140/the-tale-of-genji-by-murasaki-shikibu-translated-and-introduction-by-edward-g-seidensticker/" target="_blank"> Reissued by Everyman's Library, 1993.</a>
             </li>
             <li>The Tale of Genji, translated by Arthur Waley, 1925-1933. 
-              <a href="https://www.tuttlepublishing.com/books-by-country/the-tale-of-genji" target="_blank">Reissued by Tuttle, 2010.</a>
+              <a href="https://www.tuttlepublishing.com/books-by-country/the-tale-of-genji" target="_blank"> Reissued by Tuttle, 2010.</a>
             </li>
             </ul>
 
             <p>Edwin Cranston's versions of the Genji poems can be found along with his commentary in
-              <a href="https://www.sup.org/books/title/?id=4046" target="_blank">A Waka Anthology Volume Two: Grasses of Remembrance, Stanford University Press, 2006.</a>
+              <a href="https://www.sup.org/books/title/?id=4046" target="_blank"> A Waka Anthology Volume Two: Grasses of Remembrance, Stanford University Press, 2006.</a>
             </p>
 
-            <p>For more information and resources, see Professor Gaye Rowely's ,
-              <a href="https://www.gayerowley.com/teaching/genji-bibliography/" target="_blank">The Tale of Genji: Bibliography of Translations and Studies.</a>
+            <p>For more information and resources, see Professor Gaye Rowely's,
+              <a href="https://www.gayerowley.com/teaching/genji-bibliography/" target="_blank"> The Tale of Genji: Bibliography of Translations and Studies.</a>
             </p>
         </div>
     </section>
