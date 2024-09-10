@@ -1,0 +1,226 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: var(--poem-color, #333);
+}
+
+.title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.poemTitle {
+    margin-bottom: 0.2em;
+    font-size: 1em;
+}
+
+.chapterTitle {
+    margin-bottom: 0.4em;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.prominentPoemText {
+    background-color: rgba(187, 177, 179, 0.05);
+    padding: 30px 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.prominentPoemText .japanese {
+    font-size: 1em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+
+.contentWrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.tableOfContents {
+    width: 200px;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tableOfContents h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: var(--poem-color, #333);
+    border-bottom: 2px solid var(--poem-color, #333);
+    padding-bottom: 5px;
+}
+
+.tableOfContents ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.tableOfContents li {
+    margin-bottom: 10px;
+}
+
+.tableOfContents a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.tableOfContents a:hover {
+    color: var(--poem-color, #666);
+}
+
+.mainContent {
+    flex: 1;
+}
+
+.section {
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+    color: var(--poem-color, #333);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--poem-color, #333);
+    padding-bottom: 5px;
+}
+
+.poemInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.infoCard {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    flex: 1;
+}
+
+.poemText {
+    flex: 2;
+}
+
+.japanese {
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+.translations, .allusion, .relatedPoems, .tags {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    font-size: 1.2em;
+}
+
+.translation, .allusionTranslation {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.translation h3 {
+    color: var(--poem-color, #333);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--poem-color, #e0e0e0);
+}
+
+.translation p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.translation .translator-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.translation .page-number {
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+}
+
+.allusionInfo {
+    margin-bottom: 15px;
+}
+
+.relatedPoemTag, .poemTag {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.relatedPoemTag:hover, .poemTag:hover {
+    background-color: var(--poem-color, #e0e0e0);
+}
+
+.addRelatedPoem, .addTag, .updateNotes {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.characterLink {
+    text-decoration: none;
+    color: var(--poem-color, #333);
+    transition: color 0.3s ease;
+}
+
+.characterLink:hover {
+    color: var(--poem-color-hover, #666);
+    text-decoration: underline;
+}
+
+.characterLink p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+@media (max-width: 768px) {
+    .contentWrapper {
+        flex-direction: column;
+    }
+
+    .tableOfContents {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .poemInfo {
+        flex-direction: column;
+    }
+
+    .prominentPoemText {
+        padding: 20px 15px;
+    }
+
+    .prominentPoemText .japanese {
+        font-size: 1.3em;
+    }
+}

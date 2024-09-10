@@ -5,6 +5,8 @@ import { Button, Col, Divider, Input, Row, Space, Select, Tag, } from 'antd';
 import 'antd/dist/antd.min.css';
 import TextArea from 'antd/lib/input/TextArea';
 import Link from 'next/link';
+import styles from '../styles/pages/poemDisplay.module.css';
+
 
 const PoemDisplay = ({ poemData }) => {
     /*
@@ -255,213 +257,170 @@ const PoemDisplay = ({ poemData }) => {
     }, [query])
 
     return (
-        <div>
-            <Row>
-                <Col span={4}>
-                    <b>Speaker</b>
-                    {speaker.length !== 0 && speaker.map(e =>
-                        <p key={e}>{e}</p>
-                    )}
-                    <b>Proxy</b>
-                    <br />
-                    <p>N/A</p>
-                </Col>
-                <Col span={8}>
-                    <b>Japanese</b>
-                    <br />
-                    <p type='JP'>{JPRM[0]}</p>
-                </Col>
-                <Col span={8}>
-                    <b>Romaji</b>
-                    <br />
-                    <p type='non-JP'>{JPRM[1]}</p>
-                </Col>
-                <Col span={4}>
-                    <b>Addressee</b>
-                    {addressee.length !== 0 && addressee.map(e =>
-                        <p key={e}>{e}</p>
-                    )}
-                </Col>
-            </Row>
-            <Divider>Translations</Divider>
-            <Row>
-                <Col flex={1}>
-                    <b>Waley</b>
-                    <br />
-                    <p type='non-JP'>{trans['Waley'][0]}</p>
-                    <p>Page: {trans['Waley'][1] === '-1' ? 'N/A' : trans['Waley'][1]}</p>
-                </Col>
-                <Divider type="vertical" />
-                <Col flex={1}>
-                    <b>Seidensticker</b>
-                    <br />
-                    <p type='non-JP'>{trans['Seidensticker']}</p>
-                </Col>
-            </Row>
-            <Divider type="vertical" />
-            <Row>
-                <Col flex={1}>
-                    <b>Tyler</b>
-                    <br />
-                    <p type='non-JP'>{trans['Tyler']}</p>
-                </Col>
-                <Divider type="vertical" />
-                <Col flex={1}>
-                    <b>Washburn</b>
-                    <br />
-                    <p type='non-JP'>{trans['Washburn']}</p>
-                </Col>
-                <Divider type="vertical" />
-                <Col flex={1}>
-                    <b>Cranston</b>
-                    <br />
-                    <p type='non-JP'>{trans['Cranston']}</p>
-                </Col>
-            </Row>
-            <Divider>Allusions</Divider>
-            <Row>
-                {source.length !== 0 ?
-                <>
-                    {source.map(e => 
-                        <Row key ={e.id}>
-                            <Col span={6}>
-                                <label><b>Poet</b></label>
-                                <br/>
-                                <p>{e.poet}</p>
-                            </Col>
-                            <Col span={6}>
-                                <label><b>Source</b></label>
-                                <br/>
-                                {e.order !== undefined ? <p>{e.source + ' ' + e.order}</p> : <p>{e.source}</p>}
-                            </Col>
-                            <Col span={6}>
-                                <label><b>Honka</b></label>
-                                <br/>
-                                <p type={'JP'}>{e.honka}</p>
-                            </Col>
-                            <Col span={6}>
-                                <label><b>Romaji</b></label>
-                                <br/>
-                                <p>{e.romaji}</p>
-                            </Col>
-                            <br/>
-                            <Col span={24}>
-                                <label><b>Notes</b></label>
-                                <br/>
-                                <p>{e.notes}</p>
-                            </Col>
-                            <br/>
-                            {
-                                e.translation.map(el => 
-                                    <Col flex={1} key={el.id}>
-                                        <label><b>{el[0]}</b></label>
-                                        <br/>
-                                        <p>{el[1]}</p>
-                                    </Col>
-                                )
-                            }
-                            <Divider />
-                        </Row>
-                    )}
-                    {/* <Table 
-                        dataSource={source} 
-                        columns={allusionColumns} 
-                        pagination={false}
-                    /> */}
-                    </> : null
-                }
-            </Row>
-            <Divider>Related Poems</Divider>
-            <Row>
-                <Col span={24}>
-                    {rel.map(e =>
-                        <Link 
-                            key={e.id}
-                            href={`/poems/${e[0].substring == undefined ? '' : parseInt(e[0].substring(0, 2))}/${e[0].substring(4, 6) == undefined ? '' : parseInt(e[0].substring(4, 6))}`}
-                            target="_blank"
-                            onClick={(event) => auth ? event.preventDefault() : event}
-                        >
-                            <Tag
-                                visible={e[1]}
-                                onClick={deleteRel(rel.indexOf(e))}
-                            >
-                                {e[0]}
-                            </Tag>
-                        </Link>
-                    )}
-                </Col>
-                <Divider></Divider>
-                <Col span={24}>
-                    {auth === true
-                        ? <><Select
-                            showSearch
-                            options={pnum}
-                            value={IA}
-                            style={{
-                                width: '20%',
-                            }}
-                            onChange={(value) => {
-                                setIA(value)
-                            }}
-                        ></Select>
-                        <Button
-                            onClick={() => createRel()}
-                        >
-                            Link
-                        </Button></>
-                        : null}
-                </Col>
-            </Row>
-            <Divider>Tags</Divider>
-            <Row>
-                <Col span={24}>
-                    {tag.map(e =>
-                        <Tag 
-                            key={e.id}
-                            visible={e[1]}
-                            onClick={deleteTag(tag.indexOf(e))}
-                        >
-                            {e[0]}
-                        </Tag>
-                    )}
-                </Col>
-                <Divider></Divider>
-                <Col span={24}>
-                    {auth === true
-                        ? <><Select
-                            showSearch
-                            options={tagType}
-                            value={select}
-                            style={{
-                                width: '20%',
-                            }}
-                            onChange={handleSelect}
-                        />
-                        <Button
-                            onClick={() => createTag()}
-                        >
-                            Link
-                        </Button></>
-                        : null}
-                </Col>
-            </Row>
-            <Divider></Divider>
-            <Row>
-                <b>Notes:</b>
-                <br />
-                <p type="non-JP">{notes}</p>
-                {auth === true 
-                    ? <><TextArea 
-                        defaultValue={notes} 
-                        onChange={(event) => setNotes(event.target.value)}
-                    />
-                    <Button onClick={() => updateNotes()}>Update</Button></>
-                : null}
-            </Row>
-            <Divider></Divider>
-            <Row align='middle'>
+        <div className={styles.container}>
+            <h1 className={styles.title}>
+                <span className={styles.chapterTitle}>Chapter {poemData.chapterNum}</span>
+                <span className={styles.poemTitle}>Poem {poemData.poemNum}</span>
                 
-            </Row>
+                <div className={styles.prominentPoemText}>
+                    <p className={styles.japanese}>{JPRM[0]}</p>
+                </div>
+
+            </h1>
+            <div className={styles.contentWrapper}>
+                <nav className={styles.tableOfContents}>
+                    <h2>Contents</h2>
+                    <ul>
+                        <li><a href="#poem-info">Poem Information</a></li>
+                        <li><a href="#translations">Translations</a></li>
+                        <li><a href="#allusions">Allusions</a></li>
+                        <li><a href="#related-poems">Related Poems</a></li>
+                        <li><a href="#tags">Tags</a></li>
+                        <li><a href="#notes">Notes</a></li>
+                    </ul>
+                </nav>
+                <div className={styles.mainContent}>
+                    <section id="poem-info" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Poem Information</h2>
+                        <div className={styles.poemInfo}>
+                            <div className={styles.infoCard}>
+                                <h3>Speaker</h3>
+                                {speaker.length !== 0 && speaker.map(e =>
+                                    <p key={e}>{e}</p>
+                                )}
+                                <h3>Proxy</h3>
+                                <p>N/A</p>
+                            </div>
+                            <div className={styles.poemText}>
+                                <h3>Japanese</h3>
+                                <p className={styles.japanese}>{JPRM[0]}</p>
+                                <h3>Romaji</h3>
+                                <p>{JPRM[1]}</p>
+                            </div>
+                            <div className={styles.infoCard}>
+                                <h3>Addressee</h3>
+                                {addressee.length !== 0 && addressee.map(e =>
+                                    <p key={e}>{e}</p>
+                                )}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="translations" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Translations</h2>
+                        <div className={styles.translations}>
+                            {Object.entries(trans).map(([translator, translation]) => (
+                                <div key={translator} className={styles.translation}>
+                                    <h3 className={styles.translatorName}>{translator}</h3>
+                                    <p>{Array.isArray(translation) ? translation[0] : translation}</p>
+                                    {translator === 'Waley' && translation[1] !== '-1' && (
+                                        <p className={styles.pageNumber}>Page: {translation[1]}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section id="allusions" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Allusions</h2>
+                        {source.length !== 0 && source.map(e => (
+                            <div key={e.id} className={styles.allusion}>
+                                <div className={styles.allusionInfo}>
+                                    <p><strong>Poet:</strong> {e.poet}</p>
+                                    <p><strong>Source:</strong> {e.order !== undefined ? `${e.source} ${e.order}` : e.source}</p>
+                                    <p><strong>Honka:</strong> <span className={styles.japanese}>{e.honka}</span></p>
+                                    <p><strong>Romaji:</strong> {e.romaji}</p>
+                                </div>
+                                <p><strong>Notes:</strong> {e.notes}</p>
+                                <div className={styles.allusionTranslations}>
+                                    {e.translation.map((el, index) => (
+                                        <div key={index} className={styles.allusionTranslation}>
+                                            <h4>{el[0]}</h4>
+                                            <p>{el[1]}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </section>
+
+                    <section id="related-poems" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Related Poems</h2>
+                        <div className={styles.relatedPoems}>
+                            {rel.map(e =>
+                                <Link 
+                                    key={e[0]}
+                                    href={`/poems/${e[0].substring(0, 2)}/${e[0].substring(4, 6)}`}
+                                    target="_blank"
+                                    onClick={(event) => auth ? event.preventDefault() : null}
+                                >
+                                    <Tag
+                                        visible={e[1]}
+                                        onClick={deleteRel(rel.indexOf(e))}
+                                        className={styles.relatedPoemTag}
+                                    >
+                                        {e[0]}
+                                    </Tag>
+                                </Link>
+                            )}
+                        </div>
+                        {auth && (
+                            <div className={styles.addRelatedPoem}>
+                                <Select
+                                    showSearch
+                                    options={pnum}
+                                    value={IA}
+                                    style={{ width: '200px' }}
+                                    onChange={(value) => setIA(value)}
+                                />
+                                <Button onClick={() => createRel()}>Link</Button>
+                            </div>
+                        )}
+                    </section>
+
+                    <section id="tags" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Tags</h2>
+                        <div className={styles.tags}>
+                            {tag.map(e =>
+                                <Tag 
+                                    key={e[0]}
+                                    visible={e[1]}
+                                    onClick={deleteTag(tag.indexOf(e))}
+                                    className={styles.poemTag}
+                                >
+                                    {e[0]}
+                                </Tag>
+                            )}
+                        </div>
+                        {auth && (
+                            <div className={styles.addTag}>
+                                <Select
+                                    showSearch
+                                    options={tagType}
+                                    value={select}
+                                    style={{ width: '200px' }}
+                                    onChange={handleSelect}
+                                />
+                                <Button onClick={() => createTag()}>Link</Button>
+                            </div>
+                        )}
+                    </section>
+
+                    <section id="notes" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Notes</h2>
+                        <p>{notes}</p>
+                        {auth && (
+                            <div className={styles.updateNotes}>
+                                <TextArea 
+                                    defaultValue={notes} 
+                                    onChange={(event) => setNotes(event.target.value)}
+                                />
+                                <Button onClick={() => updateNotes()}>Update</Button>
+                            </div>
+                        )}
+                    </section>
+                </div>
+            </div>
         </div>
     )
   
