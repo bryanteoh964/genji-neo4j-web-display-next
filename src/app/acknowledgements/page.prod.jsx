@@ -11,7 +11,7 @@ const page = () => {
                 Beginning in the fall of 2016, students reading the Tale of Genji entered and tagged the poems. Special thanks to  <span style={{ color: 'green' }}>Elijah Woo</span>, who heroically finished the job by entering all of the poems in the Uji chapters in the spring of 2022.
             </p>
             <p>
-                <span style={{ color: 'green' }}>Rebekah Machemer</span> designed and built the first iteration of the website's front-end.
+                <span style={{ color: 'green' }}>Rebekah Machemer</span> designed and built the first iteration of the website&apos;s front-end.
             </p>
             <p>
                 <span style={{ color: 'green' }}>Marshal Dong</span> migrated the data into the graph database Neo4j and designed and implemented the search table, poem pages, and back-end editing functionality.
