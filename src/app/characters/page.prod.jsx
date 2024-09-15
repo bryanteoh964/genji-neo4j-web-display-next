@@ -12,7 +12,7 @@ const Page = () => {
 	const _ = async()=>{
 		const data = await fetch(`/api/characters_graph`);
 		const graphData = await data.json();
-		setGraph([graphData[0],graphData[1]]);
+		setGraph([graphData[0],graphData[1],graphData[2],graphData[3], graphData[4], graphData[5]]);
 
 		setIsLoading(false);
 	}
@@ -27,7 +27,7 @@ const Page = () => {
 		<div>
 			<>
 			{isLoading ? 
-					<div>Loading</div>
+					<div>Loading...</div>
 				:
 					<ReactFlowProvider>
 						<GeneologyMap l={graph}/>
