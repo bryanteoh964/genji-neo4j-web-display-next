@@ -185,9 +185,9 @@ export default function CharacterDetail({ name }) {
                                 <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
                             </div>
                         </div>
-                        <div id="about" className={styles.introduction}>
-                            <h2 className={styles.sectionTitle}>About</h2>
-                            <p>{character.introduction || 'N/A'}</p>
+                        <div id="about" className={styles.description}>
+                            <h2 className={styles.aboutTitle}>About</h2>
+                            <p className={styles.descriptionContent}>{character.Description || 'N/A'}</p>
                         </div>
                     </div>
 

@@ -1,5 +1,5 @@
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -39,6 +39,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    margin-top: auto;
     gap: 30px;
 }
 
@@ -66,12 +67,20 @@
     margin-bottom: 10px;
 }
 
-.introduction {
+.description {
     width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
+.descriptionContent{
+    line-height: 2;
+    font-size: 15px;
+    width: 100%;
+    text-align: left
+}
+
 
 .divider {
     height: 2px;
@@ -91,6 +100,10 @@
 .sectionTitle {
     color: var(--character-color);
     margin-bottom: 15px;
+}
+
+.aboutTitle {
+    margin-top: -150px;
 }
 
 .relationshipGroup {
@@ -289,7 +302,7 @@
         flex-direction: column;
     }
 
-    .infoCard, .introduction {
+    .infoCard, .description {
         width: 100%;
         margin-bottom: 20px;
     }
