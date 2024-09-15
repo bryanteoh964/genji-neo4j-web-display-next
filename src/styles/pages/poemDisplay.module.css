@@ -202,25 +202,12 @@
 }
 
 @media (max-width: 768px) {
-    .contentWrapper {
+    .mainSection {
         flex-direction: column;
     }
 
-    .tableOfContents {
+    .infoCard, .introduction {
         width: 100%;
-        position: static;
         margin-bottom: 20px;
-    }
-
-    .poemInfo {
-        flex-direction: column;
-    }
-
-    .prominentPoemText {
-        padding: 20px 15px;
-    }
-
-    .prominentPoemText .japanese {
-        font-size: 1.3em;
     }
 }

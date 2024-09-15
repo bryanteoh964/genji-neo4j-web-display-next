@@ -190,6 +190,7 @@ const PoemDisplay = ({ poemData }) => {
                 
                     const response = await fetchData({ chapter, number });
                     const exchange = response[0]
+                    console.log("exchange:", exchange)
                     const transTemp = response[1]
                     const sources  = response[2]
                     const related= response[3]
@@ -288,7 +289,7 @@ const PoemDisplay = ({ poemData }) => {
                                 {speaker.length !== 0 && speaker.map(e =>
                                     <p key={e}>{e}</p>
                                 )}
-                                <h3>Proxy</h3>
+                                <h3>Proxy</h3>  {/* Art by: notice proxy */}
                                 <p>N/A</p>
                             </div>
                             <div className={styles.poemText}>
