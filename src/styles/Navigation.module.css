@@ -42,6 +42,22 @@
     max-width: 100px;
 }
 
+@media (max-width: 1024px) {
+    .nav_container {
+        justify-content: space-between;
+    }
+
+    .nav_frame a {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .nav_frame a.long-text {
+        font-size: 12px;
+        max-width: 80px;
+    }
+}
+
 @media (max-width: 768px) {
     .nav_frame {
         height: auto;
@@ -50,14 +66,35 @@
     .nav_container {
         flex-wrap: wrap;
         justify-content: center;
+        padding: 10px;
     }
 
     .nav_frame a {
         font-size: 12px;
         padding: 8px 10px;
+        margin: 2px;
     }
 
     .nav_frame a.long-text {
+        font-size: 11px;
         max-width: none;
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav_container {
+        padding: 5px;
+    }
+
+    .nav_frame a {
+        font-size: 11px;
+        padding: 6px 8px;
+        margin: 1px;
+    }
+
+    .nav_frame a.long-text {
+        font-size: 10px;
+        padding: 6px 4px;
     }
 }

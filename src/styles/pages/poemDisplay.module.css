@@ -1,7 +1,7 @@
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
@@ -203,13 +203,129 @@
     padding: 5px 0;
 }
 
-@media (max-width: 768px) {
-    .mainSection {
+@media (max-width: 1024px) {
+    .container {
+        padding: 100px 30px;
+    }
+
+    .contentWrapper {
         flex-direction: column;
     }
 
-    .infoCard, .introduction {
+    .tableOfContents {
         width: 100%;
-        margin-bottom: 20px;
+        position: static;
+    }
+
+    .mainContent {
+        width: 100%;
+    }
+
+    .poemInfo {
+        flex-direction: column;
+    }
+
+    .infoCard, .poemText {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px 25px;
+    }
+
+    .title {
+        font-size: 1.6em;
+    }
+
+    .poemTitle {
+        font-size: 0.9em;
+    }
+
+    .chapterTitle {
+        font-size: 0.7em;
+    }
+
+    .prominentPoemText {
+        padding: 20px 15px;
+    }
+
+    .prominentPoemText .japanese {
+        font-size: 0.9em;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    .translations, .allusion, .relatedPoems, .tags {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px 20px;
+    }
+
+    .title {
+        font-size: 1.4em;
+    }
+
+    .poemTitle {
+        font-size: 0.8em;
+    }
+
+    .chapterTitle {
+        font-size: 0.6em;
+    }
+
+    .prominentPoemText {
+        padding: 15px 10px;
+    }
+
+    .prominentPoemText .japanese {
+        font-size: 0.8em;
+    }
+
+    .section {
+        padding: 10px;
+    }
+
+    .translations, .allusion, .relatedPoems, .tags {
+        font-size: 1em;
+        padding: 15px;
+    }
+
+    .translation, .allusionTranslation {
+        padding: 10px;
+    }
+
+    .sectionTitle {
+        font-size: 1.2em;
+    }
+}
+
+
+@media (max-width: 320px) {
+    .container {
+        padding: 5px 15px;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .poemTitle {
+        font-size: 0.7em;
+    }
+
+    .chapterTitle {
+        font-size: 0.5em;
     }
 }

@@ -40,3 +40,65 @@
     color: white;
     text-shadow: 2px 2px 4px #000000;
 }
+
+@media (max-width: 1024px) {
+    .header_img {
+        height: 90vh;
+    }
+
+    .container {
+        height: 20vh;
+    }
+
+    .boundary h1 {
+        font-size: 2.2rem;
+    }
+
+    .boundary h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header_img {
+        height: 85vh;
+    }
+
+    .container {
+        height: 22vh;
+    }
+
+    .boundary h1 {
+        font-size: 2rem;
+        padding-top: 0.5rem;
+        padding-bottom: 1rem;
+    }
+
+    .boundary h3 {
+        font-size: 1.2rem;
+        padding-top: 0.5rem;
+        padding-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header_img {
+        height: 80vh;
+    }
+
+    .container {
+        height: 25vh;
+    }
+
+    .boundary h1 {
+        font-size: 1.8rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.8rem;
+    }
+
+    .boundary h3 {
+        font-size: 1rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.8rem;
+    }
+}

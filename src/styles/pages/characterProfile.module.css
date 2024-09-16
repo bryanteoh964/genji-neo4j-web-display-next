@@ -1,7 +1,7 @@
 .container {
     max-width: 1300px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
@@ -70,17 +70,20 @@
 }
 
 .description {
-    width: 65%;
+    flex: 2;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
 }
 
-.descriptionContent{
-    line-height: 2;
+.descriptionContent {
+    line-height: 1.6;
     font-size: 15px;
     width: 100%;
-    text-align: left
+    text-align: left;
 }
 
 
@@ -105,7 +108,9 @@
 }
 
 .aboutTitle {
-    margin-top: -150px;
+    margin-top: 0;
+    text-align: center;
+    width: 100%;
 }
 
 .relationshipGroup {
@@ -298,14 +303,96 @@
     background-color: #e0e0e0;
 }
 
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px 30px;
+    }
 
-@media (max-width: 768px) {
+    .title {
+        font-size: 2.2em;
+    }
+
+    .contentWrapper {
+        flex-direction: column;
+    }
+
+    .tableOfContents {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .mainContent {
+        width: 100%;
+    }
+
     .mainSection {
         flex-direction: column;
     }
 
-    .infoCard, .description {
+    .infoCard, .aboutSection {
         width: 100%;
-        margin-bottom: 20px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px 25px;;
+    }
+
+    .title {
+        font-size: 2em;
+    }
+
+    .characterImage img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .characterInfo p {
+        font-size: 14px;
+    }
+
+    .descriptionContent {
+        font-size: 14px;
+    }
+
+    .aboutTitle {
+        font-size: 1.5em;
+    }
+
+    .section, .relationshipGroup, .poemItem {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px 20px;
+    }
+
+    .title {
+        font-size: 1.8em;
+    }
+
+    .characterInfo p, .descriptionContent {
+        font-size: 13px;
+    }
+
+    .aboutTitle {
+        font-size: 1.3em;
+    }
+
+    .sectionTitle {
+        font-size: 1.2em;
+    }
+
+    .relationshipTitle, .poemChapter {
+        font-size: 1em;
+    }
+
+    .section, .relationshipGroup, .poemItem {
+        padding: 10px;
     }
 }
