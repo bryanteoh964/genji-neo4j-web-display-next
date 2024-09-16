@@ -8,8 +8,8 @@ const page = () => {
 
 		<p>
 			The Tale of Genji Poetry Database is an ongoing project created by Professor J. Keith Vincent 
-			and his students in LJ250 “Masterpieces of Japanese Literature” at Boston University. 
-			The database contains all 795 poems in Murasaki Shikibu's tenth-century masterpiece, 
+			and his students in LJ250 &quot;Masterpieces of Japanese Literature&quot; at Boston University. 
+			The database contains all 795 poems in Murasaki Shikibu&apos;s tenth-century masterpiece, 
 			<i>The Tale of Genji</i>. The poems ares listed in the original Japanese, in transliterated Roman letters (romaji), 
 			and in five different English translations by Arthur Waley, Edward Seidensticker, Royall Tyler, Dennis Washburn, and Edwin Cranston.
         </p>
@@ -21,7 +21,7 @@ const page = () => {
 
         <ul>
 			<li>Use the “Poems” tab to navigate to individual pages for each poem in the Tale where you can find all five translations and a range of metadata and commentary.</li>
-			<li>The “Characters” tab shows a chart of relations among characters in the Tale. Pin specific characters in the search bar at the top to see just their relations, or hit “read info” to go to a page with information about that character. </li>
+			<li>The “Characters” tab shows a chart of relations among characters in the Tale. Pin specific characters in the search bar at the top to see just their relations, or hit &quot;read info&quot; to go to a page with information about that character. </li>
 			<li>Use the “Search” tab to get a list of all the poems in a given chapter, or to search by speaker and addressee. </li>
 		</ul>
 
@@ -40,7 +40,7 @@ const page = () => {
 		<p>
 		Studding her prose with poetry, Murasaki magnified the expressive power of her writing. In the process, she raised the social status of narrative fiction in Japanese, a genre that until her time was derided as the mere scribbling of women. 
 		She was so successful in doing so that her novel became the central text of the Japanese canon and a model for the writing of poetry, the most prestigious genre of all. 
-		As the great courtier-poet Fujiwara Shunzei would exclaim scarcely two centuries after her <i>Tale</i> was completed, “Any poet who tries to write poetry without knowing <i>the Tale of Genji</i> should be ashamed of themselves!” (源氏見ざる歌詠みは遺恨なり)
+		As the great courtier-poet Fujiwara Shunzei would exclaim scarcely two centuries after her <i>Tale</i> was completed, &quot;Any poet who tries to write poetry without knowing <i>the Tale of Genji</i> should be ashamed of themselves!&quot; (源氏見ざる歌詠みは遺恨なり)
 		</p>
       </div>
     </section>
