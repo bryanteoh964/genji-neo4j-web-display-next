@@ -1,20 +1,32 @@
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 20px 40px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+	sans-serif;
     color: var(--poem-color, #333);
+
 }
 
 .title {
+    align-items: center;
     text-align: center;
     font-size: 2em;
     margin-bottom: 20px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
+
+.poemContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    margin-right: 600px;
+  }
 
 .poemTitle {
     margin-bottom: 0.2em;
@@ -28,20 +40,48 @@
 }
 
 .prominentPoemText {
-    background-color: rgba(187, 177, 179, 0.05);
-    padding: 30px 20px;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+  }
+  
+.poemLine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.prominentPoemText .japanese {
-    font-size: 1em;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+.character {
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+
+
+.japaneseLine {
+    font-size: 1.2em;
     font-weight: bold;
     color: #000000;
-    margin-bottom: 15px;
-    line-height: 1.6;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.romajiLine {
+    font-size: 1em;
+    color: #333;
+    padding-bottom: 11px;
+    margin-bottom: 10px;
 }
 
 
@@ -90,6 +130,7 @@
 
 .mainContent {
     flex: 1;
+    text-align: left;
 }
 
 .section {
@@ -105,12 +146,21 @@
     margin-bottom: 15px;
     border-bottom: 2px solid var(--poem-color, #333);
     padding-bottom: 5px;
+    text-align: center;
 }
 
 .poemInfo {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.poemInfo .prominentPoemInInfo {
+    font-size: medium;
+    padding: 30px 100px;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: space-around;
 }
 
 .infoCard {
@@ -118,10 +168,14 @@
     border-radius: 10px;
     padding: 15px;
     flex: 1;
+    width: 100%;
+    text-align: center;
 }
 
 .poemText {
     flex: 2;
+    width: 100%;
+    text-align: center;
 }
 
 .japanese {
@@ -134,13 +188,15 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
-    font-size: 1.2em;
+    font-size: 1em;
+    text-align: left;
 }
 
-.translation, .allusionTranslation {
+.translation {
     background-color: #f9f9f9;
     border-radius: 10px;
     padding: 15px;
+    text-align: center;
 }
 
 .translation h3 {
@@ -148,11 +204,13 @@
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--poem-color, #e0e0e0);
+    text-align: center;
 }
 
 .translation p {
     margin: 0;
     line-height: 1.6;
+    text-align: center;
 }
 
 .translation .translator-name {
@@ -170,6 +228,10 @@
     margin-bottom: 15px;
 }
 
+.allusionInfo .allusionPoems {
+    text-align: center;
+}
+
 .relatedPoemTag, .poemTag {
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -185,23 +247,56 @@
     gap: 10px;
 }
 
-.characterLink {
+.characterTag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border: 2px solid #000000; 
+    border-radius: 20px; 
+    padding: 4px 15px;
+    margin: 5px;
     text-decoration: none;
-    color: var(--poem-color, #333);
-    transition: color 0.3s ease;
+    color: #333;
+    height: 40px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    line-height: 1;
+    box-sizing: border-box; 
 }
 
-.characterLink:hover {
-    color: var(--poem-color-hover, #666);
-    text-decoration: underline;
+.characterTag:hover {
+    background-color: #ffffff;
+    color: #000;
 }
 
-.characterLink p {
-    margin: 0;
-    padding: 5px 0;
+.backTop {
+    position: fixed;
+    bottom: 20px;
+    right: 70px;
+    color: #333;
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    text-align: center;
+    width: auto;  
+    white-space: nowrap;
 }
 
-@media (max-width: 768px) {
+.backTop:hover {
+    background-color: #e0e0e0;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px 30px;
+    }
+
     .contentWrapper {
         flex-direction: column;
     }
@@ -209,11 +304,53 @@
     .tableOfContents {
         width: 100%;
         position: static;
-        margin-bottom: 20px;
+    }
+
+    .mainContent {
+        width: 100%;
     }
 
     .poemInfo {
         flex-direction: column;
+    }
+
+    .infoCard, .poemText {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 1.8em;
+    }
+
+    .poemContainer {
+        margin-right: 60%;
+        padding: 15px;
+    }
+
+    .prominentPoemText {
+        padding: 15px;
+    }
+
+    .character {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px 25px;
+    }
+
+    .title {
+        font-size: 1.6em;
+    }
+
+    .poemTitle {
+        font-size: 0.9em;
+    }
+
+    .chapterTitle {
+        font-size: 0.7em;
     }
 
     .prominentPoemText {
@@ -221,6 +358,157 @@
     }
 
     .prominentPoemText .japanese {
-        font-size: 1.3em;
+        font-size: 0.9em;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    .translations, .allusion, .relatedPoems, .tags {
+        font-size: 1.1em;
+    }
+
+    .japaneseLine {
+        font-size: 1em;
+    }
+
+    .romajiLine {
+        font-size: 0.9em;
+    }
+
+    .poemTitle {
+        font-size: 0.9em;
+    }
+
+    .chapterTitle {
+        font-size: 0.7em;
+    }
+
+    .prominentPoemText {
+        padding: 10px;
+    }
+
+    .character {
+        font-size: 1.2em;
+    }
+
+    .poemLine {
+        margin-left: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px 20px;
+    }
+
+    .title {
+        font-size: 1.4em;
+    }
+
+    .poemTitle {
+        font-size: 0.8em;
+    }
+
+    .chapterTitle {
+        font-size: 0.6em;
+    }
+
+    .prominentPoemText {
+        padding: 15px 10px;
+    }
+
+    .prominentPoemText .japanese {
+        font-size: 0.8em;
+    }
+
+    .section {
+        padding: 10px;
+    }
+
+    .translations, .allusion, .relatedPoems, .tags {
+        font-size: 1em;
+        padding: 15px;
+    }
+
+    .translation, .allusionTranslation {
+        padding: 10px;
+    }
+
+    .sectionTitle {
+        font-size: 1.2em;
+    }
+
+    .japaneseLine {
+        font-size: 0.8em;
+        margin-right: 20px;
+    }
+
+    .romajiLine {
+        font-size: 0.7em;
+        margin-right: -10px;
+        padding-bottom: 8%;
+    }
+
+    .poemContainer {
+        padding: 10px;
+        margin-right: 50%;
+    }
+
+    .poemTitle {
+        font-size: 0.8em;
+    }
+
+    .chapterTitle {
+        font-size: 0.6em;
+    }
+
+    .prominentPoemText {
+        padding: 5px;
+    }
+
+    .character {
+        font-size: 1em;
+        margin-bottom: 0.1em;
+    }
+
+    .poemLine {
+        margin-left: 10px;
+    }
+}
+
+
+@media (max-width: 320px) {
+    .container {
+        padding: 5px 15px;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .poemTitle {
+        font-size: 0.7em;
+    }
+
+    .chapterTitle {
+        font-size: 0.5em;
+    }
+
+    .poemTitle {
+        font-size: 0.7em;
+    }
+
+    .chapterTitle {
+        font-size: 0.5em;
+    }
+
+    .character {
+        font-size: 0.9em;
+    }
+
+    .poemLine {
+        margin-left: 5px;
     }
 }

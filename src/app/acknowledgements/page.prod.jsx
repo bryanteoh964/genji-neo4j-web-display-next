@@ -4,6 +4,8 @@ const page = () => {
   return (
     <section className="section_frame">
         <div className="section_container">
+            <h1 className="main-title">Acknowledgements</h1>
+            
             <p>
                 The Genji Poetry Database has been made possible by the efforts of several generations of students in my classes at Boston University
             </p>

@@ -1,11 +1,13 @@
 .search_bar {
     display: flex;
     justify-content: center;
-    margin: 56px 0 56px 0;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
 }
 
 .search_display_container {
     display: flex;
     justify-content: center;
-    margin: 0 256px;
+    margin: 0 10px;
 }

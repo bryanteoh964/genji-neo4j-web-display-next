@@ -6,6 +6,7 @@ import 'antd/dist/antd.min.css';
 import TextArea from 'antd/lib/input/TextArea';
 import Link from 'next/link';
 import styles from '../styles/pages/poemDisplay.module.css';
+import {BackTop} from 'antd';
 
 
 const PoemDisplay = ({ poemData }) => {
@@ -68,9 +69,9 @@ const PoemDisplay = ({ poemData }) => {
     const [select, setSelect] = useState('')
     const [notes, setNotes] = useState("")
     const [auth, setAuth] = useState(false)
-   
-
-
+    const [isLoading, setIsLoading] = useState(true);
+    const chapterNames = {'1':'Kiritsubo 桐壺','2':'Hahakigi 帚木','3':'Utsusemi 空蝉','4':'Yūgao 夕顔','5':'Wakamurasaki 若紫','6':'Suetsumuhana 末摘花','7':'Momiji no Ga 紅葉賀','8':'Hana no En 花宴','9':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
+    const chapter_name = chapterNames[chapter]
 	const forceUpdate = useReducer(x => x + 1, 0)[1]
     
 
@@ -190,6 +191,7 @@ const PoemDisplay = ({ poemData }) => {
                 
                     const response = await fetchData({ chapter, number });
                     const exchange = response[0]
+                    console.log("exchange:", exchange)
                     const transTemp = response[1]
                     const sources  = response[2]
                     const related= response[3]
@@ -223,6 +225,9 @@ const PoemDisplay = ({ poemData }) => {
                     setTag(tags)
                     setTagType(ls)
                     setPnum(pls)
+                    console.log("trans", trans)
+                
+                setIsLoading(false);
 			};  
 			_try();
         }
@@ -256,17 +261,38 @@ const PoemDisplay = ({ poemData }) => {
         }
     }, [query])
 
+    
+    //console.log(JPRM[1])
+    //console.log(chapter)
+    //console.log(chapter_name)
+
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>
-                <span className={styles.chapterTitle}>Chapter {poemData.chapterNum}</span>
-                <span className={styles.poemTitle}>Poem {poemData.poemNum}</span>
-                
-                <div className={styles.prominentPoemText}>
-                    <p className={styles.japanese}>{JPRM[0]}</p>
-                </div>
 
+                <span className={styles.chapterTitle}>Chapter {poemData.chapterNum}: {chapter_name}</span>
+                <span className={styles.poemTitle}>Poem {poemData.poemNum}</span>
+                <div className={styles.poemContainer}>
+                    <div className={styles.prominentPoemText}>
+                        {!isLoading && JPRM[0]? (
+                        <>
+                            {JPRM[0].split('\n').map((line, index) => (
+                                <div key={`jp-${index}`} className={styles.poemLine}>
+                                    {line.split('').map((char, charIndex) => (
+                                    <span key={`char-${charIndex}`} className={styles.character}>
+                                        {char}
+                                    </span>
+                                    ))}
+                                </div>
+                            ))}
+                        </>
+                        ) : (
+                            <p>Loading poem...</p>
+                        )}
+                    </div>
+                </div>
             </h1>
+
             <div className={styles.contentWrapper}>
                 <nav className={styles.tableOfContents}>
                     <h2>Contents</h2>
@@ -286,21 +312,41 @@ const PoemDisplay = ({ poemData }) => {
                             <div className={styles.infoCard}>
                                 <h3>Speaker</h3>
                                 {speaker.length !== 0 && speaker.map(e =>
-                                    <p key={e}>{e}</p>
+                                    <a href={`/characters/${encodeURIComponent(e)}`} className={styles.characterTag}>
+                                        <p key={e}>{e || "N/A"} </p>
+                                    </a>
                                 )}
-                                <h3>Proxy</h3>
+                                <h3>Proxy</h3>  {/* Art by: notice proxy */}
                                 <p>N/A</p>
                             </div>
-                            <div className={styles.poemText}>
-                                <h3>Japanese</h3>
-                                <p className={styles.japanese}>{JPRM[0]}</p>
-                                <h3>Romaji</h3>
-                                <p>{JPRM[1]}</p>
+
+                            <div className={styles.prominentPoemInInfo}>
+                                {!isLoading && JPRM[0] && JPRM[1] ? (
+                                    <>
+                                        <div className={styles.poemLines}>
+                                            {JPRM[0].split('\n').map((line, index) => (
+                                                <p key={`jp-${index}`} className={styles.japaneseLine}>{line}</p>
+                                            ))}
+                                        </div>
+
+                                        <div className={styles.poemLines}>
+                                            {JPRM[1].split('\n').map((line, index) => (
+                                                <p key={`rm-${index}`} className={styles.romajiLine}>{line}</p>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p>Loading poem...</p>
+                                )}
                             </div>
+                            
                             <div className={styles.infoCard}>
                                 <h3>Addressee</h3>
                                 {addressee.length !== 0 && addressee.map(e =>
-                                    <p key={e}>{e}</p>
+                                    <a href={`/characters/${encodeURIComponent(e)}`} className={styles.characterTag}>
+                                        <p key={e}>{e || "N/A"}</p>
+                                    </a>
+
                                 )}
                             </div>
                         </div>
@@ -312,9 +358,37 @@ const PoemDisplay = ({ poemData }) => {
                             {Object.entries(trans).map(([translator, translation]) => (
                                 <div key={translator} className={styles.translation}>
                                     <h3 className={styles.translatorName}>{translator}</h3>
-                                    <p>{Array.isArray(translation) ? translation[0] : translation}</p>
+
+                                    {Array.isArray(translation) ? (
+                                <>
+                                    {typeof translation[0] === 'string' ? 
+                                    translation[0].split('\n').map((line, index) => (
+                                        <p key={`line-${index}`} className={styles.romajiLine}>{line}</p>
+                                    ))
+                                    : <p>{translation[0]}</p>
+                                    }
                                     {translator === 'Waley' && translation[1] !== '-1' && (
-                                        <p className={styles.pageNumber}>Page: {translation[1]}</p>
+                                    <p className={styles.pageNumber}>Page: {translation[1]}</p>
+                                    )}
+                                </>
+                                    ) : typeof translation === 'string' ? (
+                                    translation.split('\n').map((line, index) => (
+                                        <p key={`line-${index}`} className={styles.romajiLine}>{line}</p>
+                                    ))
+                                    ) : translation && typeof translation === 'object' ? (
+                                    Object.entries(translation).map(([key, value]) => (
+                                        <div key={key}>
+                                        <strong>{key}: </strong>
+                                        {typeof value === 'string' ? 
+                                            value.split('\n').map((line, index) => (
+                                            <p key={`${key}-line-${index}`} className={styles.romajiLine}>{line}</p>
+                                            ))
+                                            : <p>{value}</p>
+                                        }
+                                        </div>
+                                    ))
+                                    ) : (
+                                    <p>No translation available</p>
                                     )}
                                 </div>
                             ))}
@@ -328,18 +402,39 @@ const PoemDisplay = ({ poemData }) => {
                                 <div className={styles.allusionInfo}>
                                     <p><strong>Poet:</strong> {e.poet}</p>
                                     <p><strong>Source:</strong> {e.order !== undefined ? `${e.source} ${e.order}` : e.source}</p>
-                                    <p><strong>Honka:</strong> <span className={styles.japanese}>{e.honka}</span></p>
-                                    <p><strong>Romaji:</strong> {e.romaji}</p>
-                                </div>
-                                <p><strong>Notes:</strong> {e.notes}</p>
-                                <div className={styles.allusionTranslations}>
+                                    <p><strong>Honka:</strong> </p> 
+                                    <div className={styles.allusionPoems}>
+                                        {e.honka.split('\n').map((line, index) => (
+                                        <p key={`jp-${index}`} className={styles.japaneseLine}>{line}</p>
+                                    ))}
+                                    </div>
+                                      
+                                    
+                                    <p><strong>Romaji:</strong> </p>
+                                    <div className={styles.allusionPoems}> 
+                                        {e.romaji.split('\n').map((line, index) => (
+                                            <p key={`jp-${index}`} className={styles.romajiLine}>{line}</p>
+                                        ))}
+                                    </div>
+                                   
+                                    <p><strong>Notes:</strong> {e.notes}</p>
+
+                                    <div>
+                                    <strong>Translation:</strong>
                                     {e.translation.map((el, index) => (
-                                        <div key={index} className={styles.allusionTranslation}>
-                                            <h4>{el[0]}</h4>
-                                            <p>{el[1]}</p>
+                                        <div key={index}>
+                                            
+                                            <div className={styles.allusionPoems}>
+                                                <h4>{el[0] + ":"}</h4>
+                                                {el[1].split('\n').map((line, index) => (
+                                                    <p key={`jp-${index}`} className={styles.romajiLine}>{line}</p>
+                                                ))}
+                                            </div>
                                         </div>
                                     ))}
+                                    </div>
                                 </div>
+                                
                             </div>
                         ))}
                     </section>
@@ -421,6 +516,9 @@ const PoemDisplay = ({ poemData }) => {
                     </section>
                 </div>
             </div>
+            <BackTop className={styles.backTop}>
+                <div>Back to top</div>
+            </BackTop>
         </div>
     )
   

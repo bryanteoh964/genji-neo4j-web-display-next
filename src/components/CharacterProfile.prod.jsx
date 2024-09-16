@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/pages/characterProfile.module.css';
+import {BackTop} from 'antd';
 
 // format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -79,9 +80,9 @@ export default function CharacterDetail({ name }) {
     useEffect(() => {
         if (characterData) {
             setSections([
-                { id: 'introduction', title: 'Introduction' },
+                { id: 'about', title: 'About' },
                 { id: 'related-characters', title: 'Related Characters' },
-                { id: 'related-poems', title: 'Related Poems' }
+                { id: 'poems', title: 'Poems' }
             ]);
         }
     }, [characterData]);
@@ -142,6 +143,16 @@ export default function CharacterDetail({ name }) {
         return acc;
     }, {});
 
+    const getImageSrc = () => {
+        if (character.name) {
+          return `/images/${character.name}.png`;
+        } else if (character.image_url) {
+          return character.image_url;
+        } else {
+          return '/images/placeholder-image.jpg';
+        }
+    };
+
     return (
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
             <h1 className={styles.title}>
@@ -153,18 +164,30 @@ export default function CharacterDetail({ name }) {
                 <div className={styles.mainContent} ref={mainContentRef}>
                     <div className={styles.mainSection}>
                         <div className={styles.infoCard}>
+
                             <div className={styles.characterImage}>
-                                <img src={character.image_url || '/placeholder-image.jpg'} alt={character.name} />
+                            <img 
+                                src={getImageSrc()} 
+                                alt={character.name || 'Character'} 
+                                onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = '/images/placeholder-image.jpg';
+                                }}
+                            />
+                            <figcaption className={styles.imageCredit}>
+                                Art by: Mak
+                            </figcaption>
                             </div>
+
                             <div className={styles.characterInfo}>
                                 <p><strong>Alternative Names:</strong> {character.alternative_names || 'N/A'}</p>
                                 <p><strong>Gender:</strong> {character.gender || 'N/A'}</p>
                                 <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
                             </div>
                         </div>
-                        <div id="introduction" className={styles.introduction}>
-                            <h2 className={styles.sectionTitle}>Character Introduction</h2>
-                            <p>{character.introduction || 'N/A'}</p>
+                        <div id="about" className={styles.description}>
+                            <h2 className={styles.aboutTitle}>About</h2>
+                            <p className={styles.descriptionContent}>{character.Description || 'N/A'}</p>
                         </div>
                     </div>
 
@@ -194,8 +217,8 @@ export default function CharacterDetail({ name }) {
 
                     <div className={styles.divider}></div>
 
-                    <div id="related-poems" className={styles.section}>
-                        <h2 className={styles.sectionTitle}>Related Poems</h2>
+                    <div id="poems" className={styles.section}>
+                        <h2 className={styles.sectionTitle}>Poems</h2>
                         {Object.keys(poemsByChapter).length > 0 ? (
                             Object.entries(poemsByChapter).map(([chapterKey, poems]) => {
                                 const [chapterNum, chapterName] = chapterKey.split(': ');
@@ -214,6 +237,9 @@ export default function CharacterDetail({ name }) {
                     </div>
                 </div>
             </div>
+            <BackTop className={styles.backTop}>
+                <div>Back to top</div>
+            </BackTop>
         </div>
     );
 }

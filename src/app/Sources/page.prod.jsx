@@ -4,6 +4,8 @@ const page = () => {
   return (
     <section className="section_frame">
         <div className="section_container">
+            <h1 className="main-title">Sources and Further Resources</h1>
+            
             <p>Thanks to Dennis Washburn, Royall Tyler, and Edwin Cranston for granting permission to use their translations of Genji poems.</p>
 
             <p>The Japanese texts on this website and information on character relationships are taken from Professor Eiichi Shibuya&apos;s annotated digital edition of the Tale of Genji in Japanese, <a href="http://www.genji-monogatari.net/" target="_blank">源氏物語の世界 再編修正</a></p>
