@@ -20,6 +20,7 @@ const Nav =()=> {
                 <Link href="/edit">Edit</Link> */}
                 <Link href="/about" alt="About page">About</Link>
                 <Link href="/acknowledgements" alt="Acknowledgements page">Acknowledgements</Link>
+                <Link href="/bug" alt="Report page">Report A Bug</Link>
             </nav>
         </div>
     )
