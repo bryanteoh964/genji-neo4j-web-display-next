@@ -55,8 +55,10 @@ const CustomEdge: FC<EdgeProps> = ({
   let rel;
   if (data.label == "💀") {
     rel = "murder victim"
-  } else if (data.label == "👊") {
-    rel = "friend"
+  } else if (data.label == "🐶") {
+    rel = "pet" 
+  }else if (data.label == "👊🏻") {
+    rel = "friend" 
   } else {
     rel = data.label
   }
@@ -68,7 +70,7 @@ const CustomEdge: FC<EdgeProps> = ({
         <div
           style={{
             position: 'absolute',
-            zIndex: 2,
+            zIndex: 0, 
             transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
             background: '#ffffff',
             padding: 4,
@@ -78,8 +80,9 @@ const CustomEdge: FC<EdgeProps> = ({
             fontWeight: 700,
             border: "2px solid " + style.stroke,
             borderWidth: '2px',
-            borderRadius: 5,
+            borderRadius: 4,
             pointerEvents: 'all',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)'
           }}
           className="nodrag nopan"
         >
