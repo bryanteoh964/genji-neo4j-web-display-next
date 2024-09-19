@@ -1,16 +1,55 @@
 const { getSession } = require('../../neo4j_driver/route.prod.js');
 const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
+//var kuromoji = require("kuromoji");
+
+
+// let tokenizer = null;
+// const initializeTokenizer = () => {
+//   return new Promise((resolve, reject) => {
+//     if (tokenizer) {
+//       resolve(tokenizer);
+//     } else {
+//       kuromoji.builder({ dicPath: 'node_modules/kuromoji/dict' }).build((err, _tokenizer) => {
+//         if(err) {
+//           reject(err);
+//         } else {
+//           tokenizer = _tokenizer;
+//           resolve(tokenizer);
+//         }
+//       });
+//     }
+//   });
+// };
+
+
+// async function tokenizeJapanese(text) {
+//     try {
+//       const _tokenizer = await initializeTokenizer();
+//       const tokens = _tokenizer.tokenize(text);
+//       return tokens.map(token => token.surface_form);
+//     } catch (error) {
+//       console.error('Tokenization error:', error);
+//       return [text]; // 如果分词失败，返回原始文本
+//     }
+//   }
+
+  
 
 // Query for getting character information
 async function generalSearch(q) {
     try {
         const session = await getSession();
+        //const searchTerms = await tokenizeJapanese(q);
+        //console.log('Tokenized search terms:', searchTerms);
+        const searchTerms = [q];
         
-        
-        // Neo4j cypher query to filter poems' Japanese, Romaji, Translation with search keyword q
+        // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
             MATCH (p:Genji_Poem)
-            WHERE p.Japanese CONTAINS $q OR p.Romaji CONTAINS $q
+            WHERE ANY(term IN $searchTerms WHERE 
+                p.Japanese CONTAINS term OR 
+                p.Romaji CONTAINS term
+            )
             OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
@@ -25,7 +64,7 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
             `;
         
-        const res = await session.readTransaction(tx => tx.run(query, { q }));
+        const res = await session.readTransaction(tx => tx.run(query, { searchTerms }));
         console.log("res:", res.records)
         await session.close();
 
@@ -34,8 +73,8 @@ async function generalSearch(q) {
             const searchResults = res.records.map(record => ({
                 chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
                 poemNum: toNativeTypes(record.get('pnum').substring(2, 4)),
-                //japanese: toNativeTypes(record.get('Japanese')),
-                //romaji: toNativeTypes(record.get('Romaji')),
+                japanese: toNativeTypes(record.get('Japanese')),
+                romaji: toNativeTypes(record.get('Romaji')),
                 //translation: record.get('p.introduction')
               }));
             //console.log("searchResult:", searchResults)
@@ -45,8 +84,8 @@ async function generalSearch(q) {
             return null;
         }
     } catch (error) {
-        console.error(`Error in getCharacterData: ${error}`);
-        return { "error": "Error in getCharacterData()", "message": error.toString() };
+        console.error(`Error in generalSearch: ${error}`);
+        return { "error": "Error in generalSearch()", "message": error.toString() };
     }
 }
 
@@ -56,7 +95,7 @@ export const GET = async (request) => {
     const q = searchParams.get('q');
 
     if (!q) {
-        return new Response(JSON.stringify({ message: 'search content is required' }), { status: 400 });
+        return new Response(JSON.stringify({ message: 'Search keyword is required' }), { status: 400 });
     }
 
     try {
@@ -64,7 +103,7 @@ export const GET = async (request) => {
         if (data) {
             return new Response(JSON.stringify(data), { status: 200 });
         } else {
-            return new Response(JSON.stringify({ message: 'Not found' }), { status: 404 });
+            return new Response(JSON.stringify({ message: 'Search keyword Not found' }), { status: 404 });
         }
     } catch (error) {
         return new Response(JSON.stringify({ error: "Error in API", message: error.toString() }), { status: 500 });
