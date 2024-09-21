@@ -41,15 +41,12 @@ async function generalSearch(q) {
         const session = await getSession();
         //const searchTerms = await tokenizeJapanese(q);
         //console.log('Tokenized search terms:', searchTerms);
-        const searchTerms = [q];
+        //const searchTerms = [q];
         
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
             MATCH (p:Genji_Poem)
-            WHERE ANY(term IN $searchTerms WHERE 
-                p.Japanese CONTAINS term OR 
-                p.Romaji CONTAINS term
-            )
+            WHERE p.Japanese CONTAINS $q OR p.Romaji CONTAINS $q
             OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
@@ -64,15 +61,15 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
             `;
         
-        const res = await session.readTransaction(tx => tx.run(query, { searchTerms }));
-        console.log("res:", res.records)
+        const res = await session.readTransaction(tx => tx.run(query, { q }));
+        //console.log("res:", res.records)
         await session.close();
 
          // Format and sort related poems
         if (res.records.length > 0) {
             const searchResults = res.records.map(record => ({
                 chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
-                poemNum: toNativeTypes(record.get('pnum').substring(2, 4)),
+                poemNum: toNativeTypes(record.get('pnum').substring(4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
                 //translation: record.get('p.introduction')
