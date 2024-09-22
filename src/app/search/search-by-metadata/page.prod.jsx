@@ -32,7 +32,7 @@ const Page = () => {
 
 	return (
 		<div className={styles.viewport_container}>
-			<h1 className={styles.title}>Peom Search By Metadata</h1>
+			<h1 className={styles.title}>Poem Search By Metadata</h1>
 			<br />
 			<div>
 				<PoemSearch updateQuery={updateQuery}/>
