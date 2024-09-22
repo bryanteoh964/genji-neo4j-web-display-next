@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { debounce } from 'lodash';
 import Link from 'next/link';
-import styles from '../styles/pages/PoemKeywordSearch.module.css';
+import styles from '../styles/pages/poemKeywordSearch.module.css';
 import {BackTop} from 'antd';
 
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
@@ -91,7 +91,7 @@ const PoemSearch = () => {
     }
   };
 
-
+  // create arrays based on chapter
   const ChapterSelector = () => {
     const chapters = ['all', ...Object.keys(groupedResults).sort((a, b) => Number(a) - Number(b))];
     return (
@@ -140,10 +140,10 @@ const PoemSearch = () => {
         value={query}
         onChange={handleInputChange}
         onFocus={() => setShowResults(true)}
-        placeholder="输入搜索关键词..."
+        placeholder="Enter keyword..."
         className={styles.searchInput}
       />
-      {isLoading && <div className={styles.loadingMessage}>搜索中...</div>}
+      {isLoading && <div className={styles.loadingMessage}>Searching...</div>}
       {error && <div className={styles.errorMessage}>{error}</div>}
       {showResults && Object.keys(groupedResults).length > 0 && (
         <>
@@ -152,7 +152,7 @@ const PoemSearch = () => {
         </>
       )}
       {query && Object.keys(groupedResults).length === 0 && !isLoading && !error && (
-        <div className={styles.noResultsMessage}>没有找到匹配的诗句</div>
+        <div className={styles.noResultsMessage}>Not Found.</div>
       )}
       <BackTop className={styles.backTop}>
         <div>Back to top</div>

@@ -29,7 +29,7 @@ const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
 //       return tokens.map(token => token.surface_form);
 //     } catch (error) {
 //       console.error('Tokenization error:', error);
-//       return [text]; // 如果分词失败，返回原始文本
+//       return [text]; // if failed tokenizing, return original text
 //     }
 //   }
 
