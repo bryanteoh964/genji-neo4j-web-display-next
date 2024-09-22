@@ -9,7 +9,7 @@ export default function CharacterPage() {
     return (
         <section className={styles.section_frame}>
             <div className={styles.section_container}>
-                <h1 className={styles.title}>Peom Search By Keyword</h1>
+                <h1 className={styles.title}>Poem Search By Keyword</h1>
                 <br/>
                 <PoemSearch/>
             </div>
