@@ -1,0 +1,32 @@
+h1.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+
+.section_frame {
+	display: flex;
+	justify-content: center;
+}
+
+.section_container {
+	margin: 80px 0;
+	width: 920px;
+	min-height: 460px;
+	text-align: center;
+}
+
+.section_container a {
+	text-decoration: none;
+	color:blue;
+}
+
+.section_container h1 {
+    padding-bottom: 0.3em;
+}

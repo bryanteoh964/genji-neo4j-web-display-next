@@ -25,7 +25,7 @@
     align-items: center;
     width: 100%;
     padding: 20px;
-    margin-right: 600px;
+    margin-right: 55%;
   }
 
 .poemTitle {
@@ -44,7 +44,6 @@
     flex-direction: row-reverse;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 20px;
     overflow-x: auto;
     width: 100%;
     max-width: 100%;
@@ -55,9 +54,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
   }
   
 .character {
@@ -327,8 +325,13 @@
         padding: 15px;
     }
 
+    .poemLine {
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+
     .prominentPoemText {
-        padding: 15px;
+        padding: 1rem;
     }
 
     .character {
@@ -353,9 +356,14 @@
         font-size: 0.7em;
     }
 
-    .prominentPoemText {
-        padding: 20px 15px;
+    .poemContainer {
+        margin-right: 50%;
     }
+    
+    .poemLine {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
 
     .prominentPoemText .japanese {
         font-size: 0.9em;
@@ -452,8 +460,7 @@
     }
 
     .poemContainer {
-        padding: 10px;
-        margin-right: 50%;
+        margin-right: 40%;
     }
 
     .poemTitle {

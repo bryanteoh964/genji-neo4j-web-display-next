@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import PoemSearch from '../../components/Search.prod';
-import SearchTable from '../../components/SearchTable.prod';
+import PoemSearch from '../../../components/Search.prod';
+import SearchTable from '../../../components/SearchTable.prod';
 
-import styles from "../../styles/pages/search.module.css";
+import styles from "../../../styles/pages/search.module.css";
 
 const Page = () => {
 	const [query, setQuery] = useState()
@@ -32,6 +32,8 @@ const Page = () => {
 
 	return (
 		<div className={styles.viewport_container}>
+			<h1 className={styles.title}>Peom Search By Metadata</h1>
+			<br />
 			<div>
 				<PoemSearch updateQuery={updateQuery}/>
 			</div>
@@ -39,17 +41,17 @@ const Page = () => {
 				<div className={styles.table_section}>
 					{ queryValid ? (
 						<div>
-							<h1>Query Status: ✅</h1>
+							<h1 className={styles.title}>Query Status: ✅</h1>
 							<SearchTable query={query}/>
 						</div>
 					) : (
-						<h1>Query Status: ❌</h1>
+						<h1 className={styles.title}>Query Status: ❌</h1>
 					)
 					}
 				</div>
 				) : (
 					<div className={styles.table_section}>
-						<h1>Query Status: 🔎</h1>
+						<h1 className={styles.title}>Query Status: 🔎</h1>
 					</div>
 				)
 			}
