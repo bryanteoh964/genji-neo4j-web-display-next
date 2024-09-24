@@ -1,5 +1,6 @@
 import "../../styles/globals.css";
 
+
 const page = () => {
   return (
     <section className="section_frame">
@@ -33,6 +34,7 @@ const page = () => {
               <a href="https://www.gayerowley.com/teaching/genji-bibliography/" target="_blank"> The Tale of Genji: Bibliography of Translations and Studies.</a>
             </p>
         </div>
+
     </section>
   )
 }

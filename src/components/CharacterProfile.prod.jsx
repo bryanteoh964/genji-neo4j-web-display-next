@@ -180,7 +180,7 @@ export default function CharacterDetail({ name }) {
                             </div>
 
                             <div className={styles.characterInfo}>
-                                <p><strong>Alternative Names:</strong> {character.alternative_names || 'N/A'}</p>
+                                <p><strong>Alternative Names:</strong> {character['Alternative names'] || 'N/A'}</p>
                                 <p><strong>Gender:</strong> {character.gender || 'N/A'}</p>
                                 <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
                             </div>
