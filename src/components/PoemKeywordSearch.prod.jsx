@@ -54,7 +54,7 @@ const PoemSearch = () => {
         }
         const data = await response.json();
 
-        console.log(data.searchResults)
+        console.log("searchresult:", data.searchResults)
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map(result => ({
