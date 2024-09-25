@@ -53,13 +53,24 @@ const PoemSearch = () => {
           throw new Error('Not found.');
         }
         const data = await response.json();
+
+        console.log(data.searchResults)
+
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map(result => ({
             chapterNum: removeLeadingZero(Object.values(result.chapterNum).join('')),
             poemNum: removeLeadingZero(Object.values(result.poemNum).join('')),
             japanese: Object.values(result.japanese).join(''),
-            romaji: Object.values(result.romaji).join('')
+            romaji: Object.values(result.romaji).join(''),
+            waley_translation: Object.values(result.waley_translation).join(''),
+            seidensticker_translation:Object.values(result.seidensticker_translation).join(''),
+            tyler_translation: Object.values(result.tyler_translation).join(''),
+            washburn_translation: Object.values(result.washburn_translation).join(''),
+            cranston_translation: Object.values(result.cranston_translation).join('')
           }));
+
+          console.log(processedResults)
+
           const grouped = groupResultsByChapter(processedResults);
           setGroupedResults(grouped);
           setShowResults(true);
@@ -125,6 +136,11 @@ const PoemSearch = () => {
               <p className={styles.chapterPoemInfo}>Chapter {result.chapterNum} - Poem {result.poemNum}</p>
               <p className={styles.japaneseText}>{highlightMatch(result.japanese, query)}</p>
               <p className={styles.romajiText}>{highlightMatch(result.romaji, query)}</p>
+              <p className={styles.romajiText}>Waley: {highlightMatch(result.waley_translation, query)}</p>
+              <p className={styles.romajiText}>Seidensticker: {highlightMatch(result.seidensticker_translation, query)}</p>
+              <p className={styles.romajiText}>Tyler: {highlightMatch(result.tyler_translation, query)}</p>
+              <p className={styles.romajiText}>Washburn: {highlightMatch(result.washburn_translation, query)}</p>
+              <p className={styles.romajiText}>Cranston: {highlightMatch(result.cranston_translation, query)}</p>
             </Link>
           </li>
         ))}
