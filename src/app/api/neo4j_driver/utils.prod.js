@@ -440,4 +440,5 @@ export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph =
 
 //****************************//
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
+export default utils;

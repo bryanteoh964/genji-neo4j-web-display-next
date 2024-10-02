@@ -5,6 +5,7 @@ import Header from '../components/Header.prod';
 import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { SignIn } from '../components/auth/signin-button.prod';
 
 export const metadata = {
   title: 'The Tale of Genji Poem Database',
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
         <div className="top">
           <Header />
           <Nav />
+          <SignIn />
         </div>
        )}
         <main className="bottom">{children}</main>
