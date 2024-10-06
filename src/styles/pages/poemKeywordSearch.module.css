@@ -1,5 +1,5 @@
 .poemSearch {
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -17,7 +17,7 @@
 
 .chapterSelector {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
   gap: 10px;
   margin-bottom: 15px;
   max-width: 100%;
@@ -54,7 +54,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   overflow: hidden;
-  width: 630px;
+  width: 900px;
 }
 
 .searchResultItem {
@@ -89,6 +89,19 @@
 .romajiText {
   font-size: 0.9em;
   color: #666;
+  margin: 5px;  
+}
+
+.translation {
+  font-size: 0.9em;
+  margin: 2px;
+}
+
+.translatorName {
+  font-weight: bold;
+  color: #000000;
+  font-size: 1em;
+  margin-bottom: 5px;
 }
 
 .highlight {
@@ -136,4 +149,76 @@
 
 .backTop:hover {
   background-color: #e0e0e0;
+}
+
+@media (max-width: 1024px) {
+  .poemSearch {
+    max-width: 90%;
+  }
+
+  .searchResults {
+    width: 100%;
+  }
+
+  .chapterSelector {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .backTop {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chapterSelector {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+
+  .japaneseText {
+    font-size: 1.1em;
+  }
+
+  .romajiText, .translation {
+    font-size: 0.85em;
+  }
+
+  .backTop {
+    bottom: 20px;
+    right: 15px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .poemSearch {
+    max-width: 95%;
+  }
+
+  .chapterSelector {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .chapterButton {
+    font-size: 10px;
+  }
+
+  .searchResultItem {
+    padding: 10px;
+  }
+
+  .japaneseText {
+    font-size: 1em;
+  }
+
+  .romajiText, .translation {
+    font-size: 0.8em;
+  }
+
+  .backTop {
+    bottom: 15px;
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
 }
