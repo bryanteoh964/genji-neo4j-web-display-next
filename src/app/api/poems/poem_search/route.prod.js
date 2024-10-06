@@ -46,8 +46,9 @@ async function generalSearch(q) {
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
             MATCH (p:Genji_Poem)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
-            WITH p
-            WHERE p.Japanese CONTAINS $q OR p.Romaji CONTAINS $q OR t.translation CONTAINS $q
+            WHERE toLower(p.Japanese) CONTAINS toLower($q) 
+                    OR toLower(p.Romaji) CONTAINS toLower($q) 
+                    OR toLower(t.translation) CONTAINS toLower($q)
             OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
