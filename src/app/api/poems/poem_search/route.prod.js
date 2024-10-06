@@ -45,7 +45,7 @@ async function generalSearch(q) {
         
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
-            MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
+            MATCH (p:Genji_Poem)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
             WITH p
             WHERE p.Japanese CONTAINS $q OR p.Romaji CONTAINS $q OR t.translation CONTAINS $q
             OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
@@ -86,7 +86,7 @@ async function generalSearch(q) {
             return null;
         }
     } catch (error) {
-        console.error(`Error in generalSearch: ${error}`);
+        //console.error(`Error in generalSearch: ${error}`);
         return { "error": "Error in generalSearch()", "message": error.toString() };
     }
 }
