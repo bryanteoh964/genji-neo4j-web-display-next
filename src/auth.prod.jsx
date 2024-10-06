@@ -20,7 +20,7 @@ async function getUserFromDb(email, password) {
   }
 }
 
-const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions = {
   adapter: MongoDBAdapter(client),
   providers: [
     Credentials({
@@ -73,6 +73,8 @@ const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: '/test', 
   },
-})
+}
+
+const { handlers, auth, signIn, signOut } = NextAuth(authOptions)
 
 export { handlers, auth, signIn, signOut }

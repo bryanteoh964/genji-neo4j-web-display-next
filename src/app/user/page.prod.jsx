@@ -1,5 +1,5 @@
 import "../../styles/globals.css";
-import RegisterForm from '../../components/RegisterForm.prod';
+import UserInfo from '../../components/UserInfo.prod';
 
 
 const page = () => {
@@ -7,13 +7,13 @@ const page = () => {
     <div>
       <section className="section_frame">
           <div className="section_container">
-              <h1 className="main-title">Create an Account</h1>
+              <h1 className="main-title">User Page</h1>
           </div>
 
 
       </section>
 
-      <RegisterForm />
+      <UserInfo />
 
     </div>
   )
