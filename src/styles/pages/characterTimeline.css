@@ -41,7 +41,7 @@ cursor: pointer;
 
 
 /* Timeline stuff */
-section {
+.timeline {
     background: #5451a3;
     padding: 50px 0;
   }
