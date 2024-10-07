@@ -45,11 +45,14 @@ async function generalSearch(q) {
         
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
-            MATCH (p:Genji_Poem)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
-            WHERE toLower(p.Japanese) CONTAINS toLower($q) 
-                    OR toLower(p.Romaji) CONTAINS toLower($q) 
-                    OR toLower(t.translation) CONTAINS toLower($q)
-            OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
+            MATCH (p:Genji_Poem)
+            WHERE toLower(p.Japanese) CONTAINS toLower($q) OR toLower(p.Romaji) CONTAINS toLower($q)
+            OR EXISTS {
+                (p)<-[:TRANSLATION_OF]-(t:Translation)
+                WHERE toLower(t.translation) CONTAINS toLower($q)
+            }
+            WITH p
+            MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
             RETURN 
@@ -61,7 +64,7 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Washburn"][0].text, "") AS Washburn_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
-            `;
+        `;
         
         const res = await session.readTransaction(tx => tx.run(query, { q }));
         //console.log("res:", res.records)
