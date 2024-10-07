@@ -21,7 +21,7 @@ const Nav =()=> {
                 <Link href="/allusions">Allusions</Link>
                 <Link href="/edit">Edit</Link> */}
                 <Link href="/acknowledgements" alt="Acknowledgements page">Acknowledgements</Link>
-                <Link href="/sources" alt="Sources & Resources" className="long-text">Sources & Resources</Link>
+                <Link href="/Sources" alt="Sources & Resources" className="long-text">Sources & Resources</Link>
                 <Link href="/bug" alt="Report page">Report A Bug</Link>
             </nav>
         </div>
