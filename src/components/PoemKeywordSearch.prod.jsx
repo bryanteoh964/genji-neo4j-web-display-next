@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { debounce } from 'lodash';
 import Link from 'next/link';
 import styles from '../styles/pages/poemKeywordSearch.module.css';
@@ -27,6 +27,13 @@ const PoemSearch = () => {
   const [showResults, setShowResults] = useState(false);
   const [selectedChapter, setSelectedChapter] = useState('all');
   const searchInputRef = useRef(null);
+  const [PoemTotalNum, setPoemTotalNum] = useState(0);
+  const allResults = useMemo(() => Object.values(groupedResults).flat(), [groupedResults]);
+  
+  // use memo to avoid generating full results again when selecting back to 'All chapters' tile
+  const resultsToRender = useMemo(() => {
+    return selectedChapter === 'all' ? allResults : (groupedResults[selectedChapter] || []);
+  }, [selectedChapter, allResults, groupedResults]);
 
   // highlight matching keywords
   const highlightMatch = (text, query) => {
@@ -64,7 +71,7 @@ const PoemSearch = () => {
         }
         const data = await response.json();
 
-        console.log("searchresult:", data.searchResults)
+        //console.log("searchresult:", data.searchResults)
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map(result => ({
@@ -78,13 +85,14 @@ const PoemSearch = () => {
             washburn_translation: Object.values(result.washburn_translation).join(''),
             cranston_translation: Object.values(result.cranston_translation).join('')
           }));
-
           console.log(processedResults)
-
           const grouped = groupResultsByChapter(processedResults);
           setGroupedResults(grouped);
           setShowResults(true);
           setSelectedChapter('all');
+          //console.log("groupResultKey:", Object.keys(groupedResults));
+          //console.log("groupResultValue:", Object.values(groupedResults));
+          setPoemTotalNum(processedResults.length);
         } else {
           throw new Error('Received unexpected data structure from server');
         }
@@ -130,13 +138,17 @@ const PoemSearch = () => {
     );
   };
 
+  // count num of poem by chapter
+  const countResult = () => {
+    const num = selectedChapter === 'all' ? PoemTotalNum : (groupedResults[selectedChapter].length);
+    return (
+      <div className={styles.countResult}> 
+        Appears in <strong>{num}</strong> {num === 1 ? 'poem' : 'poems'}
+      </div>
+      )
+  }
+
   const renderResults = () => {
-    let resultsToRender = [];
-    if (selectedChapter === 'all') {
-      resultsToRender = Object.values(groupedResults).flat();
-    } else {
-      resultsToRender = groupedResults[selectedChapter] || [];
-    }
   
     const renderTranslation = (translation, translator) => {
       if (!translation) return <p>No translation available</p>;
@@ -189,6 +201,8 @@ const PoemSearch = () => {
     );
   };
 
+
+
   return (
     <div className={styles.poemSearch}>
       <input
@@ -205,6 +219,7 @@ const PoemSearch = () => {
       {showResults && Object.keys(groupedResults).length > 0 && (
         <>
           <ChapterSelector />
+          {countResult()}
           {renderResults()}
         </>
       )}
@@ -218,4 +233,4 @@ const PoemSearch = () => {
   );
 };
 
-export default PoemSearch;
+export default React.memo(PoemSearch);
