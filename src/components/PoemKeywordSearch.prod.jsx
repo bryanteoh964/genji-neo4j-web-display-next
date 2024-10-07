@@ -139,7 +139,6 @@ const PoemSearch = () => {
     }
   
     const renderTranslation = (translation, translator) => {
-      if (!translation) return <p>No translation available</p>;
       
       return translation.split('\n').map((line, index) => (
         <p key={`${translator}-line-${index}`}>
