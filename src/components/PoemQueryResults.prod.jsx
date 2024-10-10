@@ -199,7 +199,14 @@ const PoemDisplay = ({ poemData }) => {
                     const ls  = response[5]
                     const pls = response[6]
                     setSpeaker([exchange[0].start.properties.name])
-                    setAddressee(exchange.map(e => e.end.properties.name))
+                    
+                    // special case: in this poem Genji speaks to himself
+                    if(chapter == "13" && number == "02") {
+                        setAddressee("Genji")
+                    } else {
+                        setAddressee(exchange.map(e => e.end.properties.name))
+                    }
+
                     setJPRM([exchange[0].segments[0].end.properties.Japanese, exchange[0].segments[0].end.properties.Romaji])
                     setNotes(exchange[0].segments[0].end.properties.notes)
                     transTemp.forEach(e =>
@@ -226,6 +233,7 @@ const PoemDisplay = ({ poemData }) => {
                     setTagType(ls)
                     setPnum(pls)
                     console.log("trans", trans)
+                    
                 
                 setIsLoading(false);
 			};  
@@ -265,6 +273,28 @@ const PoemDisplay = ({ poemData }) => {
     //console.log(JPRM[1])
     //console.log(chapter)
     //console.log(chapter_name)
+
+    // deal with addressee special case
+    const renderAddressee = () => {
+        if (chapter === "13" && number === "02") {
+          // special case
+          return (
+            <a href={`/characters/${encodeURIComponent(addressee)}`} className={styles.characterTag}>
+              <p key={addressee}>{addressee || "N/A"}</p>
+            </a>
+          );
+        } else {
+          // normal case
+          return (
+            addressee.map(e => (
+              <a key={e} href={`/characters/${encodeURIComponent(e)}`} className={styles.characterTag}>
+                <p>{e || "N/A"}</p>
+              </a>
+            ))
+          
+          );
+        }
+    }
 
     return (
         <div className={styles.container}>
@@ -342,12 +372,7 @@ const PoemDisplay = ({ poemData }) => {
                             
                             <div className={styles.infoCard}>
                                 <h3>Addressee</h3>
-                                {addressee.length !== 0 && addressee.map(e =>
-                                    <a href={`/characters/${encodeURIComponent(e)}`} className={styles.characterTag}>
-                                        <p key={e}>{e || "N/A"}</p>
-                                    </a>
-
-                                )}
+                                {renderAddressee()}
                             </div>
                         </div>
                     </section>
