@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { signOut } from "next-auth/react"
 
 const UserInfo = () => {
   const [user, setUser] = useState(null)
@@ -61,6 +62,7 @@ const UserInfo = () => {
       <h2>{user.name}</h2>
       <p>Email: {user.email}</p>
       <button onClick={refreshData}>Refresh Data</button>
+      <button onClick={() => signOut({ callbackUrl: '/' })}>Log out</button>
     </div>
   )
 }
