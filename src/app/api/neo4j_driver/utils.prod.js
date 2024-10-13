@@ -183,62 +183,304 @@ export function concatObj(e) {
 
 
 
-//character
-export function generateGeneology(l) {
+//************  Family tree constructor  ***************/
+ 
+//*******//   //*******//   //*******//   //*******//   //*******//
+
+export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph = characters && resGraph2 = relationships && resGraph3 = character_name, japanese_name, color, gender    
+    //make dictionaries
+    var jp_dict = {}
+    var color_dict = {}
+	var gender_dict = {}
+
+	for (const [ch_name, jp_name, c, g] of resGraph3) {
+		jp_dict[ch_name] = jp_name;
+		color_dict[ch_name] = c;
+		gender_dict[ch_name] = g; 
+	}
     
-    let counts = l.reduce((acc, subArr) => {
-        subArr.forEach(str => {
-                if (!str.includes('_')){
-                    if (!acc[str]) {
-                        acc[str] = 1;
-                    } else {
-                        acc[str]++;
-                }}});
-        return acc;
-    }, {});
-    delete counts.Genji
-    let ranked = Object.entries(counts)
-        .sort((a, b) => b[1] - a[1])
-        .map(pair => pair[0]);
-       
-    let nodes = [{
-        id: '1',
-        data: {
-            label: 'Genji'
-        }, 
-        position: {x: traj[0][0], y: traj[0][0]}
-    }]
-  
-    let edges = []
-    let id = 2
-    ranked.forEach(e => {
-        nodes.push({
-            id: id.toString(),
-            data: {
-                label: e
-            },
-            position: {x : traj[1750-id*2][0], y: traj[1750-id*2][1]},
-            draggable: true,
-        })
-        id += 1
-    })
-    id = 1
-    l.forEach(e => {
-        let s = nodes.findIndex(element => element.data.label === e[0])
-        let t = nodes.findIndex(element => element.data.label === e[2])
-        s = (s+1).toString()
-        t = (t+1).toString()
-        edges.push({
-            id: 'e'+id.toString(),
-            source: s,
-            target: t,
-            label: e[1]
-        })
-        id += 1
+    
+    // lookup: Character -> [["type_rel", "who is concerned"], ...]
+    var edges_count = {}
+    for (const chrctr of resGraph) {
+        edges_count[chrctr] = []
+    }
+
+    for (let i = 0; i < resGraph2.length; i++) {
+        var character = resGraph2[i][0]
+        edges_count[character].push([resGraph2[i][1] ,resGraph2[i][2]])
+    }
+    
+    // Start with most popular character
+    var popularity = Object.entries(edges_count).map(([key, value]) => ([ key, value ]))
+
+    popularity.sort(function(a,b) {
+        return b[1].length - a[1].length 
     })
 
-    return [nodes, edges]
-  }
+    //*** START MAKING GENEOLOGICAL TREE ***// 
+
+    var characters_X_Y = [] //***RETURN: This array's every single element: [character_name, X, Y, people_related] 
+
+    var love_nodes_X_Y = [] //***RETURN: This array depicts: (Marriage, love, troubled love): [person1, person2, rel_type, X, Y] 
+
+    var X_Y_coords = {} //Which x_y coords are occupied? 
+    X_Y_coords[[-100, -100]] = true // X and Y for people without any ties
+
+    var pop_copy = [...popularity] 
+
+    // Until every character in array "popularity" has been gone through... 
+    while (popularity.length > 0) {
+
+        var [character, rels] = popularity[0] // First person in the "queue" 
+
+        // This character's X and Y 
+        var X_main = 0
+        var Y_main = 0
+        var already_assigned = false  
+
+        // See if already assigned previously
+        for (const [character_name, x_c, y_c, ] of characters_X_Y) {  
+            if (character_name == character) {
+                already_assigned = true 
+                X_main = x_c
+                Y_main = y_c 
+                break
+            } 
+        }
+
+        if (!already_assigned) { // If it is not yet assigned previously, see if it's related to other peoeple! 
+
+            //1. mentioned by people who were previously added in the array
+            for (const [character_name, x_p, y_p, relationships] of characters_X_Y) { 
+                for (const [, chrctr] of relationships) {
+                    if (!(X_main == 0 && Y_main == 0)) {  //(We just determined it!) 
+                        break
+                    }
+                    if (chrctr == character) {
+                        // find appropriate coords
+                        X_main = x_p - 250
+                        Y_main = y_p + 500
+                        while (X_Y_coords[[X_main, Y_main]]) {
+                            X_main -= 500
+                        }
+                    }
+                }
+            }
+
+            //2. Mentioned by the character's ties (we still haven't determined it)
+            if (X_main == 0 && Y_main == 0) { 
+                for (const [rel_type, person] of rels) { 
+                    for (const [chrctr, x_p, y_p, ] of characters_X_Y) { 
+                        if (chrctr == person) {
+                            // find appropriate coords 
+                            X_main = x_p - 250
+                            Y_main = y_p
+            
+                            if (rel_type == "FATHER_OF" || rel_type == "MOTHER_OF") {
+                                Y_main -= 500
+                            } else if (rel_type == "ADOPTIVE_CHILD_OF" || rel_type == "DAUGHTER_OF" || rel_type == "SON_OF" || rel_type == "SERVANT_OF" || rel_type == "PET_OF") {
+                                X_main += 250  
+                                Y_main += 1000 
+                            } else {
+                                Y_main += 500 
+                            }
+
+                            while (X_Y_coords[[X_main, Y_main]]) {
+                                X_main -= 500
+                            }
+                        }
+                    }
+                } 
+            }
+
+            //still no relationships
+            if (rels.length == 0) {
+                var every_single_character_remaining_has_no_rel = true
+                for (const [ , , , rels] of popularity) {
+                    if (rels == []) {
+                        every_single_character_remaining_has_no_rel = false
+                        break 
+                    }
+                }
+                if (every_single_character_remaining_has_no_rel) {
+                    characters_X_Y.push([character, 0, -5000, rels])
+                    popularity.splice(0,1)
+                    continue
+                }
+            }
+    
+            //***If still no matches  -> DELAY IT for later!
+            if (X_main == 0 && Y_main == 0) {
+                if (characters_X_Y.length != 0) {
+                    popularity.splice(0,1)
+                    popularity.push([character, rels]) //Add it to back of the queue!
+                    continue
+                }
+            }
+
+            // We got our X Ys for this character! 
+            X_Y_coords[[X_main, Y_main]] = true
+            characters_X_Y.push([character, X_main, Y_main, rels])
+        } 
+
+        // Final X Y coords have been determined by now: console.log("assigned X Y", X_main, Y_main)  
+
+        //*** Let's also assign the X Y for the persons related to this character! ***/ 
+        var direction = "left"  // <- alternates to create "centered" effect 
+        var love_node_direction = "left"
+
+        //Goal: assign X Y for others + also calculate position of (Marriage, love, troubled love) nodes 
+        for (const [rel_type, person] of rels) { 
+
+            // If already in list... then don't assign
+            var already_done = false
+            for (const [character_name, , , ] of characters_X_Y) { 
+                if (person == character_name) {
+                    already_done = true
+                    break
+                }
+            }
+
+            var X = X_main 
+            var Y = Y_main 
+            
+            if (rel_type == "ADOPTIVE_CHILD_OF" || rel_type == "DAUGHTER_OF" || rel_type == "SON_OF") {
+                Y -= 500
+            } else if  (rel_type == "FATHER_OF" || rel_type == "MOTHER_OF") {
+                X += 250
+                Y += 1000 
+            } else {
+                Y += 500
+            }
+
+            if (direction == "left") {
+                X -= 250
+            } else {
+                X += 250 
+            }
+
+            // ***** Assigning LOVE NODES ***** //
+            // For: love_nodes_X_Y
+
+            var node_X = X_main - 25
+            var node_Y = Y_main + 125
+            if ((rel_type == "LOVER_OF" || rel_type == "HUSBAND_OF" || rel_type == "TROUBLED_LOVER_OF") && gender_dict[character] == "male") {
+                while (X_Y_coords[[node_X, node_Y]]) { 
+                    node_Y += 10
+                    if (love_node_direction == "left") {
+                        node_X -= 50
+                    } else { // "right"
+                        node_X += 50
+                    }
+                } 
+                love_nodes_X_Y.push([character, person, rel_type, node_X, node_Y])
+                X_Y_coords[[node_X, node_Y]] = true 
+            } 
+
+            if (love_node_direction == "left") {
+                love_node_direction = "right"
+            } else { 
+                love_node_direction = "left"
+            }
+
+            if (already_done) {
+                continue
+            }
+
+            //********// //********// //********// //********// //********//
+
+            // If not yet done, ASSIGN XY coords!! 
+
+            while (X_Y_coords[[X, Y]]) { //loop "towards direction" until spot not taken
+                if (direction == "left") {
+                    X -= 500
+                } else { // "right"
+                    X += 500
+                }
+            } 
+
+            var person_rels; //find this person's relationships 
+            for (const [c, r] of pop_copy) {
+                if (person == c) {
+                    person_rels = r
+                    break
+                }
+            } 
+
+            X_Y_coords[[X, Y]] = true
+            characters_X_Y.push([person, X, Y, person_rels])
+
+
+            if (direction == "left") {
+                direction = "right"
+            } else { 
+                direction = "left"
+            }
+        }
+
+        //We can finally move this guy out of popularity 
+        popularity.splice(0,1)
+    }
+
+    //console.log("done!!!!!!!!!!!!") 
+    
+    // Adjust every node's Y
+    for (let l of characters_X_Y) {
+        l[2] = l[2] + Math.abs(l[1]) / 250 * 50  
+    }
+
+    for (let ln of love_nodes_X_Y) {
+        ln[4] = ln[4]*1.05 + Math.abs(ln[3]) / 250 * 50 + 50
+    } 
+
+    return [characters_X_Y, resGraph2, love_nodes_X_Y, jp_dict, color_dict, gender_dict] 
+}
+
+export function generateTimeline(timeline_info) {
+
+    var info = []
+    for (const [
+        name,
+        japanese_name,
+        chapter_name,
+        age_of_genji,
+        birth,
+        english,
+        japanese,
+        month,
+        day,
+        spring,
+        summer,
+        fall,
+        winter,
+    ] of timeline_info) {
+		info.push(
+            {
+				name: name,
+				jp_name: japanese_name,
+				chapter: chapter_name,
+
+				age_of_genji: parseInt(age_of_genji),
+				birth: birth,
+				english: english,
+				japanese: japanese,
+				month: parseInt(month),
+				day: parseInt(day), 
+
+				spring: spring,
+				summer: summer,
+				fall: fall,
+				winter: winter
+			}
+        )
+	}
+    
+    
+    return info
+}
   
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
+//****************************//
+
+module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline}
