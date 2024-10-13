@@ -3,6 +3,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import client from "./lib/db.prod"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from 'bcryptjs'
+import EmailProvider from "next-auth/providers/nodemailer";
 
 
 async function getUserFromDb(email, password) {
@@ -23,6 +24,17 @@ async function getUserFromDb(email, password) {
 export const authOptions = {
   adapter: MongoDBAdapter(client),
   providers: [
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD
+        }
+      },
+      from: process.env.EMAIL_FROM
+    }),
     Credentials({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
       // e.g. domain, username, password, 2FA token, etc.
@@ -70,9 +82,9 @@ export const authOptions = {
       return session;
     }
   },
-  pages: {
-    signIn: '/test', 
-  },
+  // pages: {
+  //    signIn: '/user', 
+  // },
 }
 
 const { handlers, auth, signIn, signOut } = NextAuth(authOptions)

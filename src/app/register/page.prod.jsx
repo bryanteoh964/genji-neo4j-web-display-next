@@ -1,5 +1,5 @@
 import "../../styles/globals.css";
-import RegisterForm from '../../components/RegisterForm.prod';
+import RegisterForm from '../../components/auth/RegisterForm.prod';
 
 
 const page = () => {

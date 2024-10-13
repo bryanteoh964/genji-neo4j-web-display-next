@@ -1,5 +1,5 @@
 import "../../styles/globals.css";
-import UserInfo from '../../components/UserInfo.prod';
+import UserInfo from '../../components/auth/UserInfo.prod';
 
 
 const page = () => {

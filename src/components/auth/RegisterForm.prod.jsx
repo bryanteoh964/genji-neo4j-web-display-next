@@ -21,7 +21,7 @@ const RegisterForm = () => {
       })
 
       if (res.ok) {
-        router.push('/');
+        router.push('/test');
       } else {
         const data = await res.json();
         throw new Error(data.message || 'Something went wrong');

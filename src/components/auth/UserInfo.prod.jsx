@@ -43,7 +43,7 @@ const UserInfo = () => {
             throw new Error('failed to fetch user info');
         }
         const data = await response.json();
-        localStorage.setItem('userDate', JSON.stringify(data));
+        localStorage.setItem('userData', JSON.stringify(data));
         setUser(data);
     } catch (error) {
         setError(error.message);

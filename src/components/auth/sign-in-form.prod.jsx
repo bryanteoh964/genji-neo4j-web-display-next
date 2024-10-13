@@ -56,6 +56,11 @@ export function SignIn() {
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Signing In..." : "Sign In"}
       </button>
+      <ul>
+        <a href={"/register"}>
+          <span>Create an Account</span>
+        </a>
+      </ul>
     </form>
   )
 }

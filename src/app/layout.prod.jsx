@@ -23,8 +23,17 @@ const Layout = ({ children }) => {
         <div className="top">
           <Header />
           <Nav />
+
+          {/* temperary position */}
           <SignIn />
+           {/* temperary position */}
+          <ul>
+            <a href="/user">
+              <span>User Home</span>
+            </a>
+          </ul>
         </div>
+
        )}
         <main className="bottom">{children}</main>
         <Script id="chatbot-config">
