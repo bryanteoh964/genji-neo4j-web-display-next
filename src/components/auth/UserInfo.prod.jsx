@@ -36,7 +36,8 @@ const UserInfo = () => {
       }
     }
 
-    refreshData()
+    fetchUserData();
+    refreshData();
   }, [])
 
   // func to refesh user info
@@ -58,9 +59,10 @@ const UserInfo = () => {
       }
   }
 
+  // func to update username
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');
 
     try {
       const response = await fetch('/api/update/username', {
@@ -72,11 +74,11 @@ const UserInfo = () => {
       })
 
     if (response.ok) {
-      const updatedUser = { ...user, name: newUsername }
+      const updatedUser = { ...user, name: newUsername };
       setUser(updatedUser)
-      localStorage.setItem('userData', JSON.stringify(updatedUser))
-      setIsEditing(false)
-      alert('Username updated successfully')
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      setIsEditing(false);
+      alert('Username updated successfully');
     } else {
       const errorText = await response.text();
       console.error('Error response:', errorText);
@@ -84,12 +86,12 @@ const UserInfo = () => {
     }
   } catch (error) {
     console.error('Failed to update username', error)
-    setError(error.message || 'Failed to update username. Please try again.')
+    setError(error.message || 'Failed to update username. Please try again.');
   }
 };
 
   const handleUsernameChange = (e) => {
-    setNewUsername(e.target.value)
+    setNewUsername(e.target.value);
   }
 
   if (loading) return <div>Loading user information...</div>
