@@ -11,7 +11,11 @@ export async function POST(req) {
 
         const existingUser = await collection.findOne({email});
 
-        if (existingUser) {
+        if (existingUser ) {
+            // handle email already regitered via google OAuth
+            if (!existingUser.password) {
+                return NextResponse.json({ message: "Email is already registered with Google. Try to use Google to log in." }, { status: 400 });
+            }
             return NextResponse.json({ message: "Email already exists" }, { status: 400 });
         }
 
