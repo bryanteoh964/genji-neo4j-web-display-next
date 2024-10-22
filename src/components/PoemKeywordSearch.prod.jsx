@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { debounce } from 'lodash';
 import Link from 'next/link';
 import styles from '../styles/pages/poemKeywordSearch.module.css';
-import {BackTop} from 'antd';
+import {BackTop, Select} from 'antd';
 
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
 const removeLeadingZero = (num) => {
@@ -123,18 +123,37 @@ const PoemSearch = () => {
   // create arrays based on chapter
   const ChapterSelector = () => {
     const chapters = ['all', ...Object.keys(groupedResults).sort((a, b) => Number(a) - Number(b))];
+
+    const options = chapters.map(chapter => {
+      let label;
+      if (chapter === 'all') {
+        label = 'All Chapters';
+      } else {
+        label = `${chapter} ${getChapterName_noJP(chapter)}`;
+      }
+      
+      return {
+        value: chapter,
+        label: label,
+      };
+    });
+
     return (
-      <div className={styles.chapterSelector}>
-        {chapters.map((chapter) => (
-          <button
-            key={chapter}
-            onClick={() => setSelectedChapter(chapter)}
-            className={`${styles.chapterButton} ${selectedChapter === chapter ? styles.active : ''}`}
-          >
-            {chapter === 'all' ? 'All Chapters' : `${chapter} ${getChapterName_noJP(chapter)}`}
-          </button>
-        ))}
-      </div>
+      <Select
+        value={selectedChapter}
+        onChange={(value) => setSelectedChapter(value)}
+        className={styles.chapterSelector}
+        placeholder="Select a chapter"
+        showSearch
+        filterOption={(input, option) => 
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        }
+        options={options}
+        dropdownMatchSelectWidth={true}
+        listHeight={256}
+        getPopupContainer={(trigger) => trigger.parentElement}
+        style={{ width: '200px' }}
+      />
     );
   };
 
@@ -214,8 +233,7 @@ const PoemSearch = () => {
         placeholder="Enter keyword..."
         className={styles.searchInput}
       />
-      {isLoading && <div className={styles.loadingMessage}>Searching...</div>}
-      {error && <div className={styles.errorMessage}>{error}</div>}
+      
       {showResults && Object.keys(groupedResults).length > 0 && (
         <>
           <ChapterSelector />
@@ -223,6 +241,10 @@ const PoemSearch = () => {
           {renderResults()}
         </>
       )}
+
+      {isLoading && <div className={styles.loadingMessage}>Searching...</div>}
+      {error && <div className={styles.errorMessage}>{error}</div>}
+      
       {query && Object.keys(groupedResults).length === 0 && !isLoading && !error && (
         <div className={styles.noResultsMessage}>Not Found.</div>
       )}

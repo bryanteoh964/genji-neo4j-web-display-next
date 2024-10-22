@@ -4,6 +4,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
+  position: relative;
 }
 
 .searchInput {
@@ -38,38 +39,91 @@
 }
 
 .chapterSelector {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
-  gap: 10px;
+  width: 200px;
   margin-bottom: 15px;
-  max-width: 100%;
-  justify-content: center;
 }
 
-.chapterButton {
-  padding: 4px 2px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  text-align: center;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+.chapterSelector :global(.ant-select-selector) {
+  height: 36px !important;
+  padding: 0 11px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-.chapterButton:hover {
-  background-color: #e0e0e0;
+.chapterSelector :global(.ant-select-selection-item),
+.chapterSelector :global(.ant-select-selection-placeholder) {
+  line-height: 40px !important;
+  transition: none !important;
+  position:absolute !important;
+  left: 95px !important;
+  top: 80px !important;
+  font-size: 14px !important;
+  transform: translate(-50%, -50%) !important;
+  width: calc(100% - 22px) !important; /* 减去左右padding */
+  text-align: center !important;
 }
 
-.chapterButton.active {
-  background-color: #4a90e2;
-  color: white;
+.chapterSelector :global(.ant-select-selection-search) {
+  left: 11px !important;
+  right: 11px !important;
+  inset-inline-start: 11px !important;
+  inset-inline-end: 11px !important;
+}
+
+.chapterSelector :global(.ant-select-selection-search-input) {
+  height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.chapterSelector :global(.ant-select-arrow) {
+  right: 11px !important;
+  inset-inline-end: 11px !important;
+}
+
+.chapterSelector :global(.ant-select-dropdown) {
+  z-index: 1050 !important; 
+  background-color: #fff !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  padding: 4px 0 !important;
+}
+
+.chapterSelector :global(.ant-select-item) {
+  min-height: 32px !important;
+  line-height: 32px !important;
+  padding: 5px 12px !important;
+  background-color: #fff !important;
+  border: none !important;
+}
+
+.chapterSelector :global(.ant-select-item-option-content) {
+  color: rgba(0, 0, 0, 0.85) !important;
+  font-size: 14px !important;
+}
+
+.chapterSelector :global(.ant-select-item-option-active) {
+  background-color: #f5f5f5 !important;
+}
+
+.chapterSelector :global(.ant-select-item-option-selected) {
+  background-color: #f5f5f5 !important;
+  font-weight: normal !important;
+}
+
+.chapterSelector :global(.ant-select-selection-search-input) {
+  height: 34px !important;
+}
+
+.chapterSelector :global(.ant-select-focused .ant-select-selector) {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
 }
 
 .searchResults {
+  position: relative;
+  z-index: 1;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -183,7 +237,7 @@
   }
 
   .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    width: 180px;
   }
 
   .backTop {
@@ -193,7 +247,7 @@
 
 @media (max-width: 768px) {
   .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    width: 150px;
   }
 
   .japaneseText {
@@ -218,7 +272,7 @@
   }
 
   .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    width: 100px;
   }
 
   .chapterButton {
