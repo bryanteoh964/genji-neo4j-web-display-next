@@ -153,6 +153,14 @@ export default function CharacterDetail({ name }) {
         }
     };
 
+    //Image credit
+    var artist = ""
+    if (["Genji"].includes(character.name)) {
+        artist = "Wai Lun Mak"
+    } else if (["Kiritsubo Emperor", "Kiritsubo Consort"].includes(character.name)) {
+        artist = "Emijila Strydom"
+    }
+
     return (
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
             <h1 className={styles.title}>
@@ -175,8 +183,8 @@ export default function CharacterDetail({ name }) {
                                 }}
                             />
                             <figcaption className={styles.imageCredit}>
-                                Art by: Mak
-                            </figcaption>
+                                Art by: {artist}
+                            </figcaption> 
                             </div>
 
                             <div className={styles.characterInfo}>

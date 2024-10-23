@@ -1,14 +1,23 @@
+/**/
+.glow {
+  color: #e95353;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-size:xx-large;
+  text-shadow: #FC0 1px 0 10px ;
+}
+
+
+
+/**/
 .slidecontainer {
-    width: 95%;
+    width: 99%;
     margin-left: auto;
     margin-right: auto;
 }
   
 .slider {
--webkit-appearance: none;
 width: 100%;
 height: 15px;
-border-radius: 5px;
 background: #d3d3d3;
 outline: none;
 opacity: 0.7;
@@ -21,20 +30,16 @@ opacity: 1;
 }
 
 .slider::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 25px;
-height: 25px;
+width: 35px;
+height: 35px;
 border-radius: 50%;
-background: #04AA6D;
 cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
-width: 25px;
-height: 25px;
+width: 35px;
+height: 35px;
 border-radius: 50%;
-background: #04AA6D;
 cursor: pointer;
 }
 
@@ -43,7 +48,8 @@ cursor: pointer;
 /* Timeline stuff */
 .timeline {
     background: #5451a3;
-    padding: 50px 0;
+    padding: 70px 0;
+    padding-right: 250px;
   }
   
   .section .container {
@@ -80,13 +86,13 @@ cursor: pointer;
     position: relative;
     display: inline-block;
     list-style-type: none;
-    width: 160px;
+    width: 400px;
     height: 3px;
     background: #fff;
   }
   
   .timeline ol li:last-child {
-    width: 280px;
+    width: 400px;
   }
   
   .timeline ol li:not(:first-child) {
@@ -120,19 +126,26 @@ cursor: pointer;
     display: inline-block;
   }
   
-  .timeline ol li div {
+  .timeline ol li .speech_bubble {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
     position: absolute;
     left: calc(100% + 7px);
-    width: 300px;
-    padding: 15px;
+    width: fit-content;
+    padding-left: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 25px;
     font-size: 1rem;
     white-space: normal;
     color: black;
     background: white;
     box-shadow: 10px 10px 35px 8px rgba(0,0,0,0.23);
+    display: flex;
+    justify-content: space-evenly;
   }
   
-  .timeline ol li div::before {
+  .timeline ol li .speech_bubble::before {
     content: "";
     position: absolute;
     top: 100%;
@@ -142,32 +155,25 @@ cursor: pointer;
     border-style: solid;
   }
   
-  .timeline ol li:nth-child(odd) div {
+  .timeline ol li:nth-child(odd) .speech_bubble {
     top: -16px;
     transform: translateY(-100%);
   }
   
-  .timeline ol li:nth-child(odd) div::before {
+  .timeline ol li:nth-child(odd) .speech_bubble::before {
     top: 100%;
     border-width: 8px 8px 0 0;
     border-color: white transparent transparent transparent;
   }
   
-  .timeline ol li:nth-child(even) div {
+  .timeline ol li:nth-child(even) .speech_bubble {
     top: calc(100% + 16px);
   }
   
-  .timeline ol li:nth-child(even) div::before {
+  .timeline ol li:nth-child(even) .speech_bubble::before {
     top: -8px;
     border-width: 8px 0 0 8px;
     border-color: transparent transparent transparent white;
-  }
-  
-  .timeline time {
-    display: block;
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 8px;
   }
   
   /* TIMELINE ARROWS
@@ -219,19 +225,19 @@ cursor: pointer;
       margin-left: auto;
     }
   
-    .timeline ol li div {
+    .timeline ol li .speech_bubble {
       position: static;
       width: 94%;
       height: auto !important;
       margin: 0 auto 25px;
     }
   
-    .timeline ol li:nth-child(odd) div {
+    .timeline ol li:nth-child(odd) .speech_bubble {
       transform: none;
     }
   
-    .timeline ol li:nth-child(odd) div::before,
-    .timeline ol li:nth-child(even) div::before {
+    .timeline ol li:nth-child(odd) .speech_bubble::before,
+    .timeline ol li:nth-child(even) .speech_bubble::before {
       left: 50%;
       top: 100%;
       transform: translateX(-50%);
@@ -241,9 +247,74 @@ cursor: pointer;
     }
   
     .timeline ol li:last-child,
-    .timeline ol li:nth-last-child(2) div::before,
+    .timeline ol li:nth-last-child(2) .speech_bubble::before,
     .timeline ol li:not(:last-child)::after,
     .timeline .arrows {
       display: none;
     }
+}
+
+
+
+
+/* ranges */
+datalist {
+  display: flex;
+  justify-content: space-between;
+  color: black;
+  width: 99%;
+  margin-left: 0;
+  text-shadow: rgb(127, 241, 136) 1px 0 10px ;
+}
+
+/* Speech Bubble */
+.japanese {
+  writing-mode:  vertical-rl;
+  font-size: 75px;
+  color:black;
+}
+
+.a_hv {
+  text-decoration: none;
+}
+
+.a_hv:hover {
+  text-decoration: underline;
+}
+
+
+/* Pop up */
+.box {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box a {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(46, 27, 15, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.content {
+  position: relative;
+  background: white;
+  padding: 1em 2em;
+  border-radius: 4px;
+}
+
+.modal:target {
+  display: flex;
 }

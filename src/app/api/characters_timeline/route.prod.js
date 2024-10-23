@@ -11,8 +11,10 @@ export const GET = async () =>{
 
 
 			return a.name,
+				a.color,
 				a.japanese_name,
 				c.chapter_name,
+				c.chapter_number,
 
 				b.age_of_genji,
 				b.birth ,

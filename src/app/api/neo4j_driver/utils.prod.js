@@ -442,8 +442,10 @@ export function generateTimeline(timeline_info) {
     var info = []
     for (const [
         name,
+        color,
         japanese_name,
         chapter_name,
+        chapter_number,
         age_of_genji,
         birth,
         english,
@@ -458,8 +460,10 @@ export function generateTimeline(timeline_info) {
 		info.push(
             {
 				name: name,
+                color: color,
 				jp_name: japanese_name,
 				chapter: chapter_name,
+                chapter_number: chapter_number,
 
 				age_of_genji: parseInt(age_of_genji),
 				birth: birth,
