@@ -1,8 +1,31 @@
+'use client'
 import "../../styles/globals.css";
 import UserInfo from '../../components/auth/UserInfo.prod';
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 
 const page = () => {
+
+  // check auth
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/api/auth/signin')
+    }
+  }, [status, router])
+
+  if (status === 'loading') {
+    return <div>Loading...</div>
+  }
+
+  if (!session) {
+    return null
+  }
+
   return (
     <div>
       <section className="section_frame">
