@@ -4,14 +4,14 @@ import client from "../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
-    const session = await auth()
+    const session = await auth();
 
     if(!session) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        const db = await client.db("user")
+        const db = await client.db("user");
         const user = await db.collection("info").findOne({ email: session.user.email });
     
         if (!user) {

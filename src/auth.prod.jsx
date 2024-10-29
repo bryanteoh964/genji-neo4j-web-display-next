@@ -34,7 +34,7 @@ async function googleToUserDb(user) {
     if(userInDB) {
       await db.collection("info").updateOne(
         {email: user.email}, 
-        {$set: { name: user.name}}
+        {$set: { googleName: user.name}}
       );
 
       return userInDB._id.toString();
@@ -42,7 +42,8 @@ async function googleToUserDb(user) {
       // add new user into db
       const result = await db.collection("info").insertOne({
         email: user.email,
-        name: user.name,
+        googleName: user.name,
+        name: '',
         createdAt: new Date()
       });
 
