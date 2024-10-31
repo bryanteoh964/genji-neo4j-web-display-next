@@ -11,7 +11,7 @@ phases:
       - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
       # Authenticate with ECR
-      - $(aws ecr get-login-password)
+      - aws ecr get-login-password | docker login --username AWS --password-stdin "$REPOSITORY_URI"
 
       # Construct image name and tag
       - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
