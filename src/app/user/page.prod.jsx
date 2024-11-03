@@ -1,9 +1,10 @@
 'use client'
 import "../../styles/globals.css";
 import UserInfo from '../../components/auth/UserInfo.prod';
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import FavList from "../../components/UserFavPoemList.prod";
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 
 const page = () => {
@@ -37,6 +38,7 @@ const page = () => {
       </section>
 
       <UserInfo />
+      <FavList />
 
     </div>
   )

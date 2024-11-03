@@ -286,7 +286,8 @@ const PoemDisplay = ({ poemData }) => {
                 <span className={styles.chapterTitle}>Chapter {poemData.chapterNum}: {chapter_name}</span>
                 <span className={styles.poemTitle}> Poem {poemData.poemNum}</span>
                 
-                <FavButton poemId={poemId} />
+                {/* add fav button only apppears after data fully loaded */}
+                {!isLoading && <FavButton poemId={poemId} JPRM={JPRM[0]} />}
 
                 <div className={styles.poemContainer}>
                     <div className={styles.prominentPoemText}>

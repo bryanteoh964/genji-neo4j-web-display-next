@@ -10,13 +10,15 @@ export async function POST(req) {
     }
 
     try {
-        const { poemId } = await req.json()
+        const { poemId, JPRM } = await req.json();
         
         const db = await client.db('user');
 
         await db.collection('favPoem').insertOne({
             userId: session.user.id,
             poemId: poemId,
+            jprm: JPRM,
+
             createdAt: new Date()
         });
 

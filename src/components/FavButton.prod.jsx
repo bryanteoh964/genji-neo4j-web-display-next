@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 //import styles from
 
-export default function FavButton({ poemId }) {
+export default function FavButton({ poemId, JPRM }) {
     const { data: session } = useSession();
     const [isFav, setIsFav] = useState(false);
 
@@ -41,7 +41,7 @@ export default function FavButton({ poemId }) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ poemId }),
+                    body: JSON.stringify({ poemId, JPRM }),
                 })
 
                 if(response.ok) {

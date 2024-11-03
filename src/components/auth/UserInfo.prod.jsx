@@ -1,11 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react'
-import { signOut } from "next-auth/react"
+import { useState, useEffect } from 'react';
+import { signOut } from "next-auth/react";
+import favList from "../UserFavPoemList.prod";
 
 const UserInfo = () => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState('');
 
@@ -132,6 +133,9 @@ const UserInfo = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <button onClick={refreshData}>Refresh Data</button>
       <button onClick={() => signOut({ callbackUrl: '/' })}>Log out</button>
+
+      <favList />
+      
     </div>
   )
 }
