@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { signOut } from "next-auth/react";
-import favList from "../UserFavPoemList.prod";
 
 const UserInfo = () => {
   const [user, setUser] = useState(null);
@@ -133,8 +132,6 @@ const UserInfo = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <button onClick={refreshData}>Refresh Data</button>
       <button onClick={() => signOut({ callbackUrl: '/' })}>Log out</button>
-
-      <favList />
       
     </div>
   )
