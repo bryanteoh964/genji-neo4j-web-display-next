@@ -1,0 +1,88 @@
+.frame {
+padding-top: 80px;
+display: flex;
+justify-content: center;
+}
+
+.container {
+margin: 80px;
+text-align: left;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+.pageContainer {
+  display: flex;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 10px auto;
+  padding: 0 20px;
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.userBrief {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+
+}
+
+.navButton:hover {
+  background: #f5f5f5;
+  color: #000;
+}
+
+.navButton.active {
+  background: #f0f0f0;
+  color: #000;
+  font-weight: 500;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+.contentCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  min-height: 500px;
+}
+
+

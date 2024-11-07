@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-//import styles from
+import styles from '../styles/pages/favButton.module.css';
 
 export default function FavButton({ poemId, JPRM }) {
     const { data: session } = useSession();
@@ -71,13 +71,15 @@ export default function FavButton({ poemId, JPRM }) {
     }
 
     return (
+        session &&
         <button
             onClick={handleClick}
-            //className=""
+            className={`${styles.favButton} 
+                      ${isFav ? styles.favorited : styles.unfavorited}`}
+            title={isFav ? "Remove from favorites" : "Add to favorites"}
         >
-
             {isFav ? '★' : '☆'}
-
+            
         </button>
     )
 }

@@ -1,0 +1,48 @@
+.favButton {
+background: none;
+border: none;
+padding: 8px;
+cursor: pointer;
+font-size: 1.5rem;
+line-height: 1;
+transition: all 0.3s ease;
+border-radius: 50%;
+width: 40px;
+height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+z-index: 2;
+}
+
+
+.favButton.unfavorited {
+color: #888;
+}
+
+.favButton.unfavorited:hover {
+color: #ffd700;
+transform: scale(1.1);
+}
+
+
+.favButton.favorited {
+color: #ffd700;
+text-shadow: 0 0 3px rgba(255, 215, 0, 0.3);
+}
+
+.favButton.favorited:hover {
+color: #ffc800;
+transform: scale(1.1);
+text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.favButton:active {
+transform: scale(0.95);
+}
+
+
+.favButton:hover {
+background-color: rgba(0, 0, 0, 0.05);
+}

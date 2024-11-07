@@ -1,7 +1,8 @@
 'use client'
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-//import styles from './FavPoemList.module.css'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import styles from '../styles/pages/favPoemList.module.css';
+import FavButton from './FavButton.prod';
 
 export default function FavPoemList() {
   const [favList, setFav] = useState([]);
@@ -57,25 +58,29 @@ const getPoemNum = (String) => {
   if (error) return <div>Error: {error}</div>
 
   return (
-    <div>
-      <h2>Your Favorite Poems</h2>
+    <div className={styles.favContainer}>
       {favList.length === 0 ? (
-        <p>No fav Poem yet</p>
+        <p className={styles.emptyMessage}>No favorite poems yet</p>
       ) : (
-        <ul>
+        <ul className={styles.poemList}>
           {favList.map((fav) => (
-            <li key={fav.poemId}>
-              <Link href={`/poems/${fav.chapterNum}/${fav.poemNum}`}>
-                <div>
-                  <p>{fav.chapterNum} {getChapterName(fav.chapterNum)} {fav.poemNum}</p>
+            <li key={fav.poemId} className={styles.poemCard}>
+
+              {!loading && <FavButton poemId={fav.poemId} JPRM={fav.japanese} />}
+              <Link href={`/poems/${fav.chapterNum}/${fav.poemNum}`} className={styles.poemLink}>
+                <div className={styles.poemHeader}>
+
+                  <p className={styles.chapterInfo}>
+                    {fav.chapterNum} {getChapterName(fav.chapterNum)} {fav.poemNum}
+                  </p>
+                </div>
+              
+                <div className={styles.japaneseText}>
+                  {fav.japanese.split('\n').map((line, index) => (
+                    <p key={`jp-${fav.poemId}-${index}`}>{line}</p>
+                  ))}
                 </div>
               </Link>
-
-              <div>
-                {fav.japanese.split('\n').map((line, index) => (
-                  <p key={`jp-${fav.poemId}-${index}`}>{line}</p>
-                ))}
-              </div>
             </li>
           ))}
         </ul>

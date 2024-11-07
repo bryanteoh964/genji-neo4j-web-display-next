@@ -1,0 +1,67 @@
+
+.favContainer {
+  padding: 20px;
+}
+
+.favTitle {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #eee;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: #666;
+  padding: 40px 0;
+}
+
+.poemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 20px;
+}
+
+.poemCard {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.poemCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.poemHeader {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.poemLink {
+  text-decoration: none;
+  color: #333;
+}
+
+.poemLink:hover {
+  color: #000;
+}
+
+.chapterInfo {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.japaneseText {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 8px 0;
+  color: #444;
+}

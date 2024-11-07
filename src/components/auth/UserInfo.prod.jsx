@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { signOut } from "next-auth/react";
+import styles from '../../styles/pages/userInfo.module.css';
 
 const UserInfo = () => {
   const [user, setUser] = useState(null);
@@ -99,40 +100,70 @@ const UserInfo = () => {
   if (!user) return <div>No user found</div>
 
   return (
-    <div>
-      {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <input
-            id="username"
-            type="text"
-            value={newUsername}
-            onChange={handleUsernameChange}
-          />
-          <div>
-            <button type="submit">Save</button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsEditing(false)
-                setNewUsername(user.username || '')
-              }}
-            >
-              Cancel
-            </button>
+    <div className={styles.userInfoContainer}>
+      <div className={styles.infoSection}>
+        {isEditing ? (
+          <form onSubmit={handleSubmit} className={styles.userForm}>
+            <div className={styles.inputGroup}>
+              <input
+                id="username"
+                type="text"
+                value={newUsername}
+                onChange={handleUsernameChange}
+                className={styles.input}
+                placeholder="Enter new username"
+              />
+            </div>
+            <div className={styles.buttonGroup}>
+              <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsEditing(false)
+                  setNewUsername(user.username || '')
+                }}
+                className={`${styles.button} ${styles.secondaryButton}`}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className={styles.userInfo}>
+            <div className={styles.infoRow}>
+              <span className={styles.label}>Username</span>
+              <span className={styles.value}>{user.name || 'Not set'}</span>
+              <button 
+                onClick={() => setIsEditing(true)}
+                className={styles.editButton}
+              >
+                Edit
+              </button>
+            </div>
+            <div className={styles.infoRow}>
+              <span className={styles.label}>Email</span>
+              <span className={styles.email_value}>{user.email}</span>
+            </div>
           </div>
-        </form>
-      ) : (
-        <div>
-          <p>Username: {user.name || 'Not set'}</p>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+        )}
+        {error && <p className={styles.error}>{error}</p>}
+        <div className={styles.actionButtons}>
+          <button 
+            onClick={refreshData}
+            className={`${styles.button} ${styles.secondaryButton}`}
+          >
+            Refresh Data
+          </button>
+          <button 
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className={styles.logoutButton}
+          >
+            Log out
+          </button>
         </div>
-      )}
-
-      <p>Email: {user.email}</p>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={refreshData}>Refresh Data</button>
-      <button onClick={() => signOut({ callbackUrl: '/' })}>Log out</button>
-      
+      </div>
     </div>
   )
 }
