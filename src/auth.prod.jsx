@@ -15,7 +15,7 @@ async function getUserFromDb(email, password) {
 
     // verify password    
     if (user && await bcrypt.compare(password, user.password)) {
-      return { id: user._id.toString(), email: user.email, name: user.name };
+      return { id: user._id.toString(), email: user.email, name: user.name, role: user.role || "user" };
     }
     return null;
   } catch (error) {
@@ -37,17 +37,24 @@ async function googleToUserDb(user) {
         {$set: { googleName: user.name}}
       );
 
-      return userInDB._id.toString();
+      return {
+        id: userInDB._id.toString(),
+        role: userInDB.role
+      };
     } else {
       // add new user into db
       const result = await db.collection("info").insertOne({
         email: user.email,
         googleName: user.name,
         name: '',
+        role: "user",
         createdAt: new Date()
       });
 
-      return result.insertedId.toString();
+      return {
+        id: result.insertedId.toString(),
+        role: result.role
+      };
     }
   } catch (error) {
     console.error("saving Google user into db has error:", error);
@@ -121,6 +128,16 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
+      } else if (token?.email) {
+
+        const db = await client.db("user");
+        const dbUser = await db.collection("info").findOne({ email: token.email });
+
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.name = dbUser.name;
+        }
       }
 
       return token;
@@ -129,6 +146,8 @@ export const authOptions = {
     async session({ session, token }) {
       if(session.user) {
         session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.name = token.name;
       }
 
       return session;
@@ -146,10 +165,11 @@ export const authOptions = {
       try {
   
         if (account?.provider === 'google') {
-          const userId = await googleToUserDb(user);
+          const userInfo = await googleToUserDb(user);
           
-          if (userId) {
-            user.id = userId;
+          if (userInfo) {
+            user.id = userInfo.id;
+            user.role = userInfo.role;
           }
         }
       } catch (error) {

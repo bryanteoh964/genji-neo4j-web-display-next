@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { signOut } from "next-auth/react";
 import styles from '../../styles/pages/userInfo.module.css';
+import { useSession } from 'next-auth/react';
 
 const UserInfo = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,7 @@ const UserInfo = () => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState('');
+  const { data: session, update: updateSession } = useSession();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -53,6 +55,15 @@ const UserInfo = () => {
         localStorage.setItem('userData', JSON.stringify(data));
         setUser(data);
         setNewUsername(data.username || '');
+
+        await updateSession({
+          ...session,
+          user: {
+            ...session.user,
+            name: newUsername,
+            role: data.role
+          }
+        });
     } catch (error) {
         setError(error.message);
       } finally {
@@ -79,6 +90,16 @@ const UserInfo = () => {
       setUser(updatedUser)
       localStorage.setItem('userData', JSON.stringify(updatedUser));
       setIsEditing(false);
+
+      // update session username
+      await updateSession({
+        ...session,
+        user: {
+          ...session.user,
+          name: newUsername
+        }
+      });
+
       alert('Username updated successfully');
     } else {
       const errorText = await response.text();
@@ -115,9 +136,14 @@ const UserInfo = () => {
               />
             </div>
             <div className={styles.buttonGroup}>
-              <button type="submit" className={`${styles.button} ${styles.primaryButton}`}>
-                Save
-              </button>
+            <button 
+              type="submit" 
+              className={`${styles.button} ${styles.primaryButton}`}
+              // avoid empty input and no change
+              disabled={!newUsername.trim() || newUsername.trim() === user.name}
+            >
+              Save
+            </button>
               <button
                 type="button"
                 onClick={() => {

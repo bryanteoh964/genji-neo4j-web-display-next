@@ -24,6 +24,7 @@ export async function POST(req) {
         const result = await collection.insertOne({
             name: '',
             email,
+            role: 'user',
             password: hashedPassword,
             createdAt: new Date()
         })

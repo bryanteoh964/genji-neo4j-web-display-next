@@ -23,13 +23,13 @@ text-align: left;
 .pageContainer {
   display: flex;
   gap: 30px;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 10px auto;
   padding: 0 20px;
 }
 
 .sidebar {
-  width: 280px;
+  width: 200px;
   flex-shrink: 0;
 }
 
