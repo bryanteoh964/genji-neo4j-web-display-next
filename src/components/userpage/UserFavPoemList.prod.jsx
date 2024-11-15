@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/favPoemList.module.css';
-import FavButton from './FavButton.prod';
+import styles from '../../styles/pages/favPoemList.module.css';
+import FavButton from '../FavButton.prod';
 
 export default function FavPoemList() {
   const [favList, setFav] = useState([]);

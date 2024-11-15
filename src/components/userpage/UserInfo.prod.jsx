@@ -24,7 +24,7 @@ const UserInfo = () => {
           return;
         }
 
-        const response = await fetch('api/user');
+        const response = await fetch('api/user/me');
         if(!response.ok) {
             throw new Error('failed to fetch user info');
         }
@@ -47,7 +47,7 @@ const UserInfo = () => {
   const refreshData = async () => {
     setLoading(true);
     try {
-        const response = await fetch('api/user');
+        const response = await fetch('api/user/me');
         if(!response.ok) {
             throw new Error('failed to fetch user info');
         }
@@ -161,6 +161,7 @@ const UserInfo = () => {
             <div className={styles.infoRow}>
               <span className={styles.label}>Username</span>
               <span className={styles.value}>{user.name || 'Not set'}</span>
+
               <button 
                 onClick={() => setIsEditing(true)}
                 className={styles.editButton}
@@ -168,9 +169,17 @@ const UserInfo = () => {
                 Edit
               </button>
             </div>
+
             <div className={styles.infoRow}>
               <span className={styles.label}>Email</span>
               <span className={styles.email_value}>{user.email}</span>
+            </div>
+
+            <div className={styles.infoRow}>
+              <span className={styles.label}>Homepage</span>
+              <a href={`/userhomepage/${user._id}`}>
+                <span className={styles.email_value}>Homepage Link</span>
+              </a>
             </div>
           </div>
         )}

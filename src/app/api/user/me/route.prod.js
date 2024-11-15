@@ -1,6 +1,6 @@
 //import { getServerSession } from "next-auth";
-import { auth } from "../../../auth.prod";
-import client from "../../../lib/db.prod";
+import { auth } from "../../../../auth.prod";
+import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {

@@ -6,9 +6,9 @@ import styles from '../../styles/SignInButton.module.css';
 export function SignIn() {
   const { data: session, status } = useSession();
 
-  if(status === "loading") {
-    return <div className={styles.button}>Loading...</div>
-  }
+  // if(status === "loading") {
+  //   return <div className={styles.button}>Loading...</div>
+  // }
 
   if(session) {
     return (

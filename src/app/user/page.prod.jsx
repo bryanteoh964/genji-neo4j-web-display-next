@@ -1,7 +1,7 @@
 'use client'
-import UserInfo from '../../components/auth/UserInfo.prod';
-import FavList from "../../components/UserFavPoemList.prod";
-import Note from "../../components/UserNote.prod";
+import UserInfo from '../../components/userpage/UserInfo.prod';
+import FavList from "../../components//userpage/UserFavPoemList.prod";
+import Note from "../../components/userpage/UserNote.prod";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -54,13 +54,15 @@ const Page = () => {
               Favorite Poems
             </button>
 
-            <button 
-              className={`${styles.navButton} ${activeTab === 'notes' ? styles.active : ''}`}
-              onClick={() => setActiveTab('notes')}
-            >
-              <span className={styles.icon}>🖊</span>
-              Notes
-            </button>
+            {session?.user?.role === "admin" && 
+              <button 
+                className={`${styles.navButton} ${activeTab === 'notes' ? styles.active : ''}`}
+                onClick={() => setActiveTab('notes')}
+              >
+                <span className={styles.icon}>🖊</span>
+                Notes
+              </button>
+            }
           </nav>
         </div>
 
