@@ -3,6 +3,8 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
+// api to get user info
+// used in user page info
 export async function GET(req) {
     const session = await auth();
 

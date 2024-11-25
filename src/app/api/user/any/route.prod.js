@@ -4,6 +4,8 @@ import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb'; 
 
+// api to get user info
+// used in userhome page for user id
 export async function GET(req) {
   const session = await auth();
 

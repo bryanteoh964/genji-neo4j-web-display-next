@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from '../../styles/pages/userPage.module.css';
 
+// user page
 const Page = () => {
   const [activeTab, setActiveTab] = useState('info');
   const { data: session, status } = useSession();

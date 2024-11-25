@@ -1,7 +1,8 @@
 import "../../styles/globals.css";
 import RegisterForm from '../../components/auth/RegisterForm.prod';
 
-
+// manually register page
+// may be deleted 
 const page = () => {
   return (
     <div>

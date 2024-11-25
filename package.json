@@ -20,6 +20,7 @@
     "@ant-design/icons": "^5.2.6",
     "@auth/mongodb-adapter": "^3.5.3",
     "@enjoyjs/node-mecab": "^0.5.0",
+    "@radix-ui/react-dialog": "^1.1.2",
     "antd": "^4.24.12",
     "bcryptjs": "^2.4.3",
     "cookie": "^0.5.0",
@@ -29,6 +30,7 @@
     "graph-data-structure": "^3.3.0",
     "kuromoji": "^0.1.2",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.460.0",
     "mongodb": "^6.9.0",
     "neo4j": "^2.0.0-RC2",
     "neo4j-driver": "^5.10.0",
@@ -41,6 +43,7 @@
     "reactflow": "^11.7.4"
   },
   "devDependencies": {
+    "@shadcn/ui": "^0.0.4",
     "@types/node": "20.14.2",
     "@types/react": "18.3.3"
   }

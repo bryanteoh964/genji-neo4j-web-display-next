@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import client from '../../../lib/db.prod';
 import { NextResponse } from 'next/server'
 
+// api to manually register a user account
+// may be deleted since google OAUTH is deployed
 export async function POST(req) {
     try {
         const {email, password} = await req.json()

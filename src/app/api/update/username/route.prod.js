@@ -4,6 +4,8 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
+// api to update username
+// used in user page info
 export async function PUT(req) {
     const session = await auth()
 

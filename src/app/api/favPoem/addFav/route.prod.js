@@ -2,6 +2,8 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
+// api to mark a poem as favourite one for a user
+// used when click the fav button
 export async function POST(req) {
     const session = await auth();
 

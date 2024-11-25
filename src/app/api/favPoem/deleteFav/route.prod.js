@@ -2,6 +2,8 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
+// api to delete a favourite poem for a user
+// used when click the fav button
 export async function DELETE(req) {
     const session = await auth();
 

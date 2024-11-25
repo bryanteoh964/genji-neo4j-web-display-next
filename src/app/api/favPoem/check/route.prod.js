@@ -2,6 +2,7 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 
+// api to check if the current poem is in user's favourite ones
 export async function GET(req) {
     const session = await auth();
 
