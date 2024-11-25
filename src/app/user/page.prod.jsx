@@ -35,6 +35,19 @@ const Page = () => {
       <div className={styles.pageContainer}>
         <div className={styles.sidebar}>
           <div className={styles.userBrief}>
+          {/* show avatar */}
+          {session.user.image ? (
+            <img 
+              src={session.user.image}
+              alt="User avatar"
+              className={styles.userAvatar}
+            />
+          ) : (
+            <div className={styles.defaultAvatar}>
+              {/* defaul avatar */}
+              {session.user.name?.[0] || '?'}
+            </div>
+          )}
             <h2>{session.user.name || session.user.email}</h2>
           </div>
           

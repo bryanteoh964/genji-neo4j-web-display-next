@@ -34,12 +34,13 @@ async function googleToUserDb(user) {
     if(userInDB) {
       await db.collection("info").updateOne(
         {email: user.email}, 
-        {$set: { googleName: user.name}}
+        {$set: { googleName: user.name, image: user.image}}
       );
 
       return {
         id: userInDB._id.toString(),
-        role: userInDB.role
+        role: userInDB.role,
+        image: user.image
       };
     } else {
       // add new user into db
@@ -48,12 +49,14 @@ async function googleToUserDb(user) {
         googleName: user.name,
         name: '',
         role: "user",
+        image: user.image,
         createdAt: new Date()
       });
 
       return {
         id: result.insertedId.toString(),
-        role: result.role
+        role: result.role,
+        image: result.image
       };
     }
   } catch (error) {
@@ -129,6 +132,7 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.image = user.image;
       } else if (token?.email) {
 
         const db = await client.db("user");
@@ -137,6 +141,7 @@ export const authOptions = {
         if (dbUser) {
           token.role = dbUser.role;
           token.name = dbUser.name;
+          token.image = dbUser.image;
         }
       }
 
@@ -148,6 +153,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.name = token.name;
+        session.user.image = token.image;
       }
 
       return session;
