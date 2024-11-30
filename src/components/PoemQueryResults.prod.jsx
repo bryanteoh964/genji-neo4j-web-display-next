@@ -8,6 +8,7 @@ import Link from 'next/link';
 import styles from '../styles/pages/poemDisplay.module.css';
 import {BackTop} from 'antd';
 import FavButton from './FavButton.prod';
+import ContributorView from './ContributorView.prod'
 
 
 const PoemDisplay = ({ poemData }) => {
@@ -281,6 +282,12 @@ const PoemDisplay = ({ poemData }) => {
 
     return (
         <div className={styles.container}>
+
+        <ContributorView
+            pageType="poem"
+            identifier={poemData.chapterNum + '-' + poemData.poemNum}
+        />
+
             <h1 className={styles.title}>
 
                 <span className={styles.chapterTitle}>Chapter {poemData.chapterNum}: {chapter_name}</span>

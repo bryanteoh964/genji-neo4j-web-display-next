@@ -11,7 +11,7 @@ export async function GET(req) {
 
   if(!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
+   }
 
   const { searchParams } = new URL(req.url);
   const userid = searchParams.get('userid');
