@@ -155,11 +155,13 @@ export default function CharacterDetail({ name }) {
     };
 
     return (
+        
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
-             <ContributorView
+            <ContributorView
                 pageType="character"
                 identifier={character.name}
             />
+            
             <h1 className={styles.title}>
                 <span className={styles.nameEnglish}>{character.name}</span>
                 <span className={styles.nameJapanese}>{character.japanese_name}</span>
