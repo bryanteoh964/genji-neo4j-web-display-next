@@ -2,7 +2,8 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from 'next/link';
 import styles from '../../styles/SignInButton.module.css';
- 
+
+// sign in button on main page
 export function SignIn() {
   const { data: session, status } = useSession();
 

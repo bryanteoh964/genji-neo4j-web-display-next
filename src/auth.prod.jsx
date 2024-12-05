@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import client from "./lib/db.prod";
-import Credentials from "next-auth/providers/credentials";
+// import Credentials from "next-auth/providers/credentials";
 import bcrypt from 'bcryptjs';
-import EmailProvider from "next-auth/providers/nodemailer";
+// import EmailProvider from "next-auth/providers/nodemailer";
 import GoogleProvider from "next-auth/providers/google";
 
 // func for email + password login
@@ -66,61 +66,63 @@ async function googleToUserDb(user) {
 }
 
 export const authOptions = {
+  
+  trustHost: true,
 
   adapter: MongoDBAdapter(client),
 
   providers: [
     // magic link
-    EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
-      },
-      from: process.env.EMAIL_FROM
-    }),
+    // EmailProvider({
+    //   server: {
+    //     host: process.env.EMAIL_SERVER_HOST,
+    //     port: process.env.EMAIL_SERVER_PORT,
+    //     auth: {
+    //       user: process.env.EMAIL_SERVER_USER,
+    //       pass: process.env.EMAIL_SERVER_PASSWORD
+    //     }
+    //   },
+    //   from: process.env.EMAIL_FROM
+    // }),
 
     // google OAuth
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    }),
-
-    // email + password
-    Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" }
-      },
-      authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) {
-          console.log("Missing email or password");
-          return null;
-        }
-
-        try {
-          // logic to verify if the user exists
-          const user = await getUserFromDb(credentials.email, credentials.password);
- 
-          if (!user) {
-            // No user found, so this is their first attempt to login
-            // meaning this is also the place you could do registration
-            console.log("User not found");
-            return null;
-          }
-          // return user object with their profile data
-          return user;
-        } catch (e) {
-          console.error("Error in authorize function:", e);
-          return null;
-        }
-      }  
     })
+
+    // // email + password
+    // Credentials({
+    //   // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+    //   // e.g. domain, username, password, 2FA token, etc.
+    //   credentials: {
+    //     email: { label: "Email", type: "text" },
+    //     password: { label: "Password", type: "password" }
+    //   },
+    //   authorize: async (credentials) => {
+    //     if (!credentials?.email || !credentials?.password) {
+    //       console.log("Missing email or password");
+    //       return null;
+    //     }
+
+    //     try {
+    //       // logic to verify if the user exists
+    //       const user = await getUserFromDb(credentials.email, credentials.password);
+ 
+    //       if (!user) {
+    //         // No user found, so this is their first attempt to login
+    //         // meaning this is also the place you could do registration
+    //         console.log("User not found");
+    //         return null;
+    //       }
+    //       // return user object with their profile data
+    //       return user;
+    //     } catch (e) {
+    //       console.error("Error in authorize function:", e);
+    //       return null;
+    //     }
+    //   }  
+    // })
   ],
 
   session: {
@@ -159,9 +161,11 @@ export const authOptions = {
       return session;
     }
   },
-  // pages: {
-  //    signIn: '/user', 
-  // },
+
+  // redirect to custom login page
+  pages: {
+    signIn: '/login', 
+  },
   
   events: {
     // user = {id, name, email, image}
