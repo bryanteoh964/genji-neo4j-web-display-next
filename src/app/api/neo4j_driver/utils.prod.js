@@ -436,9 +436,56 @@ export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph =
 
     return [characters_X_Y, resGraph2, love_nodes_X_Y, jp_dict, color_dict, gender_dict] 
 }
+
+export function generateTimeline(timeline_info) {
+
+    var info = []
+    for (const [
+        name,
+        color,
+        japanese_name,
+        chapter_name,
+        chapter_number,
+        age_of_genji,
+        birth,
+        english,
+        japanese,
+        month,
+        day,
+        spring,
+        summer,
+        fall,
+        winter,
+    ] of timeline_info) {
+		info.push(
+            {
+				name: name,
+                color: color,
+				jp_name: japanese_name,
+				chapter: chapter_name,
+                chapter_number: chapter_number,
+
+				age_of_genji: parseInt(age_of_genji),
+				birth: birth,
+				english: english,
+				japanese: japanese,
+				month: parseInt(month),
+				day: parseInt(day), 
+
+				spring: spring,
+				summer: summer,
+				fall: fall,
+				winter: winter
+			}
+        )
+	}
+    
+    
+    return info
+}
   
 
 //****************************//
 
-const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList }
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline }
 export default utils;

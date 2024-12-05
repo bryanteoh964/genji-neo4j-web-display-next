@@ -46,8 +46,13 @@ async function generalSearch(q) {
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
             MATCH (p:Genji_Poem)
-            WHERE p.Japanese CONTAINS $q OR p.Romaji CONTAINS $q
-            OPTIONAL MATCH (p)<-[r:TRANSLATION_OF]-(t:Translation)<-[tr:TRANSLATOR_OF]-(translator:People)
+            WHERE toLower(p.Japanese) CONTAINS toLower($q) OR toLower(p.Romaji) CONTAINS toLower($q)
+            OR EXISTS {
+                (p)<-[:TRANSLATION_OF]-(t:Translation)
+                WHERE toLower(t.translation) CONTAINS toLower($q)
+            }
+            WITH p
+            MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
             RETURN 
@@ -59,7 +64,7 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Washburn"][0].text, "") AS Washburn_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
-            `;
+        `;
         
         const res = await session.readTransaction(tx => tx.run(query, { q }));
         //console.log("res:", res.records)
@@ -72,7 +77,11 @@ async function generalSearch(q) {
                 poemNum: toNativeTypes(record.get('pnum').substring(4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
-                //translation: record.get('p.introduction')
+                waley_translation: toNativeTypes(record.get('Waley_translation')),
+                seidensticker_translation: toNativeTypes(record.get('Seidensticker_translation')),
+                tyler_translation: toNativeTypes(record.get('Tyler_translation')),
+                washburn_translation: toNativeTypes(record.get('Washburn_translation')),
+                cranston_translation: toNativeTypes(record.get('Cranston_translation'))
               }));
             //console.log("searchResult:", searchResults)
             return { searchResults };
@@ -81,7 +90,7 @@ async function generalSearch(q) {
             return null;
         }
     } catch (error) {
-        console.error(`Error in generalSearch: ${error}`);
+        //console.error(`Error in generalSearch: ${error}`);
         return { "error": "Error in generalSearch()", "message": error.toString() };
     }
 }

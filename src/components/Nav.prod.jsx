@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import styles from '../styles/Navigation.module.css'
-import SeachOption from './SearchDropDown.prod'
+import SearchOptions from './SearchDropDown.prod'
+import CharactersOptions from './CharactersDropDown.prod'
 
 const Nav =()=> {
     return (
@@ -10,8 +11,8 @@ const Nav =()=> {
             <nav className={styles.nav_container}>
                 <Link href="/" alt="Home Page">About</Link>
                 <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
-                <Link href="/characters" alt="Genji characters display">Characters</Link>
-                <SeachOption />
+                <CharactersOptions/>
+                <SearchOptions />
                 {/*<Link href="/search" alt="Search character poem interactions">Search</Link> */}
                 {/* <Link href="/allusions">Allusions</Link> */}
                 {/* <Link href="/characters">Characters</Link>
