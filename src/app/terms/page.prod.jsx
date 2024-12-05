@@ -84,7 +84,7 @@ export default function PrivacyPolicy() {
 
         <section>
           <h2>7. Disclaimers</h2>
-          <p>The Service is provided "as is" and "as available" without any warranties of any kind, either express or implied. We do not guarantee that the Service will be uninterrupted, secure, or error-free.</p>
+          <p>The Service is provided &quot;as is&quot; and &quot;as available&quot; without any warranties of any kind, either express or implied. We do not guarantee that the Service will be uninterrupted, secure, or error-free.</p>
         </section>
 
         <section>

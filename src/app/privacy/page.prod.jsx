@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
 
         <section id="introduction">
           <h2>1. Introduction</h2>
-          <p>Welcome to The Tale of Genji Poem Database ("we," "our," or "us"). We are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.</p>
+          <p>Welcome to The Tale of Genji Poem Database (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.</p>
         </section>
 
         <section id="information-collection">
