@@ -515,4 +515,9 @@ export function generateLocations(location_info) {
 
 //****************************//
 
+<<<<<<< HEAD
 module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline, generateLocations}
+=======
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline }
+export default utils;
+>>>>>>> f36c611f7c765f36187fd56311d1e33c7d780459

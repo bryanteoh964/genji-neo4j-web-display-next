@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/pages/characterProfile.module.css';
 import {BackTop} from 'antd';
+import ContributorView from './ContributorView.prod'
 
 // format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -162,7 +163,13 @@ export default function CharacterDetail({ name }) {
     }
 
     return (
+        
         <div className={styles.container} style={{ '--character-color': character.color || '#000000' }}>
+            <ContributorView
+                pageType="character"
+                identifier={character.name}
+            />
+            
             <h1 className={styles.title}>
                 <span className={styles.nameEnglish}>{character.name}</span>
                 <span className={styles.nameJapanese}>{character.japanese_name}</span>

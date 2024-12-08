@@ -6,6 +6,8 @@ import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 
+import { SessionProvider } from 'next-auth/react'
+
 export const metadata = {
   title: 'The Tale of Genji Poem Database',
   description: 'The Tale of Genji Poem Database Website',
@@ -18,11 +20,13 @@ const Layout = ({ children }) => {
   return (
     <html lang="en">
       <body className={`main ${isLoginPage ? 'login-page' : ''}`}>
+      <SessionProvider>
       {!isLoginPage && (
         <div className="top">
           <Header />
           <Nav />
         </div>
+
        )}
         <main className="bottom">{children}</main>
         <Script id="chatbot-config">
@@ -38,6 +42,7 @@ const Layout = ({ children }) => {
           id="dify-chatbot"
           defer
         />
+        </SessionProvider>
       </body>
     </html>
   );
