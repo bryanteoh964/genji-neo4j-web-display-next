@@ -94,7 +94,10 @@ const PoemDisplay = ({ poemData }) => {
     const [deliveryStyle, setDeliveryStyle] = useState("");
     const [season, setSeason] = useState("");
     const [kigo, setKigo] = useState({ jp: "", en: "" });
-    const [pt, setPt] = useState({ name: "", kanji_hiragana: "", english_equiv: "", gloss: "" });
+    const [pt, setPt] = useState("");
+    const [pw, setPw] = useState({ name: "", kanji_hiragana: "", english_equiv: "", gloss: "" });
+    const [proxy, setProxy] = useState("");
+    const [messenger, setMessenger] = useState("");
 
 
 
@@ -148,6 +151,9 @@ const PoemDisplay = ({ poemData }) => {
                     const season = response[12];
                     const kigo = response[13];
                     const poetic_technique = response[14];
+                    const poetic_word = response[15];
+                    const proxy = response[16];
+                    const messenger = response[17];
 
                     setSpeaker([exchange[0]?.start?.properties?.name])
                     
@@ -192,6 +198,9 @@ const PoemDisplay = ({ poemData }) => {
                     setSeason(season);
                     setKigo(kigo);
                     setPt(poetic_technique);
+                    setPw(poetic_word);
+                    setProxy(proxy);
+                    setMessenger(messenger);
 
                     console.log("trans", trans)
                     
@@ -296,9 +305,29 @@ const PoemDisplay = ({ poemData }) => {
                                         <p key={e}>{e || "N/A"} </p>
                                     </a>
                                 )}
-                                <h3>Proxy</h3>  {/* Art by: notice proxy */}
-                                <p>N/A</p>
                             </div>
+
+                            {proxy && proxy.length !== 0 && (
+                                <div className={styles.infoCard}>
+                                    <h3>Proxy</h3>
+                                    {proxy && proxy.length !== 0 && 
+                                        <a href={`/characters/${encodeURIComponent(proxy)}`} className={styles.characterTag}>
+                                            <p>{proxy}</p>
+                                        </a>
+                                    }
+                                </div>
+                            )}
+
+                            {messenger && messenger.length !== 0 && (
+                                <div className={styles.infoCard}>
+                                    <h3>Messenger</h3>
+                                    {messenger&& messenger.length !== 0 && 
+                                        <a href={`/characters/${encodeURIComponent(messenger)}`} className={styles.characterTag}>
+                                            <p>{messenger}</p>
+                                        </a>
+                                    }
+                                </div>
+                            )}
                         
                             <div className={styles.prominentPoemInInfo}>
                                 {!isLoading && JPRM[0] && JPRM[1] ? (
@@ -352,21 +381,21 @@ const PoemDisplay = ({ poemData }) => {
                             {paperMediumType && (
                                 <div className={styles.infoCard}>
                                     <h3>Paper or Other Medium Type</h3>
-                                    <p>{paperMediumType}</p>
+                                    <p className={styles.characterTag}>{paperMediumType}</p>
                                 </div>
                             )}
 
                             {handwritingDescription && (
                                 <div className={styles.infoCard}>
                                     <h3>Handwriting Description</h3>
-                                    <p>{handwritingDescription}</p>
+                                    <p className={styles.characterTag}>{handwritingDescription}</p>
                                 </div>
                             )}
 
                             {season && (
                                 <div className={styles.infoCard}>
                                     <h3>Season</h3>
-                                    <p>{season}</p>
+                                    <p className={styles.characterTag}>{season}</p>
                                 </div>
                             )}      
 
@@ -378,14 +407,21 @@ const PoemDisplay = ({ poemData }) => {
                                 </div>
                             )} 
 
-                            {pt.name && (
+                            {pt && (
                                 <div className={styles.infoCard}>
                                     <h3>Poetic Technique</h3>
-                                    <p>{pt.name}</p>
-                                    <p>{pt.kanji_hiragana}</p>
-                                    <p>{pt.english_equiv}</p>
+                                    <p className={styles.characterTag}>{pt}</p>
                                 </div>
-                            )} 
+                            )}
+
+                            {pw.name && (
+                                <div className={styles.infoCard}>
+                                    <h3>Poetic Word</h3>
+                                    <p>{pw.name}</p>
+                                    <p>{pw.kanji_hiragana}</p>
+                                    <p>{pw.english_equiv}</p>
+                                </div>
+                            )}
 
                         </div>
                     </section>

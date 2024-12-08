@@ -15,7 +15,10 @@ async function getData (chapter, number){
 		resType : 'match (t:Tag) return t.Type as type',
 		resSeason : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:IN_SEASON_OF]->(s:Season) WHERE g.pnum ends with "' + number + '" RETURN s.name as season',
 		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en',
-		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name, pt.kanji_hiragana as kanji_hiragana, pt.gloss as gloss, pt.english_equiv as english_equiv'
+		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name',
+		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
+		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:PROXY_POEM_OF]->(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
+		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name'
 	};
 
 	const result = {};
@@ -80,12 +83,21 @@ async function getData (chapter, number){
 		};
 
 		// poetic technique
-		const tech = {
-			name: result['resTech'].records[0]?.get('pt_name') || null,
-			kanji_hiragana: result['resTech'].records[0]?.get('kanji_hiragana') || null,
-			english_equiv: result['resTech'].records[0]?.get('english_equiv') || null,
-			gloss: result['resTech'].records[0]?.get('gloss') || null
+		let tech = result['resTech'].records[0]?.get('pt_name') || null;
+
+		// poetic word
+		const poetic_word = {
+			name: result['resPoeticWord'].records[0]?.get('pw_name') || null,
+			kanji_hiragana: result['resPoeticWord'].records[0]?.get('kanji_hiragana') || null,
+			english_equiv: result['resPoeticWord'].records[0]?.get('english_equiv') || null,
+			gloss: result['resPoeticWord'].records[0]?.get('gloss') || null
 		}
+
+		// proxy
+		let proxy = result['resProxy'].records[0]?.get('name') || null;
+
+		// messenger
+		let messenger = result['resMessenger'].records[0]?.get('name') || null;
 
 		const data = [
 						exchange, 
@@ -102,7 +114,10 @@ async function getData (chapter, number){
 						delivery_style,
 						season,
 						kigo,
-						tech
+						tech,
+						poetic_word,
+						proxy,
+						messenger
 					];
 
 		return (data);
