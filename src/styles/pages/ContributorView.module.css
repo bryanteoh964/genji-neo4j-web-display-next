@@ -51,10 +51,12 @@
   
   .searchSection {
     margin-bottom: 16px;
+    position: relative;
   }
   
   .searchInputContainer {
     position: relative;
+    width: 100%;
   }
   
   .searchIcon {
