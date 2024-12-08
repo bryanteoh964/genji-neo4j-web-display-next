@@ -358,7 +358,7 @@ const PoemDisplay = ({ poemData }) => {
 
                         <div className={styles.contextInfo}>
                             {narrativeContext && (
-                                <div className={styles.infoCard}>
+                                <div className={`${styles.infoCard} ${styles.narrativeContextCard}`}>
                                     <h3>Narrative Context</h3>
                                     <p>{narrativeContext}</p>
                                 </div>
