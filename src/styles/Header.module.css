@@ -41,6 +41,13 @@
     text-shadow: 2px 2px 4px #000000;
 }
 
+.SignIn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
 @media (max-width: 1024px) {
     .header_img {
         height: 90vh;

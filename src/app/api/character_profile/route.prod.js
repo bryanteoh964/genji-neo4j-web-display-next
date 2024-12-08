@@ -1,7 +1,8 @@
-const { getSession } = require('../neo4j_driver/route.prod.js');
-const { toNativeTypes } = require('../neo4j_driver/utils.prod.js');
+import { getSession } from '../neo4j_driver/route.prod.js';
+import { toNativeTypes } from '../neo4j_driver/utils.prod.js';
 
 // Query for getting character information
+// used in character page
 async function getCharacterData(name) {
     try {
         const session = await getSession();
@@ -74,7 +75,7 @@ async function getCharacterData(name) {
 }
 
 // Export data from API endpoint
-export const GET = async (request) => {
+export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const name = searchParams.get('name');
 

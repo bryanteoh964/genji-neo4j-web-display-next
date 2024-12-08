@@ -1,0 +1,155 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-image: url('/images/Genji_emaki_azumaya.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+  }
+  
+.card {
+    position: relative; 
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-width: 440px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+  
+.card h1 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 500;
+}
+  
+.notice {
+    margin: 2rem 0;
+    padding: 1.75rem;
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+	sans-serif;
+	/* font-family: 'MS Mincho'; */
+	/* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
+	/* font-family: "Hiragino Kaku Gothic Pro", sans-serif; */
+	/* font-family: Osaka, sans-serif; */
+	/* font-family: Meiryo, sans-serif; */
+	/* font-family: "MS PGothic", sans-serif; */
+	/* font-family : 'ヒラギノ角ゴ ProN' , 'Hiragino Kaku Gothic ProN' , '游ゴシック' , '游ゴシック体' , YuGothic , 'Yu Gothic' , 'ＭＳ ゴシック' , 'MS Gothic' , HiraKakuProN-W3 , 'TakaoExゴシック' , TakaoExGothic , 'MotoyaLCedar' , 'Droid Sans Japanese' , sans-serif; */
+
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 22px;
+	text-align: center;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+  }
+  
+.notice p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+}
+
+.notice ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.notice li {
+    position: relative;
+    padding: 0.5rem 0 0.5rem 2rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.termsSection {
+    margin: 1.5rem 0;
+}
+  
+.checkboxContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #4a5568;
+    line-height: 1.5;
+}
+  
+.checkboxContainer input {
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+    accent-color: #4a5568;
+}
+  
+.checkboxContainer a {
+    color: #2c5282;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+  
+.checkboxContainer a:hover {
+    border-bottom-color: #2c5282;
+}
+  
+.signInButton {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: #2d3748;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+  
+.signInButton:hover:not(:disabled) {
+    background-color: #1a202c;
+    transform: translateY(-1px);
+}
+  
+.signInButton.disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+}
+  
+.error {
+    color: #e53e3e;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0.75rem;
+    background-color: #fff5f5;
+    border-radius: 6px;
+    border: 1px solid #fed7d7;
+}
+  

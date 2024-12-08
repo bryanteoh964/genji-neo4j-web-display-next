@@ -14,6 +14,13 @@ const nextConfig = (phase) => ({
 			const prefixes = isDevServer ? ["dev", "prod"] : ["prod"];
 			return prefixes.map((prefix) => `${prefix}.${extension}`);
 		}).flat(),
+	// allow next.js to load user avatar from google
+	images: {
+		domains: [
+			'lh3.googleusercontent.com',
+			'googleusercontent.com'
+		],
+	}
 })
 
 module.exports = (phase) => (

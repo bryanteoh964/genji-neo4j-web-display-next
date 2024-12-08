@@ -35,7 +35,7 @@ const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
 
   
 
-// Query for getting character information
+// api for keyword poem search
 async function generalSearch(q) {
     try {
         const session = await getSession();
