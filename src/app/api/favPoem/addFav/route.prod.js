@@ -16,16 +16,32 @@ export async function POST(req) {
         
         const db = await client.db('user');
 
-        await db.collection('favPoem').insertOne({
-            userId: session.user.id,
-            poemId: poemId,
-            jprm: JPRM,
+        let fav = await db.collection('favPoem').findOne({ poemId: poemId });
 
-            createdAt: new Date()
-        });
+        if(!fav) {
+            fav = await db.collection('favPoem').insertOne({
+                poemId: poemId,
+                jprm: JPRM,
+                userIds: [session.user.id],
+                createdAt: new Date(),
+                updatedAt: new Date()
+            });
+        } else {
+            fav = await db.collection('favPoem').findOneAndUpdate(
+                { poemId: poemId },
+                {
+                    $addToSet: { userIds: session.user.id },
+                    $set: { updatedAt: new Date() }
+                },
+                { 
+                  new: true
+                }
+            );
+        }
 
         return NextResponse.json({ message: "Added to favorites" }, { status: 200 });
     } catch (error) {
+        console.error('Error adding favorite:', error);
         return NextResponse.json({ error: 'Failed to add favorite' }, { status: 500 });
     }
 }

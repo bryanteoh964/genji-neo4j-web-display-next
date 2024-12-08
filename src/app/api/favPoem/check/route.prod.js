@@ -17,8 +17,8 @@ export async function GET(req) {
     try {
         const db = await client.db('user');
         const fav = await db.collection('favPoem').findOne({
-            userId: session.user.id,
-            poemId: poemId
+            poemId: poemId, 
+            userIds: session.user.id
         });
         
         // if no record in db return false

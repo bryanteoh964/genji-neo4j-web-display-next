@@ -15,7 +15,7 @@ export async function DELETE(req) {
         
         const db = await client.db('user');
 
-        const currRecord= await db.collection('contribution').findOne({ pageType, identifier });
+        const currRecord = await db.collection('contribution').findOne({ pageType, identifier });
 
         // if there is no contributor left, delete the whole record
         if (currRecord?.contributors?.length === 1 && currRecord.contributors[0] === userId) {

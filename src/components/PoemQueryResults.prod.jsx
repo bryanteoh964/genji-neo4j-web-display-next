@@ -238,6 +238,12 @@ const PoemDisplay = ({ poemData }) => {
                     setPnum(pls)
                     console.log("trans", trans)
                     
+                    // set poemId
+                    if (pls && pls[0]) {
+                        setPoemId(Object.values(pls[0])[0] || null);
+                    } else {
+                        setPoemId(null);
+                    }
                 
                 setIsLoading(false);
 			};  

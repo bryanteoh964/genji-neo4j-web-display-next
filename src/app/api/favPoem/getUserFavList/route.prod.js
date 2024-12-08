@@ -17,9 +17,9 @@ export async function GET(req) {
 
         const fav = await db.collection('favPoem')
                     .find({
-                        userId: session.user.id,
+                        userIds: session.user.id,
                     })
-                    .sort({ createdAt: -1 })
+                    .sort({ createdAt: 1 })
                     .toArray();
 
         return NextResponse.json({ fav }, { status: 200 });
