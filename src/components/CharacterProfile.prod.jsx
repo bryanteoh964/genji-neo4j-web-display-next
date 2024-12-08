@@ -158,7 +158,7 @@ export default function CharacterDetail({ name }) {
     if (["Genji"].includes(character.name)) {
         artist = "Wai Lun Mak"
     } else if (["Kiritsubo Emperor", "Kiritsubo Consort"].includes(character.name)) {
-        artist = "Emijila Strydom"
+        artist = "Emilija Strydom"
     }
 
     return (

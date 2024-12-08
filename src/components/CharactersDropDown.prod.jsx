@@ -29,6 +29,9 @@ const SearchOptions = ({ setIsOpen }) => {
             <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)}>
                 Timeline 
             </Link>
+            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+                Map 
+            </Link>
         </div>
     );
 };
