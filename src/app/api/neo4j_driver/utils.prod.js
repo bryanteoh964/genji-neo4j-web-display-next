@@ -487,4 +487,5 @@ export function generateTimeline(timeline_info) {
 
 //****************************//
 
-module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline}
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline }
+export default utils;
