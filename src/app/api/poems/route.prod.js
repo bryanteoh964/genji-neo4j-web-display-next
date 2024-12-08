@@ -7,12 +7,18 @@ async function getData (chapter, number){
 
 	//all the get method and return the db data
 	const queries = {
-		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) where g.pnum ends with "' + number + '" return poem, exchange, trans',
+		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style',
 		resHonkaInfo:  'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[n:ALLUDES_TO]->(h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source), (h)<-[:AUTHOR_OF]-(a:People), (h)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) where g.pnum ends with "' + number + '" return h.Honka as honka, h.Romaji as romaji, s.title as title, a.name as poet, r.order as order, p.name as translator, t.translation as translation, n.notes as notes',
 		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel',
 		resPnum : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH (CASE WHEN "' + number + '" < 10 THEN \'0\' + toString("' + number + '") ELSE toString($number) END) RETURN g.pnum as pnum',
 		resTag : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:TAGGED_AS]->(t:Tag) where g.pnum ends with "' + number + '" return t.Type as type',
-		resType : 'match (t:Tag) return t.Type as type'
+		resType : 'match (t:Tag) return t.Type as type',
+		resSeason : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:IN_SEASON_OF]->(s:Season) WHERE g.pnum ends with "' + number + '" RETURN s.name as season',
+		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en',
+		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name',
+		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
+		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:PROXY_POEM_OF]->(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
+		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name'
 	};
 
 	const result = {};
@@ -27,6 +33,14 @@ async function getData (chapter, number){
 		let exchange = new Set()           
 		result['res'].records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
 		exchange = Array.from(exchange).map(e => JSON.parse(e))
+
+		
+		let narrative_context = result['res'].records[0]?.get('narrative_context') || null;
+		let	paraphrase = result['res'].records[0]?.get('paraphrase') || null;
+		let	handwriting_description = result['res'].records[0]?.get('handwriting_description') || null;
+		let	paper_or_medium_type = result['res'].records[0]?.get('paper_or_medium_type') || null;
+		let delivery_style = result['res'].records[0]?.get('delivery_style') || null;
+		
 		
 		//for transtemp
 		let transTemp = result['res'].records.map(e => toNativeTypes(e.get('trans'))).map(e => [e.end.properties.name, e.segments[0].end.properties.translation, e.segments[1].start.properties.WaleyPageNum])
@@ -38,24 +52,76 @@ async function getData (chapter, number){
 		result['resRel'].records.map(e => toNativeTypes(e.get('rel'))).forEach(e => related.add([Object.values(e).join('')]))
 		related = Array.from(related).flat()
 		related = related.map(e => [e, true])
+
 		//res tag
 		let tags = new Set()
 		result['resTag'].records.map(e => toNativeTypes(e.get('type'))).forEach(e => tags.add([Object.values(e).join('')]))
 		tags = Array.from(tags).flat()
 		tags = tags.map(e => [e, true])
+		
 		//types
 		let types = result['resType'].records.map(e => e.get('type'))
+
 		//ls
 		let ls = []
 		types.forEach(e => ls.push({value: e, label: e})) 
+
 		//pls
 		let temp = result['resPnum'].records.map(e => e.get('pnum'))
 		let pls = []
 		temp.forEach(e => {
 			pls.push({value:e, label:e})
 		})
-		const data = [exchange, transTemp, sources, related, tags, ls, pls];
+
+		// season
+		let season = result['resSeason'].records[0]?.get('season') || null;
+
+		// seasonal word
+		const kigo = {
+			jp: result['resKigo'].records[0]?.get('sw_jp') || null,
+			en: result['resKigo'].records[0]?.get('sw_en') || null,
+		};
+
+		// poetic technique
+		let tech = result['resTech'].records[0]?.get('pt_name') || null;
+
+		// poetic word
+		const poetic_word = {
+			name: result['resPoeticWord'].records[0]?.get('pw_name') || null,
+			kanji_hiragana: result['resPoeticWord'].records[0]?.get('kanji_hiragana') || null,
+			english_equiv: result['resPoeticWord'].records[0]?.get('english_equiv') || null,
+			gloss: result['resPoeticWord'].records[0]?.get('gloss') || null
+		}
+
+		// proxy
+		let proxy = result['resProxy'].records[0]?.get('name') || null;
+
+		// messenger
+		let messenger = result['resMessenger'].records[0]?.get('name') || null;
+
+		const data = [
+						exchange, 
+						transTemp, 
+						sources, 
+						related, 
+						tags, 
+						ls, 
+						pls, 
+						narrative_context, 
+						paraphrase, 
+						handwriting_description, 
+						paper_or_medium_type, 
+						delivery_style,
+						season,
+						kigo,
+						tech,
+						poetic_word,
+						proxy,
+						messenger
+					];
+
 		return (data);
+
 	} catch(error) {
 		result.status(500).json({ error: 'Failed to execute queries' });
 	} finally{
