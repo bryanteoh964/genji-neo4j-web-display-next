@@ -7,11 +7,11 @@ export default function CharacterTimeline({l}) {
     // Back-end 
 
     var loaded = useRef(false)
-    var characters_list = []
+    var characters_list = useRef([])
     if (!loaded.current) { //pre-load information
         for (const tpi of l) {
-            if (!characters_list.includes(tpi.name)) {
-                characters_list.push(tpi.name)
+            if (!characters_list.current.includes(tpi.name)) {
+                characters_list.current.push(tpi.name)
             }
         }
         loaded.current = true
@@ -23,7 +23,7 @@ export default function CharacterTimeline({l}) {
             for (const timeline_piece_info of l) {
                 ordered_info.push(timeline_piece_info)
             }
-            console.log(ordered_info)
+            //console.log(ordered_info)
         } else if (character != "") {
             for (const timeline_piece_info of l) {
                 if (timeline_piece_info.name == character) {
@@ -213,13 +213,11 @@ export default function CharacterTimeline({l}) {
                 &#160; &#160;
                 <select id="characters" style={{fontSize: "20px", backgroundColor: "RGB(252,252,252)"}} onChange={(e) => myRange(0, true, e.target.value)}>
                     <option value={""}>{""}</option>
-                    {
-                        characters_list.map(
-                            (name) => {
-                                return <option value={name}>{name}</option>
-                            }
-                        )
-                    }
+                    {characters_list.current.map((name) => (
+                        <option value={name}>
+                        {name}
+                        </option>
+                    ))}
                 </select> 
                 &#160; &#160;
                 <button id="bottom" onClick={(e) => myRange(0, true, "")}>
