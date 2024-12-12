@@ -760,8 +760,8 @@ export default function GeneologyMap({l}) {
             <div >
                 <button onClick={() => {showAll();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', fontWeight: 'bold'}}>Show All</button>
 				<button onClick={() => {disableAll();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', fontWeight: 'bold'}}>Disable All</button>
-				<button onClick={() => {enableFlow();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>🌊</button> 
-				<button onClick={() => {disableFlow();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>🪄</button>
+				<button onClick={() => {enableFlow();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>Enable Animations</button> 
+				<button onClick={() => {disableFlow();disableMenu()}} style={{fontSize: "large", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}}>Disable Animations</button>
 				<select onChange={(e) => {changeLanguage(e.target.value);disableMenu()}} style={{marginLeft: "10px", fontSize: "large", width: "175px", marginRight: "10px",}}>
                   <option value="en" selected>English</option>
                   <option value="jp" >Japanese</option> 

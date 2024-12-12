@@ -170,6 +170,10 @@
     text-align: center;
 }
 
+.narrativeContextCard p {
+    text-align: left;
+}
+
 .poemText {
     flex: 2;
     width: 100%;
