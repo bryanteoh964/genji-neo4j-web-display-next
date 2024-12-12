@@ -1,7 +1,7 @@
 'use client'
 import UserInfo from '../../components/userpage/UserInfo.prod';
 import FavList from "../../components//userpage/UserFavPoemList.prod";
-import Note from "../../components/userpage/UserNote.prod";
+import UserView from "../../components/userpage/UserView.prod";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -70,11 +70,11 @@ const Page = () => {
 
             {session?.user?.role === "admin" && 
               <button 
-                className={`${styles.navButton} ${activeTab === 'notes' ? styles.active : ''}`}
-                onClick={() => setActiveTab('notes')}
+                className={`${styles.navButton} ${activeTab === 'users' ? styles.active : ''}`}
+                onClick={() => setActiveTab('users')}
               >
-                <span className={styles.icon}>🖊</span>
-                Notes
+                <span className={styles.icon}>👤</span>
+                Users
               </button>
             }
           </nav>
@@ -84,7 +84,7 @@ const Page = () => {
           <div className={styles.contentCard}>
             {activeTab === 'info' && <UserInfo />}
             {activeTab === 'favorites' && <FavList />}
-            {activeTab === 'notes' && <Note />}
+            {activeTab === 'users' && <UserView />}
           </div>
         </main>
       </div>
