@@ -8,21 +8,21 @@ import GoogleProvider from "next-auth/providers/google";
 
 // func for email + password login
 // check email existence and verify password
-async function getUserFromDb(email, password) {
-  try {
-    const db = await client.db("user");
-    const user = await db.collection("info").findOne({ email });
+// async function getUserFromDb(email, password) {
+//   try {
+//     const db = await client.db("user");
+//     const user = await db.collection("info").findOne({ email });
 
-    // verify password    
-    if (user && await bcrypt.compare(password, user.password)) {
-      return { id: user._id.toString(), email: user.email, name: user.name, role: user.role || "user" };
-    }
-    return null;
-  } catch (error) {
-    console.error("Error in getUserFromDb:", error);
-    return null;
-  }
-}
+//     // verify password    
+//     if (user && await bcrypt.compare(password, user.password)) {
+//       return { id: user._id.toString(), email: user.email, name: user.name, role: user.role || "user" };
+//     }
+//     return null;
+//   } catch (error) {
+//     console.error("Error in getUserFromDb:", error);
+//     return null;
+//   }
+// }
 
 // func for google OAuth
 async function googleToUserDb(user) {
@@ -34,7 +34,7 @@ async function googleToUserDb(user) {
     if(userInDB) {
       await db.collection("info").updateOne(
         {email: user.email}, 
-        {$set: { googleName: user.name, image: user.image}}
+        {$set: { googleName: user.name, image: user.image, lastLogIn: new Date()}}
       );
 
       return {
