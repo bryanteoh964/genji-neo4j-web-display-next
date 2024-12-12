@@ -22,7 +22,6 @@ export async function GET(req) {
                               { 
                                 projection: {
                                   role: 0,
-                                  createdAt: 0,
                                   password: 0
                                 } 
                               }

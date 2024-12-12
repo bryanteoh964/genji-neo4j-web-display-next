@@ -1,0 +1,232 @@
+.pageContainer {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 2rem;
+    color: #2d3748;
+    margin: 0;
+}
+
+.roleTag {
+    background-color: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.searchSection {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.searchInputContainer {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #718096;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.searchResults {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-width: 600px;
+    margin: 0.5rem auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.searchResultItem {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.2s;
+}
+
+.searchResultItem:last-child {
+    border-bottom: none;
+}
+
+.searchResultItem:hover {
+    background-color: #f7fafc;
+}
+
+.container {
+    width: 100%;
+}
+
+.userGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.userCard {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.userCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.userHeader {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.avatarPlaceholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4a90e2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.userInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.namesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.userName, .googleName {
+    font-size: 1rem;
+    color: #2d3748;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.googleName {
+    color: #4a5568;
+}
+
+.userEmail {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: #718096;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userStats {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+.statItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.statItem:last-child {
+    margin-bottom: 0;
+}
+
+.statLabel {
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.statValue {
+    color: #2d3748;
+    font-size: 0.9rem;
+}
+
+.userBasicInfo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.userDetails {
+    flex: 1;
+    min-width: 0;
+    margin-left: 1rem;
+}
+
+.userDetails a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.userDetails a:hover {
+    background-color: #f7fafc;
+}
+
+.userDetails a:active {
+    background-color: #edf2f7;
+}
+
