@@ -5,30 +5,54 @@ export const GET = async () =>{
 	try {  
 		const session = await getSession();
 
+		// resGraph = await session.readTransaction(tx => tx.run(
+		// 	`
+		// 	MATCH (a:Character)-[event]->(b:Event)-[chapter]->(c:Chapter) 
+
+
+		// 	return a.name,
+		// 		a.color,
+		// 		a.japanese_name,
+		// 		c.chapter_name,
+		// 		c.chapter_number,
+
+		// 		b.age_of_genji,
+		// 		b.birth ,
+		// 		b.english ,
+		// 		b.japanese,
+		// 		b.month,
+		// 		b.day,
+
+		// 		b.spring,
+		// 		b.summer,
+		// 		b.fall,
+		// 		b.winter
+		// 	`
+		// )) 
+
 		resGraph = await session.readTransaction(tx => tx.run(
 			`
-			MATCH (a:Character)-[event]->(b:Event)-[chapter]->(c:Chapter) 
-
-
+			MATCH (a:Character)-[:EVENT]->(b:Event)-[:AT_GENJI_AGE_OF]->(d:Genji_Age), (b)-[:CHAPTER]->(c:Chapter)
+			
 			return a.name,
-				a.color,
-				a.japanese_name,
-				c.chapter_name,
-				c.chapter_number,
+			a.color,
+			a.japanese_name,
+			c.chapter_name,
+			c.chapter_number,
 
-				b.age_of_genji,
-				b.birth ,
-				b.english ,
-				b.japanese,
-				b.month,
-				b.day,
+			d.age,
+			b.birth ,
+			b.english ,
+			b.japanese,
+			b.month,
+			b.day,
 
-				b.spring,
-				b.summer,
-				b.fall,
-				b.winter
+			b.spring,
+			b.summer,
+			b.fall,
+			b.winter
 			`
-		)) 
+		))
 
 		resGraph = resGraph.records.map(e => e._fields) 
 		

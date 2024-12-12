@@ -479,6 +479,34 @@ export function generateTimeline(timeline_info) {
 			}
         )
 	}
+    console.log(info)
+    
+    return info
+}
+
+
+export function generateLocations(location_info) {
+
+    var info = []
+    for (const [
+        pnum,
+        Japanese,
+        notes,
+        Romaji,
+        name,
+        speaker
+    ] of location_info) {
+		info.push(
+            {
+				pnum: pnum,
+                japanese: Japanese,
+                notes: notes,
+                romaji: Romaji,
+                location_name: name,
+                speaker: speaker
+			}
+        )
+	}
     
     
     return info
@@ -515,9 +543,6 @@ export function generateLocations(location_info) {
 
 //****************************//
 
-<<<<<<< HEAD
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline, generateLocations}
 module.exports = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline, generateLocations}
-=======
-const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline }
 export default utils;
->>>>>>> f36c611f7c765f36187fd56311d1e33c7d780459
