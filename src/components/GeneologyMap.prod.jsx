@@ -770,7 +770,7 @@ export default function GeneologyMap({l}) {
             </div>
 			<br></br>
 			<button id="disableMenuButton" style={{borderRadius: "50%", margin: '4px', marginRight: '8px',visibility: 'hidden'}} title="disable menu" onClick={() => disableMenu()}>✖</button>
-			<input type="text" id="mySearch" onClick={(e) => {if (e.target.value == "") {myFunction("")}}} onKeyUp={(e) => myFunction(e.target.value)} title="Type in a category" onSelectCapture={() => {document.getElementById('myMenu').style.display = 'block';  document.getElementById('disableMenuButton').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "1px solid #ddd", marginBottom: '10px'}}/>
+			<input type="text" id="mySearch" onClick={(e) => {if (e.target.value == "") {myFunction("")}}} onKeyUp={(e) => myFunction(e.target.value)} title="Type in a character name" onSelectCapture={() => {document.getElementById('myMenu').style.display = 'block';  document.getElementById('disableMenuButton').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "1px solid #ddd", marginBottom: '10px'}}/>
 			<button onMouseDown={() => shrink_start()} onMouseUp={() => shrink_end()} style={{fontSize:"20px", marginLeft: '8px', marginRight:'4px', borderRadius: '10px'}} title={"Shrink"}>❇️</button> 
 			<button onMouseDown={() => expand_start()} onMouseUp={() => expand_end()} style={{fontSize:"20px", marginLeft: '4px', marginRight:'4px', borderRadius: '10px'}} title={"Expand"}>✳️</button>
 			<div style={{position: 'relative', height:0, width: 0, left:'50%',transform:'translate(-50)', marginLeft:'-175px'}}>
