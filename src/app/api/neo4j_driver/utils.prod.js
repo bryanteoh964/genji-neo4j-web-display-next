@@ -422,8 +422,6 @@ export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph =
         //We can finally move this guy out of popularity 
         popularity.splice(0,1)
     }
-
-    //console.log("done!!!!!!!!!!!!") 
     
     // Adjust every node's Y
     for (let l of characters_X_Y) {
@@ -479,7 +477,7 @@ export function generateTimeline(timeline_info) {
 			}
         )
 	}
-    console.log(info)
+    //console.log(info)
     
     return info
 }

@@ -156,11 +156,11 @@ export default function CharacterDetail({ name }) {
 
     //Image credit
     var artist = ""
-    if (["Genji"].includes(character.name)) {
+    if (["Genji", "Murasaki no Ue"].includes(character.name)) {
         artist = "Wai Lun Mak"
     } else if (["Kiritsubo Emperor", "Kiritsubo Consort"].includes(character.name)) {
         artist = "Emilija Strydom"
-    }
+    } 
 
     return (
         
