@@ -9,7 +9,7 @@ const page = () => {
             
             <p>Thanks to Dennis Washburn, Royall Tyler, and Edwin Cranston for granting permission to use their translations of Genji poems.</p>
 
-            <p>The Japanese texts on this website and information on character relationships are taken from Professor Eiichi Shibuya&apos;s annotated digital edition of the Tale of Genji in Japanese, <a href="http://www.genji-monogatari.net/" target="_blank">源氏物語の世界 再編修正</a></p>
+            <p>The Japanese texts on this website and information on character relationships are taken from Professor Eiichi Shibuya&apos;s annotated digital edition of the Tale of Genji in Japanese, <a href="http://www.genji-monogatari.net/" target="_blank">源氏物語の世界 再編修正.</a></p>
 
             <p>Romanized versions of the poems are based on Edwin Cranston&apos;s edition.</p>
 
