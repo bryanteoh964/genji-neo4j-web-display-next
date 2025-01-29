@@ -26,7 +26,6 @@ const Layout = ({ children }) => {
           <Header />
           <Nav />
         </div>
-
        )}
         <main className="bottom">{children}</main>
         <Script id="chatbot-config">
@@ -42,6 +41,18 @@ const Layout = ({ children }) => {
           id="dify-chatbot"
           defer
         />
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4N5VNJMQSS"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4N5VNJMQSS');
+          `}
+        </Script>
         </SessionProvider>
       </body>
     </html>

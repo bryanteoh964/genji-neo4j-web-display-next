@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/pages/characterProfile.module.css';
 import {BackTop} from 'antd';
 import ContributorView from './ContributorView.prod'
+import FormatContent from './FormatText.prod';
 
 // format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -202,7 +203,9 @@ export default function CharacterDetail({ name }) {
                         </div>
                         <div id="about" className={styles.description}>
                             <h2 className={styles.aboutTitle}>About</h2>
-                            <p className={styles.descriptionContent}>{character.Description || 'N/A'}</p>
+                            <div className={styles.descriptionContent}>
+                                <FormatContent content={character.Description} />
+                            </div>
                         </div>
                     </div>
 
