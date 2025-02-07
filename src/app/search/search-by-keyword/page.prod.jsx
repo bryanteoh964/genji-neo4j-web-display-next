@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
-import PoemSearch from "../../../components/PoemKeywordSearch.prod"
+import PoemSearch from "../../../components/FilterSeach.prod"
 import styles from "../../../styles/pages/poemKeyWordSearchPageLayout.module.css";
 
 export default function CharacterPage() {

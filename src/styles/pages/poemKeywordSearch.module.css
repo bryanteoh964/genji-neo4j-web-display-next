@@ -1,246 +1,354 @@
 .poemSearch {
   max-width: 900px;
   margin: 0 auto;
+  padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
 }
 
-.searchInput {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 20px;
+/* 搜索区域 */
+.searchArea {
+  margin-bottom: 30px;
 }
 
-.countResult {
-  background-color: #f0f4f8;
-  border: 1px solid #d0e1f9;
-  border-radius: 4px;
-  padding: 10px 5px;
-  margin: 5px 0;
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
   font-size: 16px;
-  color: #2c3e50;
-  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
 }
 
-.countResult:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+.searchInput:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
 }
 
-.countResult strong {
-  font-weight: 600;
-  color: #3498db;
+/* 主内容区域 */
+.mainContent {
+  display: flex;
+  gap: 30px;
+  height: calc(100vh - 120px);
 }
 
-.chapterSelector {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
-  gap: 10px;
-  margin-bottom: 15px;
-  max-width: 100%;
-  justify-content: center;
+/* 过滤器侧边栏 */
+.filterSidebar {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 20px;
+  height: 100%;
 }
 
-.chapterButton {
-  padding: 4px 2px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  background-color: #f0f0f0;
+.filterContainer {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.filterHeader {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filterHeader h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.alignLeft {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.filterScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.filterSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  text-align: center;
+  user-select: none;
+}
+
+.filterLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  color: #666;
   font-size: 12px;
-  white-space: nowrap;
+}
+
+.arrowDown {
+  transform: rotate(90deg);
+}
+
+.filterContent {
+  max-height: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
+  transition: all 0.3s ease-out;
 }
 
-.chapterButton:hover {
-  background-color: #e0e0e0;
+.expanded {
+  max-height: 2000px; 
+  overflow-y: auto;
 }
 
-.chapterButton.active {
-  background-color: #4a90e2;
-  color: white;
+.chapterGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.chapterOption {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 2px 0;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.filterCheckbox {
+  font-size: 14px;
+}
+
+/* 自定义滚动条 */
+.filterScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filterScroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.filterScroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.filterScroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 过滤器部分 */
+.filterSection {
+  border-bottom: 1px solid #eee;
+}
+
+.filterLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  color: #666;
+  font-size: 12px;
+}
+
+.arrowDown {
+  transform: rotate(90deg);
+}
+
+
+/* 结果区域 */
+.resultsArea {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 16px;
+  height: 100%;
+}
+
+.resultCount {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
 }
 
 .searchResults {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  overflow: hidden;
-  width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.searchResultItem {
-  padding: 15px;
-  border-bottom: 1px solid #e0e0e0;
-  transition: background-color 0.3s ease;
+.resultItem {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.searchResultItem:last-child {
-  border-bottom: none;
+.resultItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.searchResultItem:nth-child(even) {
-  background-color: #f9f9f9;
+.resultContent {
+  padding: 20px;
 }
 
-.searchResultItem:hover {
-  background-color: #f0f0f0;
-}
-
-.chapterPoemInfo {
-  font-weight: bold;
+.resultTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
   color: #333;
-  margin-bottom: 5px;
 }
 
 .japaneseText {
-  margin-bottom: 5px;
-  font-size: 1.2em;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 8px;
 }
 
 .romajiText {
-  font-size: 0.9em;
+  font-size: 14px;
   color: #666;
-  margin: 5px;  
+  line-height: 1.6;
 }
 
-.translation {
-  font-size: 0.9em;
-  margin: 2px;
-}
-
-.translatorName {
-  font-weight: bold;
-  color: #000000;
-  font-size: 1em;
-  margin-bottom: 5px;
-}
-
-.highlight {
-  background-color: #ffff00;
-  padding: 2px;
-  border-radius: 2px;
-}
-
-.loadingMessage, .errorMessage, .noResultsMessage {
+/* 状态提示 */
+.loading,
+.error,
+.noResults {
+  padding: 40px;
   text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.errorMessage {
-  color: #d32f2f;
+.error {
+  color: #ff4d4f;
 }
 
-.searchResultItem a, .searchResultItem a:hover {
-  text-decoration: none;
-  color: inherit;
-}
-
+/* 返回顶部按钮 */
 .backTop {
   position: fixed;
-  bottom: 32px;
-  right: 70px;
+  bottom: 40px;
+  right: 40px;
   color: #333;
-  background-color: #f0f0f0;
-  padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 14px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background-color 0.3s ease;
-  display: flex;
-  flex-direction: row; 
-  justify-content: center;
-  text-align: center;
-  width: auto;  
-  white-space: nowrap;
+  background-color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
 .backTop:hover {
-  background-color: #e0e0e0;
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
 }
 
+/* 高亮匹配文本 */
+.highlight {
+  background-color: #ffd54f;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* 链接样式 */
+.resultItem a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* 响应式设计 */
 @media (max-width: 1024px) {
   .poemSearch {
-    max-width: 90%;
+    padding: 16px;
   }
 
-  .searchResults {
-    width: 100%;
+  .mainContent {
+    gap: 20px;
   }
 
-  .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-
-  .backTop {
-    right: 20px;
+  .filterSidebar {
+    flex: 0 0 240px;
   }
 }
 
 @media (max-width: 768px) {
-  .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  .mainContent {
+    flex-direction: column;
+    height: auto;
   }
 
-  .japaneseText {
-    font-size: 1.1em;
+  .filterSidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    margin-bottom: 20px;
   }
 
-  .romajiText, .translation {
-    font-size: 0.85em;
+  .filterContainer {
+    height: 100%;
   }
 
-  .backTop {
-    bottom: 20px;
-    right: 15px;
-    padding: 8px 12px;
-    font-size: 12px;
+  .resultsArea {
+    padding-right: 0;
+    height: auto;
   }
 }
 
 @media (max-width: 480px) {
   .poemSearch {
-    max-width: 95%;
+    padding: 12px;
   }
 
-  .chapterSelector {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  .searchInput {
+    padding: 10px 12px;
+    font-size: 14px;
   }
 
-  .chapterButton {
-    font-size: 10px;
+  .resultContent {
+    padding: 16px;
   }
 
-  .searchResultItem {
-    padding: 10px;
+  .resultTitle {
+    font-size: 14px;
   }
 
   .japaneseText {
-    font-size: 1em;
+    font-size: 16px;
   }
 
-  .romajiText, .translation {
-    font-size: 0.8em;
+  .romajiText {
+    font-size: 13px;
   }
 
   .backTop {
-    bottom: 15px;
-    right: 10px;
-    padding: 6px 10px;
-    font-size: 11px;
+    bottom: 20px;
+    right: 20px;
+    padding: 8px 12px;
+    font-size: 14px;
   }
 }
