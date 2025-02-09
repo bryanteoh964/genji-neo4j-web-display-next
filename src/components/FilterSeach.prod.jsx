@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { debounce } from 'lodash';
 import Link from 'next/link';
-import styles from '../styles/pages/poemKeywordSearch.module.css';
+import styles from '../styles/pages/filterSearch.module.css';
 import { BackTop, Checkbox} from 'antd';
 
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
@@ -124,6 +124,7 @@ useEffect(() => {
     }));
 }, [results]);
 
+// keyword search
 const handleSearch = useCallback(
     debounce(async (searchQuery) => {
       if (!searchQuery.trim()) {
@@ -178,6 +179,7 @@ const handleSearch = useCallback(
     []
 );
 
+// filter gets checked
 const handleFilterChange = (category, optionKey) => {
     setFilters(prev => ({
       ...prev,
@@ -194,6 +196,7 @@ const handleFilterChange = (category, optionKey) => {
     }));
 };
 
+// filter logic
 const filteredResults = useMemo(() => {
     const activeFilters = Object.entries(filters).reduce((acc, [category, { options }]) => {
       const activeOptions = Object.entries(options)
@@ -233,12 +236,15 @@ const filteredResults = useMemo(() => {
     handleSearch(query);
   }, [query, handleSearch]);
  
+
   const handleInputChange = (e) => {
     setQuery(e.target.value);
     if (!e.target.value.trim()) setShowResults(false);
   };
  
-  const [openSections, setOpenSections] = useState(new Set(['chapterNum'])); // 控制展开状态
+
+  // toggle control
+  const [openSections, setOpenSections] = useState(new Set(['chapterNum'])); 
 
   const toggleSection = (category) => {
     setOpenSections(prev => {

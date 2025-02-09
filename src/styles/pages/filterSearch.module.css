@@ -7,7 +7,7 @@
 	sans-serif;
 }
 
-/* 搜索区域 */
+/* search area */
 .searchArea {
   margin-bottom: 30px;
 }
@@ -28,14 +28,14 @@
   box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
 }
 
-/* 主内容区域 */
+/* main area */
 .mainContent {
   display: flex;
   gap: 30px;
   height: calc(100vh - 120px);
 }
 
-/* 过滤器侧边栏 */
+/* filter */
 .filterSidebar {
   flex: 0 0 280px;
   position: sticky;
@@ -136,7 +136,6 @@
   font-size: 14px;
 }
 
-/* 自定义滚动条 */
 .filterScroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -154,7 +153,6 @@
   background: #555;
 }
 
-/* 过滤器部分 */
 .filterSection {
   border-bottom: 1px solid #eee;
 }
@@ -176,7 +174,7 @@
 }
 
 
-/* 结果区域 */
+/* result area */
 .resultsArea {
   flex: 1;
   overflow-y: auto;
@@ -233,7 +231,7 @@
   line-height: 1.6;
 }
 
-/* 状态提示 */
+
 .loading,
 .error,
 .noResults {
@@ -248,7 +246,6 @@
   color: #ff4d4f;
 }
 
-/* 返回顶部按钮 */
 .backTop {
   position: fixed;
   bottom: 40px;
@@ -266,21 +263,18 @@
   transform: translateY(-2px);
 }
 
-/* 高亮匹配文本 */
 .highlight {
   background-color: #ffd54f;
   padding: 0 2px;
   border-radius: 2px;
 }
 
-/* 链接样式 */
 .resultItem a {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-/* 响应式设计 */
 @media (max-width: 1024px) {
   .poemSearch {
     padding: 16px;
