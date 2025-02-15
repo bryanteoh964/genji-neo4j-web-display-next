@@ -12,7 +12,7 @@ export async function POST(req) {
     }
 
     try {
-        const { _id, content } = await req.json();
+        const { _id, userId, content } = await req.json();
         
         const db = await client.db('user');
 
@@ -25,7 +25,7 @@ export async function POST(req) {
             );
         }
 
-        if (comment.user !== session.user.id && session.user.role !== 'admin') {
+        if (comment.user !== userId && session.user.role !== 'admin') {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 

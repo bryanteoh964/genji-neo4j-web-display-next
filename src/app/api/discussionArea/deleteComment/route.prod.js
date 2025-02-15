@@ -5,8 +5,6 @@ import { ObjectId } from 'mongodb';
 
 // handle comment deletion
 // admin and the user who posted the comment can delete it
-// only admin can delete visitor's comments
-// set _id: 'visitor' to delete visitor's comments
 export async function DELETE(req) {
     const session = await auth();
 
@@ -15,7 +13,7 @@ export async function DELETE(req) {
     }
 
     try {
-        const { _id } = await req.json();
+        const { _id, userId } = await req.json();
         
         const db = await client.db('user');
 
@@ -29,7 +27,7 @@ export async function DELETE(req) {
             );
         }
 
-        if (comment.user !== session.user.id && session.user.role !== 'admin') {
+        if (comment.user !== userId && session.user.role !== 'admin') {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
