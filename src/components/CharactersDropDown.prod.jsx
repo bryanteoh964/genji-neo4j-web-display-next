@@ -38,14 +38,14 @@ const SearchOptions = ({ setIsOpen, l }) => {
 	}
 
     return (
-        <div className={styles.searchOptions} style={{maxHeight: "500px", overflowY: 'scroll'}}>
-            <Link href="/characters" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+        <div className={styles.searchOptions} style={{maxHeight: "500px", overflowY: 'scroll', marginTop: "10px"}}>
+            <Link href="/characters" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
                 Diagram
             </Link>
-            <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)}  style={{fontWeight: "bold"}}>
                 Timeline 
             </Link>
-            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)}  style={{fontWeight: "bold"}}>
                 Map 
             </Link>
             <input type="text" id="mySearch" onClick={(e) => {if (e.target.value == "") {myFunction("")}}} placeholder="Search Character" onKeyUp={(e) => myFunction(e.target.value)} 
