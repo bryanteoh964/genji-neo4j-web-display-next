@@ -29,7 +29,7 @@ export async function POST(req) {
         await db.collection('discussion').findOneAndUpdate(
             { _id: new ObjectId(_id) },
             { 
-                $set: { isHidden: true }
+                $set: { isHidden: !comment.isHidden }
             }
         )
 

@@ -3,6 +3,7 @@ import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 
+// get all comments for a page including the user info for each comment
 export async function GET(req) {
     const session = await auth();
 
@@ -20,11 +21,14 @@ export async function GET(req) {
         const comments = await db.collection('discussion')
             .find({
                 pageType,
-                identifier,
-                isHidden: { $ne: true } 
+                identifier
             })
             .sort({ createdAt: -1 })
             .toArray();
+            
+        if (!comments || comments.length === 0) {
+            return NextResponse.json({ comments: [] }, { status: 200 });
+        }
 
         // match the user id with the user info
         if (comments.length > 0) {
