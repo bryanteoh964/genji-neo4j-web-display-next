@@ -7,7 +7,7 @@ const page = () => {
             <h1 className="main-title">Acknowledgements</h1>
             
             <p>
-                The Genji Poetry Database has been made possible by the efforts of several generations of students in my classes at Boston University
+                The Genji Poetry Database has been made possible by the efforts of several generations of students in my classes at Boston University.
             </p>
             <p>
                 Beginning in the fall of 2016, students reading the Tale of Genji entered and tagged the poems. Special thanks to  <span style={{ color: 'green' }}>Elijah Woo</span>, who heroically finished the job by entering all of the poems in the Uji chapters in the spring of 2022.

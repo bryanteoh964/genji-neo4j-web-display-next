@@ -9,8 +9,8 @@ const page = () => {
 		<p>
 			The Tale of Genji Poetry Database is an ongoing project created by Professor J. Keith Vincent 
 			and his students in LJ250 &quot;Masterpieces of Japanese Literature&quot; at Boston University. 
-			The database contains all 795 poems in Murasaki Shikibu&apos;s tenth-century masterpiece, 
-			<i>The Tale of Genji</i>. The poems ares listed in the original Japanese, in transliterated Roman letters (romaji), 
+			The database contains all 795 poems in Murasaki Shikibu&apos;s tenth-century masterpiece, <i>The Tale of Genji</i>. 
+			The poems ares listed in the original Japanese, in transliterated Roman letters (romaji), 
 			and in five different English translations by Arthur Waley, Edward Seidensticker, Royall Tyler, Dennis Washburn, and Edwin Cranston.
         </p>
 

@@ -37,6 +37,7 @@
     z-index: 1001;
     display: none;
     text-align: left;
+    padding: 5px 0px;
 }
 
 .open .searchOptions {
