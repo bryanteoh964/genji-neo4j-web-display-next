@@ -233,7 +233,7 @@ export default function GeneologyMap({l}) {
 	const find_X = useRef(0);
 	const find_Y = useRef(0);
 	const handleTransform = useCallback(() => {
-		fitBounds({ x: (find_X.current), y: (find_Y.current), width: 200, height: 100}, { duration: 800 });
+		fitBounds({ x: (find_X.current), y: (find_Y.current-500), width: 50, height: 1000}, { duration: 800 });
 	}, [fitBounds]); 
 
 	const showedAll = useRef(false) 
@@ -426,7 +426,7 @@ export default function GeneologyMap({l}) {
 	const enableDisable = (num, bool) => {
 		document.getElementById("ch" + num.toString()).checked = bool
 		document.getElementById("ch" + num.toString() + "_2").checked = bool
-		var new_nodes = [...nodes]
+		var new_nodes = [...nodes] 
 		var new_edges = [...edges]
 
 		if (bool) {
@@ -667,9 +667,6 @@ export default function GeneologyMap({l}) {
 		} 
 		//console.log("zooming to ", find_X.current, find_Y.current);
 		handleTransform(c_info.identifier);
-		setTimeout(function(){
-			zoomTo(0.6, { duration: 1000}); 
-		}, 1000); 
 	} 
 	// Find Relationship between two people
 	function findRel() {
@@ -864,9 +861,6 @@ export default function GeneologyMap({l}) {
 				find_X.current = 0
 				find_Y.current = 0
 				handleTransform("Genji")
-				setTimeout(function(){
-					zoomTo(0.6, { duration: 1000}); 
-				}, 1000); 
 			} else {
 				document.getElementById("relationship").innerHTML = character1 + " ㅤandㅤ " + character2 + " ㅤare not related."
 				document.getElementById("relationship").style.color = "#5875a3"
@@ -894,6 +888,65 @@ export default function GeneologyMap({l}) {
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text");
 		document.getElementById('mySearch2').value = data
+	}
+
+	function dropCharacter(ev) {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		var n = -1;
+		for (let i = 0; i < character_info.length; i++) {
+			if (character_info[i].english_name == data) {
+				n = i;
+				break 
+			}
+		} 
+
+		enableDisable(n, true)
+		var new_nodes = [...nodes]
+		var new_edges = [...edges]
+		var x = 0
+		var y = 0
+
+		for (const nn of new_nodes) {
+			if (!nn.hidden && nn.id.includes(" + ") && nn.id.includes(data)) {
+				var person1 = nn.id.slice(0, nn.id.indexOf(" + ")) 
+				var person2 = nn.id.slice(nn.id.indexOf(" + ")+3)
+				var unhidden_id = ""
+
+				if (person1 == data) {
+					unhidden_id = person2
+				} else {
+					unhidden_id = person1
+				}
+
+				for (const nn2 of new_nodes) {
+					if (nn2.id == unhidden_id) {
+						if (nn2.position.x > 0) {
+							x = nn2.position.x
+						}
+						if (nn2.position.y > 0) {
+							y = nn2.position.y
+						}
+
+						nn.position.x = nn2.position.x + 150
+						nn.position.y = nn2.position.y + 200
+
+						break
+					}
+				}
+			}
+		}
+
+		for (const new_n of new_nodes) {
+			if (new_n.id == data) {
+				new_n.position.x = x + 200
+				new_n.position.y = y
+				break
+			} 
+		}
+
+		setNodes(new_nodes)	
+		setEdges(new_edges)
 	}
 
     return (
@@ -983,6 +1036,7 @@ export default function GeneologyMap({l}) {
 			maxZoom={10}
 			minZoom={0.5}
 			onClick={() => {disableMenu(); disableMenu2()}}
+			onDrop={(e) => dropCharacter(e)} onDragOver={(e) => allowDrop(e)}
         > 
             <Controls />
             <Background color="#aaa"/>
