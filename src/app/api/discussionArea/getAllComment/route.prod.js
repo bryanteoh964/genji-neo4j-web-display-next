@@ -15,6 +15,7 @@ export async function GET(req) {
         const { searchParams } = new URL(req.url);
         const pageType = searchParams.get('pageType');
         const identifier = searchParams.get('identifier');
+        const userId = searchParams.get('userId');
 
         const db = await client.db('user');
 
@@ -30,30 +31,61 @@ export async function GET(req) {
             return NextResponse.json({ comments: [] }, { status: 200 });
         }
 
-        // match the user id with the user info
-        if (comments.length > 0) {
-               
-            const userIds = [...new Set(comments.map(comment =>  new ObjectId(comment.user)))];
 
-            //console.log('userIds:', userIds);
-                
-            const users = await db.collection('info')
-                .find({ _id: { $in: userIds } })
-                .project({ _id: 1, name: 1, googleName: 1, image: 1 })
-                .toArray();
-            
-            //console.log('users:', users);
-    
-            const userMap = new Map(users.map(user => [user._id.toString(), user]));
-
-            comments.forEach(comment => {
-                const user = userMap.get(comment.user.toString());
-                if (user) {
-                    comment.userName = user.name || user.googleName;
-                    comment.userImage = user.image;
+        const replies = await db.collection('reply')
+            .find({
+                baseCommentId: { 
+                    $in: comments.map(comment => comment._id.toString()) 
                 }
-            });
-        }
+            })
+            .sort({ createdAt: 1 })
+            .toArray();
+
+        
+        const userIds = [...new Set([
+            ...comments.map(comment => comment.user),
+            ...replies.map(reply => reply.user)
+        ])].map(id => new ObjectId(id));
+
+
+        // match the user id with the user info
+        const users = await db.collection('info')
+            .find({ _id: { $in: userIds } })
+            .project({ _id: 1, name: 1, googleName: 1, image: 1 })
+            .toArray();
+
+        const userMap = new Map(users.map(user => [user._id.toString(), user]));
+
+        // match reply
+        const replyMap = new Map();
+        replies.forEach(reply => {
+            const user = userMap.get(reply.user.toString());
+            if (user) {
+                reply.userName = user.name || user.googleName;
+                reply.userImage = user.image;
+            }
+            reply.likeCount = (reply.like || []).length;
+            reply.isLikedByUser = userId ? (reply.like || []).includes(userId) : false;
+
+            if (!replyMap.has(reply.baseCommentId)) {
+                replyMap.set(reply.baseCommentId, []);
+            }
+            replyMap.get(reply.baseCommentId).push(reply);
+        });
+
+        // match comment with user info and reply
+        comments.forEach(comment => {
+            const user = userMap.get(comment.user.toString());
+            if (user) {
+                comment.userName = user.name || user.googleName;
+                comment.userImage = user.image;
+            }
+            
+            comment.likeCount = (comment.like || []).length;
+            comment.isLikedByUser = userId ? (comment.like || []).includes(userId) : false;
+
+            comment.replies = replyMap.get(comment._id.toString()) || [];
+        });
 
         return NextResponse.json({ comments }, { status: 200 });
 

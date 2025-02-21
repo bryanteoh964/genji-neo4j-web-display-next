@@ -9,30 +9,30 @@ export async function POST(req) {
         return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
     }
            
-        // for registered users, add into the record of discussion comments
+        // for registered users, add into the record of reply collection
     try {
-        const { pageType, identifier, userId, content } = await req.json();
+        const { baseCommentId, userId, content } = await req.json();
             
         const db = await client.db('user');
 
-        const comment = await db.collection('discussion').insertOne( 
+        const reply = await db.collection('reply').insertOne( 
                                                                  { 
-                                                                    pageType: pageType, 
-                                                                    identifier: identifier,
+                                                                    baseCommentId: baseCommentId,
                                                                     user: userId,
                                                                     content: content,
                                                                     createdAt: new Date(),
                                                                     updatedAt: new Date(),
                                                                     like: [],
                                                                     isEdited: false,
-                                                                    isHidden: false
+                                                                    isHidden: false,
+                                                                    like: []
                                                                  } )
 
-        return NextResponse.json({ comment, _id: comment.insertedId }, { status: 200 });
+        return NextResponse.json({ reply }, { status: 200 });
 
     } catch (error) {
-        console.error('Error adding discussion comment:', error);
-        return NextResponse.json({ error: 'Failed to add discussion comment' }, { status: 500 });
+        console.error('Error adding comment reply:', error);
+        return NextResponse.json({ error: 'Failed to add comment reply' }, { status: 500 });
     }
 
 }

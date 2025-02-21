@@ -3,8 +3,8 @@ import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 
-// handle comment deletion
-// admin and the user who posted the comment can delete it
+// handle comment reply deletion
+// admin and the user who posted the reply can delete it
 export async function DELETE(req) {
     const session = await auth();
 
@@ -17,37 +17,30 @@ export async function DELETE(req) {
         
         const db = await client.db('user');
 
-        const comment = await db.collection('discussion').findOne({  _id: new ObjectId(_id) });
+        const reply = await db.collection('reply').findOne({  _id: new ObjectId(_id) });
 
 
-        if (!comment) {
+        if (!reply) {
             return NextResponse.json(
-                { message: 'comment not found' }, 
+                { message: 'comment reply not found' }, 
                 { status: 404 }
             );
         }
 
-        if (comment.user !== userId && session.user.role !== 'admin') {
+        if (reply.user !== userId && session.user.role !== 'admin') {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
-        // delete related replies first
-        await db.collection('reply').deleteMany({
-            baseCommentId: _id
-        });
-
-        await db.collection('discussion').deleteOne({ 
+        await db.collection('reply').deleteOne({ 
             _id: new ObjectId(_id)
         });
 
-        
-
-        return NextResponse.json({ message: 'Comment deleted' }, { status: 200 });
+        return NextResponse.json({ message: 'reply deleted' }, { status: 200 });
 
     } catch (error) {
-        console.error('Error removing comment:', error);
+        console.error('Error removing reply:', error);
         return NextResponse.json(
-            { error: 'Failed to remove comment' }, 
+            { error: 'Failed to remove reply' }, 
             { status: 500 }
         );
     }
