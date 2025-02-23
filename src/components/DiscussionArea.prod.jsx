@@ -4,9 +4,7 @@ import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, 
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
 
-// [修改] 添加 replyToUser 参数来处理 @ 提及
 const ReplyInput = ({ onSubmit, onCancel, session, replyToUser }) => {
-  // [修改] 默认值包含 @ 提及
   const [content, setContent] = useState(replyToUser ? `@${replyToUser} ` : '');
 
   return (
@@ -25,7 +23,6 @@ const ReplyInput = ({ onSubmit, onCancel, session, replyToUser }) => {
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          // [修改] 根据是否回复特定用户显示不同的提示
           placeholder={replyToUser ? `Reply to ${replyToUser}...` : "Write a reply..."}
           className={styles.replyInput}
         />
@@ -63,7 +60,7 @@ const CommentItem = ({
   user, 
   session, 
   mainCommentId, 
-  mainCommentUserName, // [新增] 跟踪主评论用户名
+  mainCommentUserName,
   onUpdate, 
   onDelete, 
   onToggleHide, 
@@ -247,7 +244,7 @@ const CommentItem = ({
             session={session}
             onSubmit={handleReplySubmit}
             onCancel={() => setIsReplying(false)}
-            replyToUser={mainCommentUserName == comment.userName ? '' : comment.userName} // [修改] 添加 replyToUser 参数
+            replyToUser={mainCommentUserName == comment.userName ? '' : comment.userName} 
           />
         </div>
       )}
@@ -260,8 +257,8 @@ const CommentItem = ({
               comment={reply}
               user={user}
               session={session}
-              mainCommentId={mainCommentId || comment._id}  // 传递主评论的 ID
-              mainCommentUserName = {mainCommentUserName} // 传递主评论的用户名
+              mainCommentId={mainCommentId || comment._id} 
+              mainCommentUserName = {mainCommentUserName}
               onUpdate={onUpdateReply}
               onDelete={onDeleteReply}
               onLike={onLikeReply}
@@ -638,7 +635,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
               comment={comment}
               user={user}
               session={session}
-              mainCommentUserName={comment.userName} // [新增] 跟踪主评论用户名
+              mainCommentUserName={comment.userName}
               onUpdate={handleUpdateComment}
               onDelete={handleDelete}
               onToggleHide={handleToggleHide}
