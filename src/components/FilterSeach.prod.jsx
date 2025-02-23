@@ -131,7 +131,7 @@ const handleSearch = useCallback(
     setError(null);
 
     // Check if query is empty and set default search to fetch all poems
-    const queryToUse = searchQuery.trim() ? searchQuery : "all";
+    const queryToUse = searchQuery.trim() ? searchQuery : "=#=";
 
     try {
       console.log("Fetching from API with query:", queryToUse);

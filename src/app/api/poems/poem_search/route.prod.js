@@ -46,20 +46,23 @@ async function generalSearch(q) {
         // Neo4j cypher query to filter poems' Japanese, Romaji(, Translation) with search keyword q
         const query = `
             MATCH (p:Genji_Poem)
-            WHERE toLower(p.Japanese) CONTAINS toLower($q) OR toLower(p.Romaji) CONTAINS toLower($q)
+            ${q.toLowerCase() !== '=#=' ? `
+            WHERE toLower(p.Japanese) CONTAINS toLower($q) 
+            OR toLower(p.Romaji) CONTAINS toLower($q)
             OR EXISTS {
-                (p)<-[:TRANSLATION_OF]-(t:Translation)
-                WHERE toLower(t.translation) CONTAINS toLower($q)
-            }
-            WITH p
-            MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
+                    (p)<-[:TRANSLATION_OF]-(t:Translation)
+                    WHERE toLower(t.translation) CONTAINS toLower($q)
+                }
+            ` : ''}
+            WITH DISTINCT p
+            OPTIONAL MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
             WITH p, 
-                collect({translator_name: translator.name, text: t.translation}) AS translations
+                collect(DISTINCT {translator_name: translator.name, text: t.translation}) AS translations
             OPTIONAL MATCH (p)<-[:ADDRESSEE_OF]-(addressee:Character)
             OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
-            RETURN 
+            RETURN DISTINCT
                 p.Japanese AS Japanese,
                 p.pnum AS pnum,
                 p.Romaji AS Romaji,
@@ -74,6 +77,7 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Washburn"][0].text, "") AS Washburn_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
+            ORDER BY p.pnum
         `;
         
         const res = await session.readTransaction(tx => tx.run(query, { q }));
