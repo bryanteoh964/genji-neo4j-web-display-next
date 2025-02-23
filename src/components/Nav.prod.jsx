@@ -37,7 +37,8 @@ const Nav =()=> {
                     }
                     </>
                 </div>
-                <SearchOptions />
+                <Link href="/search/search-by-keyword" alt="Search page">Search</Link>
+                {/* <SearchOptions /> */}
                 {/*<Link href="/search" alt="Search character poem interactions">Search</Link> */}
                 {/* <Link href="/allusions">Allusions</Link> */}
                 {/* <Link href="/characters">Characters</Link>

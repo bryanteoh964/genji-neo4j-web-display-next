@@ -55,10 +55,20 @@ async function generalSearch(q) {
             MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
             WITH p, 
                 collect({translator_name: translator.name, text: t.translation}) AS translations
+            OPTIONAL MATCH (p)<-[:ADDRESSEE_OF]-(addressee:Character)
+            OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
+            OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
+            OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
             RETURN 
                 p.Japanese AS Japanese,
                 p.pnum AS pnum,
                 p.Romaji AS Romaji,
+                COALESCE(addressee.name, "") AS addressee_name,
+                COALESCE(addressee.gender, "") AS addressee_gender,
+                COALESCE(speaker.name, "") AS speaker_name,
+                COALESCE(speaker.gender, "") AS speaker_gender,
+                COALESCE(season.name, "") AS season,
+                COALESCE(pt.name, "") AS poetic_tech,
                 COALESCE([x IN translations WHERE x.translator_name = "Waley"][0].text, "") AS Waley_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Seidensticker"][0].text, "") AS Seidensticker_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
@@ -67,7 +77,7 @@ async function generalSearch(q) {
         `;
         
         const res = await session.readTransaction(tx => tx.run(query, { q }));
-        //console.log("res:", res.records)
+        // console.log("res:", res.records)
         await session.close();
 
          // Format and sort related poems
@@ -77,11 +87,18 @@ async function generalSearch(q) {
                 poemNum: toNativeTypes(record.get('pnum').substring(4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
+                addressee_name: toNativeTypes(record.get('addressee_name')),
+                addressee_gender: toNativeTypes(record.get('addressee_gender')),
+                speaker_name: toNativeTypes(record.get('speaker_name')),
+                speaker_gender: toNativeTypes(record.get('speaker_gender')),
+                season: toNativeTypes(record.get('season')),
+                peotic_tech: toNativeTypes(record.get('poetic_tech')),
                 waley_translation: toNativeTypes(record.get('Waley_translation')),
                 seidensticker_translation: toNativeTypes(record.get('Seidensticker_translation')),
                 tyler_translation: toNativeTypes(record.get('Tyler_translation')),
                 washburn_translation: toNativeTypes(record.get('Washburn_translation')),
                 cranston_translation: toNativeTypes(record.get('Cranston_translation'))
+
               }));
             //console.log("searchResult:", searchResults)
             return { searchResults };
