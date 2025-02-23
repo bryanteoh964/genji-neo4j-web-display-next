@@ -20,12 +20,31 @@ export async function GET(req) {
         const db = await client.db('user');
 
         const comments = await db.collection('discussion')
-            .find({
+    .aggregate([
+        { 
+            $match: {
                 pageType,
                 identifier
-            })
-            .sort({ createdAt: -1 })
-            .toArray();
+            }
+        },
+        {
+            $addFields: {
+                likeCount: {
+                    $size: {
+                        $ifNull: ["$like", []]
+                    }
+                }
+            }
+        },
+        {
+            $sort: {
+                isPinned: -1,      
+                likeCount: -1,   
+                createdAt: -1   
+            }
+        }
+    ])
+    .toArray();
             
         if (!comments || comments.length === 0) {
             return NextResponse.json({ comments: [] }, { status: 200 });

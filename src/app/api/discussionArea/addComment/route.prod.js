@@ -25,7 +25,8 @@ export async function POST(req) {
                                                                     updatedAt: new Date(),
                                                                     like: [],
                                                                     isEdited: false,
-                                                                    isHidden: false
+                                                                    isHidden: false,
+                                                                    isPinned: false
                                                                  } )
 
         return NextResponse.json({ comment, _id: comment.insertedId }, { status: 200 });

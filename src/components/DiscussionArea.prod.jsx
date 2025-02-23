@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
 
@@ -75,7 +75,8 @@ const CommentItem = ({
   onToggleHideReply,
   onCancelEdit, 
   editingComment, 
-  setEditingComment 
+  setEditingComment,
+  onTogglePin 
 }) => {
   const isAuthor = user === comment.user;
   const isAdmin = session?.user?.role === 'admin';
@@ -118,6 +119,13 @@ const CommentItem = ({
               <span className={styles.hiddenBadge}>is hidden</span>
             )}
           </div>
+
+        {comment.isPinned && (
+          <div className={styles.pinnedBadge}>
+              <Pin size={12} />
+              Pinned by admin
+          </div>
+        )}
 
           {isEditing ? (
             <div>
@@ -208,6 +216,27 @@ const CommentItem = ({
                 {comment.isHidden ? 'Reveal' : 'Hide'}
               </button>
             )}
+
+            {isAdmin && !mainCommentId && (
+                <button
+                    onClick={() => onTogglePin(comment._id)}
+                    className={`${styles.actionButton} ${styles.pinButton}`}
+                    title={comment.isPinned ? "Unpin comment" : "Pin comment"}
+                >
+                    {comment.isPinned ? (
+                        <>
+                            <PinOff size={16} />
+                            Unpin
+                        </>
+                    ) : (
+                        <>
+                            <Pin size={16} />
+                            Pin
+                        </>
+                    )}
+                </button>
+            )}
+
           </div>
         </div>
       </div>
@@ -244,6 +273,7 @@ const CommentItem = ({
               onCancelEdit={onCancelEdit}
               editingComment={editingComment}
               setEditingComment={setEditingComment}
+              onTogglePin={onTogglePin}
             />
           ))}
         </div>
@@ -527,6 +557,26 @@ const DiscussionArea = ({ pageType, identifier }) => {
     }
   };
 
+  const handleTogglePin = async (commentId) => {
+    try {
+        const response = await fetch('/api/discussionArea/pinComment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                _id: commentId
+            }),
+        });
+
+        if (response.ok) {
+            fetchComments();
+        }
+    } catch (error) {
+        console.error('Error toggling pin status:', error);
+    }
+};
+
   if (loading) {
     return <div className="flex justify-center p-8">loading comments...</div>;
   }
@@ -601,6 +651,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
               onLikeReply={handleLikeReply}
               editingComment={editingComment}
               setEditingComment={setEditingComment}
+              onTogglePin={handleTogglePin}
             />
           ))
         )}
