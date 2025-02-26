@@ -2,6 +2,7 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
+import { error } from "console";
 
 // only admin can pin comments
 export async function POST(req) {
@@ -15,7 +16,7 @@ export async function POST(req) {
     }
 
     try {
-        const { _id } = await req.json();
+        const { _id, version } = await req.json();
         const db = await client.db('user');
 
         const comment = await db.collection('discussion').findOne({
@@ -30,10 +31,23 @@ export async function POST(req) {
         }
 
         // Toggle pin status
-        await db.collection('discussion').updateOne(
-            { _id: new ObjectId(_id) },
-            { $set: { isPinned: !comment.isPinned } }
+        const res = await db.collection('discussion').findOneAndUpdate(
+            { 
+                _id: new ObjectId(_id),
+                version: version || 0
+            },
+            { $set: { isPinned: !comment.isPinned },
+              $inc: { version: 1 }
+            },
+            { returnDocument: 'after' }
         );
+
+        if (!res) {
+            return NextResponse.json({ 
+                message: 'Failed to update comment',
+                errorType: 'versionConflict'
+            }, { status: 409 });
+        };
 
         return NextResponse.json(
             { message: `Comment ${comment.isPinned ? 'unpinned' : 'pinned'} successfully` },

@@ -13,7 +13,7 @@ export async function DELETE(req) {
     }
 
     try {
-        const { _id, userId } = await req.json();
+        const { _id, userId, version } = await req.json();
         
         const db = await client.db('user');
 
@@ -31,9 +31,18 @@ export async function DELETE(req) {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
-        await db.collection('reply').deleteOne({ 
-            _id: new ObjectId(_id)
+        const result = await db.collection('reply').findOneAndDelete({ 
+            _id: new ObjectId(_id),
+            version: version || 0 
         });
+
+        if (!result) {
+            return NextResponse.json({ 
+                message: 'Reply has been deleted by another admin, please refresh and try again',
+                errorType: 'versionConflict' 
+            }, { status: 409 });
+        }
+
 
         return NextResponse.json({ message: 'reply deleted' }, { status: 200 });
 

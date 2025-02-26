@@ -3,7 +3,7 @@ import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 
-// only admin and the user who posted the comment can update it
+// only the user who posted the comment can update it
 export async function POST(req) {
     const session = await auth();
 
@@ -12,7 +12,7 @@ export async function POST(req) {
     }
 
     try {
-        const { _id, userId, content } = await req.json();
+        const { _id, userId, content, version } = await req.json();
         
         const db = await client.db('user');
 
@@ -25,19 +25,32 @@ export async function POST(req) {
             );
         }
 
-        if (comment.user !== userId && session.user.role !== 'admin') {
+        if (comment.user !== userId) {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
-        await db.collection('discussion').findOneAndUpdate(
-            {  _id: new ObjectId(_id) },    
+        const res = await db.collection('discussion').findOneAndUpdate(
+            {  
+                _id: new ObjectId(_id),
+                verseion: version || 0
+            },    
             { 
                 $set: { 
                     content: content,
                     updatedAt: new Date()
-                }
-            }
+                },
+                $inc: { version: 1 }
+            },
+            { returnDocument: 'after' }
         );
+
+        if (!res) {
+            return NextResponse.json({ 
+                    message: 'Comment was updated by another user',
+                    errorType: 'versionConflict'
+                },{ status: 409 }
+            );
+        };
 
         return NextResponse.json({ message: 'Comment updated' }, { status: 200 });
 

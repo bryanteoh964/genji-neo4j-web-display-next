@@ -12,7 +12,7 @@ export async function POST(req) {
     }
 
     try {
-        const { _id } = await req.json();
+        const { _id, version } = await req.json();
         
         const db = await client.db('user');
 
@@ -26,12 +26,29 @@ export async function POST(req) {
             );
         }
 
-        await db.collection('discussion').findOneAndUpdate(
-            { _id: new ObjectId(_id) },
+        const res = await db.collection('discussion').findOneAndUpdate(
             { 
-                $set: { isHidden: !comment.isHidden }
-            }
+                _id: new ObjectId(_id),
+                version: version || 0
+            },
+            { 
+                $set: { isHidden: !comment.isHidden },
+                $inc: { version: 1 }
+            },
+            { returnDocument: 'after' }
         )
+
+        console.log('findOneAndUpdate result:', JSON.stringify(res, null, 2));
+
+        if (!res) {
+            return NextResponse.json(
+                { 
+                    message: 'Comment was updated by another admin',
+                    errorType: 'versionConflict'
+                }, 
+                { status: 409 }
+            );
+        }
 
         return NextResponse.json({ message: 'Comment is hidden now' }, { status: 200 });
 

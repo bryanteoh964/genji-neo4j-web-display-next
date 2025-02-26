@@ -25,7 +25,7 @@ export async function POST(req) {
                                                                     like: [],
                                                                     isEdited: false,
                                                                     isHidden: false,
-                                                                    like: []
+                                                                    version: 0
                                                                  } )
 
         return NextResponse.json({ reply }, { status: 200 });

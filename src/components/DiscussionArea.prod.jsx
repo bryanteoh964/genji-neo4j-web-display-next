@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin } from 'lucide-react';
+import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin, AlertTriangle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
 
@@ -54,7 +54,7 @@ const ReplyInput = ({ onSubmit, onCancel, session, replyToUser }) => {
   );
 };
 
-
+// integrate all comment actions into one component
 const CommentItem = ({ 
   comment, 
   user, 
@@ -81,6 +81,9 @@ const CommentItem = ({
   const [localEditContent, setLocalEditContent] = useState(comment.content);
   const [isReplying, setIsReplying] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  
+  // user version to handle version conflict
+  const commentVersion = comment.version || 0;
 
   useEffect(() => {
     if (isEditing) {
@@ -89,7 +92,7 @@ const CommentItem = ({
   }, [isEditing, comment.content]);
 
   const handleReplySubmit = (content) => {
-    onReply(mainCommentId || comment._id, content);
+    onReply(mainCommentId || comment._id, content, commentVersion);
     setIsReplying(false);
   };
 
@@ -134,7 +137,7 @@ const CommentItem = ({
               />
               <div className={styles.editActions}>
                 <button
-                  onClick={() => onUpdate(comment._id, localEditContent)}
+                  onClick={() => onUpdate(comment._id, localEditContent, commentVersion)}
                   className={styles.saveButton}
                 >
                   Save
@@ -156,7 +159,7 @@ const CommentItem = ({
 
           <div className={styles.actionButtons}>
             <button
-              onClick={() => onLike(comment._id)}
+              onClick={() => onLike(comment._id, commentVersion)}
               className={comment.isLikedByUser ? styles.likedButton : styles.likeButton}
             >
               <ThumbsUp size={16} />
@@ -196,7 +199,7 @@ const CommentItem = ({
             
             {(isAuthor || isAdmin) && (
               <button
-                onClick={() => onDelete(comment._id)}
+                onClick={() => onDelete(comment._id, commentVersion)}
                 className={`${styles.actionButton} ${styles.deleteButton}`}
               >
                 <Trash2 size={16} />
@@ -206,7 +209,7 @@ const CommentItem = ({
 
             {isAdmin && (
               <button
-                onClick={() => onToggleHide(comment._id)}
+                onClick={() => onToggleHide(comment._id, commentVersion)}
                 className={`${styles.actionButton} ${styles.hideButton}`}
               >
                 {comment.isHidden ? <Eye size={16} /> : <EyeOff size={16} />}
@@ -216,7 +219,7 @@ const CommentItem = ({
 
             {isAdmin && !mainCommentId && (
                 <button
-                    onClick={() => onTogglePin(comment._id)}
+                    onClick={() => onTogglePin(comment._id, commentVersion)}
                     className={`${styles.actionButton} ${styles.pinButton}`}
                     title={comment.isPinned ? "Unpin comment" : "Pin comment"}
                 >
@@ -258,7 +261,7 @@ const CommentItem = ({
               user={user}
               session={session}
               mainCommentId={mainCommentId || comment._id} 
-              mainCommentUserName = {mainCommentUserName}
+              mainCommentUserName={mainCommentUserName}
               onUpdate={onUpdateReply}
               onDelete={onDeleteReply}
               onLike={onLikeReply}
@@ -287,6 +290,12 @@ const DiscussionArea = ({ pageType, identifier }) => {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [editingComment, setEditingComment] = useState(null);
+  const [error, setError] = useState(null);
+
+  const showError = (message) => {
+    setError(message);
+    setTimeout(() => setError(null), 5000);
+  };
 
   const fetchComments = async () => {
     try {
@@ -297,6 +306,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
       setRawComments(data.comments);
     } catch (error) {
       console.error('Error fetching comments:', error);
+      showError('Failed to load comments. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -309,13 +319,19 @@ const DiscussionArea = ({ pageType, identifier }) => {
       setUser(data._id);
     } catch (error) {
       console.error('Error fetching user:', error);
+      showError('Failed to load user info. Please try again.');
     }
   };
 
   useEffect(() => {
     fetchUser();
-    fetchComments();
-  }, [pageType, identifier]);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchComments();
+    }
+  }, [pageType, identifier, user]);
 
   useEffect(() => {
     if (session?.user?.role === 'admin') {
@@ -332,6 +348,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
     }
   }, [session, rawComments]);
 
+  
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
@@ -349,16 +366,22 @@ const DiscussionArea = ({ pageType, identifier }) => {
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         setNewComment('');
         fetchComments();
+      } else {
+        showError(data.message || 'Failed to add comment');
       }
     } catch (error) {
       console.error('Error adding comment:', error);
+      showError('Failed to add comment. Please try again.');
     }
   };
 
-  const handleUpdateComment = async (commentId, content) => {
+
+  const handleUpdateComment = async (commentId, content, version) => {
     try {
       const response = await fetch('/api/discussionArea/updateComment', {
         method: 'POST',
@@ -369,19 +392,30 @@ const DiscussionArea = ({ pageType, identifier }) => {
           _id: commentId,
           userId: user,
           content: content,
+          version: version 
         }),
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setEditingComment(null);
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This comment has been modified by another user. Refreshing...');
+        fetchComments();
+        setEditingComment(null);
+      } else {
+        showError(data.message || 'Failed to update comment');
       }
     } catch (error) {
       console.error('Error updating comment:', error);
+      showError('Failed to update comment. Please try again.');
     }
   };
 
-  const handleToggleHide = async (commentId) => {
+ 
+  const handleToggleHide = async (commentId, version) => {
     try {
       const response = await fetch('/api/discussionArea/hideComment', {
         method: 'POST',
@@ -389,19 +423,32 @@ const DiscussionArea = ({ pageType, identifier }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          _id: commentId
+          _id: commentId,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This comment has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Comment no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to toggle comment visibility');
       }
     } catch (error) {
       console.error('Error toggling comment visibility:', error);
+      showError('Failed to toggle comment visibility. Please try again.');
     }
   };
 
-  const handleDelete = async (commentId) => {
+
+  const handleDelete = async (commentId, version) => {
     if (!confirm('Are you sure to delete this comment?')) return;
 
     try {
@@ -412,19 +459,32 @@ const DiscussionArea = ({ pageType, identifier }) => {
         },
         body: JSON.stringify({
           _id: commentId,
-          userId: user
+          userId: user,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This comment has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Comment has already been deleted. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to delete comment');
       }
     } catch (error) {
       console.error('Error deleting comment:', error);
+      showError('Failed to delete comment. Please try again.');
     }
   };
 
-  const handleLike = async (commentId) => {
+  
+  const handleLike = async (commentId, version) => {
     try {
       const response = await fetch('/api/discussionArea/likeComment', {
         method: 'POST',
@@ -433,19 +493,32 @@ const DiscussionArea = ({ pageType, identifier }) => {
         },
         body: JSON.stringify({
           _id: commentId,
-          userId: user
+          userId: user,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This comment has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Comment no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to like comment');
       }
     } catch (error) {
       console.error('Error updating like status:', error);
+      showError('Failed to update like status. Please try again.');
     }
   };
 
-  const handleAddReply = async (commentId, content) => {
+
+  const handleAddReply = async (commentId, content, version) => {
     try {
       const response = await fetch('/api/discussionArea/addReply', {
         method: 'POST',
@@ -456,18 +529,31 @@ const DiscussionArea = ({ pageType, identifier }) => {
           baseCommentId: commentId,
           userId: user,
           content: content,
+          version: version 
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('The comment has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('The original comment no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to add reply');
       }
     } catch (error) {
       console.error('Error adding reply:', error);
+      showError('Failed to add reply. Please try again.');
     }
   };
 
-  const handleUpdateReply = async (replyId, content) => {
+ 
+  const handleUpdateReply = async (replyId, content, version) => {
     try {
       const response = await fetch('/api/discussionArea/updateReply', {
         method: 'POST',
@@ -478,19 +564,34 @@ const DiscussionArea = ({ pageType, identifier }) => {
           _id: replyId,
           userId: user,
           content: content,
+          version: version
         }),
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setEditingComment(null);
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This reply has been modified by another user. Refreshing...');
+        fetchComments();
+        setEditingComment(null);
+      } else if (response.status === 404) {
+        showError('Reply no longer exists. Refreshing...');
+        fetchComments();
+        setEditingComment(null);
+      } else {
+        showError(data.message || 'Failed to update reply');
       }
     } catch (error) {
       console.error('Error updating reply:', error);
+      showError('Failed to update reply. Please try again.');
     }
   };
 
-  const handleDeleteReply = async (replyId) => {
+  
+  const handleDeleteReply = async (replyId, version) => {
     if (!confirm('Are you sure to delete this reply?')) return;
 
     try {
@@ -501,19 +602,32 @@ const DiscussionArea = ({ pageType, identifier }) => {
         },
         body: JSON.stringify({
           _id: replyId,
-          userId: user
+          userId: user,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This reply has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Reply has already been deleted. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to delete reply');
       }
     } catch (error) {
       console.error('Error deleting reply:', error);
+      showError('Failed to delete reply. Please try again.');
     }
   };
 
-  const handleLikeReply = async (replyId) => {
+  
+  const handleLikeReply = async (replyId, version) => {
     try {
       const response = await fetch('/api/discussionArea/likeReply', {
         method: 'POST',
@@ -522,19 +636,32 @@ const DiscussionArea = ({ pageType, identifier }) => {
         },
         body: JSON.stringify({
           _id: replyId,
-          userId: user
+          userId: user,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This reply has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Reply no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to like reply');
       }
     } catch (error) {
       console.error('Error updating reply like status:', error);
+      showError('Failed to update like status. Please try again.');
     }
   };
 
-  const handleToggleHideReply = async (replyId) => {
+  
+  const handleToggleHideReply = async (replyId, version) => {
     try {
       const response = await fetch('/api/discussionArea/hideReply', {
         method: 'POST',
@@ -542,37 +669,62 @@ const DiscussionArea = ({ pageType, identifier }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          _id: replyId
+          _id: replyId,
+          version: version
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         fetchComments();
+      } else if (response.status === 409) {
+        showError('This reply has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Reply no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to toggle reply visibility');
       }
     } catch (error) {
       console.error('Error toggling reply visibility:', error);
+      showError('Failed to toggle reply visibility. Please try again.');
     }
   };
 
-  const handleTogglePin = async (commentId) => {
+  
+  const handleTogglePin = async (commentId, version) => {
     try {
-        const response = await fetch('/api/discussionArea/pinComment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                _id: commentId
-            }),
-        });
+      const response = await fetch('/api/discussionArea/pinComment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _id: commentId,
+          version: version
+        }),
+      });
 
-        if (response.ok) {
-            fetchComments();
-        }
+      const data = await response.json();
+
+      if (response.ok) {
+        fetchComments();
+      } else if (response.status === 409) {
+        showError('This comment has been modified by another user. Refreshing...');
+        fetchComments();
+      } else if (response.status === 404) {
+        showError('Comment no longer exists. Refreshing...');
+        fetchComments();
+      } else {
+        showError(data.message || 'Failed to toggle pin status');
+      }
     } catch (error) {
-        console.error('Error toggling pin status:', error);
+      console.error('Error toggling pin status:', error);
+      showError('Failed to toggle pin status. Please try again.');
     }
-};
+  };
 
   if (loading) {
     return <div className="flex justify-center p-8">loading comments...</div>;
@@ -580,6 +732,14 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
   return (
     <div className={styles.container}>
+      
+      {error && (
+        <div className={styles.errorNotification}>
+          <AlertTriangle size={16} />
+          <span>{error}</span>
+        </div>
+      )}
+
       <div className={styles.inputSection}>
         {session ? (
           <div className={styles.inputWrapper}>
