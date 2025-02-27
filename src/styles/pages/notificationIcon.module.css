@@ -1,0 +1,387 @@
+.notificationContainer {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .notificationButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 8px;
+    color: #555;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+  
+  .notificationButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff4d4f;
+    color: white;
+    font-size: 0.7rem;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+  
+  .notificationDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 360px;
+    max-height: 500px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .errorNotification {
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+    color: #ff4d4f;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin: 8px;
+    border-radius: 4px;
+  }
+  
+  /* Tabs for admin */
+  .tabsContainer {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .tabButton {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    position: relative;
+    color: #8c8c8c;
+  }
+  
+  .activeTab {
+    color: #222;
+    font-weight: 600;
+  }
+  
+  .activeTab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #1890ff;
+  }
+  
+  .tabBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff4d4f;
+    color: white;
+    font-size: 0.7rem;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    padding: 0 4px;
+    margin-left: 5px;
+  }
+  
+  .notificationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .markAllRead {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    color: #1890ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .markAllRead:hover {
+    background-color: rgba(24, 144, 255, 0.1);
+  }
+  
+  .notificationList {
+    overflow-y: auto;
+    max-height: 420px;
+  }
+  
+  .notificationItem {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+  }
+  
+  .notificationItem:last-child {
+    border-bottom: none;
+  }
+  
+  .notificationLink {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+  }
+  
+  .notificationLink:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  
+  .notificationAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+    flex-shrink: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .avatarFallback {
+    color: #555;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .notificationContent {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .notificationText {
+    margin: 0 0 4px;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .notificationTime {
+    font-size: 0.75rem;
+    color: #8c8c8c;
+  }
+  
+  .dismissButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #d9d9d9;
+    font-size: 0.75rem;
+    padding: 8px;
+    border-radius: 4px;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  
+  .notificationItem:hover .dismissButton {
+    opacity: 1;
+  }
+  
+  .dismissButton:hover {
+    color: #ff4d4f;
+  }
+  
+  /* Review items */
+  .reviewItem {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .reviewItem:last-child {
+    border-bottom: none;
+  }
+  
+  .reviewItemHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .reviewInfo {
+    flex: 1;
+  }
+  
+  .reviewUsername {
+    margin: 0 0 2px;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .reviewContent {
+    margin-left: 48px;
+    margin-bottom: 10px;
+  }
+  
+  .reviewContent p {
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  .locationInfo {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #8c8c8c;
+  }
+  
+  .locationInfo svg {
+    margin-right: 4px;
+  }
+  
+  .locationLink {
+    color: #1890ff;
+    text-decoration: none;
+    margin-left: 4px;
+  }
+  
+  .locationLink:hover {
+    text-decoration: underline;
+  }
+  
+  .reviewActions {
+    display: flex;
+    margin-left: 48px;
+    gap: 8px;
+  }
+  
+  .actionButton {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .approveButton {
+    color: #52c41a;
+  }
+  
+  .approveButton:hover {
+    background-color: rgba(82, 196, 26, 0.1);
+  }
+  
+  .hideButton {
+    color: #faad14;
+  }
+  
+  .hideButton:hover {
+    background-color: rgba(250, 173, 20, 0.1);
+  }
+  
+  .deleteButton {
+    color: #ff4d4f;
+  }
+  
+  .deleteButton:hover {
+    background-color: rgba(255, 77, 79, 0.1);
+  }
+  
+  .disapproveButton {
+    color: #ff4d4f;
+    display: flex;
+    align-items: center;
+  }
+  
+  .disapproveButton svg:last-child {
+    margin-left: 4px;
+  }
+  
+  .disapproveButton:hover {
+    background-color: rgba(255, 77, 79, 0.1);
+  }
+  
+  .disapproveOptions {
+    margin-top: 8px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .disapproveHeader {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: #666;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .disapproveActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+  }
+  
+  .cancelButton {
+    color: #999;
+  }
+  
+  .cancelButton:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .loadingText, .emptyText {
+    padding: 16px;
+    color: #8c8c8c;
+    text-align: center;
+    font-size: 0.875rem;
+  }

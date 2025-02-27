@@ -50,6 +50,24 @@ export async function POST(req) {
                 }
             );
 
+            // add notification to the user who posted the comment
+            if (comment.user !== userId) {
+                await db.collection('notification').insertOne({
+                  recipient: comment.user,
+                  sender: userId,
+                  senderName: session.user.name || session.user.email,
+                  senderImage: session.user.image,
+                  type: 'likeComment',
+                  relatedItem: _id,
+                  pageType: comment.pageType,
+                  identifier: comment.identifier,
+                  content: `Liked your comment: "${comment.content.substring(0, 40)}${comment.content.length > 40 ? '...' : ''}"`,
+                  isRead: false,
+                  createdAt: new Date(),
+                  version: 0
+                });
+              }
+
             return NextResponse.json({ message: 'User is added into like list' }, { status: 200 });
         }
 

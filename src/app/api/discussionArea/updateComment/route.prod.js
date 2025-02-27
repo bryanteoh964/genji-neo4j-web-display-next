@@ -32,7 +32,7 @@ export async function POST(req) {
         const res = await db.collection('discussion').findOneAndUpdate(
             {  
                 _id: new ObjectId(_id),
-                verseion: version || 0
+                version: version || 0
             },    
             { 
                 $set: { 
@@ -44,6 +44,8 @@ export async function POST(req) {
             { returnDocument: 'after' }
         );
 
+        //console.log('findOneAndUpdate result:', JSON.stringify(res, null, 2));
+
         if (!res) {
             return NextResponse.json({ 
                     message: 'Comment was updated by another user',
@@ -51,6 +53,25 @@ export async function POST(req) {
                 },{ status: 409 }
             );
         };
+
+        // add notification to admins
+
+        await db.collection('notification').insertOne({
+            recipient: 'admin',
+            sender: userId,
+            senderName: session.user.name || session.user.email,
+            senderImage: session.user.image,
+            type: 'commentEdit',
+            relatedItem: _id,
+            pageType: comment.pageType,
+            identifier: comment.identifier,
+            content: `Comment edited: "${content.substring(0, 50)}${content.length > 50 ? '...' : ''}"`,
+            needsReview: true,
+            isRead: false,
+            createdAt: new Date(),
+            version: 0
+        });
+        
 
         return NextResponse.json({ message: 'Comment updated' }, { status: 200 });
 

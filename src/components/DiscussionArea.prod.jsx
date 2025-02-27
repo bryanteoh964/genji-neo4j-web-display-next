@@ -518,7 +518,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
   };
 
 
-  const handleAddReply = async (commentId, content, version) => {
+  const handleAddReply = async (commentId, content) => {
     try {
       const response = await fetch('/api/discussionArea/addReply', {
         method: 'POST',
@@ -529,7 +529,6 @@ const DiscussionArea = ({ pageType, identifier }) => {
           baseCommentId: commentId,
           userId: user,
           content: content,
-          version: version 
         }),
       });
 

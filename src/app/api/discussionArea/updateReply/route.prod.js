@@ -52,6 +52,23 @@ export async function POST(req) {
             );
         };
 
+        // add notification to admins
+        await db.collection('notification').insertOne({
+            recipient: admin._id.toString(),
+            sender: userId,
+            senderName: session.user.name || session.user.email,
+            senderImage: session.user.image,
+            type: 'replyEdit',
+            relatedItem: _id,
+            pageType: reply.pageType,
+            identifier: reply.identifier,
+            content: `Reply edited: "${content.substring(0, 50)}${content.length > 50 ? '...' : ''}"`,
+            needsReview: true,
+            isRead: false,
+            createdAt: new Date(),
+            version: 0
+        });
+
         return NextResponse.json({ message: 'Reply updated' }, { status: 200 });
 
     } catch (error) {

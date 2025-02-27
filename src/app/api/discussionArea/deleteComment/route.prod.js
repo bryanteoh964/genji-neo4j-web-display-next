@@ -32,26 +32,26 @@ export async function DELETE(req) {
         }
 
 
-        const session = client.startSession();
-        session.startTransaction();
+        const transSession = client.startSession();
+        transSession.startTransaction();
 
         try {
 
             // delete related replies first
             await db.collection('reply').deleteMany({
                 baseCommentId: _id
-            }, { session });
+            }, { transSession});
 
 
             const commentRes = await db.collection('discussion').findOneAndDelete({ 
                 _id: new ObjectId(_id),
                 version: version || 0 
-            }, { session });
+            }, { transSession });
 
             // if comment has been modified by another admin rollback transaction
             if (!commentRes) {
-                await session.abortTransaction();
-                session.endSession();
+                await transSession.abortTransaction();
+                transSession.endSession();
                 return NextResponse.json({ 
                         message: 'Comment has been deleted by another admin, refresh and try again', 
                         errorType: 'versionConflict'
@@ -59,17 +59,17 @@ export async function DELETE(req) {
                 );
             }
 
-            await session.commitTransaction();
+            await transSession.commitTransaction();
 
             return NextResponse.json({ message: 'Comment and related replies deleted' }, { status: 200 });
        
         } catch (error) {
             // rollback transaction if any error occurs
-            await session.abortTransaction();
+            await transSession.abortTransaction();
             throw error;
        
         } finally {
-            session.endSession();
+            transSession.endSession();
         };
 
     } catch (error) {

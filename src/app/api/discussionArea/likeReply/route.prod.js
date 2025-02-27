@@ -2,6 +2,7 @@ import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
+import { version } from "os";
 
 // only admin can hide reply from users
 export async function POST(req) {
@@ -49,6 +50,24 @@ export async function POST(req) {
                     $addToSet: { like: userId }
                 }
             );
+
+            // add notification to the user who posted the reply
+            if (reply.user !== userId) {
+                await db.collection('notification').insertOne({
+                  recipient: reply.user,
+                  sender: userId,
+                  senderName: session.user.name || session.user.email,
+                  senderImage: session.user.image,
+                  type: 'likeReply',
+                  relatedItem: _id,
+                  pageType: reply.pageType,
+                  identifier: reply.identifier,
+                  content: `Liked your reply: "${reply.content.substring(0, 40)}${reply.content.length > 40 ? '...' : ''}"`,
+                  isRead: false,
+                  createdAt: new Date(),
+                  version: 0
+                });
+              }
 
             return NextResponse.json({ message: 'User is added into like list' }, { status: 200 });
         }

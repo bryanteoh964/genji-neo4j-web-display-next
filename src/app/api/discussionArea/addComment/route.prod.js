@@ -1,3 +1,4 @@
+import { version } from "os";
 import { auth } from "../../../../auth.prod";
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
@@ -15,6 +16,7 @@ export async function POST(req) {
             
         const db = await client.db('user');
 
+        // add comment to the discussion collection
         const comment = await db.collection('discussion').insertOne( 
                                                                  { 
                                                                     pageType: pageType, 
@@ -29,6 +31,25 @@ export async function POST(req) {
                                                                     isPinned: false,
                                                                     version: 0
                                                                  } )
+
+
+        // add notification to admins
+        await db.collection('notification').insertOne(
+            {
+                recepient: 'admin',
+                sender: userId,
+                senderName: session.user.name || session.user.email,
+                senderImage: session.user.image,
+                type: 'newComment',
+                relatedItem: comment.insertedId.toString(),
+                pageType,
+                identifier,
+                content: content.substring(0, 50) + (content.length > 50 ? '...' : ''),
+                needsReview: true,
+                isRead: false,
+                createdAt: new Date(),
+                version: 0
+            });
 
         return NextResponse.json({ comment, _id: comment.insertedId }, { status: 200 });
 
