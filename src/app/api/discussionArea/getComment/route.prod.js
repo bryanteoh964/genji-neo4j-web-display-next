@@ -21,7 +21,7 @@ export async function GET(req) {
         const comment = await db.collection('discussion')
             .findOne({ _id: new ObjectId(commentId) });
 
-        console.log('comment:', comment);
+        //console.log('comment:', comment);
             
         if (!comment) {
             return NextResponse.json({ message: 'Comment not found' }, { status: 404 });

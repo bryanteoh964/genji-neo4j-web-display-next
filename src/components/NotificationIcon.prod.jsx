@@ -275,7 +275,7 @@ export default function NotificationIcon() {
       let currentVersion;
       try {
         currentVersion = await getCurrentVersion();
-        console.log('currentVersion', currentVersion);
+        // console.log('currentVersion', currentVersion);
       } catch (error) {
         if (error.message === 'Content no longer exists') {
           showError('Content no longer exists. Refreshing...');

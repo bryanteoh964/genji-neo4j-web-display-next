@@ -38,7 +38,7 @@ export async function POST(req) {
             { returnDocument: 'after' }
         )
 
-        console.log('findOneAndUpdate result:', JSON.stringify(res, null, 2));
+        //console.log('findOneAndUpdate result:', JSON.stringify(res, null, 2));
 
         if (!res) {
             return NextResponse.json(

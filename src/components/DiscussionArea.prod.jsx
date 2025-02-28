@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin, AlertTriangle } from 'lucide-react';
+import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin, AlertTriangle, RefreshCw } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
 
@@ -291,6 +291,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
   const [loading, setLoading] = useState(true);
   const [editingComment, setEditingComment] = useState(null);
   const [error, setError] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const showError = (message) => {
     setError(message);
@@ -299,6 +300,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
   const fetchComments = async () => {
     try {
+      setRefreshing(true);
       const response = await fetch(
         `/api/discussionArea/getAllComment?pageType=${pageType}&identifier=${identifier}&userId=${user}`
       );
@@ -309,7 +311,12 @@ const DiscussionArea = ({ pageType, identifier }) => {
       showError('Failed to load comments. Please try again.');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  const handleRefresh = () => {
+    fetchComments();
   };
 
   const fetchUser = async () => {
@@ -738,6 +745,17 @@ const DiscussionArea = ({ pageType, identifier }) => {
           <span>{error}</span>
         </div>
       )}
+
+      <div className={styles.discussionHeader}>
+        <h3 className={styles.discussionTitle}>Discussion</h3>
+        <button 
+          onClick={handleRefresh} 
+          className={styles.refreshButton}
+          disabled={refreshing}
+        >
+          <RefreshCw size={18} className={`${refreshing ? styles.spinning : ''}`} />
+        </button>
+      </div>
 
       <div className={styles.inputSection}>
         {session ? (
