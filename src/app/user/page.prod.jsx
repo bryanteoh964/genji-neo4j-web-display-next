@@ -2,6 +2,8 @@
 import UserInfo from '../../components/userpage/UserInfo.prod';
 import FavList from "../../components//userpage/UserFavPoemList.prod";
 import UserView from "../../components/userpage/UserView.prod";
+import Notification from '../../components/userpage/UserNotificationLog.prod';
+import ReviewNotification from '../../components/userpage/AdminReviewNotification.prod';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -68,6 +70,14 @@ const Page = () => {
               Favorite Poems
             </button>
 
+            <button 
+              className={`${styles.navButton} ${activeTab === 'notification' ? styles.active : ''}`}
+              onClick={() => setActiveTab('notification')}
+            >
+              <span className={styles.icon}>🔔</span>
+              Activity Notifications
+            </button>
+
             {session?.user?.role === "admin" && 
               <button 
                 className={`${styles.navButton} ${activeTab === 'users' ? styles.active : ''}`}
@@ -77,6 +87,16 @@ const Page = () => {
                 Users
               </button>
             }
+
+            {session?.user?.role === "admin" && 
+              <button 
+                className={`${styles.navButton} ${activeTab === 'Review Notification' ? styles.active : ''}`}
+                onClick={() => setActiveTab('Review Notification')}
+              >
+                <span className={styles.icon}>✅</span>
+                Review Notification
+              </button>
+            }   
           </nav>
         </div>
 
@@ -85,6 +105,8 @@ const Page = () => {
             {activeTab === 'info' && <UserInfo />}
             {activeTab === 'favorites' && <FavList />}
             {activeTab === 'users' && <UserView />}
+            {activeTab === 'notification' && <Notification />}
+            {activeTab === 'Review Notification' && <ReviewNotification />}
           </div>
         </main>
       </div>
