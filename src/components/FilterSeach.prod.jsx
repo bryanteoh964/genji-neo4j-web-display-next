@@ -339,6 +339,22 @@ const filteredResults = useMemo(() => {
         );
       };
 
+      const [searchChapter, setSearchChapter] = useState('');
+
+      // Function to handle search input change for chapters
+      const handleChapterSearch = (e) => {
+        setSearchChapter(e.target.value.toLowerCase());
+      };
+
+      // Function to filter chapters based on the search input (by name or number)
+      const filterChapters = (chapters, searchTerm) => {
+        return chapters.filter((chapterKey) => {
+          const chapterName = getChapterName(chapterKey).toLowerCase();
+          return chapterKey.includes(searchTerm) || chapterName.includes(searchTerm);
+        });
+      };
+
+
       return (
         <div className={styles.filterContainer}>
           <div className={styles.filterHeader}>
@@ -360,22 +376,33 @@ const filteredResults = useMemo(() => {
                   </div>
                   <div className={`${styles.filterContent} ${openSections.has(category) ? styles.expanded : ''}`}>
                     {category === 'chapterNum' ? (
+                    <>
+                      {/* Search bar for chapters */}
+                      <input
+                        type="text"
+                        placeholder="Search Chapter"
+                        value={searchChapter}
+                        onChange={handleChapterSearch}
+                        className={styles.searchChapterFilterInput}
+                      />
+                      {/* Filtered chapter options based on name or number */}
                       <div className={styles.chapterGrid}>
-                        {Object.entries(options).map(([key, { checked }], index) => (
+                        {filterChapters(Object.keys(options), searchChapter).map((key, index) => (
                           <Checkbox
                             key={key}
-                            checked={checked}
+                            checked={options[key]?.checked}
                             onChange={() => handleFilterChange(category, key)}
                             className={styles.chapterOption}
                             style={{ marginLeft: index !== 0 ? '0px' : '0px' }}
                           >
                             <div className={styles.chapterText}>
                               <span>{key}</span>
-                              <span>{getChapterName(key)}</span>
+                              <span>{getChapterName(key)}</span> {/* Display chapter name */}
                             </div>
                           </Checkbox>
                         ))}
                       </div>
+                    </>
                     ) : (
                       <div className={styles.filterOptions}>
                         {category !== 'season' && category !== 'poetic_tech' && category !== 'misc' && (

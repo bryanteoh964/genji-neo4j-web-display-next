@@ -336,6 +336,16 @@
   background-color: #0056b3;
 }
 
+
+.searchChapterFilterInput {
+  width: 90%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+  margin-bottom: 10px; /* Add some space below the input */
+}
+
 .searchFilterInput {
   width: 100%;
   padding: 5px;
