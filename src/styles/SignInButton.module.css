@@ -5,81 +5,79 @@
     padding: 5px 10px;
     border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
+    padding-bottom: 10px;
   }
   
-  .userLink {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    padding: 5px 10px;
-    border-radius: 20px;
+.userLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.signInButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.signInButton {
+  background-color: #0542a5;
+  color: white;
+}
+
+.signInButton:hover {
+  background-color: #1e61a5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  color: #666;
+  font-size: 0.9em;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
   }
-  
-  .signInButton {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-    z-index: 1001;
+  50% {
+    opacity: 0.5;
   }
-  
-  .signInButton {
-    background-color: #0542a5;
-    color: white;
+  100% {
+    opacity: 1;
   }
-  
-  .signInButton:hover {
-    background-color: #1e61a5;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .userContainer {
+    padding: 3px 8px;
   }
-  
-  .button {
-    padding: 8px 16px;
-    border-radius: 20px;
-    background-color: #f1f1f1;
-    color: #666;
+
+  .userLink, .signInButton {
+    padding: 6px 12px;
     font-size: 0.9em;
-    animation: pulse 1.5s infinite;
-    z-index: 1001;
   }
-  
-  @keyframes pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    100% {
-      opacity: 1;
-    }
+}
+
+@media (prefers-color-scheme: dark) {
+  .userContainer {
+    background-color: #333;
   }
 
-  @media (max-width: 768px) {
-    .userContainer {
-      padding: 3px 8px;
-    }
-  
-    .userLink, .signInButton {
-      padding: 6px 12px;
-      font-size: 0.9em;
-    }
+  .userLink {
+    color: #fff;
   }
-  
-  @media (prefers-color-scheme: dark) {
-    .userContainer {
-      background-color: #333;
-    }
-  
-    .userLink {
-      color: #fff;
-    }
-  
-    .userLink:hover {
-      background-color: #444;
-    }
 
+  .userLink:hover {
+    background-color: #444;
   }
+
+}
