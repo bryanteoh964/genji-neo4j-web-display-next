@@ -49,7 +49,9 @@ async function generalSearch(q) {
             MATCH (p:Genji_Poem)
         ` : `
             MATCH (p:Genji_Poem)
-            WHERE toLower(p.Japanese) CONTAINS toLower($q) OR toLower(p.Romaji) CONTAINS toLower($q)
+            ${q.toLowerCase() !== '=#=' ? `
+            WHERE toLower(p.Japanese) CONTAINS toLower($q) 
+            OR toLower(p.Romaji) CONTAINS toLower($q)
             OR EXISTS {
                 (p)<-[:TRANSLATION_OF]-(t:Translation)
                 WHERE toLower(t.translation) CONTAINS toLower($q)
