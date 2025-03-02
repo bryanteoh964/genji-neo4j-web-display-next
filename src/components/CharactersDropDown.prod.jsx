@@ -38,7 +38,7 @@ const SearchOptions = ({ setIsOpen, l }) => {
     function myFunction(query) {
         // Declare variables
         var filter = query.toUpperCase();
-        var li = document.getElementsByTagName("li");
+        var li = document.getElementsByClassName("searchResult");
 
         // Loop through all list items, and hide those who don't match the search query
         for (var i = 0; i < li.length; i++) {
@@ -56,13 +56,13 @@ const SearchOptions = ({ setIsOpen, l }) => {
             className={styles.searchOptions}
             style={{ maxHeight: '500px', overflowY: 'scroll' }}
         >
-            <Link href="/characters" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
                 Diagram
             </Link>
-            <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
                 Timeline
             </Link>
-            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
                 Map
             </Link>
             <input
@@ -94,7 +94,7 @@ const SearchOptions = ({ setIsOpen, l }) => {
             />
             {l.map(function (c_name) {
                 return (
-                    <li style={{ listStyle: 'none' }} key={c_name}>
+                    <li className="searchResult" style={{ listStyle: 'none' }} key={c_name}>
                         <a
                             href={'/characters/' + c_name}
                             className={styles.searchLink}

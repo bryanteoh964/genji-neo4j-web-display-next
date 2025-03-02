@@ -435,6 +435,13 @@ export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph =
     return [characters_X_Y, resGraph2, love_nodes_X_Y, jp_dict, color_dict, gender_dict] 
 }
 
+//*******//   //*******//   //*******//   //*******//   //*******//
+
+
+
+
+
+
 export function generateTimeline(timeline_info) {
 
     var info = []
