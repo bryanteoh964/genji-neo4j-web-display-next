@@ -36,7 +36,7 @@ export async function POST(req) {
         // add notification to admins
         await db.collection('notification').insertOne(
             {
-                recepient: 'admin',
+                recipient: 'admin',
                 sender: userId,
                 senderName: session.user.name || session.user.email,
                 senderImage: session.user.image,

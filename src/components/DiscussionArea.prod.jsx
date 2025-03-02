@@ -184,7 +184,7 @@ const CommentItem = ({
               </button>
             )}
 
-            {(isAuthor || isAdmin) && !isEditing && (
+            {(isAuthor) && !isEditing && (
               <button
                 onClick={() => {
                   setEditingComment(comment._id);

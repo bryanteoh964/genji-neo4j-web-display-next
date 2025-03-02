@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react';
-import { Bell, Check, X, EyeOff, Trash2, Clock, ChevronRight, AlertTriangle } from 'lucide-react';
+import { Bell, Check, X, EyeOff, Trash2, Clock, ChevronRight, AlertTriangle, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/notificationIcon.module.css';
@@ -16,6 +16,7 @@ export default function NotificationIcon() {
   const [activeTab, setActiveTab] = useState('notifications');
   const [loading, setLoading] = useState(false);
   const [reviewLoading, setReviewLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // New state for refresh animation
   // Track which notification is currently showing the disapprove options
   const [expandedDisapproveId, setExpandedDisapproveId] = useState(null);
   const [error, setError] = useState(null);
@@ -84,6 +85,21 @@ export default function NotificationIcon() {
     } finally {
       setReviewLoading(false);
     }
+  };
+
+  // Handle manual refresh
+  const handleRefresh = async () => {
+    if (refreshing) return; // Prevent multiple refreshes
+    
+    setRefreshing(true);
+    
+    if (activeTab === 'notifications') {
+      await fetchNotifications();
+    } else if (activeTab === 'review' && isAdmin) {
+      await fetchReviewNotifications();
+    }
+    
+    setTimeout(() => setRefreshing(false), 500); // Ensure animation plays for at least 500ms
   };
 
   // Mark a single notification as read
@@ -541,17 +557,27 @@ export default function NotificationIcon() {
           
           {activeTab === 'notifications' && (
             <>
-              <h3 className={styles.notificationHeader}>
-                Notifications
-                {unreadCount > 0 && (
+              <div className={styles.notificationHeader}>
+                <h3>Notifications</h3>
+                <div className={styles.headerActions}>
                   <button 
-                    className={styles.markAllRead}
-                    onClick={markAllAsRead}
+                    className={styles.refreshButton}
+                    onClick={handleRefresh}
+                    disabled={refreshing || loading}
+                    title="Refresh notifications"
                   >
-                    Mark all as read
+                    <RefreshCw size={14} className={`${refreshing ? styles.spinning : ''}`} />
                   </button>
-                )}
-              </h3>
+                  {unreadCount > 0 && (
+                    <button 
+                      className={styles.markAllRead}
+                      onClick={markAllAsRead}
+                    >
+                      Mark all as read
+                    </button>
+                  )}
+                </div>
+              </div>
               
               <div className={styles.notificationList}>
                 {loading && notifications.length === 0 && (
@@ -604,9 +630,19 @@ export default function NotificationIcon() {
           
           {activeTab === 'review' && isAdmin && (
             <>
-              <h3 className={styles.notificationHeader}>
-                Content Review
-              </h3>
+              <div className={styles.notificationHeader}>
+                <h3>Content Review</h3>
+                <div className={styles.headerActions}>
+                  <button 
+                    className={styles.refreshButton}
+                    onClick={handleRefresh}
+                    disabled={refreshing || reviewLoading}
+                    title="Refresh review items"
+                  >
+                    <RefreshCw size={14} className={`${refreshing ? styles.spinning : ''}`} />
+                  </button>
+                </div>
+              </div>
               
               <div className={styles.notificationList}>
                 {reviewLoading && reviewNotifications.length === 0 && (

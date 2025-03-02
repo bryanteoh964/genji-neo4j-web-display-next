@@ -18,8 +18,8 @@ export async function GET(req) {
         const notifications = await db.collection('notification')
             .find({
                 recipient: 'admin',
-                needsReview: true,
-                isRead: false
+                needsReview: false,
+                isRead: true
             })
             .sort({ createdAt: -1 })
             .toArray();
