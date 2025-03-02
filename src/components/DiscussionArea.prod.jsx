@@ -82,7 +82,7 @@ const CommentItem = ({
   const [isReplying, setIsReplying] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   
-  // user version to handle version conflict
+  // user version to handle version conflict (concurrent editing)
   const commentVersion = comment.version || 0;
 
   useEffect(() => {
