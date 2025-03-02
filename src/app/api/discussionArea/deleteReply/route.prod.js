@@ -31,20 +31,38 @@ export async function DELETE(req) {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
-        const result = await db.collection('reply').findOneAndDelete({ 
-            _id: new ObjectId(_id),
-            version: version || 0 
-        });
+        const transSession = client.startSession();
+        transSession.startTransaction();
 
-        if (!result) {
-            return NextResponse.json({ 
-                message: 'Reply has been deleted by another admin, please refresh and try again',
-                errorType: 'versionConflict' 
-            }, { status: 409 });
+        try {
+            // Delete notifications related to this reply
+            await db.collection('notification').deleteMany({
+                relatedItem: _id
+            }, { session: transSession });
+
+            const result = await db.collection('reply').findOneAndDelete({ 
+                _id: new ObjectId(_id),
+                version: version || 0 
+            }, { session: transSession });
+
+            if (!result) {
+                await transSession.abortTransaction();
+                transSession.endSession();
+                return NextResponse.json({ 
+                    message: 'Reply has been deleted by another admin, please refresh and try again',
+                    errorType: 'versionConflict' 
+                }, { status: 409 });
+            }
+
+            await transSession.commitTransaction();
+            return NextResponse.json({ message: 'reply and related notifications deleted' }, { status: 200 });
+
+        } catch (error) {
+            await transSession.abortTransaction();
+            throw error;
+        } finally {
+            transSession.endSession();
         }
-
-
-        return NextResponse.json({ message: 'reply deleted' }, { status: 200 });
 
     } catch (error) {
         console.error('Error removing reply:', error);

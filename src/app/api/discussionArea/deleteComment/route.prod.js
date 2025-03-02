@@ -37,10 +37,28 @@ export async function DELETE(req) {
 
         try {
 
+            // Get all reply IDs first (to delete their notifications later)
+            const replies = await db.collection('reply').find({
+                baseCommentId: _id
+            }).toArray({ session: transSession });
+            
+            const replyIds = replies.map(reply => reply._id.toString());
             // delete related replies first
             await db.collection('reply').deleteMany({
                 baseCommentId: _id
             }, { transSession});
+
+            // Delete notifications related to replies
+            if (replyIds.length > 0) {
+                await db.collection('notification').deleteMany({
+                    relatedItem: { $in: replyIds }
+                }, { session: transSession });
+            }
+
+            // Delete notifications related to the comment itself
+            await db.collection('notification').deleteMany({
+                relatedItem: _id
+            }, { session: transSession });
 
 
             const commentRes = await db.collection('discussion').findOneAndDelete({ 
