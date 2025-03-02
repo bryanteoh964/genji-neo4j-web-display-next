@@ -8,7 +8,7 @@ import styles from '../styles/pages/poemDisplay.module.css';
 import {BackTop} from 'antd';
 import FavButton from './FavButton.prod';
 import ContributorView from './ContributorView.prod'
-
+import DiscussionArea from './DiscussionArea.prod'
 
 const PoemDisplay = ({ poemData }) => {
     /*
@@ -562,6 +562,12 @@ const PoemDisplay = ({ poemData }) => {
 
                 </div>
             </div>
+
+             
+            <DiscussionArea 
+                pageType="poem"
+                identifier={`${chapter}-${number.replace(/^0+/, '')}`}
+            />
 
             <BackTop className={styles.backTop}>
                 <div>Back to top</div>
