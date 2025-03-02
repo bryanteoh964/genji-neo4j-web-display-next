@@ -89,6 +89,7 @@ async function generalSearch(q) {
             const searchResults = res.records.map(record => ({
                 chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
                 poemNum: toNativeTypes(record.get('pnum').substring(4)),
+                chapterAbr: toNativeTypes(record.get('pnum').substring(2, 4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
                 addressee_name: toNativeTypes(record.get('addressee_name')),

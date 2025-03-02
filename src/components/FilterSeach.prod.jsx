@@ -14,6 +14,19 @@ const getChapterName = (String) => {
   return chapterNames[String];
 }
 
+const getChapterNamKanji = (String) => {
+  const chapterNames = {
+    '1': '桐壺', '2': '帚木', '3': '空蝉', '4': '夕顔', '5': '若紫', '6': '末摘花', '7': '紅葉賀', '8': '花宴', '9': '葵', 
+    '10': '榊', '11': '花散里', '12': '須磨', '13': '明石', '14': '澪標', '15': '蓬生', '16': '関屋', '17': '絵合', '18': '松風', 
+    '19': '薄雲', '20': '朝顔', '21': '乙女', '22': '玉鬘', '23': '初音', '24': '胡蝶', '25': '螢', '26': '常夏', '27': '篝火', 
+    '28': '野分', '29': '行幸', '30': '藤袴', '31': '真木柱', '32': '梅枝', '33': '藤裏葉', '34': '若菜上', '35': '若菜下', 
+    '36': '柏木', '37': '横笛', '38': '鈴虫', '39': '夕霧', '40': '御法', '41': '幻', '42': '匂宮', '43': '紅梅', '44': '竹河', 
+    '45': '橋姫', '46': '椎本', '47': '総角', '48': '早蕨', '49': '宿木', '50': '東屋', '51': '浮舟', '52': '蜻蛉', '53': '手習', 
+    '54': '夢浮橋'
+  };  
+  return chapterNames[String];
+}
+
 const getChapterName_noJP = (String) => {
   const chapterNames = {'1':'Kiritsubo','2':'Hahakigi','3':'Utsusemi','4':'Yūgao','5':'Wakamurasaki','6':'Suetsumuhana','7':'Momiji no Ga','8':'Hana no En','9':'Aoi','10':'Sakaki','11':'Hana Chiru Sato','12':'Suma','13':'Akashi','14':'Miotsukushi','15':'Yomogiu','16':'Sekiya','17':'E Awase','18':'Matsukaze','19':'Usugumo','20':'Asagao','21':'Otome','22':'Tamakazura','23':'Hatsune','24':'Kochō','25':'Hotaru','26':'Tokonatsu','27':'Kagaribi','28':'Nowaki','29':'Miyuki','30':'Fujibakama','31':'Makibashira','32':'Umegae','33':'Fuji no Uraba','34':'Wakana: Jō','35':'Wakana: Ge','36':'Kashiwagi','37':'Yokobue','38':'Suzumushi','39':'Yūgiri','40':'Minori','41':'Maboroshi','42':'Niou Miya','43':'Kōbai','44':'Takekawa','45':'Hashihime','46':'Shii ga Moto','47':'Agemaki','48':'Sawarabi','49':'Yadorigi','50':'Azumaya','51':'Ukifune','52':'Kagerō','53':'Tenarai','54':'Yume no Ukihashi'};
   return chapterNames[String];
@@ -179,6 +192,7 @@ const handleSearch = useCallback(
         const processedResults = data.searchResults.map(result => ({
           chapterNum: removeLeadingZero(Object.values(result.chapterNum).join('')),
           poemNum: removeLeadingZero(Object.values(result.poemNum).join('')),
+          chapterAbr: (Object.values(result.chapterAbr).join('')),
           japanese: Object.values(result.japanese).join(''),
           romaji: Object.values(result.romaji).join(''),
           addressee_name: Object.values(result.addressee_name).join(''),
@@ -318,7 +332,6 @@ const filteredResults = useMemo(() => {
         .filter(([name, { gender }]) => selectedAddresseeGenders.includes(gender));
     
       // State to manage search input for both speaker and addressee
-      // State to manage search input for both speaker and addressee
       const [searchSpeaker, setSearchSpeaker] = useState('');
       const [searchAddressee, setSearchAddressee] = useState('');
 
@@ -377,7 +390,6 @@ const filteredResults = useMemo(() => {
                   <div className={`${styles.filterContent} ${openSections.has(category) ? styles.expanded : ''}`}>
                     {category === 'chapterNum' ? (
                     <>
-                      {/* Search bar for chapters */}
                       <input
                         type="text"
                         placeholder="Search Chapter"
@@ -385,7 +397,6 @@ const filteredResults = useMemo(() => {
                         onChange={handleChapterSearch}
                         className={styles.searchChapterFilterInput}
                       />
-                      {/* Filtered chapter options based on name or number */}
                       <div className={styles.chapterGrid}>
                         {filterChapters(Object.keys(options), searchChapter).map((key, index) => (
                           <Checkbox
@@ -397,7 +408,7 @@ const filteredResults = useMemo(() => {
                           >
                             <div className={styles.chapterText}>
                               <span>{key}</span>
-                              <span>{getChapterName(key)}</span> {/* Display chapter name */}
+                              <span>{getChapterName(key)}</span>
                             </div>
                           </Checkbox>
                         ))}
@@ -428,7 +439,7 @@ const filteredResults = useMemo(() => {
                                   placeholder="Search Speaker"
                                   value={searchSpeaker}
                                   onChange={handleSpeakerSearch}
-                                  className={styles.searchFilterInput} // Use your searchInput style here
+                                  className={styles.searchFilterInput}
                                 />
                                 {/* Filtered speaker names */}
                                 <div className={styles.filterCheckboxContainer}>
@@ -438,7 +449,7 @@ const filteredResults = useMemo(() => {
                                       checked={filters.speaker_name.options[key]?.checked}
                                       onChange={() => handleFilterChange('speaker_name', key)}
                                       className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                                      style={{ marginLeft: '8px' }}
+                                      style={{ marginLeft: '0px' }}
                                     >
                                       {key}
                                     </Checkbox>
@@ -467,7 +478,7 @@ const filteredResults = useMemo(() => {
                                   placeholder="Search Addressee"
                                   value={searchAddressee}
                                   onChange={handleAddresseeSearch}
-                                  className={styles.searchFilterInput} // Use your searchInput style here
+                                  className={styles.searchFilterInput}
                                 />
                                 {/* Filtered addressee names */}
                                 <div className={styles.filterCheckboxContainer}>
@@ -477,7 +488,7 @@ const filteredResults = useMemo(() => {
                                       checked={filters.addressee_name.options[key]?.checked}
                                       onChange={() => handleFilterChange('addressee_name', key)}
                                       className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                                      style={{ marginLeft: '8px' }}
+                                      style={{ marginLeft: '0px' }}
                                     >
                                       {key}
                                     </Checkbox>
@@ -509,15 +520,19 @@ const filteredResults = useMemo(() => {
       );
     };
 
-       const renderTranslation = (translation, translator) => {
-        if (!translation) return <p>No translation available</p>;
-        
-        return translation.split('\n').map((line, index) => (
-          <p key={`${translator}-line-${index}`}>
-            {highlightMatch(line, query)}
-          </p>
-        ));
-      };
+    const renderTranslation = (translation, translator) => {
+      if (!translation) return <p>No translation available</p>;
+    
+      return (
+        <div className={styles.translation}>
+          {translation.split('\n').map((line, index) => (
+            <div key={`${translator}-line-${index}`} className={styles.translationLine}>
+              {highlightMatch(line, query)}
+            </div>
+          ))}
+        </div>
+      );
+    };
 
   const [hoveredItem, setHoveredItem] = useState(null);
   const handleMouseEnter = (index) => {
@@ -540,10 +555,10 @@ const filteredResults = useMemo(() => {
           <Link href={`/poems/${result.chapterNum}/${result.poemNum}`}>
             <div className={styles.resultContent}>
               <h3 className={styles.resultTitle}>
-                Chapter {result.chapterNum}.{result.poemNum}
+                {result.chapterNum} {result.chapterAbr} {getChapterNamKanji(result.chapterNum)} {result.poemNum}
               </h3>
               <h3 className={styles.resultTitle}>
-                {getChapterName(result.chapterNum)}
+                {result.speaker_name}
               </h3>
               <div className={styles.japaneseText}>
                 {highlightMatch(result.japanese.split('\n')[0], query)}
@@ -564,6 +579,9 @@ const filteredResults = useMemo(() => {
               Chapter {filteredResults[hoveredItem].chapterNum} -{' '}
               {getChapterName(filteredResults[hoveredItem].chapterNum)} - 
               Poem {filteredResults[hoveredItem].poemNum}
+            </h3>
+            <h3 className={styles.resultSubTitle}>
+              {filteredResults[hoveredItem].speaker_name} → {filteredResults[hoveredItem].addressee_name}
             </h3>
             <div className={styles.japaneseText}>
               {highlightMatch(filteredResults[hoveredItem].japanese, query)}

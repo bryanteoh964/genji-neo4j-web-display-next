@@ -141,7 +141,7 @@
 .filterCheckboxContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Adjust space between checkboxes */
+  gap: 8px;
 }
 
 
@@ -230,6 +230,12 @@
   color: #333;
 }
 
+.resultSubTitle {
+  margin: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
 .japaneseText {
   font-size: 18px;
   line-height: 1.6;
@@ -288,7 +294,7 @@
 
 .hoverPopup {
   position: fixed; 
-  right: 40px; 
+  right: 30px; 
   top: 50%; 
   transform: translateY(-50%); 
   background: white;
@@ -342,8 +348,8 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-  margin-bottom: 10px; /* Add some space below the input */
+  box-sizing: border-box; 
+  margin-bottom: 10px; 
 }
 
 .searchFilterInput {
@@ -351,8 +357,38 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-  margin-bottom: 10px; /* Add some space below the input */
+  box-sizing: border-box; 
+  margin-bottom: 10px; 
+}
+
+.translation {
+  line-height: 1;
+}
+
+.translatorName {
+  margin-top: 20px; 
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.translationLine {
+  margin: 0;
+  padding: 0;
+  line-height: 1.75;
+  font-family: 'apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+}
+
+@media (max-width: 1450px) {
+  .hoverPopup {
+    right: 10px;
+    width: 500px;
+  }
+
+  .translationLine {
+    line-height: 1.5;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 1024px) {
