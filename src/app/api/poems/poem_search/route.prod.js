@@ -89,6 +89,7 @@ async function generalSearch(q) {
             const searchResults = res.records.map(record => ({
                 chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
                 poemNum: toNativeTypes(record.get('pnum').substring(4)),
+                chapterAbr: toNativeTypes(record.get('pnum').substring(2, 4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
                 addressee_name: toNativeTypes(record.get('addressee_name')),
@@ -120,13 +121,14 @@ async function generalSearch(q) {
 export const GET = async (request) => {
     const { searchParams } = new URL(request.url);
     const q = searchParams.get('q');
+    const gender = searchParams.get('gender'); // Get gender filter
 
     if (!q) {
         return new Response(JSON.stringify({ message: 'Search keyword is required' }), { status: 400 });
     }
 
     try {
-        const data = await generalSearch(q);
+        const data = await generalSearch(q, gender); // Pass gender to search
         if (data) {
             return new Response(JSON.stringify(data), { status: 200 });
         } else {
@@ -135,4 +137,4 @@ export const GET = async (request) => {
     } catch (error) {
         return new Response(JSON.stringify({ error: "Error in API", message: error.toString() }), { status: 500 });
     }
-}
+};
