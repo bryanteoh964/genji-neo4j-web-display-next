@@ -30,3 +30,11 @@ h1.title {
 .section_container h1 {
     padding-bottom: 0.3em;
 }
+
+@media (max-width: 1450px) {
+  .section_frame {
+    display: flex;
+    justify-content: left;
+    margin-left: 20px;
+  }
+}
