@@ -10,13 +10,13 @@ const removeLeadingZero = (num) => {
 };
 
 const getChapterName = (String) => {
-  const chapterNames = {'1':'Kiritsubo 桐壺','2':'Hahakigi 帚木','3':'Utsusemi 空蝉','4':'Yūgao 夕顔','5':'Wakamurasaki 若紫','6':'Suetsumuhana 末摘花','7':'Momiji no Ga 紅葉賀','8':'Hana no En 花宴','9':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
+  const chapterNames = {'01':'Kiritsubo 桐壺','02':'Hahakigi 帚木','03':'Utsusemi 空蝉','04':'Yūgao 夕顔','05':'Wakamurasaki 若紫','06':'Suetsumuhana 末摘花','07':'Momiji no Ga 紅葉賀','08':'Hana no En 花宴','09':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
   return chapterNames[String];
 }
 
 const getChapterNamKanji = (String) => {
   const chapterNames = {
-    '1': '桐壺', '2': '帚木', '3': '空蝉', '4': '夕顔', '5': '若紫', '6': '末摘花', '7': '紅葉賀', '8': '花宴', '9': '葵', 
+    '01': '桐壺', '02': '帚木', '03': '空蝉', '04': '夕顔', '05': '若紫', '06': '末摘花', '07': '紅葉賀', '08': '花宴', '09': '葵', 
     '10': '榊', '11': '花散里', '12': '須磨', '13': '明石', '14': '澪標', '15': '蓬生', '16': '関屋', '17': '絵合', '18': '松風', 
     '19': '薄雲', '20': '朝顔', '21': '乙女', '22': '玉鬘', '23': '初音', '24': '胡蝶', '25': '螢', '26': '常夏', '27': '篝火', 
     '28': '野分', '29': '行幸', '30': '藤袴', '31': '真木柱', '32': '梅枝', '33': '藤裏葉', '34': '若菜上', '35': '若菜下', 
@@ -39,6 +39,11 @@ const PoemSearch = () => {
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState([]);
   const searchInputRef = useRef(null);
+
+  // State to manage search input for both speaker, addressee, and chapter
+  const [searchSpeaker, setSearchSpeaker] = useState("");
+  const [searchAddressee, setSearchAddressee] = useState("");
+  const [searchChapter, setSearchChapter] = useState("");
 
   const [filters, setFilters] = useState({
     chapterNum: {
@@ -204,10 +209,10 @@ const PoemSearch = () => {
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map((result) => ({
-            chapterNum: removeLeadingZero(
+            chapterNum: (
               Object.values(result.chapterNum).join("")
             ),
-            poemNum: removeLeadingZero(Object.values(result.poemNum).join("")),
+            poemNum: (Object.values(result.poemNum).join("")),
             chapterAbr: Object.values(result.chapterAbr).join(""),
             japanese: Object.values(result.japanese).join(""),
             romaji: Object.values(result.romaji).join(""),
@@ -357,10 +362,6 @@ const PoemSearch = () => {
       filters.addressee_name.options
     ).filter(([name, { gender }]) => selectedAddresseeGenders.includes(gender));
 
-    // State to manage search input for both speaker and addressee
-    const [searchSpeaker, setSearchSpeaker] = useState("");
-    const [searchAddressee, setSearchAddressee] = useState("");
-
     // Function to handle search input change for speaker names
     const handleSpeakerSearch = (e) => {
       setSearchSpeaker(e.target.value.toLowerCase());
@@ -375,9 +376,6 @@ const PoemSearch = () => {
     const filterNames = (names, searchTerm) => {
       return names.filter((name) => name.toLowerCase().includes(searchTerm));
     };
-
-    const [searchChapter, setSearchChapter] = useState("");
-
     // Function to handle search input change for chapters
     const handleChapterSearch = (e) => {
       setSearchChapter(e.target.value.toLowerCase());
