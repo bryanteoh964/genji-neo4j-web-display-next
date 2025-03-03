@@ -3,6 +3,7 @@ import styles from '../styles/pages/characterProfile.module.css';
 import {BackTop} from 'antd';
 import ContributorView from './ContributorView.prod'
 import FormatContent from './FormatText.prod';
+import DiscussionArea from './DiscussionArea.prod'
 
 // format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -255,6 +256,12 @@ export default function CharacterDetail({ name }) {
                     </div>
                 </div>
             </div>
+
+            <DiscussionArea 
+                pageType="character"
+                identifier={`${character.name}`}
+            />
+
             <BackTop className={styles.backTop}>
                 <div>Back to top</div>
             </BackTop>

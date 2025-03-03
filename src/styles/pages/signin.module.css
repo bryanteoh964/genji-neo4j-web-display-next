@@ -9,64 +9,96 @@
     background-position: center;
     background-attachment: fixed;
     position: relative;
-  }
-  
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.2),
+        rgba(0, 0, 0, 0.3)
+    );
+    backdrop-filter: blur(3px);
+}
+
 .card {
-    position: relative; 
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    position: relative;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 3rem;
+    border-radius: 2px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.05);
     max-width: 440px;
     width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
-  
+
 .card h1 {
-    font-size: 1.8rem;
-    color: #2c3e50;
-    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #2d2d2d;
+    margin-bottom: 2rem;
     text-align: center;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: "Yu Mincho", "MS Mincho", serif;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    position: relative;
 }
-  
+
+.card h1::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 25%;
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(0, 0, 0, 0.3),
+        transparent
+    );
+}
+
 .notice {
     margin: 2rem 0;
-    padding: 1.75rem;
-    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
-    border-radius: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.95),
+        rgba(255, 255, 255, 0.85)
+    );
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
+    font-family: "Yu Mincho", "MS Mincho", serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.8;
+    text-align: center;
+    color: #2d2d2d;
+}
 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-	sans-serif;
-	/* font-family: 'MS Mincho'; */
-	/* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
-	/* font-family: "Hiragino Kaku Gothic Pro", sans-serif; */
-	/* font-family: Osaka, sans-serif; */
-	/* font-family: Meiryo, sans-serif; */
-	/* font-family: "MS PGothic", sans-serif; */
-	/* font-family : 'ヒラギノ角ゴ ProN' , 'Hiragino Kaku Gothic ProN' , '游ゴシック' , '游ゴシック体' , YuGothic , 'Yu Gothic' , 'ＭＳ ゴシック' , 'MS Gothic' , HiraKakuProN-W3 , 'TakaoExゴシック' , TakaoExGothic , 'MotoyaLCedar' , 'Droid Sans Japanese' , sans-serif; */
-
-	font-style: normal;
-	font-weight: 400;
-	font-size: 1rem;
-	line-height: 22px;
-	text-align: center;
-
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-  }
-  
 .notice p {
     font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0 0 1rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+    font-weight: 400;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.03em;
 }
 
 .notice ul {
@@ -77,79 +109,114 @@
 
 .notice li {
     position: relative;
-    padding: 0.5rem 0 0.5rem 2rem;
-    color: #4a5568;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    color: #363636;
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.7;
+    text-align: left;
+    border-left: 2px solid rgba(0, 0, 0, 0.1);
+    margin-left: 1rem;
 }
 
 .termsSection {
-    margin: 1.5rem 0;
+    margin: 2rem 0;
 }
-  
+
 .checkboxContainer {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 1rem;
     font-size: 0.95rem;
-    color: #4a5568;
-    line-height: 1.5;
+    color: #363636;
+    line-height: 1.6;
+    padding: 0.5rem;
+    border-radius: 2px;
+    transition: background-color 0.3s;
 }
-  
+
+.checkboxContainer:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
 .checkboxContainer input {
     margin-top: 4px;
     width: 16px;
     height: 16px;
     accent-color: #4a5568;
 }
-  
+
 .checkboxContainer a {
-    color: #2c5282;
+    color: #4a5568;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
+    border-bottom: 1px solid rgba(74, 85, 104, 0.2);
+    transition: all 0.3s;
+    padding-bottom: 1px;
 }
-  
+
 .checkboxContainer a:hover {
-    border-bottom-color: #2c5282;
+    border-bottom-color: #4a5568;
+    color: #2d3748;
 }
-  
+
 .signInButton {
     width: 100%;
-    padding: 0.875rem;
+    padding: 1rem;
     background-color: #2d3748;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 2px;
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
 }
-  
+
+.signInButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.signInButton:hover:not(:disabled)::before {
+    left: 100%;
+}
+
 .signInButton:hover:not(:disabled) {
     background-color: #1a202c;
     transform: translateY(-1px);
 }
-  
+
 .signInButton.disabled {
     background-color: #a0aec0;
     cursor: not-allowed;
     transform: none;
 }
-  
+
 .error {
-    color: #e53e3e;
-    margin: 1rem 0;
+    color: #9b2c2c;
+    margin: 1.5rem 0;
     font-size: 0.9rem;
     text-align: center;
-    padding: 0.75rem;
+    padding: 1rem;
     background-color: #fff5f5;
-    border-radius: 6px;
-    border: 1px solid #fed7d7;
+    border-radius: 2px;
+    border: 1px solid rgba(155, 44, 44, 0.2);
+    font-family: "Yu Mincho", "MS Mincho", serif;
 }
-  

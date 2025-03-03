@@ -1,0 +1,431 @@
+.userHomePage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.loading, .error, .noUser {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #e53e3e;
+}
+
+.profileHeader {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.avatarSection {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.avatarPlaceholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.userInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.userName {
+  font-size: 2rem;
+  margin: 0;
+  color: #333;
+}
+
+.userMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.userMeta span, .userMeta a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.additionalInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.userLocation, .userWebsite {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.userWebsite {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.userWebsite:hover {
+  text-decoration: underline;
+}
+
+.userBio {
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+/* Edit Profile Section */
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.editButton:hover {
+  background-color: #ebebeb;
+}
+
+.editProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.formRow .formGroup {
+  flex: 1;
+}
+
+.editProfile label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.nameInput, .bioInput, .locationInput, .websiteInput {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.bioInput {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.editActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.saveButton, .cancelButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveButton {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+}
+
+.saveButton:hover {
+  background-color: #2c5282;
+}
+
+.cancelButton {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.cancelButton:hover {
+  background-color: #ebebeb;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.statsRow {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.statCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0.5rem 0;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.tabsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.commentCard {
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.commentContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.commentText {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.commentMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.commentLink {
+  color: #3182ce;
+  text-decoration: none;
+}
+
+.commentLink:hover {
+  text-decoration: underline;
+}
+
+/* Contributions Section */
+.contributionsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.contributionCard {
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.contributionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contributionTitle {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #333;
+}
+
+.contributionLink {
+  color: #3182ce;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contributionLink:hover {
+  text-decoration: underline;
+}
+
+.contributionDate {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.favoritesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.favoriteCard {
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.favoriteCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.favoriteTitle {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.japaneseText {
+  font-family: "Noto Sans JP", sans-serif;
+  margin-top: 0.5rem;
+}
+
+.japaneseLine {
+  margin: 0.25rem 0;
+  line-height: 1.5;
+}
+
+.viewAllLink {
+  display: block;
+  text-align: center;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #3182ce;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.viewAllLink:hover {
+  background-color: #edf2f7;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .userBio, .additionalInfo, .editButton {
+    align-self: center;
+  }
+  
+  .statsRow {
+    flex-direction: column;
+  }
+  
+  .formRow {
+    flex-direction: column;
+  }
+  
+  .contributionsList {
+    grid-template-columns: 1fr;
+  }
+}

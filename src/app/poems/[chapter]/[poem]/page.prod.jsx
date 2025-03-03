@@ -1,7 +1,6 @@
 'use client'
 
 import PoemQueryResults from '../../../../components/PoemQueryResults.prod'
-
 import styles from "../../../../styles/pages/poems.module.css"
 
 const PoemPage = (params) => {
@@ -14,6 +13,7 @@ const PoemPage = (params) => {
                     poemNum: params.params.poem 
                 }}
             />
+
         </div>
     )
 }

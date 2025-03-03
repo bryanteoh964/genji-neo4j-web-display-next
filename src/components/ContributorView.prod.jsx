@@ -90,6 +90,7 @@ const handleRemoveContributor = async (userId) => {
 
 const filteredUsers = userList.filter(user => 
     (user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     user.googleName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
      user.email?.toLowerCase().includes(searchTerm.toLowerCase())) &&
     !contributors.some(c => c.contributor === user._id)
 );
