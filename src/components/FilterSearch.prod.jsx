@@ -434,7 +434,7 @@ const PoemSearch = () => {
                           {filterChapters(
                             Object.keys(options),
                             searchChapter
-                          ).map((key, index) => (
+                          ).sort((a, b) => removeLeadingZero(a) - removeLeadingZero(b)).map((key, index) => (
                             <Checkbox
                               key={key}
                               checked={options[key]?.checked}
@@ -445,7 +445,7 @@ const PoemSearch = () => {
                               }}
                             >
                               <div className={styles.chapterText}>
-                                <span>{key}</span>
+                                <span>{removeLeadingZero(key)}</span>
                                 <span>{getChapterName(key)}</span>
                               </div>
                             </Checkbox>
