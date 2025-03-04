@@ -379,15 +379,22 @@
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 }
 
-@media (max-width: 1450px) {
+@media (max-width: 1800px) {
   .hoverPopup {
     right: 10px;
-    width: 500px;
+    width: 450px;
   }
-
+  
   .translationLine {
     line-height: 1.5;
     font-size: 14px;
+  }
+}
+
+@media (max-width: 1700px) {
+  .hoverPopup {
+    right: 10px;
+    width: 500px;
   }
 }
 
