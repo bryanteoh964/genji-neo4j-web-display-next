@@ -2,17 +2,17 @@
 
 import "../../../../styles/globals.css";
 import PoemQuery from "../../../../components/PoemQuery.prod";
-
+import styles from "../../../../styles/pages/poems.module.css";
 
 const layout = ({ children }) => {
-  	return (
-		<div>
-			<PoemQuery />
-			<main>
-				{children}
-			</main>
-		</div>
-  	)
+    return (
+        <div className={styles.layoutContainer}>
+            <PoemQuery />
+            <main className={styles.mainContent}>
+                {children}
+            </main>
+        </div>
+    )
 }
 
 export default layout
