@@ -17,8 +17,9 @@ async function getData (chapter, number){
 		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en',
 		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name',
 		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
-		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:PROXY_POEM_OF]->(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
-		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name'
+		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:PROXY_POET_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
+		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
+		genjiAge: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:AT_GENJI_AGE_OF]->(age:Genji_Age) WHERE g.pnum ends with "' + number + '" RETURN age.age as genji_age'
 	};
 
 	const result = {};
@@ -99,6 +100,9 @@ async function getData (chapter, number){
 		// messenger
 		let messenger = result['resMessenger'].records[0]?.get('name') || null;
 
+		// genji age
+		let genji_age = result['genjiAge'].records[0]?.get('genji_age') || null;
+
 		const data = [
 						exchange, 
 						transTemp, 
@@ -117,7 +121,8 @@ async function getData (chapter, number){
 						tech,
 						poetic_word,
 						proxy,
-						messenger
+						messenger,
+						genji_age
 					];
 
 		return (data);
