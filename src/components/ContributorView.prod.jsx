@@ -7,6 +7,7 @@ import styles from '../styles/pages/ContributorView.module.css';
 const ContributorView = ({ pageType, identifier }) => {
 const { data: session } = useSession();
 const [contributors, setContributors] = useState([]);
+const [contributorUsers, setContributorUsers] = useState({});
 const [userList, setUserList] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
 const [isLoading, setIsLoading] = useState(true);
@@ -31,23 +32,54 @@ useEffect(() => {
     fetchContributors();
 }, [pageType, identifier]);
 
+// fetch contributor user basic info for display
+useEffect(() => {
+  const fetchContributorUsers = async () => {
+    if (contributors.length === 0) return;
+    
+    const userMap = { ...contributorUsers };
+    
+    for (const contributor of contributors) {
+      // skip if already have the user info
+      if (userMap[contributor.contributor]) continue;
+      
+      try {
+        const response = await fetch(`/api/user/any?userid=${contributor.contributor}`);
+        if (response.ok) {
+          const userData = await response.json();
+          userMap[contributor.contributor] = userData;
+        }
+      } catch (error) {
+        console.error(`Failed to fetch user info for ${contributor.contributor}`, error);
+      }
+    }
+    
+    setContributorUsers(userMap);
+  };
+  
+  fetchContributorUsers();
+}, [contributors]);
+
+
 // fetch user list for admin search (only when modal is opened)
 // use email and name to search
 useEffect(() => {
     const fetchUserList = async () => {
-        try {
-          const response = await fetch('/api/user/list');
-          if (response.ok) {
-            const data = await response.json();
-            setUserList(data.users);
-          }
-        } catch (error) {
-          setError('Failed to load user list');
+        if (session?.user?.role === 'admin' && searchTerm) {  
+            try {
+              const response = await fetch('/api/user/list');
+              if (response.ok) {
+                const data = await response.json();
+                setUserList(data.users);
+              }
+            } catch (error) {
+              setError('Failed to load user list');
+            }
         }
     };
 
     fetchUserList();
-}, [session?.user?.role]);
+}, [session?.user?.role, searchTerm]);
 
 const handleAddContributor = async (userId) => {
     try {
@@ -93,7 +125,11 @@ const filteredUsers = userList.filter(user =>
 );
 
 if (isLoading) return <div>Loading...</div>;
-if (error) return <div className={styles.error}>{error}</div>;
+  {error && (
+    <div className={styles.errorMessage}>
+      {error}
+    </div>
+  )}
 
 return (
     <div className={styles.container}>
@@ -104,7 +140,7 @@ return (
       
       <ul className={styles.contributorViewContainer}>
         {contributors.map((contributor) => {
-          const user = userList.find(u => u._id === contributor.contributor);
+          const user = contributorUsers[contributor.contributor];
             return (
               <li key={contributor.contributor} className={styles.contributorItem}>
                 <Link href={`/userhomepage/${contributor.contributor}`} className={styles.contributorLink}>

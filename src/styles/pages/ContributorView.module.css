@@ -131,6 +131,13 @@
   text-decoration: underline;
 }
 
-.error {
+.errorMessage {
   color: #DC2626;
+  background-color: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  text-align: center;
+  font-weight: 500;
 }
