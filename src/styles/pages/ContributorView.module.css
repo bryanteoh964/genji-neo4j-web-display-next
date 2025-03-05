@@ -1,7 +1,16 @@
 .contributorViewContainer {
-    position: relative;
-    display: inline-block;
-  }
+  position: relative;
+  display: block; 
+  width: 100%; 
+  text-align: center;
+}
+
+.noContributorsText {
+  margin: 10px 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
 
 .contributorSearchSection {
   margin-bottom: 16px;
@@ -91,16 +100,19 @@
 .contributorItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 4px 0;
+  width: 100%;
 }
 
 .contributorLink {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   text-decoration: none;
   color: #374151;
+  width: 80%;
 }
 
 .contributorLink:hover {

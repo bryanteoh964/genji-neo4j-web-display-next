@@ -97,6 +97,11 @@ if (error) return <div className={styles.error}>{error}</div>;
 
 return (
     <div className={styles.container}>
+
+      {contributors.length === 0 && (
+        <p className={styles.noContributorsText}>No contributors yet</p>
+      )}
+      
       <ul className={styles.contributorViewContainer}>
         {contributors.map((contributor) => {
           const user = userList.find(u => u._id === contributor.contributor);
@@ -112,6 +117,7 @@ return (
                   )}
                   <span>{user?.name || user?.email || contributor.contributor}</span>
                 </Link>
+                
                 {session?.user?.role === 'admin' && (
                   <button
                     onClick={() => handleRemoveContributor(contributor.contributor)}
