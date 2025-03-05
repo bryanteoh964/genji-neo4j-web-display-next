@@ -6,7 +6,7 @@
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
     color: var(--poem-color, #333);
-
+    contain: content;
 }
 
 .title {
@@ -17,7 +17,10 @@
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
-}
+    width: 100%;
+  }
+  
+
 
 .poemContainer {
     display: flex;
@@ -25,28 +28,22 @@
     align-items: center;
     width: 100%;
     padding: 20px;
-    margin-right: 55%;
+    margin: 0 auto; 
   }
 
-.poemTitle {
-    margin-bottom: 0.2em;
-    font-size: 1em;
-}
-
-.chapterTitle {
-    margin-bottom: 0.4em;
-    font-size: 0.8em;
-    color: #666;
-}
+  .poemTitle, .chapterTitle {
+    width: 100%;
+    text-align: center;
+  }
 
 .prominentPoemText {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
-    overflow-x: auto;
     width: 100%;
-    max-width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
     text-align: center;
   }
   
@@ -56,16 +53,16 @@
     align-items: center;
     padding-left: 35px;
     padding-right: 35px;
-  }
+}
   
 .character {
     font-size: 1.5em;
     margin-bottom: 0.2em;
-
     writing-mode: vertical-rl;
     text-orientation: upright;
-  }
-
+    will-change: transform;
+    transform: translateZ(0);
+}
 
 .japaneseLine {
     font-size: 1.2em;
@@ -82,10 +79,10 @@
     margin-bottom: 10px;
 }
 
-
 .contentWrapper {
     display: flex;
     gap: 30px;
+    contain: layout;
 }
 
 .tableOfContents {
@@ -97,6 +94,7 @@
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateZ(0);
 }
 
 .tableOfContents h2 {
@@ -129,6 +127,7 @@
 .mainContent {
     flex: 1;
     text-align: left;
+    contain: content;
 }
 
 .section {
@@ -137,6 +136,7 @@
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .sectionTitle {
@@ -159,6 +159,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-around;
+    min-height: 200px;
 }
 
 .infoCard {
@@ -168,6 +169,7 @@
     flex: 1;
     width: 100%;
     text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .narrativeContextCard p {
@@ -182,6 +184,7 @@
 
 .japanese {
     font-family: "Noto Sans JP", sans-serif;
+    text-rendering: optimizeLegibility;
 }
 
 .translations, .allusion, .relatedPoems, .tags {
@@ -192,6 +195,7 @@
     width: 100%;
     font-size: 1em;
     text-align: left;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .translation {
@@ -199,6 +203,7 @@
     border-radius: 10px;
     padding: 15px;
     text-align: center;
+    margin-bottom: 15px;
 }
 
 .translation h3 {
@@ -288,10 +293,96 @@
     text-align: center;
     width: auto;  
     white-space: nowrap;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .backTop:hover {
     background-color: #e0e0e0;
+}
+
+.skeletonContainer {
+    width: 100%;
+    margin-bottom: 2rem;
+    animation: pulse 1.5s ease-in-out 0.5s infinite;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+.skeletonTitle {
+    height: 2.5rem;
+    width: 70%;
+    background: #f0f0f0;
+    margin: 0 auto 2rem auto;
+    border-radius: 4px;
+}
+
+.skeletonPoem {
+    margin: 2rem auto;
+    width: 80%;
+}
+
+.skeletonLine {
+    height: 1.25rem;
+    background: #f0f0f0;
+    margin: 0 auto 0.75rem auto;
+    border-radius: 4px;
+}
+
+.skeletonLine:nth-child(1) {
+    width: 80%;
+}
+
+.skeletonLine:nth-child(2) {
+    width: 70%;
+}
+
+.skeletonLine:nth-child(3) {
+    width: 60%;
+}
+
+.skeletonInfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem auto;
+    width: 90%;
+}
+
+.skeletonCard {
+    height: 8rem;
+    background: #f0f0f0;
+    border-radius: 10px;
+    flex: 1;
+    min-width: 200px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.lazyLoad {
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 @media (max-width: 1024px) {
@@ -332,7 +423,7 @@
     .poemLine {
         padding-left: 25px;
         padding-right: 25px;
-      }
+    }
 
     .prominentPoemText {
         padding: 1rem;
@@ -340,6 +431,10 @@
 
     .character {
         font-size: 1.3em;
+    }
+    
+    .skeletonCard {
+        min-width: 100%;
     }
 }
 
@@ -367,7 +462,7 @@
     .poemLine {
         padding-left: 15px;
         padding-right: 15px;
-      }
+    }
 
     .prominentPoemText .japanese {
         font-size: 0.9em;
@@ -407,6 +502,11 @@
 
     .poemLine {
         margin-left: 15px;
+    }
+    
+    
+    .skeletonContainer {
+        animation: pulse 2s ease-in-out 0.5s infinite;
     }
 }
 
@@ -487,8 +587,15 @@
     .poemLine {
         margin-left: 10px;
     }
+    
+    .section, .infoCard, .translations, .allusion, .relatedPoems, .tags {
+        animation: none;
+    }
+    
+    .skeletonContainer {
+        animation: pulse 3s ease-in-out infinite;
+    }
 }
-
 
 @media (max-width: 320px) {
     .container {
@@ -522,4 +629,41 @@
     .poemLine {
         margin-left: 5px;
     }
+    
+
+    .skeletonContainer {
+        animation: none;
+    }
+    
+    .backTop {
+        right: 20px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+
+.preload {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }

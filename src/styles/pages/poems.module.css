@@ -6,8 +6,27 @@
     gap: 10px;
 }
 
+.layoutContainer {
+    position: relative;
+    width: 100%;
+    contain: layout;
+}
+
+.mainContent {
+    min-height: 500px; 
+    position: relative;
+    width: 100%;
+}
+
+.poemPageContainer {
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+}
+
 .search_display_container {
-    display: flex;
-    justify-content: center;
-    margin: 0 10px;
+    min-height: 300px;
+    position: relative;
+    width: 100%;
+    transition: height 0.3s ease-in-out;
 }
