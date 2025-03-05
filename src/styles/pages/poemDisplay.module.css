@@ -154,6 +154,7 @@
   }
   
 
+
   .ageInfo {
     grid-column: 25 / 29;
     grid-row: 2 / 5;
@@ -497,6 +498,9 @@
     margin-bottom: 10px;
 }
 
+.narrativeContext p, .paraphrase p {
+    text-align: left;
+}
 
 .commentaryTabContent {
     background-color: #fff;
