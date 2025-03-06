@@ -96,98 +96,96 @@ const PoemQuery = () => {
     }, [loc, chapters])
 
     return (
-        <Row>
-            <Col span={24} className={styles.search_bar}>
-                {/* Chapter Select */}
-                <Select 
-                    alt="Select a chapter"
-                    showSearch
-                    placeholder="Select a chapter"
-                    style={{ width:460 }}
-                    value={chpSelect[1]}
-                    onSelect={(value) => {
-                        setChpSelect([true, value, chpSelect[2]])
-                        setCount(Array.from({length: chapters[value-1].count}, (_, i) => i + 1))
+        <div className={styles.search_bar}>
+            {/* Chapter Select */}
+            <Select 
+                className={styles.chapterSelect}
+                alt="Select a chapter"
+                showSearch
+                placeholder="Select a chapter"
+                style={{ width: 'auto', flex: 2 }}
+                value={chpSelect[1]}
+                onSelect={(value) => {
+                    setChpSelect([true, value, chpSelect[2]])
+                    setCount(Array.from({length: chapters[value-1].count}, (_, i) => i + 1))
+                }}
+            >
+                {chapters.map(chp => 
+                    <Option
+                        key={chp.num}
+                        value={chp.num}
+                    >
+                        {chp.num + ' ' + chp.name}
+                    </Option>
+                )}
+            </Select>
+            
+            {/* Chapter Poem Select */}
+            <Select
+                className={styles.poemSelect}
+                alt="Select a poem number"
+                showSearch
+                placeholder="#"
+                style={{ width: 'auto', flex: 1 }}
+                disabled={!chpSelect[0]}
+                value={chpSelect[2]}
+                onSelect={(value) => {
+                    setChpSelect([chpSelect[0], chpSelect[1], value])
+                }}
+            >
+                {count.map(ct => 
+                    <Option
+                        key={ct}
+                        value={ct}
+                    >
+                        {ct}
+                    </Option>
+                )}
+            </Select>
+            
+            {/* Query Button */}
+            <Link
+                alt="Query Button"
+                href={`/poems/${chpSelect[1].toString() === undefined ? '' : chpSelect[1].toString()}/${chpSelect[2].toString() === undefined ? '' : chpSelect[2].toString()}`}
+            >
+                <Button 
+                    disabled={chpSelect[0] === false||!chpSelect[2]}
+                    onClick={() => {
+                        setButtonLock(false)
                     }}
                 >
-                    {chapters.map(chp => 
-                        <Option
-                            key={chp.num}
-                            value={chp.num}
-                        >
-                            {chp.num + ' ' + chp.name}
-                        </Option>
-                    )}
-                </Select>
-                {/* Chapter Poem Select */}
-                <Select
-                    alt="Select a poem number"
-                    showSearch
-                    placeholder="#"
-                    disabled={!chpSelect[0]}
-                    value={chpSelect[2]}
-                    onSelect={(value) => {
-                        setChpSelect([chpSelect[0], chpSelect[1], value])
-                        // updateNext(value, false)
-                    }}
+                    Query
+                </Button>
+            </Link>
+            
+            {/* Previous Poem Button */}
+            <Link
+                alt="Navigate to previous poem"
+                href={`/poems/${prevNext[0][0].toString() === undefined ? '' : prevNext[0][0].toString()}/${prevNext[0][1].toString() === undefined ? '' : prevNext[0][1].toString()}`}    
+            >
+                <Button
+                    className={styles.navigationButton}
+                    disabled={buttonLock}
+                    onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[0]) - 1].count}, (_, i) => i + 1))}
                 >
-                    {count.map(ct => 
-                        <Option
-                            key={ct}
-                            value={ct}
-                        >
-                            {ct}
-                        </Option>
-                    )}
-                </Select>
-                {/* Query Button */}
-                <Link
-                    alt="Query Button"
-                    href={`/poems/${chpSelect[1].toString() === undefined ? '' : chpSelect[1].toString()}/${chpSelect[2].toString() === undefined ? '' : chpSelect[2].toString()}`}
+                    Previous
+                </Button>
+            </Link>
+            
+            {/* Next Poem Button */}
+            <Link
+                alt="Navigate to next poem"
+                href={`/poems/${prevNext[1][0].toString() === undefined ? '' : prevNext[1][0].toString()}/${prevNext[1][1].toString() === undefined ? '' : prevNext[1][1].toString()}`}    
+            >
+                <Button
+                    className={styles.navigationButton}
+                    disabled={buttonLock}
+                    onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[1]) - 1].count}, (_, i) => i + 1))}
                 >
-                    <div>
-                        <Button 
-                            disabled={chpSelect[0] === false||!chpSelect[2]}
-                            onClick={
-                                () => {
-                                    setButtonLock(false)
-                                }
-                            }
-                        >
-                            Query
-                        </Button>
-                    </div>
-                </Link>
-                {/* Previous Poem Button */}
-                <Link
-                    alt="Navigate to previous poem"
-                    href={`/poems/${prevNext[0][0].toString() === undefined ? '' : prevNext[0][0].toString()}/${prevNext[0][1].toString() === undefined ? '' : prevNext[0][1].toString()}`}    
-                >
-                    <div>   
-                        <Button
-                            disabled={buttonLock}
-                            onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[0]) - 1].count}, (_, i) => i + 1))}
-                        >
-                            Previous
-                        </Button>
-                    </div>
-                </Link>
-                {/* Next Poem Button */}
-                <Link
-                    alt="Navigate to next poem"
-                    href={`/poems/${prevNext[1][0].toString() === undefined ? '' : prevNext[1][0].toString()}/${prevNext[1][1].toString() === undefined ? '' : prevNext[1][1].toString()}`}    
-                >
-                    <div>
-                        <Button
-                            disabled={buttonLock}
-                            onClick={() => setCount(Array.from({length: chapters[parseInt(prevNext[1]) - 1].count}, (_, i) => i + 1))}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                </Link>
-            </Col>
-        </Row>
+                    Next
+                </Button>
+            </Link>
+        </div>
     )
 }
 
