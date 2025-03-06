@@ -22,7 +22,7 @@
     grid-template-columns: repeat(48, 1fr);
     grid-template-rows: repeat(6, minmax(min-content, auto));
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     background-color: rgba(182, 215, 209, 0.3);
     padding: 15px;
     border-radius: 20px;
@@ -279,7 +279,7 @@
 /* main area */
 .mainContentSection {
     display: grid;
-    grid-template-columns: minmax(300px, 1fr) minmax(450px, 1.5fr) minmax(300px, 1fr);
+    grid-template-columns: 1fr 1.5fr 1fr;
     gap: 0;
     min-height: calc(100vh - 150px);
 }
