@@ -279,7 +279,7 @@
 /* main area */
 .mainContentSection {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-columns: minmax(300px, 1fr) minmax(450px, 1.5fr) minmax(300px, 1fr);
     gap: 0;
     min-height: calc(100vh - 150px);
 }
@@ -440,6 +440,7 @@
     background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
+    max-width: 100%;
 }
 
 .tabsHeader {
@@ -506,7 +507,6 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    height: 100%;
 }
 
 .notes {
@@ -516,6 +516,9 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     text-align: left;
+    max-width: 100%;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 
