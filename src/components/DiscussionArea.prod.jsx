@@ -316,8 +316,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
       setRawComments(data.comments || []);
       setCurrentPage(data.currentPage || 1);
       setTotalPages(data.totalPages || 1);
-      setTotalCount(data.totalCount || 0);
-
+  
     } catch (error) {
       console.error('Error fetching comments:', error);
       showError('Failed to load comments. Please try again.');
@@ -340,7 +339,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
   // handle refresh
   const handleRefresh = () => {
-    fetchComments();
+    fetchComments(1);
   };
 
   // get user
@@ -363,9 +362,9 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
   useEffect(() => {
     if (user) {
-      fetchComments();
+      fetchComments(currentPage);
     }
-  }, [pageType, identifier, user]);
+  }, [pageType, identifier, user, currentPage, pageSize]);
 
 
   useEffect(() => {
@@ -405,7 +404,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
       if (response.ok) {
         setNewComment('');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to add comment');
       }
@@ -435,10 +434,10 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
       if (response.ok) {
         setEditingComment(null);
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
         setEditingComment(null);
       } else {
         showError(data.message || 'Failed to update comment');
@@ -466,13 +465,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Comment no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to toggle comment visibility');
       }
@@ -502,13 +501,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Comment has already been deleted. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to delete comment');
       }
@@ -536,13 +535,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Comment no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to like comment');
       }
@@ -570,13 +569,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('The comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('The original comment no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to add reply');
       }
@@ -606,14 +605,14 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
       if (response.ok) {
         setEditingComment(null);
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This reply has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
         setEditingComment(null);
       } else if (response.status === 404) {
         showError('Reply no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
         setEditingComment(null);
       } else {
         showError(data.message || 'Failed to update reply');
@@ -644,13 +643,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This reply has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Reply has already been deleted. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to delete reply');
       }
@@ -678,13 +677,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This reply has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Reply no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to like reply');
       }
@@ -711,13 +710,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This reply has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Reply no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to toggle reply visibility');
       }
@@ -744,13 +743,13 @@ const DiscussionArea = ({ pageType, identifier }) => {
       const data = await response.json();
 
       if (response.ok) {
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else if (response.status === 404) {
         showError('Comment no longer exists. Refreshing...');
-        fetchComments();
+        handleRefresh();
       } else {
         showError(data.message || 'Failed to toggle pin status');
       }
