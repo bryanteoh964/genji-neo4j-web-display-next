@@ -292,33 +292,58 @@ const DiscussionArea = ({ pageType, identifier }) => {
   const [editingComment, setEditingComment] = useState(null);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 5;
+
 
   const showError = (message) => {
     setError(message);
     setTimeout(() => setError(null), 5000);
   };
 
-  const fetchComments = async () => {
+  const fetchComments = async (pageNum = 1) => {
     try {
       setRefreshing(true);
+
+      const page = isNaN(pageNum) || pageNum < 1 ? 1 : pageNum;
+
       const response = await fetch(
-        `/api/discussionArea/getAllComment?pageType=${pageType}&identifier=${identifier}&userId=${user}`
+        `/api/discussionArea/getAllComment?pageType=${pageType}&identifier=${identifier}&userId=${user}&page=${page}&limit=${pageSize}`
       );
+
       const data = await response.json();
-      setRawComments(data.comments);
+      setRawComments(data.comments || []);
+      setCurrentPage(data.currentPage || 1);
+      setTotalPages(data.totalPages || 1);
+      setTotalCount(data.totalCount || 0);
+
     } catch (error) {
       console.error('Error fetching comments:', error);
       showError('Failed to load comments. Please try again.');
+
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   };
+  
+  // handle go to next or previous page
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage || refreshing) {
+      return;
+    }
+    
+    setCurrentPage(newPage);
+    fetchComments(newPage);
+  };
 
+  // handle refresh
   const handleRefresh = () => {
     fetchComments();
   };
 
+  // get user
   const fetchUser = async () => {
     try {
       const response = await fetch(`/api/user/me`);
@@ -330,15 +355,18 @@ const DiscussionArea = ({ pageType, identifier }) => {
     }
   };
 
+
   useEffect(() => {
     fetchUser();
   }, []);
+
 
   useEffect(() => {
     if (user) {
       fetchComments();
     }
   }, [pageType, identifier, user]);
+
 
   useEffect(() => {
     if (session?.user?.role === 'admin') {
@@ -770,7 +798,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
               )}
             </div>
             <div className={styles.inputContainer}>
-              <input
+              <textarea
                 type="text"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
@@ -829,6 +857,43 @@ const DiscussionArea = ({ pageType, identifier }) => {
             />
           ))
         )}
+
+        {displayComments?.length > 0 && (
+          <div className={styles.pagination}>
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={currentPage === 1 || refreshing}
+              className={styles.pageButton}
+            >
+              First
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1 || refreshing}
+              className={styles.pageButton}
+            >
+              Previous
+            </button>
+            <span className={styles.pageInfo}>
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || refreshing}
+              className={styles.pageButton}
+            >
+              Next
+            </button>
+            <button
+              onClick={() => handlePageChange(totalPages)}
+              disabled={currentPage === totalPages || refreshing}
+              className={styles.pageButton}
+            >
+              Last
+            </button>
+          </div>
+        )}
+
       </div>}
     </div>
   );
