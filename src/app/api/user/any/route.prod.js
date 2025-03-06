@@ -9,9 +9,9 @@ import { ObjectId } from 'mongodb';
 export async function GET(req) {
   const session = await auth();
 
-  if(!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-   }
+  // if(!session) {
+  //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  //  }
 
   const { searchParams } = new URL(req.url);
   const userid = searchParams.get('userid');
