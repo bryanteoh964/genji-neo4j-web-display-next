@@ -345,9 +345,14 @@ const DiscussionArea = ({ pageType, identifier }) => {
   // get user
   const fetchUser = async () => {
     try {
-      const response = await fetch(`/api/user/me`);
-      const data = await response.json();
-      setUser(data._id);
+      if (session) {
+        const response = await fetch(`/api/user/me`);
+        const data = await response.json();
+        setUser(data._id);
+      } else {
+        setLoading(false);
+      }
+      
     } catch (error) {
       console.error('Error fetching user:', error);
       showError('Failed to load user info. Please try again.');
@@ -746,10 +751,10 @@ const DiscussionArea = ({ pageType, identifier }) => {
         handleRefresh();
       } else if (response.status === 409) {
         showError('This comment has been modified by another user. Refreshing...');
-        handleRefresh();
+       handleRefresh();
       } else if (response.status === 404) {
         showError('Comment no longer exists. Refreshing...');
-        handleRefresh();
+        fetchComments();
       } else {
         showError(data.message || 'Failed to toggle pin status');
       }
