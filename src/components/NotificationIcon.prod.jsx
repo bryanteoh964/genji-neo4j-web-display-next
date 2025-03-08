@@ -261,6 +261,8 @@ export default function NotificationIcon() {
         endpoint = '/api/discussionArea/hideComment';
       } else if (notification.type === 'newReply' || notification.type === 'replyEdit') {
         endpoint = '/api/discussionArea/hideReply';
+      } else if (notification.type === 'newTrans') {
+        endpoint = '/api/translation/hideTrans';
       } else {
         console.error('Unknown notification type:', notification.type);
         showError('Unknown content type. Cannot hide.');
@@ -269,9 +271,16 @@ export default function NotificationIcon() {
       
       // First fetch the current content to get its latest version
       const getCurrentVersion = async () => {
-        const checkEndpoint = notification.type.includes('Comment') 
-          ? `/api/discussionArea/getComment?commentId=${notification.relatedItem}` 
-          : `/api/discussionArea/getReply?replyId=${notification.relatedItem}`;
+
+        let checkEndpoint;
+        
+        if (notification.type === 'newTrans') {
+          return notification.version || 0;
+        } else {
+          checkEndpoint = notification.type.includes('Comment') 
+            ? `/api/discussionArea/getComment?commentId=${notification.relatedItem}` 
+            : `/api/discussionArea/getReply?replyId=${notification.relatedItem}`;
+        }
         
         try {
           const checkResponse = await fetch(checkEndpoint);
@@ -357,6 +366,8 @@ export default function NotificationIcon() {
         endpoint = '/api/discussionArea/deleteComment';
       } else if (notification.type === 'newReply' || notification.type === 'replyEdit') {
         endpoint = '/api/discussionArea/deleteReply';
+      } else if (notification.type === 'newTrans') {
+        endpoint = '/api/translation/deleteTrans';
       } else {
         console.error('Unknown notification type:', notification.type);
         showError('Unknown content type. Cannot delete.');
@@ -365,9 +376,16 @@ export default function NotificationIcon() {
       
       // First fetch the current content to get its latest version
       const getCurrentVersion = async () => {
-        const checkEndpoint = notification.type.includes('Comment') 
-          ? `/api/discussionArea/getComment?commentId=${notification.relatedItem}` 
-          : `/api/discussionArea/getReply?replyId=${notification.relatedItem}`;
+        let checkEndpoint;
+        
+        if (notification.type === 'newTrans') {
+          // For translations, return the notification version
+          return notification.version || 0;
+        } else {
+          checkEndpoint = notification.type.includes('Comment') 
+            ? `/api/discussionArea/getComment?commentId=${notification.relatedItem}` 
+            : `/api/discussionArea/getReply?replyId=${notification.relatedItem}`;
+        }
         
         try {
           const checkResponse = await fetch(checkEndpoint);
@@ -508,6 +526,8 @@ export default function NotificationIcon() {
         return `${senderName} replied to your comment: "${notification.content}"`;
       case 'like':
         return `${senderName} liked your comment`;
+      case 'newTrans':
+        return `A new translation was submitted: "${notification.content}"`;
       default:
         return notification.content;
     }
