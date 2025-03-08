@@ -50,7 +50,7 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
   // Manual refresh handler with force option
   const handleRefresh = () => {
     if (refreshing) return;
-    fetchTranslations(true); // Force retry on manual refresh
+    fetchTranslations();
   };
 
   // Handle hide translation
@@ -78,7 +78,7 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
         ));
       } else if (response.status === 409) {
         showError('This translation has been modified. Refreshing...');
-        fetchTranslations(true);
+        fetchTranslations();
       } else {
         const data = await response.json().catch(() => ({ message: 'Unknown error occurred' }));
         showError(data.message || 'Failed to update translation visibility');
@@ -114,10 +114,10 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
         setTranslations(prev => prev.filter(t => t._id !== translationId));
       } else if (response.status === 409) {
         showError('This translation has been modified. Refreshing...');
-        fetchTranslations(true);
+        fetchTranslations();
       } else if (response.status === 404) {
         showError('Translation no longer exists. Refreshing...');
-        fetchTranslations(true);
+        fetchTranslations();
       } else {
         const data = await response.json().catch(() => ({ message: 'Unknown error occurred' }));
         showError(data.message || 'Failed to delete translation');
