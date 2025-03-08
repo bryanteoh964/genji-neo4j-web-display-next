@@ -1,0 +1,293 @@
+.userTranslationSection {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .userTranslationSection h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .userTranslationInput {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  
+  .userTranslationInput:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+  
+  .translationControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .submitButton {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .submitButton:hover:not(:disabled) {
+    background-color: #3a80d2;
+  }
+  
+  .submitButton:disabled {
+    background-color: #a0c3e8;
+    cursor: not-allowed;
+  }
+  
+  .successMessage {
+    color: #2e7d32;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  .errorMessage {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  
+  /* User Translations Display Styles */
+  .userTranslationsSection {
+    margin-top: 20px;
+  }
+  
+  .translationsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .translationsHeader h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .viewTranslationsButton {
+    background-color: #f0f2f5;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .viewTranslationsButton:hover {
+    background-color: #e4e7eb;
+  }
+  
+  /* Modal Styles */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .modalHeader {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modalHeader h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .modalControls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .closeButton {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .closeButton:hover {
+    background-color: #f0f2f5;
+    color: #333;
+  }
+  
+  .refreshButton {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .refreshButton:hover:not(:disabled) {
+    background-color: #f0f2f5;
+    color: #333;
+  }
+  
+  .refreshButton:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .translationsList {
+    padding: 16px;
+    overflow-y: auto;
+    max-height: calc(80vh - 70px);
+  }
+  
+  .translationItem {
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    transition: background-color 0.2s;
+  }
+  
+  .hiddenTranslation {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    opacity: 0.7;
+  }
+  
+  .translationContent {
+    flex: 1;
+  }
+  
+  .translationContent p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  
+  .translationMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .translationDate {
+    color: #888;
+  }
+  
+  .hiddenBadge {
+    background-color: #f44336;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  
+  .adminActions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 12px;
+  }
+  
+  .toggleHideButton, .deleteButton {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .toggleHideButton {
+    color: #4a90e2;
+  }
+  
+  .toggleHideButton:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+  }
+  
+  .deleteButton {
+    color: #f44336;
+  }
+  
+  .deleteButton:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+  }
+  
+  .loadingMessage, .errorMessage, .emptyMessage {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+  }

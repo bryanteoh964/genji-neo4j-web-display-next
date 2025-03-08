@@ -5,6 +5,8 @@ import FavButton from '../components/FavButton.prod';
 import ContributorView from '../components/ContributorView.prod';
 import DiscussionArea from '../components/DiscussionArea.prod';
 import FormatContent from '../components/FormatText.prod'
+import TransSubmit from '../components/TranslationSubmit.prod';
+import TransDisplay from '../components/TranslationDisplay.prod'
 
 const PoemDisplay = ({ poemData }) => {
     // set default tab to "meaning"
@@ -366,22 +368,12 @@ const PoemDisplay = ({ poemData }) => {
                         </div>
                     </div>
                     
-                    {/* user translation input (not working now) */}
-                    <div className={styles.userTranslationSection}>
-                        <h3>HOW WOULD YOU TRANSLATE THIS POEM?</h3>
-                        <textarea 
-                            className={styles.userTranslationInput} 
-                            placeholder="Write your translation here..."
-                        />
-                    </div>
+                    {/* user translation input */}
+                    <TransSubmit pageType="poem" identifier={`${chapter}-${number}`} />
                     
                     {/* show user translations */}
-                    <div className={styles.userTranslationsDisplay}>
-                        <h3>USER TRANSLATIONS</h3>
-                        <div className={styles.userTranslationsContainer}>
-                            {/* not working now */}
-                        </div>
-                    </div>
+                    <TransDisplay pageType="poem" identifier={`${chapter}-${number}`} />
+
                 </div>
                 
                 {/* right tab area */}
