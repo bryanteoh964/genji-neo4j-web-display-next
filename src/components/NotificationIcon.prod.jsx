@@ -533,6 +533,23 @@ export default function NotificationIcon() {
     }
   };
 
+  const getContentTypeLabel = (notification) => {
+    switch (notification.type) {
+      case 'newComment':
+        return 'New Comment';
+      case 'commentEdit':
+        return 'Edited Comment';
+      case 'newReply':
+        return 'New Reply';
+      case 'replyEdit':
+        return 'Edited Reply';
+      case 'newTrans':
+        return 'Translation';
+      default:
+        return 'Content';
+    }
+  };
+
   // Get total count for badge
   const getTotalCount = () => unreadCount + (isAdmin ? reviewCount : 0);
 
@@ -681,13 +698,20 @@ export default function NotificationIcon() {
                           <img src={notification.senderImage} alt="" className={styles.avatarImage} />
                         ) : (
                           <div className={styles.avatarFallback}>
-                            {notification.senderName?.[0]?.toUpperCase() || 'U'}
+                            {notification.type === 'newTrans' ? 'T' : (notification.senderName?.[0]?.toUpperCase() || 'U')}
                           </div>
                         )}
                       </div>
                       
                       <div className={styles.reviewInfo}>
-                        <p className={styles.reviewUsername}>{notification.senderName}</p>
+                        <div className={styles.reviewInfoHeader}>
+                          <p className={styles.reviewUsername}>
+                            {notification.type === 'newTrans' ? 'Visitor' : notification.senderName}
+                          </p>
+                          <span className={styles.contentTypeLabel}>
+                            {getContentTypeLabel(notification)}
+                          </span>
+                        </div>
                         <span className={styles.notificationTime}>
                           {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
                         </span>
