@@ -164,6 +164,7 @@
 
 .filterSection {
   border-bottom: 1px solid #eee;
+  width: 300px;
 }
 
 .filterLabel {
@@ -350,6 +351,7 @@
   border-radius: 4px;
   box-sizing: border-box; 
   margin-bottom: 10px; 
+  margin-right: 10px
 }
 
 .searchFilterInput {
