@@ -223,7 +223,15 @@ const PoemDisplay = ({ poemData }) => {
                 
                 <div className={styles.poemTypeInfo}>
                     <h3>POEM TYPE</h3>
-                    <span>{poemState.tag[0] || "-"}</span>
+                    {poemState.tag && poemState.tag.length > 0 ? (
+                        <div className={styles.tagsList}>
+                        {poemState.tag.map((tag, index) => (
+                            <span key={index} className={styles.tagItem}>{tag}</span>
+                        ))}
+                        </div>
+                    ) : (
+                        <span>-</span>
+                    )}
                 </div>
                 
                 <div className={styles.poemCodeInfo}>

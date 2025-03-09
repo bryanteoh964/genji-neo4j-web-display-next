@@ -129,7 +129,20 @@
     font-weight: bold;
     color: rgba(0, 0, 0, 0.7);
   }
+
+  .tagsList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
   
+  .tagItem {
+    margin: 2px 0;
+    text-align: center;
+    font-size: 0.7rem;
+    width: 100%;
+  }
 
   .poemCodeInfo {
     grid-column: 22 / 25;
