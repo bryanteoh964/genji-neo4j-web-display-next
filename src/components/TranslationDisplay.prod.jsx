@@ -32,6 +32,7 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
       
       if (response.ok) {
         const data = await response.json();
+        // console.log(data);
         setTranslations(data.trans || []);
         setError(null);
       } else {
@@ -218,16 +219,33 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
                     key={translation._id} 
                     className={`${styles.translationItem} ${translation.isHidden ? styles.hiddenTranslation : ''}`}
                   >
+                    <div className={styles.userSection}>
+                      <div className={styles.userInfoWrapper}>
+                        <div className={styles.translationAvatar}>
+                          {translation.userImage ? (
+                            <img src={translation.userImage} alt="" className={styles.avatarImage} />
+                          ) : (
+                            <div className={styles.avatarFallback}>
+                              {(translation.userName?.[0] || 'A').toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                        <span className={styles.translatorName}>
+                          {translation.userName}
+                        </span>
+                      </div>
+                      <span className={styles.translationDate}>
+                        {formatDistanceToNow(new Date(translation.createdAt), { addSuffix: true })}
+                      </span>
+                    </div>
+                    
                     <div className={styles.translationContent}>
                       <p>{translation.content}</p>
-                      <div className={styles.translationMeta}>
-                        <span className={styles.translationDate}>
-                          {formatDistanceToNow(new Date(translation.createdAt), { addSuffix: true })}
-                        </span>
-                        {translation.isHidden && isAdmin && (
+                      {translation.isHidden && isAdmin && (
+                        <div className={styles.translationMeta}>
                           <span className={styles.hiddenBadge}>Hidden</span>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                     
                     {isAdmin && (

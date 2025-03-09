@@ -27,7 +27,7 @@ export async function DELETE(req) {
             );
         }
 
-        if (session.user.role !== 'admin') {
+        if (trans.user !== userId && session.user.role !== 'admin') {
             return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
         }
 
