@@ -1,4 +1,4 @@
-import { auth } from "../../../../auth.prod";
+export const dynamic = 'force-dynamic';
 import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
