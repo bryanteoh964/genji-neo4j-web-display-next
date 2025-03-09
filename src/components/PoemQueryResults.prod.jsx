@@ -39,7 +39,10 @@ const PoemDisplay = ({ poemData }) => {
         pt: "",
         pw: { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" },
         messenger: "",
-        age: ""
+        age: "",
+        repCharacter: "",
+        placeOfComp: "",
+        placeOfReceipt: ""
     });
     
     const chapter = poemData.chapterNum;
@@ -169,10 +172,17 @@ const PoemDisplay = ({ poemData }) => {
                     pt: responseData[14],
                     pw: responseData[15],
                     proxy: responseData[16],
+                    // unused messenger
                     messenger: responseData[17],
-                    age: responseData[18]
+                    age: responseData[18],
+                    repCharacter: responseData[19],
+                    placeOfComp: responseData[20],
+                    placeOfReceipt: responseData[21]
                 };
                 
+
+                console.log(responseData)
+
                 setPoemState(prev => ({...prev, ...newPoemState}));
                 
                 localStorage.setItem(cacheKey, JSON.stringify(newPoemState));
@@ -233,7 +243,7 @@ const PoemDisplay = ({ poemData }) => {
                         <span>-</span>
                     )}
                 </div>
-                
+
                 <div className={styles.poemCodeInfo}>
                     <h3>POEM CODE</h3>
                     <span>{poemState.poemId}</span>
@@ -246,12 +256,18 @@ const PoemDisplay = ({ poemData }) => {
                 
                 <div className={styles.chapterTitleSource}>
                     <h3>CHAPTER TITLE SOURCE</h3>
-                    <span>{"-"}</span>
+                    {poemState.tag.length > 0 && (poemState.tag.some(tagArray => tagArray[0] === 'Chapter Title Poem'))
+                        ?  <span>{"yes"}</span>
+                        : <span>{"-"}</span>
+                    }
                 </div>
 
                 <div className={styles.characterNameInfo}>
                     <h3>CHARACTER NAME</h3>
-                    <span>{"-"}</span>
+                    {poemState.repCharacter ? 
+                        <span>{poemState.repCharacter}</span>
+                        : <span>{"-"}</span>
+                    }
                 </div>
                 
 
@@ -463,7 +479,7 @@ const PoemDisplay = ({ poemData }) => {
                                         <p>{poemState.deliveryStyle}</p>
                                     </div>
                                 )}
-                                
+
                                 {poemState.source.length > 0 && (
                                     <div className={styles.detailItem}>
                                         <h3>ALLUSIONS</h3>
@@ -497,6 +513,23 @@ const PoemDisplay = ({ poemData }) => {
                                         <p>{poemState.pt}</p>
                                     </div>
                                 )}
+
+                                {poemState.pw.name && (
+                                    <div className={styles.detailItem}>
+                                        <h3>POETIC WORD</h3>
+                                        <p>{poemState.pw.kanji_hiragana} - {poemState.pw.name}</p>
+                                    </div>
+                                )}
+                                
+                                {(poemState.placeOfComp || poemState.placeOfReceipt) && (
+                                    <div className={styles.detailItem}>
+                                        <h3>PLACE OF COMPOSITION / RECEIPT</h3>
+                                        {poemState.placeOfComp === poemState.placeOfReceipt 
+                                            ? <p>{poemState.placeOfComp}</p>
+                                            : <p>{poemState.placeOfComp} / {poemState.placeOfReceipt}</p>
+                                        }
+                                    </div>
+                                )}
                                 
                                 {poemState.rel.length > 0 && (
                                     <div className={styles.detailItem}>
@@ -505,7 +538,8 @@ const PoemDisplay = ({ poemData }) => {
                                             {poemState.rel.map((rel, idx) => (
                                                 <a 
                                                     key={idx}
-                                                    href={`/poems/${rel[0].substring(0, 2)}/${rel[0].substring(4, 6)}`}
+                                                    // move leading zero
+                                                    href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
                                                     className={styles.relatedPoemLink}
                                                 >
                                                     {rel[0]}
@@ -515,10 +549,10 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 )}
                                 
-                                <div className={styles.furtherReadingSection}>
+                                {/* <div className={styles.furtherReadingSection}>
                                     <h3>FURTHER READING</h3>
-                                    {/* no conetent now */}
-                                </div>
+                                    no conetent now
+                                </div> */}
                                 
                                 <div className={styles.contributorsSection}>
                                     <h3>CONTRIBUTORS</h3>

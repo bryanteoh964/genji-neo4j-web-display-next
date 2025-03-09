@@ -19,7 +19,10 @@ async function getData (chapter, number){
 		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
 		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:PROXY_POET_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
 		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
-		genjiAge: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:AT_GENJI_AGE_OF]->(age:Genji_Age) WHERE g.pnum ends with "' + number + '" RETURN age.age as genji_age'
+		resGenjiAge: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:AT_GENJI_AGE_OF]->(age:Genji_Age) WHERE g.pnum ends with "' + number + '" RETURN age.age as genji_age',
+		resRepCharacter: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[tag_edge:TAGGED_AS]->(t:Tag {Type: "Character Name Poem"}) where g.pnum ends with "' + number + '" return tag_edge.character_name as repCharacter',
+		resPlaceOfComp: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:PLACE_OF_COMPOSITION]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfComp',
+		resPlaceOfReceipt: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:PLACE_OF_RECEIPT]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfReceipt'
 	};
 
 	const result = {};
@@ -59,7 +62,7 @@ async function getData (chapter, number){
 		result['resTag'].records.map(e => toNativeTypes(e.get('type'))).forEach(e => tags.add([Object.values(e).join('')]))
 		tags = Array.from(tags).flat()
 		tags = tags.map(e => [e, true])
-		
+
 		//types
 		let types = result['resType'].records.map(e => e.get('type'))
 
@@ -101,7 +104,14 @@ async function getData (chapter, number){
 		let messenger = result['resMessenger'].records[0]?.get('name') || null;
 
 		// genji age
-		let genji_age = result['genjiAge'].records[0]?.get('genji_age') || null;
+		let genji_age = result['resGenjiAge'].records[0]?.get('genji_age') || null;
+
+		// character poem
+		let repCharacter = result['resRepCharacter'].records[0]?.get('repCharacter') || null;
+
+		// place
+		let placeOfComp = result['resPlaceOfComp'].records[0]?.get('placeOfComp') || null;
+		let placeOfReceipt = result['resPlaceOfReceipt'].records[0]?.get('placeOfReceipt') || null;
 
 		const data = [
 						exchange, 
@@ -122,13 +132,17 @@ async function getData (chapter, number){
 						poetic_word,
 						proxy,
 						messenger,
-						genji_age
+						genji_age,
+						repCharacter,
+						placeOfComp,
+						placeOfReceipt
 					];
 
 		return (data);
 
 	} catch(error) {
-		result.status(500).json({ error: 'Failed to execute queries' });
+		console.error('Failed to execute queries:', error);
+		throw new Error('Failed to execute queries');
 	} finally{
 		await session.close();
 	}
