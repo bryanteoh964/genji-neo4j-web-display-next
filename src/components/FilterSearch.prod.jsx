@@ -3,6 +3,10 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import styles from '../styles/pages/filterSearch.module.css';
 import { BackTop, Checkbox} from 'antd';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
 const removeLeadingZero = (num) => {
@@ -10,9 +14,20 @@ const removeLeadingZero = (num) => {
 };
 
 const getChapterName = (String) => {
-  const chapterNames = {'01':'Kiritsubo 桐壺','02':'Hahakigi 帚木','03':'Utsusemi 空蝉','04':'Yūgao 夕顔','05':'Wakamurasaki 若紫','06':'Suetsumuhana 末摘花','07':'Momiji no Ga 紅葉賀','08':'Hana no En 花宴','09':'Aoi 葵','10':'Sakaki 榊','11':'Hana Chiru Sato 花散里','12':'Suma 須磨','13':'Akashi 明石','14':'Miotsukushi 澪標','15':'Yomogiu 蓬生','16':'Sekiya 関屋','17':'E Awase 絵合','18':'Matsukaze 松風','19':'Usugumo 薄雲','20':'Asagao 朝顔','21':'Otome 乙女','22':'Tamakazura 玉鬘','23':'Hatsune 初音','24':'Kochō 胡蝶','25':'Hotaru 螢','26':'Tokonatsu 常夏','27':'Kagaribi 篝火','28':'Nowaki 野分','29':'Miyuki 行幸','30':'Fujibakama 藤袴','31':'Makibashira 真木柱','32':'Umegae 梅枝','33':'Fuji no Uraba 藤裏葉','34':'Wakana: Jō 若菜上','35':'Wakana: Ge 若菜下','36':'Kashiwagi 柏木','37':'Yokobue 横笛','38':'Suzumushi 鈴虫','39':'Yūgiri 夕霧','40':'Minori 御法','41':'Maboroshi 幻','42':'Niou Miya 匂宮','43':'Kōbai 紅梅','44':'Takekawa 竹河','45':'Hashihime 橋姫','46':'Shii ga Moto 椎本','47':'Agemaki 総角','48':'Sawarabi 早蕨','49':'Yadorigi 宿木','50':'Azumaya 東屋','51':'Ukifune 浮舟','52':'Kagerō 蜻蛉','53':'Tenarai 手習','54':'Yume no Ukihashi 夢浮橋'};
-  return chapterNames[String];
-}
+  const chapterNames = {
+    '01': 'Kiritsubo 桐壺', '02': 'Hahakigi 帚木', '03': 'Utsusemi 空蝉', '04': 'Yūgao 夕顔', '05': 'Wakamurasaki 若紫', '06': 'Suetsumuhana 末摘花', '07': 'Momiji no Ga 紅葉賀', '08': 'Hana no En 花宴', '09': 'Aoi 葵', 
+    '10': 'Sakaki 榊', '11': 'Hana Chiru Sato 花散里', '12': 'Suma 須磨', '13': 'Akashi 明石', '14': 'Miotsukushi 澪標', '15': 'Yomogiu 蓬生', '16': 'Sekiya 関屋', '17': 'E Awase 絵合', '18': 'Matsukaze 松風', 
+    '19': 'Usugumo 薄雲', '20': 'Asagao 朝顔', '21': 'Otome 乙女', '22': 'Tamakazura 玉鬘', '23': 'Hatsune 初音', '24': 'Kochō 胡蝶', '25': 'Hotaru 螢', '26': 'Tokonatsu 常夏', '27': 'Kagaribi 篝火', 
+    '28': 'Nowaki 野分', '29': 'Miyuki 行幸', '30': 'Fujibakama 藤袴', '31': 'Makibashira 真木柱', '32': 'Umegae 梅枝', '33': 'Fuji no Uraba 藤裏葉', '34': 'Wakana: Jō 若菜上', '35': 'Wakana: Ge 若菜下', 
+    '36': 'Kashiwagi 柏木', '37': 'Yokobue 横笛', '38': 'Suzumushi 鈴虫', '39': 'Yūgiri 夕霧', '40': 'Minori 御法', '41': 'Maboroshi 幻', '42': 'Niou Miya 匂宮', '43': 'Kōbai 紅梅', '44': 'Takekawa 竹河', 
+    '45': 'Hashihime 橋姫', '46': 'Shii ga Moto 椎本', '47': 'Agemaki 総角', '48': 'Sawarabi 早蕨', '49': 'Yadorigi 宿木', '50': 'Azumaya 東屋', '51': 'Ukifune 浮舟', '52': 'Kagerō 蜻蛉', '53': 'Tenarai 手習', 
+    '54': 'Yume no Ukihashi 夢浮橋'
+  };
+  // Ensure chapterKey is a string and zero-padded (e.g., '1' -> '01')
+  const formattedKey = String.toString().padStart(2, '0');
+
+  return chapterNames[formattedKey] || "Unknown Chapter"; // Return default if not found
+};
 
 const getChapterNamKanji = (String) => {
   const chapterNames = {
@@ -59,6 +74,7 @@ const PoemSearch = () => {
       options: {
         male: { checked: true },
         female: { checked: true },
+        nonhuman: { checked: true },
       },
     },
     addressee_name: {
@@ -70,6 +86,7 @@ const PoemSearch = () => {
       options: {
         male: { checked: true },
         female: { checked: true },
+        nonhuman: { checked: true },
       },
     },
     //   season: {
@@ -173,6 +190,7 @@ const PoemSearch = () => {
   }, [results]);
 
   // keyword search
+  // Modified handleSearch function to handle combined addressees
   const handleSearch = useCallback(
     debounce(async (searchQuery) => {
       setIsLoading(true);
@@ -206,6 +224,8 @@ const PoemSearch = () => {
         }
 
         const data = await response.json();
+        console.log("API Response:", data);
+
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map((result) => ({
@@ -216,7 +236,9 @@ const PoemSearch = () => {
             chapterAbr: Object.values(result.chapterAbr).join(""),
             japanese: Object.values(result.japanese).join(""),
             romaji: Object.values(result.romaji).join(""),
-            addressee_name: Object.values(result.addressee_name).join(""),
+            addressee_name: typeof result.addressee_name === "string" 
+              ? result.addressee_name 
+              : Object.values(result.addressee_name).join(""),
             addressee_gender: Object.values(result.addressee_gender).join(""),
             speaker_name: Object.values(result.speaker_name).join(""),
             speaker_gender: Object.values(result.speaker_gender).join(""),
@@ -316,6 +338,37 @@ const PoemSearch = () => {
       );
     });
   }, [filters, results]);
+
+  const chapterData = useMemo(() => {
+    const counts = filteredResults.reduce((acc, poem) => {
+      acc[poem.chapterNum] = (acc[poem.chapterNum] || 0) + 1;
+      return acc;
+    }, {});
+
+    const labels = Object.keys(counts).sort((a, b) => a - b);
+    const data = labels.map(label => counts[label]);
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Poems per Chapter',
+          data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+      ],
+    };
+  }, [filteredResults]);
+
+  const chartOptions = {
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
 
   useEffect(() => {
     handleSearch(query);
@@ -464,7 +517,7 @@ const PoemSearch = () => {
                                     className={styles.speakerGenderFilters}
                                     style={{
                                       display: "flex",
-                                      gap: "10px",
+                                      gap: "5px",
                                       marginBottom: "10px",
                                     }}
                                   >
@@ -533,7 +586,7 @@ const PoemSearch = () => {
                                     className={styles.addresseeGenderFilters}
                                     style={{
                                       display: "flex",
-                                      gap: "10px",
+                                      gap: "5px",
                                       marginBottom: "10px",
                                     }}
                                   >
@@ -665,7 +718,7 @@ const PoemSearch = () => {
           onMouseEnter={(event) => handleMouseEnter(index, event)}
           onMouseLeave={handleMouseLeave}
         >
-          <Link href={`/poems/${result.chapterNum}/${result.poemNum}`}>
+          <Link href={`/poems/${removeLeadingZero(result.chapterNum)}/${removeLeadingZero(result.poemNum)}`}>
             <div className={styles.resultContent}>
               <h3 className={styles.resultTitle}>
                 {result.chapterNum} {result.chapterAbr}{" "}
@@ -745,6 +798,9 @@ const PoemSearch = () => {
 
   return (
     <div className={styles.poemSearch}>
+      <div className={styles.chartContainer}>
+        <Bar data={chapterData} options={chartOptions} />
+      </div>
       <div className={styles.searchArea}>
         <input
           ref={searchInputRef}

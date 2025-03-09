@@ -56,18 +56,23 @@ async function generalSearch(q) {
             ` : ''}
             WITH DISTINCT p
             OPTIONAL MATCH (p)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(translator:People)
-            WITH p, 
-                collect(DISTINCT {translator_name: translator.name, text: t.translation}) AS translations
             OPTIONAL MATCH (p)<-[:ADDRESSEE_OF]-(addressee:Character)
             OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
+            WITH p, 
+                collect(DISTINCT {translator_name: COALESCE(translator.name, ""), text: t.translation}) AS translations,
+                collect(DISTINCT addressee.name) AS addressee_names,
+                collect(DISTINCT addressee.gender) AS addressee_genders,
+                speaker,
+                season,
+                pt
             RETURN DISTINCT
                 p.Japanese AS Japanese,
                 p.pnum AS pnum,
                 p.Romaji AS Romaji,
-                COALESCE(addressee.name, "") AS addressee_name,
-                COALESCE(addressee.gender, "") AS addressee_gender,
+                COALESCE(apoc.text.join(addressee_names, " & "), "") AS addressee_name,
+                COALESCE(apoc.text.join(addressee_genders, " & "), "") AS addressee_gender,
                 COALESCE(speaker.name, "") AS speaker_name,
                 COALESCE(speaker.gender, "") AS speaker_gender,
                 COALESCE(season.name, "") AS season,
