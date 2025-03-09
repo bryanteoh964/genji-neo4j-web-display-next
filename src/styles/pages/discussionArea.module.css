@@ -503,3 +503,25 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.loginPrompt {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+  background-color: #f9fafb;
+  margin: 10px 0;
+}
+
+.loginLink {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.loginLink:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}

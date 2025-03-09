@@ -4,9 +4,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
            
+    const session = await auth();
+
+    if (!session) {
+        return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
+    }
+
     // all registered or unregisterd users can add new trans
     try {
-        const { pageType, identifier, content } = await req.json();
+        const { pageType, identifier, userId, content } = await req.json();
             
         const db = await client.db('user');
 
@@ -15,6 +21,7 @@ export async function POST(req) {
                                                                  { 
                                                                     pageType: pageType, 
                                                                     identifier: identifier,
+                                                                    user: userId,
                                                                     content: content,
                                                                     createdAt: new Date(),
                                                                     updatedAt: new Date(),
@@ -27,7 +34,9 @@ export async function POST(req) {
         await db.collection('notification').insertOne(
             {
                 recipient: 'admin',
-                sender: "visitor",
+                sender: userId,
+                senderName: session.user.name || session.user.email,
+                senderImage: session.user.image,
                 type: 'newTrans',
                 relatedItem: trans.insertedId.toString(),
                 pageType,

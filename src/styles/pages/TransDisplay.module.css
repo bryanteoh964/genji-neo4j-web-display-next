@@ -174,6 +174,78 @@
   flex: 1;
 }
 
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  width: 100%;
+}
+
+.userInfoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.translationAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.translatorName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.translationDate {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+
+/* Updated translation item layout */
+.translationItem {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.translationContent {
+  flex: 1;
+}
+
 .translationContent p {
   margin: 0 0 0.5rem 0;
   font-size: 0.875rem;
@@ -182,6 +254,7 @@
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  text-align: left;
 }
 
 .translationMeta {
@@ -189,11 +262,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8125rem;
-  color: #606060;
-}
-
-.translationDate {
-  color: #606060;
+  margin-top: 0.5rem;
 }
 
 .hiddenBadge {
@@ -206,9 +275,9 @@
 
 .adminActions {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
   gap: 0.5rem;
-  margin-left: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .toggleHideButton, .deleteButton {

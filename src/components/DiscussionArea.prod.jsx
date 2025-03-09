@@ -362,7 +362,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [session]);
 
 
   useEffect(() => {
@@ -824,8 +824,8 @@ const DiscussionArea = ({ pageType, identifier }) => {
             </div>
           </div>
         ) : (
-          <div className="w-full p-4 text-center">
-            <a href="/api/auth/signin" className="text-blue-500 hover:underline">
+          <div className={styles.loginPrompt}>
+            <a href="/api/auth/signin" className={styles.loginLink}>
               Login to comment
             </a>
           </div>
