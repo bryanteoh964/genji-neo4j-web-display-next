@@ -339,6 +339,37 @@ const PoemSearch = () => {
     });
   }, [filters, results]);
 
+  const chapterData = useMemo(() => {
+    const counts = filteredResults.reduce((acc, poem) => {
+      acc[poem.chapterNum] = (acc[poem.chapterNum] || 0) + 1;
+      return acc;
+    }, {});
+
+    const labels = Object.keys(counts).sort((a, b) => a - b);
+    const data = labels.map(label => counts[label]);
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Poems per Chapter',
+          data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+      ],
+    };
+  }, [filteredResults]);
+
+  const chartOptions = {
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+
   useEffect(() => {
     handleSearch(query);
   }, [query, handleSearch]);
@@ -767,6 +798,9 @@ const PoemSearch = () => {
 
   return (
     <div className={styles.poemSearch}>
+      <div className={styles.chartContainer}>
+        <Bar data={chapterData} options={chartOptions} />
+      </div>
       <div className={styles.searchArea}>
         <input
           ref={searchInputRef}
