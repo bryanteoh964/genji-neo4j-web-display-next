@@ -474,6 +474,7 @@
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -507,6 +508,8 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .notes {
