@@ -60,6 +60,7 @@ async function generalSearch(q) {
             OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
+            OPTIONAL MATCH (p)-[:AT_GENJI_AGE_OF]->(age:Genji_Age)
             WITH p, 
                 collect(DISTINCT {translator_name: COALESCE(translator.name, ""), text: t.translation}) AS translations,
                 collect(DISTINCT addressee.name) AS addressee_names,
