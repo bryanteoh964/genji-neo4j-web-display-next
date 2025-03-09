@@ -60,7 +60,6 @@ async function generalSearch(q) {
             OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
-            OPTIONAL MATCH (p)-[:AT_GENJI_AGE_OF]->(age:Genji_Age)
             WITH p, 
                 collect(DISTINCT {translator_name: COALESCE(translator.name, ""), text: t.translation}) AS translations,
                 collect(DISTINCT addressee.name) AS addressee_names,
@@ -78,7 +77,6 @@ async function generalSearch(q) {
                 COALESCE(speaker.gender, "") AS speaker_gender,
                 COALESCE(season.name, "") AS season,
                 COALESCE(pt.name, "") AS poetic_tech,
-                COALESCE(age.age, "") AS genji_age,
                 COALESCE([x IN translations WHERE x.translator_name = "Waley"][0].text, "") AS Waley_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Seidensticker"][0].text, "") AS Seidensticker_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
@@ -105,7 +103,6 @@ async function generalSearch(q) {
                 speaker_gender: toNativeTypes(record.get('speaker_gender')),
                 season: toNativeTypes(record.get('season')),
                 peotic_tech: toNativeTypes(record.get('poetic_tech')),
-                genji_age: toNativeTypes(record.get('genji_age')),
                 waley_translation: toNativeTypes(record.get('Waley_translation')),
                 seidensticker_translation: toNativeTypes(record.get('Seidensticker_translation')),
                 tyler_translation: toNativeTypes(record.get('Tyler_translation')),
