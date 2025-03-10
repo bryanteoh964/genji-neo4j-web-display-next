@@ -96,14 +96,12 @@ const PoemDisplay = ({ poemData }) => {
                 const tags = responseData[4];
                 const pls = responseData[6];
                 
-                // special case
-                let addressee;
-                if (chapter === "13" && numStr === "02") {
-                    addressee = "Genji";
-                } else {
-                    addressee = exchange.map(e => e.end.properties.name);
-                }
-                
+                // form speaker set
+                let speaker = [...new Set(exchange.map(e => e.start.properties.name))];
+
+                // form addressee set
+                let addressee = [...new Set(exchange.map(e => e.end.properties.name))];
+
                 // translation data
                 let translations = {
                     Waley: 'N/A',
@@ -149,7 +147,7 @@ const PoemDisplay = ({ poemData }) => {
                 
 
                 const newPoemState = {
-                    speaker: [exchange[0]?.start?.properties?.name],
+                    speaker: speaker,
                     addressee: addressee,
                     JPRM: [
                         exchange[0]?.segments[0]?.end?.properties?.Japanese,
@@ -211,11 +209,18 @@ const PoemDisplay = ({ poemData }) => {
                 
                 <div className={styles.speakerSection}>
                     <h3>SPEAKER</h3>
-                    {poemState.speaker.map((speaker, index) => (
-                        <a key={index} href={`/characters/${encodeURIComponent(speaker)}`} className={styles.characterLink}>
-                            {speaker || "N/A"}
+                    {Array.isArray(poemState.speaker) ? (
+                        poemState.speaker.map((speaker, index) => (
+                            <a key={index} href={`/characters/${encodeURIComponent(speaker)}`} className={styles.characterLink}>
+                                {speaker || "N/A"}
+                            </a>
+                        ))
+                    ) : (
+                        <a href={`/characters/${encodeURIComponent(poemState.speaker)}`} className={styles.characterLink}>
+                            {poemState.speaker || "N/A"}
                         </a>
-                    ))}
+                    )}
+
                     {poemState.proxy && (
                         <div className={styles.proxyInfo}>
                             <span>PROXY POET</span>
