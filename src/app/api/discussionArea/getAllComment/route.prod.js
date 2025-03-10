@@ -7,6 +7,9 @@ import { ObjectId } from 'mongodb';
 export async function GET(req) {
     const session = await auth();
 
+    let page = 1;
+    let limit = 5;
+
     if (!session) {
         return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
     }
@@ -16,6 +19,24 @@ export async function GET(req) {
         const pageType = searchParams.get('pageType');
         const identifier = searchParams.get('identifier');
         const userId = searchParams.get('userId');
+        const pageParam = searchParams.get('page');
+        const limitParam = searchParams.get('limit');
+
+        if (pageParam) {
+            const parsedPage = parseInt(pageParam);
+            if (!isNaN(parsedPage) && parsedPage > 0) {
+              page = parsedPage;
+            }
+        }
+          
+          if (limitParam) {
+            const parsedLimit = parseInt(limitParam);
+            if (!isNaN(parsedLimit) && parsedLimit > 0) {
+              limit = parsedLimit;
+            }
+        }
+
+        const skip = (page - 1) * limit;
 
         const db = await client.db('user');
 
@@ -44,6 +65,8 @@ export async function GET(req) {
                     }
                 }
             ])
+            .skip(skip)
+            .limit(limit)
             .toArray();
             
         if (!comments || comments.length === 0) {
@@ -106,7 +129,9 @@ export async function GET(req) {
             comment.replies = replyMap.get(comment._id.toString()) || [];
         });
 
-        return NextResponse.json({ comments }, { status: 200 });
+        const totalComments = await db.collection('discussion').countDocuments({ pageType, identifier });
+
+        return NextResponse.json({ comments, totalComments, currentPage: page, totalPages: Math.ceil(totalComments / limit) || 1 }, { status: 200 });
 
     } catch (error) {
         console.error('Error getting comments:', error);
