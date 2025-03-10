@@ -3,7 +3,6 @@ import client from "../../../../lib/db.prod";
 import { NextResponse } from "next/server";
 import { ObjectId } from 'mongodb';
 
-// only admin can hide comments from users
 export async function POST(req) {
     const session = await auth();
 
