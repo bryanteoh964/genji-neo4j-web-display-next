@@ -13,7 +13,7 @@ const Home = () => {
           <h1 className="mainTitle">
             Discover the 795 exquisite<br />
             poems that form the emotional<br />
-            heart of the world's first novel,<br />
+            heart of the world&apos;s first novel,<br />
             the 11th-century masterpiece<br />
             <span className="italicText">The Tale of Genji</span>.
           </h1>

@@ -41,7 +41,7 @@ const Nav =()=> {
                 {/* Navigation Links */}
                 <nav className={styles.nav_links}>
                     <Link href="/poems" alt="Genji Poem in multiple translations">POEMS</Link>
-                    <Link href="/chapters" alt="chapters">CHAPTERS</Link>
+                    {/* <Link href="/chapters" alt="chapters">CHAPTERS</Link> */}
                     
                     {/* Characters Dropdown */}
                     <div className={styles.dropdown_wrapper}>
