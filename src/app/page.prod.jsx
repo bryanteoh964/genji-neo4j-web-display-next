@@ -1,50 +1,118 @@
-import "../styles/globals.css";
+'use client'
+import React from 'react';
 
-const page = () => {
+const Home = () => {
   return (
-    <section className="section_frame">
-      <div className="section_container">
-	 	<h1 className="main-title">THE TALE OF GENJI POETRY DATABASE</h1>
+    <div className="homepageContainer">
+      {/* background picture */}
+      <section className="heroImageSection">
+        <img src="/images/genji_background.jpg" alt="Genji background" className="fullBackgroundImage" />
+        
+        {/* main title */}
+        <div className="titleOverlay">
+          <h1 className="mainTitle">
+            Discover the 795 exquisite<br />
+            poems that form the emotional<br />
+            heart of the world&apos;s first novel,<br />
+            the 11th-century masterpiece<br />
+            <span className="italicText">The Tale of Genji</span>.
+          </h1>
+        </div>
+        
+        {/* arrow down */}
+        <div className="scrollDownIndicator">
+          <div className="arrow"></div>
+        </div>
+      </section>
 
-		<p>
-			The Tale of Genji Poetry Database is an ongoing project created by Professor J. Keith Vincent 
-			and his students in LJ250 &quot;Masterpieces of Japanese Literature&quot; at Boston University. 
-			The database contains all 795 poems in Murasaki Shikibu&apos;s tenth-century masterpiece, <i>The Tale of Genji</i>. 
-			The poems ares listed in the original Japanese, in transliterated Roman letters (romaji), 
-			and in five different English translations by Arthur Waley, Edward Seidensticker, Royall Tyler, Dennis Washburn, and Edwin Cranston.
-        </p>
+      <section className="descriptionSection">
+        <div className="descriptionContent">
+          <p>
+            In the <span className="italicText">The Tale of Genji</span>, the characters write<br />
+            poetry to communicate with each other and<br />
+            to commune with themselves and the non-<br />
+            human world. These poems being <span className="italicText">poems</span>,<br />
+            they also do much more than relay<br />
+            unambiguous messages. If the characters<br />
+            converse through poems, the poems also<br />
+            speak to each other beyond any given<br />
+            exchange. They open out into an additional<br />
+            dimension, a poetic universe shared by<br />
+            readers that arches across and through the<br />
+            narrative fabric of the <span className="italicText">Tale</span>. In this way, these<br />
+            795 poems constitute the emotional and<br />
+            symbolic circulatory system of the <span className="italicText">Genji</span>, the<br />
+            jewels on the thread out of which Murasaki<br />
+            Shikibu wove her text.
+          </p>
+        </div>
 
-        <p>
-			This website follows in a long tradition in Japan of reading the poems in the <i>The Tale of Genji</i> independently of their narrative context. 
-			Use it to read the poems on their own, or follow along as you read the <i>Tale</i>. Compare the translations and see how vastly and wonderfully different they can be. 
-        </p>
+        {/*stat part */}
+		<div className="statsGrid">
 
-        <ul>
-			<li>Use the “Poems” tab to navigate to individual pages for each poem in the Tale where you can find all five translations and a range of metadata and commentary.</li>
-			<li>The “Characters” tab shows a chart of relations among characters in the Tale. Pin specific characters in the search bar at the top to see just their relations, or hit &quot;read info&quot; to go to a page with information about that character. </li>
-			<li>Use the “Search” tab to get a list of all the poems in a given chapter, or to search by speaker and addressee. </li>
-		</ul>
+			{/* 795 POEMS */}
+			<div className="card-poems">
+				<h3>795</h3>
+				<div className="statLabel">POEMS</div>
+			</div>
 
-		<p>And enjoy! We add new functions regularly, so check back often.</p>
-		
-		<br />
+			{/* 6 WIVES & 9 LOVERS */}
+			<div className="card-wives-lovers">
+				 <div>
+					<h3>6</h3>
+					<div className="statLabel">WIVES</div>
+				</div>
+				<div>
+					<h3>9</h3>
+					<div className="statLabel">LOVERS</div>
+				</div>
+			</div>
 
-		<h1 className="main-title">A NOTE ON POETRY IN THE TALE OF GENJI</h1>
-		
-		<p>In the <i>The Tale of Genji</i>, the characters write poetry to communicate with each other and to commune with themselves and the non-human world. 
-		   These poems being <i>poems</i>, they also do much more than relay unambiguous messages. If the characters converse through poems, the poems also speak to each other beyond any given exchange. 
-		   They open out into an additional dimension, a poetic universe shared by readers that arches across and through the narrative fabric of the <i>Tale</i>. 
-		   In this way, these 795 poems constitute the emotional and symbolic circulatory system of the <i>Genji</i>, the jewels on the thread out of which Murasaki Shikibu wove her text.
-		</p>
+			{/* 54 CHAPTERS */}
+			<div className="card-chapters">
+				<h3>54</h3>
+				<div className="statLabel">CHAPTERS</div>
+			</div>
 
-		<p>
-		Studding her prose with poetry, Murasaki magnified the expressive power of her writing. In the process, she raised the social status of narrative fiction in Japanese, a genre that until her time was derided as the mere scribbling of women. 
-		She was so successful in doing so that her novel became the central text of the Japanese canon and a model for the writing of poetry, the most prestigious genre of all. 
-		As the great courtier-poet Fujiwara Shunzei would exclaim scarcely two centuries after her <i>Tale</i> was completed, &quot;Any poet who tries to write poetry without knowing <i>the Tale of Genji</i> should be ashamed of themselves!&quot; (源氏見ざる歌詠みは遺恨なり)
-		</p>
-      </div>
-    </section>
+			{/* empty card 1 */}
+			<div className="card-empty-1"></div>
+
+			{/* 220,000+ SENTENCES */}
+			<div className="card-sentences">
+				<h3>220,000+</h3>
+				<div className="statLabel">SENTENCES IN ORIGINAL JAPANESE</div>
+			</div>
+
+			{/* OVER 1017 YEARS OLD */}
+			<div className="card-years">
+				<div className="statLabel-1">OVER
+					<h3>1017</h3>
+				</div>
+				<div className="statLabel-2">YEARS OLD</div>
+			</div>
+
+			{/* 5 ENGLISH TRANSLATIONS */}
+			<div className="card-translations">
+				<div className="statLabel">
+					<span>ENGLISH</span>
+					<span>TRANSLATIONS</span>
+				</div>
+				<h3>5</h3>
+			</div>
+
+			{/* empty card 2 */}
+			<div className="card-empty-2"></div>
+
+			{/* 430 PLUS CHARACTERS */}
+			<div className="card-characters">
+				<h3>430</h3>
+				<div className="statLabel-1">PLUS</div>
+				<div className="statLabel-2">CHARACTERS</div>
+			</div>
+		</div>
+      </section>
+    </div>
   );
 };
 
-export default page;
+export default Home;

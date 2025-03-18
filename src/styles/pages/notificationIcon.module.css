@@ -10,7 +10,7 @@
   cursor: pointer;
   position: relative;
   padding: 8px;
-  color: #555;
+  color: #ffffff;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@
 }
 
 .notificationButton:hover {
-  background-color: rgba(228, 183, 183, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
 
@@ -27,7 +27,7 @@
   position: absolute;
   top: -2px;
   right: -2px;
-  background-color: #ff4d4f;
+  background-color: #e07a5f;
   color: white;
   font-size: 0.7rem;
   min-width: 18px;
@@ -51,15 +51,16 @@
   right: 0;
   width: 360px;
   max-height: 520px;
-  background-color: white;
+  background-color: rgba(80, 80, 80, 0.95);
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
   z-index: 1001;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   animation: slideDown 0.3s ease;
+  color: white;
 }
 
 .reviewInfoHeader {
@@ -72,24 +73,24 @@
   font-size: 0.7rem;
   padding: 2px 6px;
   border-radius: 4px;
-  background-color: #f3f4f6;
-  color: #4b5563;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   white-space: nowrap;
 }
 
 .contentTypeLabel.comment {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: rgba(129, 178, 154, 0.3);
+  color: #ffffff;
 }
 
 .contentTypeLabel.reply {
-  background-color: #dcfce7;
-  color: #166534;
+  background-color: rgba(201, 120, 82, 0.3);
+  color: #ffffff;
 }
 
 .contentTypeLabel.translation {
-  background-color: #fef3c7;
-  color: #92400e;
+  background-color: rgba(203, 169, 93, 0.3);
+  color: #ffffff;
 }
 
 @keyframes slideDown {
@@ -104,9 +105,9 @@
 }
 
 .errorNotification {
-  background-color: #fff2f0;
-  border: 1px solid #ffccc7;
-  color: #ff4d4f;
+  background-color: rgba(255, 77, 79, 0.2);
+  border: 1px solid rgba(255, 77, 79, 0.3);
+  color: white;
   padding: 10px 14px;
   display: flex;
   align-items: center;
@@ -114,7 +115,7 @@
   font-size: 0.85rem;
   margin: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(255, 77, 79, 0.08);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease;
 }
 
@@ -129,8 +130,8 @@
 
 .tabsContainer {
   display: flex;
-  border-bottom: 1px solid #f0f0f0;
-  background-color: #fafafa;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(60, 60, 60, 0.5);
 }
 
 .tabButton {
@@ -142,19 +143,19 @@
   font-size: 0.9rem;
   font-weight: 500;
   position: relative;
-  color: #8c8c8c;
+  color: rgba(255, 255, 255, 0.7);
   transition: all 0.2s ease;
 }
 
 .tabButton:hover {
-  color: #1890ff;
-  background-color: rgba(24, 144, 255, 0.05);
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .activeTab {
-  color: #1890ff;
+  color: #ffffff;
   font-weight: 600;
-  background-color: white;
+  background-color: rgba(60, 60, 60, 0.7);
 }
 
 .activeTab::after {
@@ -165,7 +166,7 @@
   transform: translateX(-50%);
   width: 50%;
   height: 2px;
-  background-color: #1890ff;
+  background-color: #e07a5f;
   border-radius: 2px;
   transition: width 0.2s ease;
 }
@@ -178,7 +179,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #ff4d4f;
+  background-color: #e07a5f;
   color: white;
   font-size: 0.7rem;
   min-width: 16px;
@@ -186,7 +187,7 @@
   border-radius: 8px;
   padding: 0 5px;
   margin-left: 6px;
-  box-shadow: 0 1px 2px rgba(255, 77, 79, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .notificationHeader {
@@ -194,17 +195,21 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
+}
+
+.notificationHeader h3 {
+  color:white
 }
 
 .markAllRead {
   background: none;
   border: none;
-  color: #4a90e2;
+  color: #81b29a;
   font-size: 0.75rem;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
@@ -213,7 +218,7 @@
 }
 
 .markAllRead:hover {
-  background-color: rgba(74, 144, 226, 0.1);
+  background-color: rgba(129, 178, 154, 0.2);
   text-decoration: underline;
 }
 
@@ -221,7 +226,7 @@
   overflow-y: auto;
   max-height: 420px;
   scrollbar-width: thin;
-  scrollbar-color: #d9d9d9 #f5f5f5;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(80, 80, 80, 0.5);
 }
 
 .notificationList::-webkit-scrollbar {
@@ -229,11 +234,11 @@
 }
 
 .notificationList::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: rgba(80, 80, 80, 0.5);
 }
 
 .notificationList::-webkit-scrollbar-thumb {
-  background-color: #d9d9d9;
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 6px;
 }
 
@@ -241,7 +246,7 @@
   display: flex;
   align-items: center;
   padding: 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   transition: background-color 0.2s ease;
 }
@@ -251,7 +256,7 @@
 }
 
 .notificationItem:hover {
-  background-color: rgba(0, 0, 0, 0.01);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .notificationLink {
@@ -259,13 +264,13 @@
   align-items: center;
   padding: 14px 18px;
   text-decoration: none;
-  color: inherit;
+  color: white;
   flex: 1;
   transition: background-color 0.2s ease;
 }
 
 .notificationLink:hover {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .notificationAvatar {
@@ -275,11 +280,11 @@
   overflow: hidden;
   margin-right: 14px;
   flex-shrink: 0;
-  background-color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .avatarImage {
@@ -289,7 +294,7 @@
 }
 
 .avatarFallback {
-  color: #555;
+  color: white;
   font-weight: 600;
   font-size: 1rem;
 }
@@ -306,12 +311,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #333;
+  color: white;
 }
 
 .notificationTime {
   font-size: 0.75rem;
-  color: #8c8c8c;
+  color: rgba(255, 255, 255, 0.6);
   display: inline-block;
 }
 
@@ -319,7 +324,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #d9d9d9;
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
   width: 24px;
   height: 24px;
@@ -340,18 +345,18 @@
 }
 
 .dismissButton:hover {
-  color: #ff4d4f;
-  background-color: rgba(255, 77, 79, 0.1);
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .reviewItem {
   padding: 18px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background-color 0.2s ease;
 }
 
 .reviewItem:hover {
-  background-color: rgba(0, 0, 0, 0.01);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .reviewItem:last-child {
@@ -364,6 +369,10 @@
   margin-bottom: 12px;
 }
 
+.reviewItemHeader h3 {
+  color:white
+}
+
 .reviewInfo {
   flex: 1;
 }
@@ -372,7 +381,7 @@
   margin: 0 0 4px;
   font-weight: 500;
   font-size: 0.95rem;
-  color: #333;
+  color: white;
 }
 
 .reviewContent {
@@ -384,18 +393,18 @@
   margin: 0 0 10px;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #444;
-  background-color: #f9f9f9;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 10px 12px;
   border-radius: 8px;
-  border-left: 3px solid #1890ff;
+  border-left: 3px solid #81b29a;
 }
 
 .locationInfo {
   display: flex;
   align-items: center;
   font-size: 0.8rem;
-  color: #8c8c8c;
+  color: rgba(255, 255, 255, 0.6);
   margin-top: 8px;
 }
 
@@ -404,7 +413,7 @@
 }
 
 .locationLink {
-  color: #1890ff;
+  color: #81b29a;
   text-decoration: none;
   margin-left: 4px;
   transition: color 0.2s ease;
@@ -412,7 +421,7 @@
 
 .locationLink:hover {
   text-decoration: underline;
-  color: #096dd9;
+  color: #a0c8b6; 
 }
 
 .reviewActions {
@@ -425,7 +434,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: #f5f5f5;
+  background-color: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 6px;
   padding: 8px 14px;
@@ -433,48 +442,46 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: white;
 }
 
 .actionButton:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .approveButton {
-  color: #52c41a;
-  border: 1px solid rgba(82, 196, 26, 0.2);
+  background-color: rgba(129, 178, 154, 0.2);
+  border: 1px solid rgba(129, 178, 154, 0.3);
 }
 
 .approveButton:hover {
-  background-color: rgba(82, 196, 26, 0.1);
-  border-color: rgba(82, 196, 26, 0.3);
+  background-color: rgba(129, 178, 154, 0.3);
 }
 
 .hideButton {
-  color: #faad14;
-  border: 1px solid rgba(250, 173, 20, 0.2);
+  background-color: rgba(203, 169, 93, 0.2); 
+  border: 1px solid rgba(203, 169, 93, 0.3);
 }
 
 .hideButton:hover {
-  background-color: rgba(250, 173, 20, 0.1);
-  border-color: rgba(250, 173, 20, 0.3);
+  background-color: rgba(203, 169, 93, 0.3);
 }
 
 .deleteButton {
-  color: #ff4d4f;
-  border: 1px solid rgba(255, 77, 79, 0.2);
+  background-color: rgba(201, 120, 82, 0.2); 
+  border: 1px solid rgba(201, 120, 82, 0.3);
 }
 
 .deleteButton:hover {
-  background-color: rgba(255, 77, 79, 0.1);
-  border-color: rgba(255, 77, 79, 0.3);
+  background-color: rgba(201, 120, 82, 0.3);
 }
 
 .disapproveButton {
-  color: #ff4d4f;
+  background-color: rgba(201, 120, 82, 0.2); 
+  border: 1px solid rgba(201, 120, 82, 0.3);
   display: flex;
   align-items: center;
-  border: 1px solid rgba(255, 77, 79, 0.2);
 }
 
 .disapproveButton svg:last-child {
@@ -482,26 +489,25 @@
 }
 
 .disapproveButton:hover {
-  background-color: rgba(255, 77, 79, 0.1);
-  border-color: rgba(255, 77, 79, 0.3);
+  background-color: rgba(201, 120, 82, 0.3);
 }
 
 .disapproveOptions {
   margin-top: 10px;
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   animation: fadeIn 0.25s ease;
 }
 
 .disapproveHeader {
   padding: 10px 14px;
   font-size: 0.85rem;
-  color: #666;
-  border-bottom: 1px solid #eee;
-  background-color: #f5f5f5;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .disapproveActions {
@@ -512,34 +518,19 @@
 }
 
 .cancelButton {
-  color: #999;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .cancelButton:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #666;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .loadingText, .emptyText {
   padding: 20px;
-  color: #8c8c8c;
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
   font-size: 0.9rem;
-}
-
-.notificationHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.notificationHeader h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
 }
 
 .headerActions {
@@ -551,7 +542,7 @@
 .refreshButton {
   background: none;
   border: none;
-  color: #666;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -562,8 +553,8 @@
 }
 
 .refreshButton:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #333;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 .refreshButton:disabled {

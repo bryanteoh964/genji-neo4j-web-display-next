@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, ChevronUp, Pin, PinOff, Unpin, AlertTriangle, RefreshCw } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
+import FormatContent from '../components/FormatText.prod'
 
 const ReplyInput = ({ onSubmit, onCancel, session, replyToUser }) => {
   const [content, setContent] = useState(replyToUser ? `@${replyToUser} ` : '');
@@ -154,7 +155,7 @@ const CommentItem = ({
               </div>
             </div>
           ) : (
-            <p className={styles.commentText}>{comment.content}</p>
+            <FormatContent content={comment.content} className={styles.commentText} />
           )}
 
           <div className={styles.actionButtons}>
