@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import Link from 'next/link';
 import styles from '../styles/Navigation.module.css'
-import SearchOptions from './SearchDropDown.prod'
 import CharactersOptions from './CharactersDropDown.prod'
 
 const Nav =()=> {
@@ -24,7 +23,8 @@ const Nav =()=> {
     return (
         <div className={styles.nav_frame}>
             <nav className={styles.nav_container}>
-                <Link href="/" alt="Home Page">About</Link>
+                <Link href="/" alt="Home Page">Genji Poem</Link>
+                <Link href="/about" alt="About Page">About</Link>
                 <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
                 <div>
                     <>
