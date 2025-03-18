@@ -5,6 +5,7 @@ import { ReactFlowProvider } from 'reactflow';
 import Link from 'next/link';
 import styles from '../styles/Navigation.module.css'
 import CharactersOptions from './CharactersDropDown.prod'
+import MoreDropDown from './MoreDropDown.prod';
 
 const Nav =()=> {
     const [graph, setGraph] = useState([])
@@ -22,34 +23,43 @@ const Nav =()=> {
 
     return (
         <div className={styles.nav_frame}>
-            <nav className={styles.nav_container}>
-                <Link href="/" alt="Home Page">Genji Poem</Link>
-                <Link href="/about" alt="About Page">About</Link>
-                <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
-                <div>
-                    <>
-                    {isLoading ? 
-                            <div style={{fontSize: "15px", fontWeight: "bold", color: "gray", marginLeft: "10px" , marginRight: "10px"}}>Loading...</div>
-                        :
+            <div className={styles.nav_container}>
+                {/* Logo and Title */}
+                <div className={styles.logo_container}>
+                    <Link href="/" className={styles.logo_link}>
+                        <div className={styles.logo}>
+                            <img 
+                                src="/images/genji_logo.png" 
+                                alt="Genji Poems Logo" 
+                                className={styles.logo_image}
+                            />
+                        </div>
+                        <h1 className={styles.site_title}>Genji Poems</h1>
+                    </Link>
+                </div>
+                
+                {/* Navigation Links */}
+                <nav className={styles.nav_links}>
+                    <Link href="/poems" alt="Genji Poem in multiple translations">POEMS</Link>
+                    <Link href="/chapters" alt="chapters">CHAPTERS</Link>
+                    
+                    {/* Characters Dropdown */}
+                    <div className={styles.dropdown_wrapper}>
+                        {isLoading ? 
+                            <div className={styles.loading_text}>Loading...</div>
+                            :
                             <ReactFlowProvider>
                                 <CharactersOptions l={graph}/>
                             </ReactFlowProvider>
-                    }
-                    </>
-                </div>
-                <Link href="/search/search-by-keyword" alt="Search page">Search</Link>
-                {/* <SearchOptions /> */}
-                {/*<Link href="/search" alt="Search character poem interactions">Search</Link> */}
-                {/* <Link href="/allusions">Allusions</Link> */}
-                {/* <Link href="/characters">Characters</Link>
-                
-                <Link href="/alt_characters">Alt Characters</Link>
-                <Link href="/allusions">Allusions</Link>
-                <Link href="/edit">Edit</Link> */}
-                <Link href="/acknowledgements" alt="Acknowledgements page">Acknowledgements</Link>
-                <Link href="/Sources" alt="Sources & Resources" className="long-text">Sources & Resources</Link>
-                <Link href="/bug" alt="Report page">Report A Bug</Link>
-            </nav>
+                        }
+                    </div>
+                    
+                    {/* More Dropdown */}
+                    <MoreDropDown />
+                    
+                    <Link href="/about" alt="About Page">ABOUT</Link>
+                </nav>
+            </div>
         </div>
     )
 }
