@@ -26,7 +26,7 @@ const CharactersDropDown = ({ l }) => {
     return (
         <div ref={dropdownRef} className={`${styles.searchDropdown} ${isOpen ? styles.open : ''}`}>
             <button onClick={handleMenuClick} className={styles.searchButton}>
-                Characters
+                CHARACTERS
             </button>
 
             {isOpen && <SearchOptions setIsOpen={setIsOpen} l={l} />}

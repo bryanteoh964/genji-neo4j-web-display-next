@@ -203,9 +203,9 @@ const PoemDisplay = ({ poemData }) => {
         <div className={styles.poemPageContainer}>
             {/* upper area info */}
             <div className={styles.headerInfoSection}>
-                <div className={styles.logoSection}>
+                {/* <div className={styles.logoSection}>
                     <div className={styles.logo}>GENJI LOGO</div>
-                </div>
+                </div> */}
                 
                 <div className={styles.speakerSection}>
                     <h3>SPEAKER</h3>

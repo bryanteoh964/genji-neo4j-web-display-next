@@ -12,12 +12,12 @@ const Header = () => {
                     <SignIn />
                 </div>
 
-                <div className={styles.container}>
+                {/* <div className={styles.container}>
                     <div className={styles.boundary}>
                         <h1>The Tale of Genji Poem Database</h1>
                         <h3>Epsilon Version</h3>
                     </div>
-                </div>
+                </div> */}
             </div>        
     )
 }
