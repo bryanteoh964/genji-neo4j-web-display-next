@@ -8,36 +8,36 @@
     border: none;
     font-size: 16px;
     font-weight: 530;
-    color: #333;
+    color: #ffffff;
     padding: 10px 15px;
     margin: 0 5px;
     transition: all 0.3s ease;
     border-radius: 4px;
     cursor: pointer;
     white-space: nowrap;
-    text-transform: capitalize;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 	sans-serif;
 }
 
 .searchButton:hover {
-    color: #1890ff;
-    background-color: rgba(24, 144, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .searchOptions {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-radius: 4px;
-    min-width: 150px;
+    background-color:rgba(128, 128, 128, 0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,2);
+    border-radius: 0;
+    min-width: 180px;
     z-index: 1001;
     display: none;
-    text-align: left;
-    padding: 5px 0px;
+    padding: 0;
+    margin-top: 5px;
 }
 
 .open .searchOptions {
@@ -55,8 +55,8 @@
 }
 
 .searchLink:hover {
-    background-color: rgba(24, 144, 255, 0.1);
-    color: #1890ff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white; 
 }
 
 @media (max-width: 1024px) {

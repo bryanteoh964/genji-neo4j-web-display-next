@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../styles/pages/searchDropDown.module.css';
 
-const SearchDropDown = () => {
+const MoreDropDown = () => {
     // State to track if the dropdown is open or closed
     const [isOpen, setIsOpen] = useState(false);
 
@@ -37,26 +37,35 @@ const SearchDropDown = () => {
             className={`${styles.searchDropdown} ${isOpen ? styles.open : ''}`}
         >
             <button onClick={handleMenuClick} className={styles.searchButton}>
-                Search
+                MORE
             </button>
 
             {/* Render the dropdown options only if the dropdown is open */}
-            {isOpen && <SearchOptions setIsOpen={setIsOpen} />}
+            {isOpen && <MoreOptions setIsOpen={setIsOpen} />}
         </div>
     );
 };
 
-const SearchOptions = ({ setIsOpen }) => {
+const MoreOptions = ({ setIsOpen }) => {
     return (
         <div className={styles.searchOptions}>
-            <Link href="/search/search-by-metadata" className={styles.searchLink} onClick={() => setIsOpen(false)}>
-                By Metadata
-            </Link>
             <Link href="/search/search-by-keyword" className={styles.searchLink} onClick={() => setIsOpen(false)}>
-                By Keyword
+                SEARCH
+            </Link>
+
+            <Link href="/acknowledgements" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+                ACKNOWLEDGEMENTS
+            </Link>
+
+            <Link href="/Sources" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+                SOURCES & RESOURCES
+            </Link>
+
+            <Link href="/bug" className={styles.searchLink} onClick={() => setIsOpen(false)}>
+                REPORT A BUG
             </Link>
         </div>
     );
 };
 
-export default SearchDropDown;
+export default MoreDropDown;
