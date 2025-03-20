@@ -1,6 +1,6 @@
 const { getSession } = require('../neo4j_driver/route.prod.js');
 const { generateTimeline} = require('../neo4j_driver/utils.prod.js');
-export const GET = async () =>{
+export const GET = async () =>{ 
 	var resGraph;
 	try {  
 		const session = await getSession();

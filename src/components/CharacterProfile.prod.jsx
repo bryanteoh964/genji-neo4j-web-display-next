@@ -80,6 +80,22 @@ export default function CharacterDetail({ name }) {
     const [sections, setSections] = useState([]);
     const mainContentRef = useRef(null);
 
+    const [timeline, setTimeline] = useState([]) 
+
+    // Mak: This Character's Timeline 
+	useEffect(() =>{
+        const _ = async() =>{
+            try {
+                const data = await fetch(`/api/single_character_timeline?name=${name}`);
+                const timelineData = await data.json();
+                setTimeline(timelineData); 
+            } catch (error) {
+                // No timeline info found for this character! 
+            }
+        }
+        _()
+    },[]); 
+
     useEffect(() => {
         if (characterData) {
             setSections([
@@ -156,13 +172,141 @@ export default function CharacterDetail({ name }) {
         }
     };
 
-    //Image credit
+    // Mak: Image credit
     var artist = ""
-    if (["Genji", "Murasaki no Ue"].includes(character.name)) {
+    if (["Genji", "Murasaki no Ue", "The Akashi Lady"].includes(character.name)) {
         artist = "Wai Lun Mak"
     } else if (["Kiritsubo Emperor", "Kiritsubo Consort"].includes(character.name)) {
         artist = "Emilija Strydom"
-    } 
+    }
+
+    //Mak: timeline
+    if (timeline.length > 0) {
+        try {
+            var ordered_info = timeline
+            ordered_info = ordered_info.sort((a,b) => {
+            function see(a) {
+                var month_days = [31,28,31,30,31,30,31,31,30,31,30,31]
+                var n_value = 0
+                if (a.day != null) {
+                    n_value += a.day
+                }
+                if (a.month != null) {
+                    for (const i = 0; i < a.month; a++) {
+                        n_value += month_days[i]
+                    }
+                }
+                if (n_value == 0) {
+                    if (a.winter) {n_value = 335}
+                    if (a.spring) {n_value = 60}
+                    if (a.summer) {n_value = 152}
+                    if (a.fall) {n_value = 244} 
+                }
+                
+                n_value += 365*(a.age_of_genji-1)
+
+                return n_value
+            }
+            var a_value = see(a)
+            var b_value = see(b)
+            
+            return a_value - b_value
+        })
+
+        document.getElementById("timeline_elements").innerHTML = "";
+        for (const oi of ordered_info) { 
+            var descrip_div = document.createElement("div")
+            descrip_div.style.display = "inline-block"
+            descrip_div.style.minWidth = "320px"
+            descrip_div.style.textAlign = "left"
+            descrip_div.style.minHeight = "270px"
+            descrip_div.style.backgroundColor = "#fff"
+            var color = "gray"
+            if (character.color) {
+                color = character.color
+            }
+            descrip_div.style.border = "solid 7px " + color
+            descrip_div.style.marginLeft = "40px"
+            descrip_div.style.marginRight = "40px"
+            descrip_div.style.marginTop = "60px"
+            descrip_div.style.marginBottom = "auto"
+            descrip_div.style.borderRadius = "40px"
+            descrip_div.style.padding = "27px"
+            descrip_div.style.boxShadow = " 5px 5px 10px rgba(0, 0, 0, 0.25),  inset -5px 5px 10px rgba(0, 0, 0, 0.25),  inset 5px -5px 10px rgba(0, 0, 0, 0.25),  inset -5px -5px 10px rgba(0, 0, 0, 0.25)"
+
+            var first_div = document.createElement("div")
+            first_div.style.display = "flex"
+            first_div.style.width = "100%"
+
+            var age_div = document.createElement("h1")
+            age_div.style.fontFamily = "Georgia, serif"
+            age_div.innerHTML = oi.age_of_genji.toString() + " 𖤓 " 
+            if (oi.month != null) {
+                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                age_div.innerHTML += months[oi.month-1] 
+                if (oi.day != null) {
+                    age_div.innerHTML += " " + oi.day.toString() 
+                }
+            }
+            first_div.appendChild(age_div)
+
+            var season_div = document.createElement("div")
+            season_div.style.display = "inline"
+            season_div.style.marginLeft = "auto"
+
+            var JP_season = document.createElement("h5")
+            JP_season.style.marginTop = "15px"
+            JP_season.style.marginBottom = "10px"
+            JP_season.style.fontSize = "50px"
+            if (oi.winter) {JP_season.innerHTML = "冬"}
+            if (oi.spring) {JP_season.innerHTML = "春"}
+            if (oi.summer) {JP_season.innerHTML = "夏"}
+            if (oi.fall) {JP_season.innerHTML = "秋"}
+            season_div.appendChild(JP_season)
+ 
+            var EN_season = document.createElement("h5")
+            if (oi.winter) {EN_season.innerHTML = "winter"}
+            if (oi.spring) {EN_season.innerHTML = "spring"}
+            if (oi.summer) {EN_season.innerHTML = "summer"}
+            if (oi.fall) {EN_season.innerHTML = "autumn"}
+            EN_season.style.marginTop = "10px"
+            EN_season.style.marginBottom = "0"
+            EN_season.style.marginLeft = "auto"
+            EN_season.style.marginRight = "auto"
+            season_div.appendChild(EN_season)
+
+            first_div.appendChild(season_div)
+
+            descrip_div.appendChild(first_div)
+
+            var chap_div = document.createElement("h3")
+            chap_div.innerHTML = "Chapter: " + oi.chapter 
+            chap_div.style.fontFamily = "Georgia, serif"
+            chap_div.style.marginTop = "0"
+            descrip_div.appendChild(chap_div)
+
+            var paragraph = document.createElement("p")
+            paragraph.style.backgroundColor = "#e6e6e6"
+            paragraph.style.border = "solid 2px black"
+            paragraph.style.fontFamily = "Monospace"
+            paragraph.style.padding = "5px"
+            paragraph.style.height = "150px"
+            paragraph.style.overflowY = "scroll"
+            paragraph.innerHTML = ""
+            paragraph.className = "paragraph"
+            paragraph.innerHTML += oi.japanese + "<br>"
+            paragraph.style.marginTop = "3px" 
+            paragraph.style.fontSize = " 18px"
+            paragraph.innerHTML += oi.english + "<br>" + "<br>"
+            descrip_div.appendChild(paragraph)
+
+            
+            document.getElementById("timeline_elements").appendChild(descrip_div) 
+        } 
+        } catch (error) {
+
+        }
+    }
 
     return (
         
@@ -253,7 +397,24 @@ export default function CharacterDetail({ name }) {
                         ) : (
                             <p>No related poems found.</p>
                         )}
-                    </div>
+                    </div> 
+
+                    {
+                        function() {
+                            if (timeline.length > 0) {
+                                return (
+                                    <div style={{width: "fit-content", height: "fit-content",marginLeft: "auto", marginRight: "auto"}}>
+                                        <div style={{marginLeft: "auto", marginRight: "auto", width: "900px", height: "500px", borderRadius: "10px", backgroundColor: "#5451a3", overflow: "hidden", padding: 0}}>
+                                            <div style={{width: "100%", overflowX:"scroll", height: "100%", overflowY: "hidden", boxShadow: "inset 5px 5px 10px rgba(0, 0, 0, 0.25),  inset -5px 5px 10px rgba(0, 0, 0, 0.25),  inset 5px -5px 10px rgba(0, 0, 0, 0.25),  inset -5px -5px 10px rgba(0, 0, 0, 0.25)"}}> 
+                                                <div id="timeline_elements" style={{zIndex: 0, paddingLeft: "50px", paddingRight: "50px", color: "#000", display: "flex"}}></div>
+                                            </div>
+                                        </div> 
+                                        <h3 style={{float:"right", color: "black"}}>(𖤓 = Genji's Age)</h3>
+                                    </div>
+                                )
+                            }
+                        }()
+                    }
                 </div>
             </div>
 
