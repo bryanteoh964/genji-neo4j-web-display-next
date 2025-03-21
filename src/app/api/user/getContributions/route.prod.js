@@ -61,7 +61,7 @@ export async function GET(req) {
             return NextResponse.json({ contributions: [] }, { status: 200 });
         }
 
-        const totalContributions = await db.collection('contribution').find({ contributors: userId }).count();
+        const totalContributions = await db.collection('contribution').countDocuments({ contributors: userId });
 
         return NextResponse.json({ contributions, totalContributions, currentPage: page, totalPages: Math.ceil(totalContributions / limit) || 1 }, { status: 200 });
 
