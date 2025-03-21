@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen } from 'lucide-react';
+import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen, Eye, EyeOff, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import styles from '../../styles/pages/userHomePage.module.css';
 
@@ -12,44 +12,50 @@ export default function UserHomePage({ userid }) {
     const [error, setError] = useState(null);
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+    const [sectionsVisible, setSectionsVisible] = useState({
+        comments: true,
+        contributions: true,
+        favorites: true
+    });
     const [profile, setProfile] = useState({
         bio: '',
         location: '',
-        website: '',
+        occupation: '',
         displayName: ''
     });
 
+    const fetchUserData = async () => {
+        try {
+            // Get basic user info
+            const response = await fetch(`/api/user/any?userid=${userid}`);
+            if(!response.ok) {
+                throw new Error('Failed to fetch user homepage info');
+            }
+            const data = await response.json();
+            setUser(data);
+            
+            // Initialize profile with existing data if available
+            setProfile({
+                bio: data.bio || '',
+                location: data.location || '',
+                occupation: data.occupation || '',
+                displayName: data.name || ''
+            });
+
+            // Check if current logged-in user is viewing their own profile
+            const currentUserResponse = await fetch('/api/user/me');
+            if (currentUserResponse.ok) {
+                const currentUser = await currentUserResponse.json();
+                setIsCurrentUser(currentUser._id === userid);
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     // Fetch user's basic information
     useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                // Get basic user info
-                const response = await fetch(`/api/user/any?userid=${userid}`);
-                if(!response.ok) {
-                    throw new Error('Failed to fetch user homepage info');
-                }
-                const data = await response.json();
-                setUser(data);
-                
-                // Initialize profile with existing data if available
-                setProfile({
-                    bio: data.bio || '',
-                    location: data.location || '',
-                    website: data.website || '',
-                    displayName: data.displayName || data.name || ''
-                });
-
-                // Check if current logged-in user is viewing their own profile
-                const currentUserResponse = await fetch('/api/user/me');
-                if (currentUserResponse.ok) {
-                    const currentUser = await currentUserResponse.json();
-                    setIsCurrentUser(currentUser._id === userid);
-                }
-            } catch (error) {
-                setError(error.message);
-            }
-        };
-
         fetchUserData();
     }, [userid]);
 
@@ -115,7 +121,7 @@ export default function UserHomePage({ userid }) {
     // Handle updating profile information
     const handleProfileUpdate = async () => {
         try {
-            const response = await fetch('/api/user/update-profile', {
+            const response = await fetch('/api/user/update_profile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,8 +129,10 @@ export default function UserHomePage({ userid }) {
                 body: JSON.stringify({
                     bio: profile.bio,
                     location: profile.location,
-                    website: profile.website,
-                    displayName: profile.displayName
+                    occupation: profile.occupation,
+                    displayName: profile.displayName,
+                    userId: userid,
+                    version: user.version || 0
                 }),
             });
 
@@ -134,17 +142,29 @@ export default function UserHomePage({ userid }) {
                     ...prevUser,
                     bio: profile.bio,
                     location: profile.location,
-                    website: profile.website,
+                    occupation: profile.occupation,
                     displayName: profile.displayName
                 }));
-                setIsEditing(false);
+                setIsEditingProfile(false);
+                alert('Profile updated successfully');
+                fetchUserData();
             } else {
                 throw new Error('Failed to update profile');
             }
         } catch (error) {
             console.error('Error updating profile:', error);
             alert('Failed to update profile. Please try again.');
+            setIsEditingProfile(false);
+            fetchUserData();
         }
+    };
+
+    // Toggle section visibility
+    const toggleSectionVisibility = (section) => {
+        setSectionsVisible(prev => ({
+            ...prev,
+            [section]: !prev[section]
+        }));
     };
 
     // Format date for display
@@ -164,6 +184,18 @@ export default function UserHomePage({ userid }) {
 
     return (
         <div className={styles.userHomePage}>
+            {/* Top edit profile button (only visible for current user) */}
+            {isCurrentUser && (
+                <div className={styles.topEditButtonContainer}>
+                    <button 
+                        onClick={() => setIsEditing(!isEditing)}
+                        className={styles.topEditButton}
+                    >
+                        {isEditing ? 'View your profile' : 'Edit your profile'}
+                    </button>
+                </div>
+            )}
+            
             <div className={styles.profileHeader}>
                 <div className={styles.avatarSection}>
                     {user.image ? (
@@ -179,7 +211,7 @@ export default function UserHomePage({ userid }) {
                     )}
                 </div>
                 <div className={styles.userInfo}>
-                    {isEditing ? (
+                    {isEditingProfile ? (
                         <div className={styles.editNameSection}>
                             <input
                                 type="text"
@@ -208,7 +240,7 @@ export default function UserHomePage({ userid }) {
                         )}
                     </div>
                     
-                    {isEditing ? (
+                    {isEditingProfile ? (
                         <div className={styles.editProfile}>
                             <div className={styles.formGroup}>
                                 <label>Bio</label>
@@ -231,13 +263,13 @@ export default function UserHomePage({ userid }) {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Website</label>
+                                    <label>Occupation</label>
                                     <input
                                         type="text"
-                                        value={profile.website}
-                                        onChange={(e) => setProfile({...profile, website: e.target.value})}
-                                        placeholder="Website"
-                                        className={styles.websiteInput}
+                                        value={profile.occupation}
+                                        onChange={(e) => setProfile({...profile, occupation: e.target.value})}
+                                        placeholder="Occupation at Organization"
+                                        className={styles.occupationInput}
                                     />
                                 </div>
                             </div>
@@ -251,12 +283,12 @@ export default function UserHomePage({ userid }) {
                                 </button>
                                 <button 
                                     onClick={() => {
-                                        setIsEditing(false);
+                                        setIsEditingProfile(false);
                                         // Reset form to original values
                                         setProfile({
                                             bio: user.bio || '',
                                             location: user.location || '',
-                                            website: user.website || '',
+                                            occupation: user.occupation || '',
                                             displayName: user.displayName || user.name || ''
                                         });
                                     }}
@@ -278,26 +310,20 @@ export default function UserHomePage({ userid }) {
                                         {user.location}
                                     </span>
                                 )}
-                                {user.website && (
-                                    <a 
-                                        href={user.website.startsWith('http') ? user.website : `https://${user.website}`} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className={styles.userWebsite}
-                                    >
-                                        <LinkIcon size={16} />
-                                        {user.website}
-                                    </a>
+                                {user.occupation && (
+                                    <span className={styles.userOccupation}>
+                                        <BookOpen size={16} />
+                                        {user.occupation}
+                                    </span>
                                 )}
                             </div>
                             
-                            {isCurrentUser && (
+                            {isCurrentUser && isEditing && (
                                 <button 
-                                    onClick={() => setIsEditing(true)}
+                                    onClick={() => (setIsEditing(true), setIsEditingProfile(true))}
                                     className={styles.editButton}
                                 >
-                                    <Edit size={16} />
-                                    Edit Profile
+                                    <Pencil size={16} />
                                 </button>
                             )}
                         </div>
@@ -325,104 +351,155 @@ export default function UserHomePage({ userid }) {
                 </div>
 
                 <div className={styles.tabsContainer}>
-                    <div className={styles.tabContent}>
-                        <h2 className={styles.sectionTitle}>Recent Comments</h2>
-                        {userComments.length === 0 ? (
-                            <p className={styles.emptyState}>No comments yet</p>
-                        ) : (
-                            <div className={styles.commentsList}>
-                                {userComments.slice(0, 5).map(comment => (
-                                    <div key={comment._id} className={styles.commentCard}>
-                                        <div className={styles.commentContent}>
-                                            <p className={styles.commentText}>{comment.content}</p>
-                                            <div className={styles.commentMeta}>
-                                                <span className={styles.commentDate}>
-                                                    {formatDate(comment.createdAt)}
-                                                </span>
-                                                <Link 
-                                                    href={`/poems/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
-                                                    className={styles.commentLink}
-                                                >
-                                                    View Post
-                                                </Link>
+                    {/* Comments Section */}
+                    <div className={styles.sectionWithHeader}>
+                        <div className={styles.sectionHeader}>
+                            <h2 className={styles.sectionTitle}>Recent Comments</h2>
+                            {isCurrentUser && isEditing && (
+                                <button 
+                                    onClick={() => toggleSectionVisibility('comments')}
+                                    className={styles.visibilityToggle}
+                                    title={sectionsVisible.comments ? "Hide section" : "Show section"}
+                                >
+                                    {sectionsVisible.comments ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            )}
+                        </div>
+                        
+                        {sectionsVisible.comments && (
+                            <div className={styles.tabContent}>
+                                {userComments.length === 0 ? (
+                                    <p className={styles.emptyState}>No comments yet</p>
+                                ) : (
+                                    <div className={styles.commentsList}>
+                                        {userComments.slice(0, 5).map(comment => (
+                                            <div key={comment._id} className={styles.commentCard}>
+                                                <div className={styles.commentContent}>
+                                                    <p className={styles.commentText}>{comment.content}</p>
+                                                    <div className={styles.commentMeta}>
+                                                        <span className={styles.commentDate}>
+                                                            {formatDate(comment.createdAt)}
+                                                        </span>
+                                                        <Link 
+                                                            href={`/poems/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
+                                                            className={styles.commentLink}
+                                                        >
+                                                            View Post
+                                                        </Link>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                ))}
-                                {userComments.length > 5 && (
-                                    <Link href={`/user/${userid}/comments`} className={styles.viewAllLink}>
-                                        View all comments
-                                    </Link>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    <div className={styles.tabContent}>
-                        <h2 className={styles.sectionTitle}>Contributions</h2>
-                        {userContributions.length === 0 ? (
-                            <p className={styles.emptyState}>No contributions yet</p>
-                        ) : (
-                            <div className={styles.contributionsList}>
-                                {userContributions.slice(0, 5).map(contribution => (
-                                    <div key={contribution._id} className={styles.contributionCard}>
-                                        <div className={styles.contributionContent}>
-                                            <h3 className={styles.contributionTitle}>
-                                                {contribution.pageType.charAt(0).toUpperCase() + contribution.pageType.slice(1)}
-                                            </h3>
-                                            <Link 
-                                                href={`/${contribution.pageType}/${contribution.identifier}`}
-                                                className={styles.contributionLink}
-                                            >
-                                                {contribution.identifier}
+                                        ))}
+                                        {userComments.length > 5 && (
+                                            <Link href={`/user/${userid}/comments`} className={styles.viewAllLink}>
+                                                View all comments
                                             </Link>
-                                            <span className={styles.contributionDate}>
-                                                {formatDate(contribution.date)}
-                                            </span>
-                                        </div>
+                                        )}
                                     </div>
-                                ))}
-                                {userContributions.length > 5 && (
-                                    <Link href={`/user/${userid}/contributions`} className={styles.viewAllLink}>
-                                        View all contributions
-                                    </Link>
                                 )}
                             </div>
                         )}
                     </div>
 
-                    <div className={styles.tabContent}>
-                        <h2 className={styles.sectionTitle}>Favorite Poems</h2>
-                        {userFavorites.length === 0 ? (
-                            <p className={styles.emptyState}>No favorite poems yet</p>
-                        ) : (
-                            <div className={styles.favoritesList}>
-                                {userFavorites.slice(0, 5).map(favorite => (
-                                    <Link 
-                                        key={favorite.poemId}
-                                        href={`/poems/${favorite.chapterNum}/${favorite.poemNum}`}
-                                        className={styles.favoriteCard}
-                                    >
-                                        <div className={styles.favoriteContent}>
-                                            <h3 className={styles.favoriteTitle}>
-                                                Chapter {favorite.chapterNum}, Poem {favorite.poemNum}
-                                            </h3>
-                                            <div className={styles.japaneseText}>
-                                                {favorite.japanese && 
-                                                    favorite.japanese.split('\n').map((line, index) => (
-                                                        <p key={`line-${index}`} className={styles.japaneseLine}>
-                                                            {line}
-                                                        </p>
-                                                    ))
-                                                }
+                    {/* Contributions Section */}
+                    <div className={styles.sectionWithHeader}>
+                        <div className={styles.sectionHeader}>
+                            <h2 className={styles.sectionTitle}>Contributions</h2>
+                            {isCurrentUser && isEditing && (
+                                <button 
+                                    onClick={() => toggleSectionVisibility('contributions')}
+                                    className={styles.visibilityToggle}
+                                    title={sectionsVisible.contributions ? "Hide section" : "Show section"}
+                                >
+                                    {sectionsVisible.contributions ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            )}
+                        </div>
+                        
+                        {sectionsVisible.contributions && (
+                            <div className={styles.tabContent}>
+                                {userContributions.length === 0 ? (
+                                    <p className={styles.emptyState}>No contributions yet</p>
+                                ) : (
+                                    <div className={styles.contributionsList}>
+                                        {userContributions.slice(0, 5).map(contribution => (
+                                            <div key={contribution._id} className={styles.contributionCard}>
+                                                <div className={styles.contributionContent}>
+                                                    <h3 className={styles.contributionTitle}>
+                                                        {contribution.pageType.charAt(0).toUpperCase() + contribution.pageType.slice(1)}
+                                                    </h3>
+                                                    <Link 
+                                                        href={`/${contribution.pageType}/${contribution.identifier}`}
+                                                        className={styles.contributionLink}
+                                                    >
+                                                        {contribution.identifier}
+                                                    </Link>
+                                                    <span className={styles.contributionDate}>
+                                                        {formatDate(contribution.date)}
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                                {userFavorites.length > 5 && (
-                                    <Link href={`/user/${userid}/favorites`} className={styles.viewAllLink}>
-                                        View all favorites
-                                    </Link>
+                                        ))}
+                                        {userContributions.length > 5 && (
+                                            <Link href={`/user/${userid}/contributions`} className={styles.viewAllLink}>
+                                                View all contributions
+                                            </Link>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Favorite Poems Section */}
+                    <div className={styles.sectionWithHeader}>
+                        <div className={styles.sectionHeader}>
+                            <h2 className={styles.sectionTitle}>Favorite Poems</h2>
+                            {isCurrentUser && isEditing && (
+                                <button 
+                                    onClick={() => toggleSectionVisibility('favorites')}
+                                    className={styles.visibilityToggle}
+                                    title={sectionsVisible.favorites ? "Hide section" : "Show section"}
+                                >
+                                    {sectionsVisible.favorites ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            )}
+                        </div>
+                        
+                        {sectionsVisible.favorites && (
+                            <div className={styles.tabContent}>
+                                {userFavorites.length === 0 ? (
+                                    <p className={styles.emptyState}>No favorite poems yet</p>
+                                ) : (
+                                    <div className={styles.favoritesList}>
+                                        {userFavorites.slice(0, 5).map(favorite => (
+                                            <Link 
+                                                key={favorite.poemId}
+                                                href={`/poems/${favorite.chapterNum}/${favorite.poemNum}`}
+                                                className={styles.favoriteCard}
+                                            >
+                                                <div className={styles.favoriteContent}>
+                                                    <h3 className={styles.favoriteTitle}>
+                                                        Chapter {favorite.chapterNum}, Poem {favorite.poemNum}
+                                                    </h3>
+                                                    <div className={styles.japaneseText}>
+                                                        {favorite.japanese && 
+                                                            favorite.japanese.split('\n').map((line, index) => (
+                                                                <p key={`line-${index}`} className={styles.japaneseLine}>
+                                                                    {line}
+                                                                </p>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        {userFavorites.length > 5 && (
+                                            <Link href={`/user/${userid}/favorites`} className={styles.viewAllLink}>
+                                                View all favorites
+                                            </Link>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         )}

@@ -12,13 +12,13 @@ export async function DELETE(req) {
     }
 
     try {
-        const { poemId } = await req.json();
+        const { userId, poemId } = await req.json();
 
         const db = await client.db('user');
         const currRecord = await db.collection('favPoem').findOne({ poemId: poemId });
 
         // if there is no userId left, delete the whole record
-        if (currRecord?.userIds?.length === 1 && currRecord.userIds[0] === session.user.id) {
+        if (currRecord?.userIds?.length === 1 && currRecord.userIds[0] === userId) {
             await db.collection('favPoem').deleteOne({ poemId: poemId });
             return NextResponse.json(
                 { message: 'Record deleted' }, 
@@ -30,7 +30,7 @@ export async function DELETE(req) {
         const result = await db.collection('favPoem').findOneAndUpdate(
             { poemId: poemId },
             { 
-                $pull: { userIds: session.user.id },
+                $pull: { userIds: userId },
                 $set: { updatedAt: new Date() }
             },
             { 
