@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
-import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen, Eye, EyeOff, Pencil } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen, Eye, EyeOff, Pencil, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import styles from '../../styles/pages/userHomePage.module.css';
+import FormatContent from '../FormatText.prod';
+import Pagination from '../Pagination.prod';
 
 export default function UserHomePage({ userid }) {
+    const { data: session } = useSession();
     const [user, setUser] = useState(null);
-    const [userComments, setUserComments] = useState([]);
-    const [userContributions, setUserContributions] = useState([]);
-    const [userFavorites, setUserFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [sectionsVisible, setSectionsVisible] = useState({
-        comments: true,
-        contributions: true,
-        favorites: true
-    });
+    const [activeTab, setActiveTab] = useState('comments');
+    
+    const isFetchingUserData = useRef(false);
+    const isFetchingComments = useRef(false);
+    const isFetchingContributions = useRef(false);
+    const isFetchingFavorites = useRef(false);
+    const dataFetched = useRef(false);
+
     const [profile, setProfile] = useState({
         bio: '',
         location: '',
@@ -25,7 +29,29 @@ export default function UserHomePage({ userid }) {
         displayName: ''
     });
 
-    const fetchUserData = async () => {
+    // Comments state
+    const [userComments, setUserComments] = useState([]);
+    const [commentsPage, setCommentsPage] = useState(1);
+    const [commentsTotalPages, setCommentsTotalPages] = useState(1);
+    const [commentsLoading, setCommentsLoading] = useState(true);
+
+    // Contributions state
+    const [userContributions, setUserContributions] = useState([]);
+    const [contributionsPage, setContributionsPage] = useState(1);
+    const [contributionsTotalPages, setContributionsTotalPages] = useState(1);
+    const [contributionsLoading, setContributionsLoading] = useState(true);
+
+    // Favorites state
+    const [userFavorites, setUserFavorites] = useState([]);
+    const [favoritesPage, setFavoritesPage] = useState(1);
+    const [favoritesTotalPages, setFavoritesTotalPages] = useState(1);
+    const [favoritesLoading, setFavoritesLoading] = useState(true);
+
+    // get user data
+    const fetchUserData = useCallback(async () => {
+        if (isFetchingUserData.current) return;
+        isFetchingUserData.current = true;
+        
         try {
             // Get basic user info
             const response = await fetch(`/api/user/any?userid=${userid}`);
@@ -44,84 +70,115 @@ export default function UserHomePage({ userid }) {
             });
 
             // Check if current logged-in user is viewing their own profile
-            const currentUserResponse = await fetch('/api/user/me');
-            if (currentUserResponse.ok) {
-                const currentUser = await currentUserResponse.json();
-                setIsCurrentUser(currentUser._id === userid);
+            if (session?.user) {
+                const currentUserResponse = await fetch('/api/user/me');
+                if (currentUserResponse.ok) {
+                    const currentUser = await currentUserResponse.json();
+                    setIsCurrentUser(currentUser._id === userid);
+                }
             }
         } catch (error) {
             setError(error.message);
+        } finally {
+            isFetchingUserData.current = false;
+            setLoading(false);
         }
-    };
+    }, [userid, session?.user]);
 
-    // Fetch user's basic information
-    useEffect(() => {
-        fetchUserData();
-    }, [userid]);
-
-    // Fetch user's comments
-    useEffect(() => {
-        const fetchUserComments = async () => {
-            try {
-                const response = await fetch(`/api/user/comments?userid=${userid}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserComments(data.comments || []);
-                }
-            } catch (error) {
-                console.error('Failed to fetch user comments:', error);
+    // get user comments
+    const fetchUserComments = useCallback(async (page = 1) => {
+        if (!session || isFetchingComments.current) return;
+        
+        isFetchingComments.current = true;
+        try {
+            const response = await fetch(`/api/user/getComments?userId=${userid}&page=${page}&limit=5`);
+            if (response.ok) {
+                const data = await response.json();
+                setUserComments(data.comments || []);
+                setCommentsPage(data.currentPage || 1);
+                setCommentsTotalPages(data.totalPages || 1);
             }
-        };
-
-        if (user) {
-            fetchUserComments();
+        } catch (error) {
+            console.error('Failed to fetch user comments:', error);
+        } finally {
+            setCommentsLoading(false);
+            isFetchingComments.current = false;
         }
-    }, [user, userid]);
+    }, [userid, session]);
 
-    // Fetch user's contributions
-    useEffect(() => {
-        const fetchUserContributions = async () => {
-            try {
-                const response = await fetch(`/api/user/contributions?userid=${userid}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserContributions(data.contributions || []);
-                }
-            } catch (error) {
-                console.error('Failed to fetch user contributions:', error);
+    // get user contributions
+    const fetchUserContributions = useCallback(async (page = 1) => {
+        if (!session || isFetchingContributions.current) return;
+        
+        isFetchingContributions.current = true;
+        try {
+            const response = await fetch(`/api/user/getContributions?userId=${userid}&page=${page}&limit=8`);
+            if (response.ok) {
+                const data = await response.json();
+                setUserContributions(data.contributions || []);
+                setContributionsPage(data.currentPage || 1);
+                setContributionsTotalPages(data.totalPages || 1);
             }
-        };
-
-        if (user) {
-            fetchUserContributions();
+        } catch (error) {
+            console.error('Failed to fetch user contributions:', error);
+        } finally {
+            setContributionsLoading(false);
+            isFetchingContributions.current = false;
         }
-    }, [user, userid]);
+    }, [userid, session]);
 
-    // Fetch user's favorite poems
-    useEffect(() => {
-        const fetchUserFavorites = async () => {
-            try {
-                const response = await fetch(`/api/user/favorites?userid=${userid}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserFavorites(data.favorites || []);
-                }
-            } catch (error) {
-                console.error('Failed to fetch user favorites:', error);
-            } finally {
-                setLoading(false);
+    // get user favorites
+    const fetchUserFavorites = useCallback(async (page = 1) => {
+        if (!session || isFetchingFavorites.current) return;
+        
+        isFetchingFavorites.current = true;
+        try {
+            const response = await fetch(`/api/user/getFavorites?userId=${userid}&page=${page}&limit=2`);
+            if (response.ok) {
+                const data = await response.json();
+                setUserFavorites(data.favs || []);
+                setFavoritesPage(data.currentPage || 1);
+                setFavoritesTotalPages(data.totalPages || 1);
             }
-        };
-
-        if (user) {
-            fetchUserFavorites();
+        } catch (error) {
+            console.error('Failed to fetch user favorites:', error);
+        } finally {
+            setFavoritesLoading(false);
+            isFetchingFavorites.current = false;
         }
-    }, [user, userid]);
+    }, [userid, session]);
+
+    // Handle comments pagination
+    const handleCommentsPageChange = useCallback((newPage) => {
+        if (newPage < 1 || newPage > commentsTotalPages || newPage === commentsPage || commentsLoading) {
+            return;
+        }
+        setCommentsPage(newPage);
+        fetchUserComments(newPage);
+    }, [commentsTotalPages, commentsPage, commentsLoading, fetchUserComments]);
+
+    // Handle contributions pagination
+    const handleContributionsPageChange = useCallback((newPage) => {
+        if (newPage < 1 || newPage > contributionsTotalPages || newPage === contributionsPage || contributionsLoading) {
+            return;
+        }
+        setContributionsPage(newPage);
+        fetchUserContributions(newPage);
+    }, [contributionsTotalPages, contributionsPage, contributionsLoading, fetchUserContributions]);
+
+    // Handle favorites pagination
+    const handleFavoritesPageChange = useCallback((newPage) => {
+        if (newPage < 1 || newPage > favoritesTotalPages || newPage === favoritesPage || favoritesLoading) {
+            return;
+        }
+        setFavoritesPage(newPage);
+        fetchUserFavorites(newPage);
+    }, [favoritesTotalPages, favoritesPage, favoritesLoading, fetchUserFavorites]);
 
     // Handle updating profile information
     const handleProfileUpdate = async () => {
         try {
-            const response = await fetch('/api/user/update_profile', {
+            const response = await fetch('/api/user/updateProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -147,6 +204,7 @@ export default function UserHomePage({ userid }) {
                 }));
                 setIsEditingProfile(false);
                 alert('Profile updated successfully');
+                dataFetched.current = false; // reset
                 fetchUserData();
             } else {
                 throw new Error('Failed to update profile');
@@ -159,13 +217,40 @@ export default function UserHomePage({ userid }) {
         }
     };
 
-    // Toggle section visibility
-    const toggleSectionVisibility = (section) => {
-        setSectionsVisible(prev => ({
-            ...prev,
-            [section]: !prev[section]
-        }));
-    };
+    // Reset data fetching state when userid changes
+    useEffect(() => {
+        if (userid) {
+            dataFetched.current = false;
+            // reset
+            isFetchingUserData.current = false;
+            isFetchingComments.current = false;
+            isFetchingContributions.current = false;
+            isFetchingFavorites.current = false;
+        }
+    }, [userid]);
+
+    // Main data fetching effect
+    useEffect(() => {
+        if (userid && !dataFetched.current) {
+            fetchUserData();
+            dataFetched.current = true;
+        }
+    }, [userid, fetchUserData]);
+
+    // Additional data fetching only if user data is loaded and session exists
+    useEffect(() => {
+        const fetchAdditionalData = async () => {
+            if (user && session && !isFetchingComments.current && !isFetchingContributions.current && !isFetchingFavorites.current) {
+                await Promise.all([
+                    fetchUserComments(commentsPage),
+                    fetchUserContributions(contributionsPage),
+                    fetchUserFavorites(favoritesPage)
+                ]);
+            }
+        };
+        
+        fetchAdditionalData();
+    }, [user, session, fetchUserComments, fetchUserContributions, fetchUserFavorites, commentsPage, contributionsPage, favoritesPage]);
 
     // Format date for display
     const formatDate = (dateString) => {
@@ -181,6 +266,50 @@ export default function UserHomePage({ userid }) {
     if (loading) return <div className={styles.loading}>Loading user information...</div>;
     if (error) return <div className={styles.error}>Error: {error}</div>;
     if (!user) return <div className={styles.noUser}>No user found</div>;
+
+    // Render the login prompt for non-authenticated users
+    const renderLoginPrompt = () => (
+        <div className={styles.loginPromptContainer}>
+            <div className={styles.loginPrompt}>
+                <LogIn size={24} className={styles.loginIcon} />
+                <h3>Sign in to view this content</h3>
+                <p>Please sign in to see {user.name}&apos;s comments, contributions, and favorite poems.</p>
+                <div className={styles.loginActions}>
+                    <Link href="/api/auth/signin" className={styles.signInButton}>
+                        Sign In
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+
+    // Tab Navigation - accessible to logged-in users only
+    const renderTabs = () => {
+        if (!session) return null;
+        
+        return (
+            <div className={styles.tabNav}>
+                <button 
+                    className={`${styles.tabButton} ${activeTab === 'comments' ? styles.activeTab : ''}`}
+                    onClick={() => setActiveTab('comments')}
+                >
+                    COMMENTS
+                </button>
+                <button 
+                    className={`${styles.tabButton} ${activeTab === 'contributions' ? styles.activeTab : ''}`}
+                    onClick={() => setActiveTab('contributions')}
+                >
+                    CONTRIBUTIONS
+                </button>
+                <button 
+                    className={`${styles.tabButton} ${activeTab === 'favorites' ? styles.activeTab : ''}`}
+                    onClick={() => setActiveTab('favorites')}
+                >
+                    FAVORITE POEMS
+                </button>
+            </div>
+        );
+    };
 
     return (
         <div className={styles.userHomePage}>
@@ -235,7 +364,7 @@ export default function UserHomePage({ userid }) {
                         {user.email && (
                             <span className={styles.userEmail}>
                                 <Mail size={16} />
-                                {user.email}
+                                { user.email}
                             </span>
                         )}
                     </div>
@@ -332,179 +461,175 @@ export default function UserHomePage({ userid }) {
             </div>
             
             <div className={styles.contentSection}>
-                <div className={styles.statsRow}>
-                    <div className={styles.statCard}>
-                        <MessageSquare size={20} />
-                        <span className={styles.statValue}>{userComments.length}</span>
-                        <span className={styles.statLabel}>Comments</span>
-                    </div>
-                    <div className={styles.statCard}>
-                        <BookOpen size={20} />
-                        <span className={styles.statValue}>{userContributions.length}</span>
-                        <span className={styles.statLabel}>Contributions</span>
-                    </div>
-                    <div className={styles.statCard}>
-                        <Heart size={20} />
-                        <span className={styles.statValue}>{userFavorites.length}</span>
-                        <span className={styles.statLabel}>Favorites</span>
-                    </div>
-                </div>
-
-                <div className={styles.tabsContainer}>
-                    {/* Comments Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Recent Comments</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('comments')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.comments ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.comments ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            )}
-                        </div>
-                        
-                        {sectionsVisible.comments && (
-                            <div className={styles.tabContent}>
-                                {userComments.length === 0 ? (
-                                    <p className={styles.emptyState}>No comments yet</p>
-                                ) : (
-                                    <div className={styles.commentsList}>
-                                        {userComments.slice(0, 5).map(comment => (
-                                            <div key={comment._id} className={styles.commentCard}>
-                                                <div className={styles.commentContent}>
-                                                    <p className={styles.commentText}>{comment.content}</p>
-                                                    <div className={styles.commentMeta}>
-                                                        <span className={styles.commentDate}>
-                                                            {formatDate(comment.createdAt)}
-                                                        </span>
-                                                        <Link 
-                                                            href={`/poems/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
-                                                            className={styles.commentLink}
-                                                        >
-                                                            View Post
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {userComments.length > 5 && (
-                                            <Link href={`/user/${userid}/comments`} className={styles.viewAllLink}>
-                                                View all comments
-                                            </Link>
-                                        )}
-                                    </div>
-                                )}
+                {session ? (
+                    <>
+                        <div className={styles.statsRow}>
+                            <div className={styles.statCard}>
+                                <MessageSquare size={20} />
+                                <span className={styles.statValue}>{userComments.length}</span>
+                                <span className={styles.statLabel}>Comments</span>
                             </div>
-                        )}
-                    </div>
-
-                    {/* Contributions Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Contributions</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('contributions')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.contributions ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.contributions ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            )}
+                            <div className={styles.statCard}>
+                                <BookOpen size={20} />
+                                <span className={styles.statValue}>{userContributions.length}</span>
+                                <span className={styles.statLabel}>Contributions</span>
+                            </div>
+                            <div className={styles.statCard}>
+                                <Heart size={20} />
+                                <span className={styles.statValue}>{userFavorites.length}</span>
+                                <span className={styles.statLabel}>Favorites</span>
+                            </div>
                         </div>
-                        
-                        {sectionsVisible.contributions && (
-                            <div className={styles.tabContent}>
-                                {userContributions.length === 0 ? (
-                                    <p className={styles.emptyState}>No contributions yet</p>
-                                ) : (
-                                    <div className={styles.contributionsList}>
-                                        {userContributions.slice(0, 5).map(contribution => (
-                                            <div key={contribution._id} className={styles.contributionCard}>
-                                                <div className={styles.contributionContent}>
-                                                    <h3 className={styles.contributionTitle}>
-                                                        {contribution.pageType.charAt(0).toUpperCase() + contribution.pageType.slice(1)}
-                                                    </h3>
+
+                        {/* Tab Navigation */}
+                        {renderTabs()}
+
+                        {/* Tab Content */}
+                        <div className={styles.tabContent}>
+                            {/* Comments Tab */}
+                            {activeTab === 'comments' && (
+                                <div className={styles.tabPanel}>
+                                    <h2 className={styles.tabContentTitle}>RECENT COMMENTS</h2>
+                                    
+                                    {commentsLoading ? (
+                                        <div className={styles.loadingState}>Loading comments...</div>
+                                    ) : userComments.length === 0 ? (
+                                        <div className={styles.emptyState}>No comments yet</div>
+                                    ) : (
+                                        <>
+                                            <div className={styles.commentsList}>
+                                                {userComments.map(comment => (
+                                                    <div key={comment._id} className={styles.commentCard}>
+                                                        <div className={styles.commentHeader}>
+                                                            <FormatContent content={comment.content} className={styles.commentText}/>
+                                                            <span className={styles.commentDate}>
+                                                                {formatDate(comment.createdAt)}
+                                                            </span>
+                                                        </div>
+                                                        <div className={styles.commentMeta}>
+                                                            <span className={styles.commentLocation}>
+                                                                In {comment.pageType}{' '}
+                                                                <Link 
+                                                                    href={`/${comment.pageType === 'poem' ? 'poems' : 'characters' }/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
+                                                                    className={styles.commentLink}
+                                                                >
+                                                                    {comment.identifier}
+                                                                </Link>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            
+                                            {commentsTotalPages > 1 && (
+                                                <Pagination
+                                                    currentPage={commentsPage}
+                                                    totalPages={commentsTotalPages}
+                                                    onPageChange={handleCommentsPageChange}
+                                                    disabled={commentsLoading}
+                                                />
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Contributions Tab */}
+                            {activeTab === 'contributions' && (
+                                <div className={styles.tabPanel}>
+                                    <h2 className={styles.tabContentTitle}>CONTRIBUTIONS</h2>
+                                    
+                                    {contributionsLoading ? (
+                                        <div className={styles.loadingState}>Loading contributions...</div>
+                                    ) : userContributions.length === 0 ? (
+                                        <div className={styles.emptyState}>No contributions yet</div>
+                                    ) : (
+                                        <>
+                                            <div className={styles.contributionsList}>
+                                                {userContributions.map(contribution => (
+                                                    <div key={contribution._id} className={styles.contributionCard}>
+                                                        <div className={styles.contributionContent}>
+                                                            <h3 className={styles.contributionTitle}>
+                                                                {contribution.pageType.charAt(0).toUpperCase() + contribution.pageType.slice(1)}
+                                                            </h3>
+                                                            <Link 
+                                                                href={`/${contribution.pageType === 'poem' ? 'poems' : 'characters' }/${contribution.pageType === 'poem' ? contribution.identifier.replace('-', '/') : contribution.identifier}`}
+                                                                className={styles.contributionLink}
+                                                            >
+                                                                {contribution.identifier}
+                                                            </Link>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            
+                                            {contributionsTotalPages > 1 && (
+                                                <Pagination
+                                                    currentPage={contributionsPage}
+                                                    totalPages={contributionsTotalPages}
+                                                    onPageChange={handleContributionsPageChange}
+                                                    disabled={contributionsLoading}
+                                                />
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Favorites Tab */}
+                            {activeTab === 'favorites' && (
+                                <div className={styles.tabPanel}>
+                                    <h2 className={styles.tabContentTitle}>FAVORITE POEMS</h2>
+                                    
+                                    {favoritesLoading ? (
+                                        <div className={styles.loadingState}>Loading favorite poems...</div>
+                                    ) : userFavorites.length === 0 ? (
+                                        <div className={styles.emptyState}>No favorite poems yet</div>
+                                    ) : (
+                                        <>
+                                            <div className={styles.favoritesList}>
+                                                {userFavorites.map(favorite => (
                                                     <Link 
-                                                        href={`/${contribution.pageType}/${contribution.identifier}`}
-                                                        className={styles.contributionLink}
+                                                        key={favorite.poemId}
+                                                        href={`/poems/${favorite.chapterNum}/${favorite.poemNum}`}
+                                                        className={styles.favoriteCard}
                                                     >
-                                                        {contribution.identifier}
+                                                        <div className={styles.favoriteContent}>
+                                                            <h3 className={styles.favoriteTitle}>
+                                                                Chapter {favorite.chapterNum} {favorite.chapterName}, Poem {favorite.poemNum}
+                                                            </h3>
+                                                            <div className={styles.japaneseText}>
+                                                                {favorite.japanese && 
+                                                                    favorite.japanese.split('\n').map((line, index) => (
+                                                                        <p key={`line-${index}`} className={styles.japaneseLine}>
+                                                                            {line}
+                                                                        </p>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        </div>
                                                     </Link>
-                                                    <span className={styles.contributionDate}>
-                                                        {formatDate(contribution.date)}
-                                                    </span>
-                                                </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                        {userContributions.length > 5 && (
-                                            <Link href={`/user/${userid}/contributions`} className={styles.viewAllLink}>
-                                                View all contributions
-                                            </Link>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Favorite Poems Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Favorite Poems</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('favorites')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.favorites ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.favorites ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
+                                            
+                                            {favoritesTotalPages > 1 && (
+                                                <Pagination
+                                                    currentPage={favoritesPage}
+                                                    totalPages={favoritesTotalPages}
+                                                    onPageChange={handleFavoritesPageChange}
+                                                    disabled={favoritesLoading}
+                                                />
+                                            )}
+                                        </>
+                                    )}
+                                </div>
                             )}
                         </div>
-                        
-                        {sectionsVisible.favorites && (
-                            <div className={styles.tabContent}>
-                                {userFavorites.length === 0 ? (
-                                    <p className={styles.emptyState}>No favorite poems yet</p>
-                                ) : (
-                                    <div className={styles.favoritesList}>
-                                        {userFavorites.slice(0, 5).map(favorite => (
-                                            <Link 
-                                                key={favorite.poemId}
-                                                href={`/poems/${favorite.chapterNum}/${favorite.poemNum}`}
-                                                className={styles.favoriteCard}
-                                            >
-                                                <div className={styles.favoriteContent}>
-                                                    <h3 className={styles.favoriteTitle}>
-                                                        Chapter {favorite.chapterNum}, Poem {favorite.poemNum}
-                                                    </h3>
-                                                    <div className={styles.japaneseText}>
-                                                        {favorite.japanese && 
-                                                            favorite.japanese.split('\n').map((line, index) => (
-                                                                <p key={`line-${index}`} className={styles.japaneseLine}>
-                                                                    {line}
-                                                                </p>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        ))}
-                                        {userFavorites.length > 5 && (
-                                            <Link href={`/user/${userid}/favorites`} className={styles.viewAllLink}>
-                                                View all favorites
-                                            </Link>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </div>
+                    </>
+                ) : (
+                    // Login prompt for non-authenticated users
+                    renderLoginPrompt()
+                )}
             </div>
         </div>
     );
