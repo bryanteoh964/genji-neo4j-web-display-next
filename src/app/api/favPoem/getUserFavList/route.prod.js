@@ -7,9 +7,12 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
     const session = await auth();
 
-    if(!session) {
+    if (!session) {
         return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
     }
+
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
 
     try {
         
@@ -17,7 +20,7 @@ export async function GET(req) {
 
         const fav = await db.collection('favPoem')
                     .find({
-                        userIds: session.user.id,
+                        userIds: userId,
                     })
                     .sort({ createdAt: 1 })
                     .toArray();

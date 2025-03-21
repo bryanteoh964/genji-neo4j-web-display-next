@@ -5,26 +5,46 @@ import styles from '../styles/pages/favButton.module.css';
 export default function FavButton({ poemId, JPRM }) {
     const { data: session } = useSession();
     const [isFav, setIsFav] = useState(false);
+    const [user, setUser] = useState('');
+
+    // get user
+    const fetchUser = async () => {
+        try {
+            if (session) {
+                const response = await fetch(`/api/user/me`);
+                const data = await response.json();
+                setUser(data._id);
+                return data._id;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            return null;
+        }
+    };
+    
 
     useEffect(() => {
         const checkFav = async () => {
-            if(session?.user) {
+            if (session?.user) {
                 try {
-                    // check fav status
-                    const response = await fetch(`/api/favPoem/check?poemId=${poemId}`);
-                    if(response.ok) {
-                        const { isFav } = await response.json();
-                        setIsFav(isFav);
-                        //console.log('isFav', isFav)
+                    const userId = await fetchUser();
+                    
+                    if (userId) {
+                        const response = await fetch(`/api/favPoem/check?poemId=${poemId}&userId=${userId}`);
+                        if (response.ok) {
+                            const { isFav } = await response.json();
+                            setIsFav(isFav);
+                        }
                     }
                 } catch (error) {
-                    console.error('Error checking fav status: ', error);
+                    console.error('Error checking fav status:', error);
                 }
             }
-        }
-
+        };
+    
         checkFav();
-    }, [session, poemId])
+    }, [session, poemId]);
 
 
     const handleClick = async () => {
@@ -41,7 +61,7 @@ export default function FavButton({ poemId, JPRM }) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ poemId, JPRM }),
+                    body: JSON.stringify({ userId: user, poemId, JPRM }),
                 })
 
                 if(response.ok) {
@@ -58,7 +78,7 @@ export default function FavButton({ poemId, JPRM }) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ poemId }),
+                    body: JSON.stringify({ userId: user, poemId }),
                 })
 
                 if(response.ok) {

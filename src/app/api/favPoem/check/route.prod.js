@@ -13,12 +13,13 @@ export async function GET(req) {
     // get poemId from url
     const { searchParams } = new URL(req.url);
     const poemId = searchParams.get('poemId');
+    const userId = searchParams.get('userId');
 
     try {
         const db = await client.db('user');
         const fav = await db.collection('favPoem').findOne({
             poemId: poemId, 
-            userIds: session.user.id
+            userIds: userId
         });
         
         // if no record in db return false
