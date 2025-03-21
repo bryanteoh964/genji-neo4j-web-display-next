@@ -83,7 +83,7 @@ export async function GET(req) {
             };
         });
 
-        const totalFavs = await db.collection('favPoem').find({ userIds: userId }).count();
+        const totalFavs = await db.collection('favPoem').countDocuments({ userIds: userId });
 
         return NextResponse.json({ favs: processedFavs, totalFavs, currentPage: page, totalPages: Math.ceil(totalFavs / limit) || 1 }, { status: 200 });
 
