@@ -42,7 +42,7 @@
 }
 
 .topEditButton:hover {
-  background-color: rgba(39, 39, 39, 0.9);
+  background-color: rgba(49, 49, 49, 0.9);
 }
 
 /* Profile Header */
@@ -257,7 +257,7 @@
 }
 
 .saveButton:hover {
-  background-color: rgba(27, 27, 27, 0.9);
+  background-color: rgba(39, 39, 39, 0.9);
 }
 
 .cancelButton {
@@ -332,7 +332,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background-color: rgba(146, 146, 146, 0.9);
+  background-color: rgba(134, 134, 134, 0.9);
   border-bottom: 1px solid #eaeaea;
 }
 
@@ -366,6 +366,52 @@
   padding: 1.5rem;
 }
 
+/* Hidden Section Bar */
+.hiddenSectionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #f5f5f5;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.hiddenSectionTitle {
+  font-size: 1.25rem;
+  margin: 0;
+  color: #777;
+  font-weight: 600;
+}
+
+.hiddenSectionStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.showSectionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.showSectionButton:hover {
+  background-color: #ebebeb;
+  color: #333;
+}
+
 /* Comments Section */
 .commentsList {
   display: flex;
@@ -379,12 +425,15 @@
   border: 1px solid #eaeaea;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.commentContent {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
 }
 
 .commentText {
@@ -392,22 +441,33 @@
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
+  flex: 1;
+  padding-right: 1rem;
+  text-align: left;
+}
+
+.commentDate {
+  font-size: 0.8rem;
+  color: #777;
+  white-space: nowrap;
 }
 
 .commentMeta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
   font-size: 0.85rem;
   color: #666;
+  margin-top: auto;
 }
 
-.commentDate {
-  color: #777;
+.commentLocation {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .commentLink {
-  color: blue;
+  color: #c97852;
   text-decoration: none;
 }
 
@@ -444,7 +504,7 @@
 }
 
 .contributionLink {
-  color: blue;
+  color: #c97852;
   text-decoration: none;
   font-weight: 500;
 }
@@ -610,5 +670,5 @@
   .commentCard, .contributionCard, .favoriteCard {
     padding: 0.75rem;
   }
-  
+
 }
