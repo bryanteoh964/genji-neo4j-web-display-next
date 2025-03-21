@@ -1,6 +1,9 @@
 const { getSession } = require('../neo4j_driver/route.prod.js');
 const { singleCharacterTimeline} = require('../neo4j_driver/utils.prod.js');
 export async function GET(req) {
+	if (!(new URL(req.url))) {
+		return null;
+	}
 	var resGraph;
 	try {  
 		const { searchParams } = new URL(req.url);

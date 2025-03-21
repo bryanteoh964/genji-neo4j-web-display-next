@@ -409,7 +409,7 @@ export default function CharacterDetail({ name }) {
                                                 <div id="timeline_elements" style={{zIndex: 0, paddingLeft: "50px", paddingRight: "50px", color: "#000", display: "flex"}}></div>
                                             </div>
                                         </div> 
-                                        <h3 style={{float:"right", color: "black"}}>(𖤓 = Genji's Age)</h3>
+                                        <h3 style={{float:"right", color: "black"}}>(𖤓 = Genji`s Age)</h3>
                                     </div>
                                 )
                             }
