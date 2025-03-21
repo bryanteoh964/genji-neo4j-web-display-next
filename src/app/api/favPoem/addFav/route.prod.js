@@ -12,7 +12,7 @@ export async function POST(req) {
     }
 
     try {
-        const { poemId, JPRM } = await req.json();
+        const { userId, poemId, JPRM } = await req.json();
         
         const db = await client.db('user');
 
@@ -22,7 +22,7 @@ export async function POST(req) {
             fav = await db.collection('favPoem').insertOne({
                 poemId: poemId,
                 jprm: JPRM,
-                userIds: [session.user.id],
+                userIds: [userId],
                 createdAt: new Date(),
                 updatedAt: new Date()
             });
@@ -30,7 +30,7 @@ export async function POST(req) {
             fav = await db.collection('favPoem').findOneAndUpdate(
                 { poemId: poemId },
                 {
-                    $addToSet: { userIds: session.user.id },
+                    $addToSet: { userIds: userId },
                     $set: { updatedAt: new Date() }
                 },
                 { 
