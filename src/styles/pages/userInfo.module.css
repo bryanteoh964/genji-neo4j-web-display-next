@@ -89,25 +89,12 @@
 
 .value {
   color: #333;
+  padding-right: 350px;
 }
 
 .email_value {
   color: #333;
   padding-right: 350px;
-}
-
-.editButton {
-  background: none;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.editButton:hover {
-  background-color: #f5f5f5;
-  color: #333;
 }
 
 .error {
@@ -135,3 +122,4 @@
 .logoutButton:hover {
   background-color: #c82333;
 }
+

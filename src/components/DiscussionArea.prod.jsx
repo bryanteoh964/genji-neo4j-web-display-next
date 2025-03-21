@@ -4,6 +4,7 @@ import { Send, Edit, Trash2, EyeOff, Eye, ThumbsUp, MessageCircle, ChevronDown, 
 import { formatDistanceToNow } from 'date-fns';
 import styles from '../styles/pages/discussionArea.module.css';
 import FormatContent from '../components/FormatText.prod'
+import Pagination from './Pagination.prod';
 
 const ReplyInput = ({ onSubmit, onCancel, session, replyToUser }) => {
   const [content, setContent] = useState(replyToUser ? `@${replyToUser} ` : '');
@@ -863,41 +864,14 @@ const DiscussionArea = ({ pageType, identifier }) => {
           ))
         )}
 
-        {displayComments?.length > 0 && (
-          <div className={styles.pagination}>
-            <button
-              onClick={() => handlePageChange(1)}
-              disabled={currentPage === 1 || refreshing}
-              className={styles.pageButton}
-            >
-              First
-            </button>
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1 || refreshing}
-              className={styles.pageButton}
-            >
-              Previous
-            </button>
-            <span className={styles.pageInfo}>
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages || refreshing}
-              className={styles.pageButton}
-            >
-              Next
-            </button>
-            <button
-              onClick={() => handlePageChange(totalPages)}
-              disabled={currentPage === totalPages || refreshing}
-              className={styles.pageButton}
-            >
-              Last
-            </button>
-          </div>
-        )}
+      {displayComments?.length > 0 &&  (
+          <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              disabled={refreshing}
+          />
+      )}
 
       </div>}
     </div>
