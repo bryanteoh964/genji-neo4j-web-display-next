@@ -489,6 +489,47 @@ export function generateTimeline(timeline_info) {
     return info
 }
 
+export function singleCharacterTimeline(timeline_info) {
+
+    var info = []
+    for (const [
+        chapter_name,
+        chapter_number,
+        age_of_genji,
+        birth,
+        english,
+        japanese,
+        month,
+        day,
+        spring,
+        summer,
+        fall,
+        winter,
+    ] of timeline_info) {
+		info.push(
+            {
+				chapter: chapter_name,
+                chapter_number: chapter_number,
+
+				age_of_genji: parseInt(age_of_genji),
+				birth: birth,
+				english: english,
+				japanese: japanese,
+				month: parseInt(month),
+				day: parseInt(day), 
+
+				spring: spring,
+				summer: summer,
+				fall: fall,
+				winter: winter
+			}
+        )
+	}
+    // console.log(info)
+    
+    return info
+}
+
 
 export function generateLocations(location_info) {
 
@@ -520,5 +561,5 @@ export function generateLocations(location_info) {
 
 //****************************//
 
-const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline, generateLocations}
+const utils = { toNativeTypes, valueToNativeType, getChpList, generateGeneology, concatObj, getPoemTableContent, sortPnumsFromObjList, generateTimeline, generateLocations, singleCharacterTimeline}
 export default utils;
