@@ -1,0 +1,47 @@
+import { auth } from "../../../../auth.prod";
+import client from "../../../../lib/db.prod";
+import { NextResponse } from "next/server";
+import { ObjectId } from 'mongodb';
+
+// get one user's all comments
+export async function GET(req) {
+    const session = await auth();
+
+    if (!session) {
+        return NextResponse.json({ message: 'Unauthorized'}, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
+
+    try {
+        const db = await client.db('user');
+
+        const comments = await db.collection('discussion')
+            .find({ 
+                user: userId,
+                isHidden: false
+            })
+            .sort({ createdAt: -1 })
+            .toArray();
+
+        // console.log('userId:', userId);
+
+
+        if (!comments) {
+            return NextResponse.json({ 
+                    message: 'No comments found for user'
+                },{ status: 404 }
+            );
+        };
+
+        return NextResponse.json({ comments }, { status: 200 });
+
+    } catch (error) {
+        console.error('Error finding comments:', error);
+        return NextResponse.json(
+            { error: 'Failed to find user comments' }, 
+            { status: 500 }
+        );
+    }
+}

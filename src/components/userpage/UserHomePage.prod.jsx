@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen, Eye, EyeOff, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import styles from '../../styles/pages/userHomePage.module.css';
+import FormatContent from '../FormatText.prod';
 
 export default function UserHomePage({ userid }) {
     const [user, setUser] = useState(null);
@@ -63,7 +64,7 @@ export default function UserHomePage({ userid }) {
     useEffect(() => {
         const fetchUserComments = async () => {
             try {
-                const response = await fetch(`/api/user/comments?userid=${userid}`);
+                const response = await fetch(`/api/user/getComments?userId=${userid}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUserComments(data.comments || []);
@@ -82,7 +83,7 @@ export default function UserHomePage({ userid }) {
     useEffect(() => {
         const fetchUserContributions = async () => {
             try {
-                const response = await fetch(`/api/user/contributions?userid=${userid}`);
+                const response = await fetch(`/api/user/getContributions?userId=${userid}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUserContributions(data.contributions || []);
@@ -101,10 +102,11 @@ export default function UserHomePage({ userid }) {
     useEffect(() => {
         const fetchUserFavorites = async () => {
             try {
-                const response = await fetch(`/api/user/favorites?userid=${userid}`);
+                const response = await fetch(`/api/user/getFavorites?userId=${userid}`);
                 if (response.ok) {
                     const data = await response.json();
-                    setUserFavorites(data.favorites || []);
+                    setUserFavorites(data.favs || []);
+                    console.log('userFavorites:', data);
                 }
             } catch (error) {
                 console.error('Failed to fetch user favorites:', error);
@@ -121,7 +123,7 @@ export default function UserHomePage({ userid }) {
     // Handle updating profile information
     const handleProfileUpdate = async () => {
         try {
-            const response = await fetch('/api/user/update_profile', {
+            const response = await fetch('/api/user/updateProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -352,21 +354,21 @@ export default function UserHomePage({ userid }) {
 
                 <div className={styles.tabsContainer}>
                     {/* Comments Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Recent Comments</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('comments')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.comments ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.comments ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            )}
-                        </div>
-                        
-                        {sectionsVisible.comments && (
+                    {sectionsVisible.comments ? (
+                        <div className={styles.sectionWithHeader}>
+                            <div className={styles.sectionHeader}>
+                                <h2 className={styles.sectionTitle}>Recent Comments</h2>
+                                {isCurrentUser && isEditing && (
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('comments')}
+                                        className={styles.visibilityToggle}
+                                        title="Hide section"
+                                    >
+                                        <EyeOff size={18} />
+                                    </button>
+                                )}
+                            </div>
+                            
                             <div className={styles.tabContent}>
                                 {userComments.length === 0 ? (
                                     <p className={styles.emptyState}>No comments yet</p>
@@ -374,99 +376,131 @@ export default function UserHomePage({ userid }) {
                                     <div className={styles.commentsList}>
                                         {userComments.slice(0, 5).map(comment => (
                                             <div key={comment._id} className={styles.commentCard}>
-                                                <div className={styles.commentContent}>
-                                                    <p className={styles.commentText}>{comment.content}</p>
-                                                    <div className={styles.commentMeta}>
-                                                        <span className={styles.commentDate}>
-                                                            {formatDate(comment.createdAt)}
-                                                        </span>
+                                                <div className={styles.commentHeader}>
+                                                    <FormatContent content={comment.content} className={styles.commentText}/>
+                                                    <span className={styles.commentDate}>
+                                                        {formatDate(comment.createdAt)}
+                                                    </span>
+                                                </div>
+                                                <div className={styles.commentMeta}>
+                                                    <span className={styles.commentLocation}>
+                                                        In {comment.pageType}{' '}
                                                         <Link 
-                                                            href={`/poems/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
+                                                            href={`/${comment.pageType === 'poem' ? 'poems' : 'characters' }/${comment.pageType === 'poem' ? comment.identifier.replace('-', '/') : comment.identifier}`}
                                                             className={styles.commentLink}
                                                         >
-                                                            View Post
+                                                            {comment.identifier}
                                                         </Link>
-                                                    </div>
+                                                    </span>
                                                 </div>
                                             </div>
                                         ))}
-                                        {userComments.length > 5 && (
-                                            <Link href={`/user/${userid}/comments`} className={styles.viewAllLink}>
+                                        {userComments.length > 3 && (
+                                            <Link href={`/userhomepage/${userid}/comments`} className={styles.viewAllLink}>
                                                 View all comments
                                             </Link>
                                         )}
                                     </div>
                                 )}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        isCurrentUser && isEditing && (
+                            <div className={styles.hiddenSectionBar}>
+                                <h2 className={styles.hiddenSectionTitle}>Recent Comments</h2>
+                                <div className={styles.hiddenSectionStatus}>
+                                    <span>Section hidden</span>
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('comments')}
+                                        className={styles.showSectionButton}
+                                        title="Show section"
+                                    >
+                                        <Eye size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    )}
 
                     {/* Contributions Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Contributions</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('contributions')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.contributions ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.contributions ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            )}
-                        </div>
-                        
-                        {sectionsVisible.contributions && (
+                    {sectionsVisible.contributions ? (
+                        <div className={styles.sectionWithHeader}>
+                            <div className={styles.sectionHeader}>
+                                <h2 className={styles.sectionTitle}>Contributions</h2>
+                                {isCurrentUser && isEditing && (
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('contributions')}
+                                        className={styles.visibilityToggle}
+                                        title="Hide section"
+                                    >
+                                        <EyeOff size={18} />
+                                    </button>
+                                )}
+                            </div>
+                            
                             <div className={styles.tabContent}>
                                 {userContributions.length === 0 ? (
                                     <p className={styles.emptyState}>No contributions yet</p>
                                 ) : (
                                     <div className={styles.contributionsList}>
-                                        {userContributions.slice(0, 5).map(contribution => (
+                                        {userContributions.slice(0, 6).map(contribution => (
                                             <div key={contribution._id} className={styles.contributionCard}>
                                                 <div className={styles.contributionContent}>
                                                     <h3 className={styles.contributionTitle}>
                                                         {contribution.pageType.charAt(0).toUpperCase() + contribution.pageType.slice(1)}
                                                     </h3>
                                                     <Link 
-                                                        href={`/${contribution.pageType}/${contribution.identifier}`}
+                                                        href={`/${contribution.pageType === 'poem' ? 'poems' : 'characters' }/${contribution.pageType === 'poem' ? contribution.identifier.replace('-', '/') : contribution.identifier}`}
                                                         className={styles.contributionLink}
                                                     >
                                                         {contribution.identifier}
                                                     </Link>
-                                                    <span className={styles.contributionDate}>
-                                                        {formatDate(contribution.date)}
-                                                    </span>
                                                 </div>
                                             </div>
                                         ))}
-                                        {userContributions.length > 5 && (
-                                            <Link href={`/user/${userid}/contributions`} className={styles.viewAllLink}>
+                                        {userContributions.length > 6 && (
+                                            <Link href={`/userhomepage/${userid}/contributions`} className={styles.viewAllLink}>
                                                 View all contributions
                                             </Link>
                                         )}
                                     </div>
                                 )}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        isCurrentUser && isEditing && (
+                            <div className={styles.hiddenSectionBar}>
+                                <h2 className={styles.hiddenSectionTitle}>Contributions</h2>
+                                <div className={styles.hiddenSectionStatus}>
+                                    <span>Section hidden</span>
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('contributions')}
+                                        className={styles.showSectionButton}
+                                        title="Show section"
+                                    >
+                                        <Eye size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    )}
 
                     {/* Favorite Poems Section */}
-                    <div className={styles.sectionWithHeader}>
-                        <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Favorite Poems</h2>
-                            {isCurrentUser && isEditing && (
-                                <button 
-                                    onClick={() => toggleSectionVisibility('favorites')}
-                                    className={styles.visibilityToggle}
-                                    title={sectionsVisible.favorites ? "Hide section" : "Show section"}
-                                >
-                                    {sectionsVisible.favorites ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            )}
-                        </div>
-                        
-                        {sectionsVisible.favorites && (
+                    {sectionsVisible.favorites ? (
+                        <div className={styles.sectionWithHeader}>
+                            <div className={styles.sectionHeader}>
+                                <h2 className={styles.sectionTitle}>Favorite Poems</h2>
+                                {isCurrentUser && isEditing && (
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('favorites')}
+                                        className={styles.visibilityToggle}
+                                        title="Hide section"
+                                    >
+                                        <EyeOff size={18} />
+                                    </button>
+                                )}
+                            </div>
+                            
                             <div className={styles.tabContent}>
                                 {userFavorites.length === 0 ? (
                                     <p className={styles.emptyState}>No favorite poems yet</p>
@@ -480,7 +514,7 @@ export default function UserHomePage({ userid }) {
                                             >
                                                 <div className={styles.favoriteContent}>
                                                     <h3 className={styles.favoriteTitle}>
-                                                        Chapter {favorite.chapterNum}, Poem {favorite.poemNum}
+                                                        Chapter {favorite.chapterNum} {favorite.chapterName}, Poem {favorite.poemNum}
                                                     </h3>
                                                     <div className={styles.japaneseText}>
                                                         {favorite.japanese && 
@@ -494,16 +528,32 @@ export default function UserHomePage({ userid }) {
                                                 </div>
                                             </Link>
                                         ))}
-                                        {userFavorites.length > 5 && (
-                                            <Link href={`/user/${userid}/favorites`} className={styles.viewAllLink}>
+                                        {userFavorites.length > 3 && (
+                                            <Link href={`/userhomepage/${userid}/favorites`} className={styles.viewAllLink}>
                                                 View all favorites
                                             </Link>
                                         )}
                                     </div>
                                 )}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        isCurrentUser && isEditing && (
+                            <div className={styles.hiddenSectionBar}>
+                                <h2 className={styles.hiddenSectionTitle}>Favorite Poems</h2>
+                                <div className={styles.hiddenSectionStatus}>
+                                    <span>Section hidden</span>
+                                    <button 
+                                        onClick={() => toggleSectionVisibility('favorites')}
+                                        className={styles.showSectionButton}
+                                        title="Show section"
+                                    >
+                                        <Eye size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
         </div>
