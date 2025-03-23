@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Edit, Save, X, User, Calendar, Mail, MapPin, Link as LinkIcon, MessageSquare, Heart, BookOpen, Eye, EyeOff, Pencil, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -15,12 +15,12 @@ export default function UserHomePage({ userid }) {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [activeTab, setActiveTab] = useState('comments');
-    
-    const isFetchingUserData = useRef(false);
-    const isFetchingComments = useRef(false);
-    const isFetchingContributions = useRef(false);
-    const isFetchingFavorites = useRef(false);
-    const dataFetched = useRef(false);
+
+    // const [sectionsVisible, setSectionsVisible] = useState({
+    //     comments: true,
+    //     contributions: true,
+    //     favorites: true
+    // });
 
     const [profile, setProfile] = useState({
         bio: '',
@@ -47,11 +47,7 @@ export default function UserHomePage({ userid }) {
     const [favoritesTotalPages, setFavoritesTotalPages] = useState(1);
     const [favoritesLoading, setFavoritesLoading] = useState(true);
 
-    // get user data
-    const fetchUserData = useCallback(async () => {
-        if (isFetchingUserData.current) return;
-        isFetchingUserData.current = true;
-        
+    const fetchUserData = async () => {
         try {
             // Get basic user info
             const response = await fetch(`/api/user/any?userid=${userid}`);
@@ -79,17 +75,18 @@ export default function UserHomePage({ userid }) {
             }
         } catch (error) {
             setError(error.message);
-        } finally {
-            isFetchingUserData.current = false;
-            setLoading(false);
         }
-    }, [userid, session?.user]);
+    };
 
-    // get user comments
-    const fetchUserComments = useCallback(async (page = 1) => {
-        if (!session || isFetchingComments.current) return;
+    // Fetch user's basic information
+    useEffect(() => {
+        fetchUserData();
+    }, [userid, session]);
+
+    // Fetch user's comments with pagination
+    const fetchUserComments = async (page = 1) => {
+        if (!session) return;
         
-        isFetchingComments.current = true;
         try {
             const response = await fetch(`/api/user/getComments?userId=${userid}&page=${page}&limit=5`);
             if (response.ok) {
@@ -102,15 +99,22 @@ export default function UserHomePage({ userid }) {
             console.error('Failed to fetch user comments:', error);
         } finally {
             setCommentsLoading(false);
-            isFetchingComments.current = false;
         }
-    }, [userid, session]);
+    };
 
-    // get user contributions
-    const fetchUserContributions = useCallback(async (page = 1) => {
-        if (!session || isFetchingContributions.current) return;
+    // Handle comments pagination
+    const handleCommentsPageChange = (newPage) => {
+        if (newPage < 1 || newPage > commentsTotalPages || newPage === commentsPage || commentsLoading) {
+            return;
+        }
+        setCommentsPage(newPage);
+        fetchUserComments(newPage);
+    };
+
+    // Fetch user's contributions with pagination
+    const fetchUserContributions = async (page = 1) => {
+        if (!session) return;
         
-        isFetchingContributions.current = true;
         try {
             const response = await fetch(`/api/user/getContributions?userId=${userid}&page=${page}&limit=8`);
             if (response.ok) {
@@ -123,15 +127,22 @@ export default function UserHomePage({ userid }) {
             console.error('Failed to fetch user contributions:', error);
         } finally {
             setContributionsLoading(false);
-            isFetchingContributions.current = false;
         }
-    }, [userid, session]);
+    };
 
-    // get user favorites
-    const fetchUserFavorites = useCallback(async (page = 1) => {
-        if (!session || isFetchingFavorites.current) return;
+    // Handle contributions pagination
+    const handleContributionsPageChange = (newPage) => {
+        if (newPage < 1 || newPage > contributionsTotalPages || newPage === contributionsPage || contributionsLoading) {
+            return;
+        }
+        setContributionsPage(newPage);
+        fetchUserContributions(newPage);
+    };
+
+    // Fetch user's favorite poems with pagination
+    const fetchUserFavorites = async (page = 1) => {
+        if (!session) return;
         
-        isFetchingFavorites.current = true;
         try {
             const response = await fetch(`/api/user/getFavorites?userId=${userid}&page=${page}&limit=2`);
             if (response.ok) {
@@ -144,36 +155,29 @@ export default function UserHomePage({ userid }) {
             console.error('Failed to fetch user favorites:', error);
         } finally {
             setFavoritesLoading(false);
-            isFetchingFavorites.current = false;
         }
-    }, [userid, session]);
-
-    // Handle comments pagination
-    const handleCommentsPageChange = useCallback((newPage) => {
-        if (newPage < 1 || newPage > commentsTotalPages || newPage === commentsPage || commentsLoading) {
-            return;
-        }
-        setCommentsPage(newPage);
-        fetchUserComments(newPage);
-    }, [commentsTotalPages, commentsPage, commentsLoading, fetchUserComments]);
-
-    // Handle contributions pagination
-    const handleContributionsPageChange = useCallback((newPage) => {
-        if (newPage < 1 || newPage > contributionsTotalPages || newPage === contributionsPage || contributionsLoading) {
-            return;
-        }
-        setContributionsPage(newPage);
-        fetchUserContributions(newPage);
-    }, [contributionsTotalPages, contributionsPage, contributionsLoading, fetchUserContributions]);
+    };
 
     // Handle favorites pagination
-    const handleFavoritesPageChange = useCallback((newPage) => {
+    const handleFavoritesPageChange = (newPage) => {
         if (newPage < 1 || newPage > favoritesTotalPages || newPage === favoritesPage || favoritesLoading) {
             return;
         }
         setFavoritesPage(newPage);
         fetchUserFavorites(newPage);
-    }, [favoritesTotalPages, favoritesPage, favoritesLoading, fetchUserFavorites]);
+    };
+
+    // Init data fetching
+    useEffect(() => {
+        if (user) {
+            if (session) {
+                fetchUserComments();
+                fetchUserContributions();
+                fetchUserFavorites();
+            }
+            setLoading(false);
+        }
+    }, [user, session]);
 
     // Handle updating profile information
     const handleProfileUpdate = async () => {
@@ -204,7 +208,6 @@ export default function UserHomePage({ userid }) {
                 }));
                 setIsEditingProfile(false);
                 alert('Profile updated successfully');
-                dataFetched.current = false; // reset
                 fetchUserData();
             } else {
                 throw new Error('Failed to update profile');
@@ -217,40 +220,13 @@ export default function UserHomePage({ userid }) {
         }
     };
 
-    // Reset data fetching state when userid changes
-    useEffect(() => {
-        if (userid) {
-            dataFetched.current = false;
-            // reset
-            isFetchingUserData.current = false;
-            isFetchingComments.current = false;
-            isFetchingContributions.current = false;
-            isFetchingFavorites.current = false;
-        }
-    }, [userid]);
-
-    // Main data fetching effect
-    useEffect(() => {
-        if (userid && !dataFetched.current) {
-            fetchUserData();
-            dataFetched.current = true;
-        }
-    }, [userid, fetchUserData]);
-
-    // Additional data fetching only if user data is loaded and session exists
-    useEffect(() => {
-        const fetchAdditionalData = async () => {
-            if (user && session && !isFetchingComments.current && !isFetchingContributions.current && !isFetchingFavorites.current) {
-                await Promise.all([
-                    fetchUserComments(commentsPage),
-                    fetchUserContributions(contributionsPage),
-                    fetchUserFavorites(favoritesPage)
-                ]);
-            }
-        };
-        
-        fetchAdditionalData();
-    }, [user, session, fetchUserComments, fetchUserContributions, fetchUserFavorites, commentsPage, contributionsPage, favoritesPage]);
+    // Toggle section visibility
+    const toggleSectionVisibility = (section) => {
+        setSectionsVisible(prev => ({
+            ...prev,
+            [section]: !prev[section]
+        }));
+    };
 
     // Format date for display
     const formatDate = (dateString) => {
@@ -273,7 +249,7 @@ export default function UserHomePage({ userid }) {
             <div className={styles.loginPrompt}>
                 <LogIn size={24} className={styles.loginIcon} />
                 <h3>Sign in to view this content</h3>
-                <p>Please sign in to see {user.name}&apos;s comments, contributions, and favorite poems.</p>
+                <p>Please sign in to see {user.name}'s comments, contributions, and favorite poems.</p>
                 <div className={styles.loginActions}>
                     <Link href="/api/auth/signin" className={styles.signInButton}>
                         Sign In
@@ -364,7 +340,7 @@ export default function UserHomePage({ userid }) {
                         {user.email && (
                             <span className={styles.userEmail}>
                                 <Mail size={16} />
-                                { user.email}
+                                {user.email}
                             </span>
                         )}
                     </div>
