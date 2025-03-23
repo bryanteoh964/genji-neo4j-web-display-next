@@ -249,7 +249,7 @@ export default function UserHomePage({ userid }) {
             <div className={styles.loginPrompt}>
                 <LogIn size={24} className={styles.loginIcon} />
                 <h3>Sign in to view this content</h3>
-                <p>Please sign in to see {user.name}'s comments, contributions, and favorite poems.</p>
+                <p>Please sign in to see {user.name}&apos; comments, contributions, and favorite poems.</p>
                 <div className={styles.loginActions}>
                     <Link href="/api/auth/signin" className={styles.signInButton}>
                         Sign In
