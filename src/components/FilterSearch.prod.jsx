@@ -232,6 +232,7 @@ const PoemSearch = () => {
             chapterNum: (
               Object.values(result.chapterNum).join("")
             ),
+            // genji_age: Object.values(result.genji_age).join(""),
             poemNum: (Object.values(result.poemNum).join("")),
             chapterAbr: Object.values(result.chapterAbr).join(""),
             japanese: Object.values(result.japanese).join(""),
@@ -241,6 +242,7 @@ const PoemSearch = () => {
               : Object.values(result.addressee_name).join(""),
             addressee_gender: Object.values(result.addressee_gender).join(""),
             speaker_name: Object.values(result.speaker_name).join(""),
+            speaker_color: Object.values(result.speaker_color).join(""),
             speaker_gender: Object.values(result.speaker_gender).join(""),
             season: Object.values(result.season).join(""),
             peotic_tech: Object.values(result.peotic_tech).join(""),
@@ -339,22 +341,168 @@ const PoemSearch = () => {
     });
   }, [filters, results]);
 
+  const defaultChapterCounts = [
+    9, 14, 2, 19, 25, 14, 17, 8, 24, 33, 4, 48, 30, 17, 6, 3, 9, 16, 10, 13, 16, 14, 6, 14, 8, 4, 2, 4, 9, 8, 21, 11, 20, 24, 18, 11, 8, 6, 26, 12, 26, 1, 4, 24, 13, 21, 31, 15, 24, 11, 22, 11, 28, 1,
+  ].reduce((acc, count, index) => {
+    const chapterNum = (index + 1).toString().padStart(2, '0'); // '01', '02', ..., '54'
+    acc[chapterNum] = count;
+    return acc;
+  }, {});
+
+  // const chapterData = useMemo(() => {
+  //   // Start with the default counts for all chapters
+  //   const originalCounts = { ...defaultChapterCounts };
+  
+  //   // Calculate the filtered counts
+  //   const filteredCounts = Object.keys(defaultChapterCounts).reduce((acc, chapterNum) => {
+  //     acc[chapterNum] = 0; // Initialize all chapters to 0
+  //     return acc;
+  //   }, {});
+  
+  //   filteredResults.forEach((poem) => {
+  //     filteredCounts[poem.chapterNum] = (filteredCounts[poem.chapterNum] || 0) + 1;
+  //   });
+  
+  //   const labels = Object.keys(defaultChapterCounts).sort((a, b) => a - b);
+  
+  //   return {
+  //     labels,
+  //     datasets: [
+  //       {
+  //         label: 'Original Poems per Chapter',
+  //         data: labels.map((label) => originalCounts[label] || 0),
+  //         backgroundColor: 'rgba(192, 192, 192, 0.6)', // Gray for default data
+  //       },
+  //       {
+  //         label: 'Filtered Poems per Chapter',
+  //         data: labels.map((label) => filteredCounts[label] || 0),
+  //         backgroundColor: labels.map((label) =>
+  //           filteredCounts[label] > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0)' // Highlight filtered chapters
+  //         ),
+  //       },
+  //     ],
+  //   };
+  // }, [filteredResults]);
+
+  //   const chartOptions = {
+  //   maintainAspectRatio: false,
+  //   scales: {
+  //     y: {
+  //       beginAtZero: true,
+  //     },
+  //   },
+  //   plugins: {
+  //     tooltip: {
+  //       callbacks: {
+  //         label: function (context) {
+  //           const chapterNum = context.label; // Get the chapter number from the label
+  //           const chapterName = getChapterName(chapterNum); // Get the chapter name
+  //           const poemsCount = context.raw; // Get the number of poems
+  //           return `${poemsCount} poems found in ${chapterName}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+  // - - -- - - - - -- -- - -
+
+  // const chapterData = useMemo(() => {
+  //   // Initialize filtered counts for ages 1-75, starting with 0 poems for each age
+  //   const filteredCounts = {};
+  //   for (let age = 1; age <= 75; age++) {
+  //     filteredCounts[age] = 0;
+  //   }
+  
+  //   // Calculate filtered counts based on Genji's age for each poem
+  //   filteredResults.forEach((poem) => {
+  //     const poemAge = poem.genji_age; // Assuming genji_age is available in each poem
+  //     if (poemAge >= 1 && poemAge <= 75) {
+  //       filteredCounts[poemAge] += 1;
+  //     }
+  //   });
+  
+  //   // Create the X-axis labels (ages 1 to 75)
+  //   const labels = Array.from({ length: 75 }, (_, index) => index + 1); // Ages 1 to 75
+  
+  //   // Prepare the chart data
+  //   return {
+  //     labels,
+  //     datasets: [
+  //       {
+  //         label: 'Filtered Poems per Age',
+  //         data: labels.map((label) => filteredCounts[label] || 0), // Get poem count for each age, default to 0
+  //         backgroundColor: labels.map((label) =>
+  //           filteredCounts[label] > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0)' // Highlight ages with poems
+  //         ),
+  //       },
+  //     ],
+  //   };
+  // }, [filteredResults]);
+  
+  // const chartOptions = {
+  //   maintainAspectRatio: false,
+  //   scales: {
+  //     x: {
+  //       // Keep all ages (1 to 75) on the X-axis
+  //       beginAtZero: true,
+  //       ticks: {
+  //         stepSize: 1, // Ensure every age (1-75) is shown on the X-axis
+  //       },
+  //     },
+  //     y: {
+  //       beginAtZero: true, // Ensure the Y-axis starts at 0
+  //     },
+  //   },
+  //   plugins: {
+  //     tooltip: {
+  //       callbacks: {
+  //         label: function (context) {
+  //           const age = context.label; // Get the age from the label
+  //           const poemsCount = context.raw; // Get the number of poems
+  //           return `${poemsCount} poems found at age ${age}`;
+  //         },
+  //       },
+  //     },
+  //   },
+  // };  
+
+  // -- - - -- - - -- --
+
+
   const chapterData = useMemo(() => {
-    const counts = filteredResults.reduce((acc, poem) => {
-      acc[poem.chapterNum] = (acc[poem.chapterNum] || 0) + 1;
+    // Start with the default counts for all chapters
+    const originalCounts = { ...defaultChapterCounts };
+  
+    // Calculate the filtered counts
+    const filteredCounts = Object.keys(defaultChapterCounts).reduce((acc, chapterNum) => {
+      acc[chapterNum] = 0; // Initialize all chapters to 0
       return acc;
     }, {});
-
-    const labels = Object.keys(counts).sort((a, b) => a - b);
-    const data = labels.map(label => counts[label]);
-
+  
+    filteredResults.forEach((poem) => {
+      filteredCounts[poem.chapterNum] = (filteredCounts[poem.chapterNum] || 0) + 1;
+    });
+  
+    const labels = Object.keys(defaultChapterCounts).sort((a, b) => a - b);
+  
     return {
       labels,
       datasets: [
         {
-          label: 'Poems per Chapter',
-          data,
-          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          label: 'Original Poems per Chapter',
+          data: labels.map((label) => originalCounts[label] || 0),
+          backgroundColor: 'rgba(192, 192, 192, 0.6)', // Gray for original data
+          barPercentage: 0.9, // Make the gray bars slightly narrower
+          categoryPercentage: 0.9, // Adjust spacing between bars
+          order: 1, // Render this dataset first
+        },
+        {
+          label: 'Filtered Poems per Chapter',
+          data: labels.map((label) => filteredCounts[label] || 0),
+          backgroundColor: 'rgba(75, 192, 192, 1)', // Fully opaque blue for filtered data
+          barPercentage: 1.0, // Make the blue bars slightly wider
+          categoryPercentage: 1.0, // Ensure blue bars fully cover gray bars
+          order: 2, // Render this dataset second (on top of gray bars)
         },
       ],
     };
@@ -363,12 +511,27 @@ const PoemSearch = () => {
   const chartOptions = {
     maintainAspectRatio: false,
     scales: {
+      x: {
+        stacked: true, // Enable stacking for the x-axis
+      },
       y: {
         beginAtZero: true,
+        stacked: false, // Enable stacking for the y-axis
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const chapterNum = context.label; // Get the chapter number from the label
+            const chapterName = getChapterName(chapterNum); // Get the chapter name
+            const poemsCount = context.raw; // Get the number of poems
+            return `${poemsCount} poems found in ${chapterName}`;
+          },
+        },
       },
     },
   };
-
 
   useEffect(() => {
     handleSearch(query);
@@ -717,6 +880,7 @@ const PoemSearch = () => {
           className={styles.resultItem}
           onMouseEnter={(event) => handleMouseEnter(index, event)}
           onMouseLeave={handleMouseLeave}
+          style={{ border: `2.5px solid ${result.speaker_color}` }}
         >
           <Link href={`/poems/${removeLeadingZero(result.chapterNum)}/${removeLeadingZero(result.poemNum)}`}>
             <div className={styles.resultContent}>
@@ -808,7 +972,7 @@ const PoemSearch = () => {
           value={query}
           onChange={handleInputChange}
           onFocus={() => setShowResults(true)}
-          placeholder="Enter keyword..."
+          placeholder="Enter Keyword..."
           className={styles.searchInput}
         />
       </div>
@@ -826,7 +990,7 @@ const PoemSearch = () => {
                 Found {filteredResults.length} poems
                 {Object.values(filters).some(({ options }) =>
                   Object.values(options).some(({ checked }) => checked)
-                ) && " (filtered)"}
+                )}
               </div>
               {renderResults()}
             </>
@@ -837,20 +1001,6 @@ const PoemSearch = () => {
           )}
         </main>
       </div>
-
-      <BackTop
-        className={styles.backTop}
-        style={{
-          width: "auto",
-          heigth: "auto",
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div>Back to top</div>
-      </BackTop>
     </div>
   );
 };

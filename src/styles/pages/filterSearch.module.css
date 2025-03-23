@@ -79,7 +79,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 8px;
+  padding: 12px 20px 12px 12px;
   cursor: pointer;
   user-select: none;
 }
@@ -385,8 +385,9 @@
   width: 100%;
   margin: 0 auto;
   padding: 20px;
+  padding-top: 0px;
   box-sizing: border-box;
-  height: 300px;
+  height: 270px;
 }
 
 @media (max-width: 1800px) {

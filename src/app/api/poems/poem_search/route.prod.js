@@ -75,6 +75,7 @@ async function generalSearch(q) {
                 COALESCE(apoc.text.join(addressee_genders, " & "), "") AS addressee_gender,
                 COALESCE(speaker.name, "") AS speaker_name,
                 COALESCE(speaker.gender, "") AS speaker_gender,
+                COALESCE(speaker.color, "") AS speaker_color,  // Added color property
                 COALESCE(season.name, "") AS season,
                 COALESCE(pt.name, "") AS poetic_tech,
                 COALESCE([x IN translations WHERE x.translator_name = "Waley"][0].text, "") AS Waley_translation,
@@ -84,12 +85,18 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
             ORDER BY p.pnum
         `;
-        
-        const res = await session.readTransaction(tx => tx.run(query, { q }));
-        // console.log("res:", res.records)
+
+        let res;
+        try {
+            res = await session.readTransaction(tx => tx.run(query, { q }));
+        } catch (queryError) {
+            console.error('Cypher query execution failed:', queryError);
+            throw queryError;
+        }
+
         await session.close();
 
-         // Format and sort related poems
+        // Format and sort related poems
         if (res.records.length > 0) {
             const searchResults = res.records.map(record => ({
                 chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
@@ -101,6 +108,7 @@ async function generalSearch(q) {
                 addressee_gender: toNativeTypes(record.get('addressee_gender')),
                 speaker_name: toNativeTypes(record.get('speaker_name')),
                 speaker_gender: toNativeTypes(record.get('speaker_gender')),
+                speaker_color: toNativeTypes(record.get('speaker_color')), // Added to results
                 season: toNativeTypes(record.get('season')),
                 peotic_tech: toNativeTypes(record.get('poetic_tech')),
                 waley_translation: toNativeTypes(record.get('Waley_translation')),
@@ -108,17 +116,17 @@ async function generalSearch(q) {
                 tyler_translation: toNativeTypes(record.get('Tyler_translation')),
                 washburn_translation: toNativeTypes(record.get('Washburn_translation')),
                 cranston_translation: toNativeTypes(record.get('Cranston_translation'))
+            }));
 
-              }));
-            //console.log("searchResult:", searchResults)
             return { searchResults };
         } else {
             console.log(`No poem found with name: ${q}`);
             return null;
         }
-    } catch (error) {
-        //console.error(`Error in generalSearch: ${error}`);
-        return { "error": "Error in generalSearch()", "message": error.toString() };
+    }
+    catch (error) {
+        console.error('Error in generalSearch:', error);
+        return null;
     }
 }
 
