@@ -49,7 +49,11 @@
 }
 
 .footerLink:hover {
-    color: #c49c3e;
+    color: #c49c3e !important;
+}
+
+.footerCenter a {
+    text-decoration: none !important;
 }
 
 @media (max-width: 768px) {
