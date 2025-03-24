@@ -9,6 +9,8 @@ import MoreDropDown from './MoreDropDown.prod';
 import { SignIn } from './auth/signin-button.prod';
 import NotificationIcon from './NotificationIcon.prod';
 import { useSession } from 'next-auth/react';
+import LogoSVG from '../../public/images/genji_logo.svg';
+
 
 const Navigation = () => {
     const [graph, setGraph] = useState([]);
@@ -38,11 +40,14 @@ const Navigation = () => {
                 <div className={styles.logoContainer}>
                     <Link href="/" className={styles.logoLink}>
                         <div className={styles.logo}>
-                            <img 
+                            {/* <img 
                                 src="/images/genji_logo.png" 
                                 alt="Genji Poems Logo" 
                                 className={styles.logoImage}
-                            />
+                            /> */}
+
+                        <LogoSVG width={30} height={59} />
+
                         </div>
                         <h1 className={styles.siteTitle}>
                             Genji

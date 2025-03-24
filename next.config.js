@@ -20,6 +20,15 @@ const nextConfig = (phase) => ({
 			'lh3.googleusercontent.com',
 			'googleusercontent.com'
 		],
+	},
+	webpack(config) {
+		// support svg
+		config.module.rules.push({
+		  test: /\.svg$/,
+		  use: ['@svgr/webpack']
+		});
+	
+		return config;
 	}
 })
 
