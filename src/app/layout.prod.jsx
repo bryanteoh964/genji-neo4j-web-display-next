@@ -5,7 +5,7 @@ import '../styles/globals.css';
 import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
-import Footer from '../components/footer.prod'
+import Footer from '../components/Footer.prod'
 import { SessionProvider } from 'next-auth/react'
 
 export const metadata = {
