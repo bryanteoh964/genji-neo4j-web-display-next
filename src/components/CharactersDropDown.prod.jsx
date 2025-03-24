@@ -1,6 +1,7 @@
+'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/searchDropDown.module.css';
+import styles from '../styles/pages/characterDropDown.module.css';
 
 const CharactersDropDown = ({ l }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,87 +25,71 @@ const CharactersDropDown = ({ l }) => {
     }, []);
 
     return (
-        <div ref={dropdownRef} className={`${styles.searchDropdown} ${isOpen ? styles.open : ''}`}>
-            <button onClick={handleMenuClick} className={styles.searchButton}>
-                CHARACTERS
+        <div
+            ref={dropdownRef}
+            className={`${styles.charactersDropdown} ${isOpen ? styles.open : ''}`}
+        >
+            <button onClick={handleMenuClick} className={styles.charactersButton}>
+                characters
             </button>
 
-            {isOpen && <SearchOptions setIsOpen={setIsOpen} l={l} />}
+            {isOpen && <CharactersOptions setIsOpen={setIsOpen} l={l} />}
         </div>
     );
 };
 
-const SearchOptions = ({ setIsOpen, l }) => {
-    function myFunction(query) {
-        // Declare variables
-        var filter = query.toUpperCase();
-        var li = document.getElementsByClassName("searchResult");
+const CharactersOptions = ({ setIsOpen, l }) => {
+    function searchCharacters(query) {
+        const filter = query.toUpperCase();
+        const characterItems = document.getElementsByClassName("characterItem");
 
-        // Loop through all list items, and hide those who don't match the search query
-        for (var i = 0; i < li.length; i++) {
-            var a = li[i];
-            if (a.innerHTML.toUpperCase().replace("Ō", "O").replace("Ū", "U").indexOf(filter) > -1) {
-                li[i].style.display = "";
+        for (let i = 0; i < characterItems.length; i++) {
+            const characterName = characterItems[i];
+            const nameText = characterName.textContent || characterName.innerText;
+            const simplifiedName = nameText.toUpperCase().replace("Ō", "O").replace("Ū", "U");
+            
+            if (simplifiedName.indexOf(filter) > -1) {
+                characterItems[i].style.display = "";
             } else {
-                li[i].style.display = "none";
+                characterItems[i].style.display = "none";
             }
         }
     }
 
+    const sortedCharacters = [...l].sort();
+
     return (
-        <div
-            className={styles.searchOptions}
-            style={{ maxHeight: '500px', overflowY: 'scroll' }}
-        >
-            <Link href="/characters" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
-                Diagram
-            </Link>
-            <Link href="/characters/timeline" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
-                Timeline
-            </Link>
-            <Link href="/characters/map" className={styles.searchLink} onClick={() => setIsOpen(false)} style={{fontWeight: "bold"}}>
-                Map
-            </Link>
-            <input
-                type="text"
-                id="mySearch"
-                onClick={(e) => {
-                    if (e.target.value == '') {
-                        myFunction('');
-                    }
-                }}
-                placeholder="Search Character"
-                onKeyUp={(e) => myFunction(e.target.value)}
-                style={{
-                    width: '175px',
-                    fontSize: '13px',
-                    padding: '11px',
-                    paddingLeft: '6px',
-                    paddingTop: '8px',
-                    paddingBottom: '8px',
-                    border: '3px solid gray',
-                    marginTop: '3px',
-                    marginBottom: '3px',
-                    marginLeft: '15px',
-                    borderRadius: '10px',
-                    '::placeholder': {
-                        color: 'gray',
-                    },
-                }}
-            />
-            {l.map(function (c_name) {
-                return (
-                    <li className="searchResult" style={{ listStyle: 'none' }} key={c_name}>
-                        <a
-                            href={'/characters/' + c_name}
-                            className={styles.searchLink}
+        <div className={styles.charactersOptions}>
+            <div className={styles.searchContainer}>
+                <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Search Character"
+                    onClick={(e) => {
+                        if (e.target.value === '') {
+                            searchCharacters('');
+                        }
+                    }}
+                    onKeyUp={(e) => searchCharacters(e.target.value)}
+                />
+            </div>
+            
+            <ul className={styles.charactersList}>
+                {sortedCharacters.map((characterName) => (
+                    <li 
+                        className="characterItem" 
+                        key={characterName}
+                    >
+                        <Link
+                            href={`/characters/${characterName}`}
+                            className={styles.characterLink}
                             onClick={() => setIsOpen(false)}
                         >
-                            {c_name}
-                        </a>
+                            {characterName}
+                        </Link>
                     </li>
-                );
-            })}
+                ))}
+            </ul>
         </div>
     );
 };
