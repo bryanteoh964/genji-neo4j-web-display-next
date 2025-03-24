@@ -59,10 +59,14 @@ html::-webkit-scrollbar {
 	padding: 0;
 	position: relative;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .bottom {
 	min-height: 80vh;	
+  flex: 1;
 }
 
 .section_frame {
@@ -723,6 +727,10 @@ form, button {
   body {
     font-size: 0.9rem;
     line-height: 20px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   body p,
