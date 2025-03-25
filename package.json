@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "20.14.2",
     "@types/react": "18.3.3"
   }

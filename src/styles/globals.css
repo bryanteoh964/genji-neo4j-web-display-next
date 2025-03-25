@@ -37,10 +37,20 @@ body p,
 .section_container p,
 .section_container li {
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.85);
+    color: #737373;
     line-height: 1.6;
     margin-bottom: 1em;
 } 
+
+/* hide scroll bar */
+html {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0; 
+}
 
 .main {
 	top: 0;
@@ -48,10 +58,15 @@ body p,
 	margin: 0;
 	padding: 0;
 	position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .bottom {
 	min-height: 80vh;	
+  flex: 1;
 }
 
 .section_frame {
@@ -61,7 +76,7 @@ body p,
 
 .section_container {
 	margin: 80px 0;
-	width: 920px;
+	width: 1440px;
 	min-height: 460px;
 	text-align: left;
 }
@@ -211,7 +226,7 @@ form, button {
 
 
 .descriptionSection {
-  background-color: rgba(80, 80, 80, 0.9); 
+  background-color: #737373; 
   padding: 4rem 0;
   position: relative;
   display: flex;
@@ -640,7 +655,7 @@ form, button {
 }
 
 .descriptionSection {
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.9), rgba(60, 60, 70, 0.9), rgba(50, 50, 80, 0.9));
+  background: #737373;
   background-size: 200% 200%;
   animation: gradientBG 15s ease infinite;
 }
@@ -712,6 +727,10 @@ form, button {
   body {
     font-size: 0.9rem;
     line-height: 20px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   body p,

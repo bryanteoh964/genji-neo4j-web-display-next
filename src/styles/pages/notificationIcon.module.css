@@ -1,8 +1,10 @@
 .notificationContainer {
-    position: relative;
-    display: inline-block;
-    z-index: 1001;
-  }
+  position: relative;
+  display: inline-block;
+  z-index: 1001;
+  margin-right: -10px;
+  margin-top: 20px;
+}
   
 .notificationButton {
   background: none;

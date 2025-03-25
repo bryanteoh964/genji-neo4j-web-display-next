@@ -1,11 +1,11 @@
 'use client'
 
 import '../styles/globals.css';
-import Header from '../components/Header.prod';
+// import Header from '../components/Header.prod';
 import Nav from '../components/Nav.prod';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
-
+import Footer from '../components/Footer.prod'
 import { SessionProvider } from 'next-auth/react'
 
 export const metadata = {
@@ -23,11 +23,12 @@ const Layout = ({ children }) => {
       <SessionProvider>
       {!isLoginPage && (
         <div className="top">
-          <Header />
+          {/* <Header /> */}
           <Nav />
         </div>
        )}
         <main className="bottom">{children}</main>
+        <Footer />
         <Script id="chatbot-config">
           {`
             window.difyChatbotConfig = {
