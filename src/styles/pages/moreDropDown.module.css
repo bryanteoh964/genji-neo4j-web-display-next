@@ -58,7 +58,7 @@
     color: #c49c3e !important;
     transition: all 0.3s ease !important;
     text-align: left !important;
-    font-size: 16px !important;
+    font-size: 18px !important;
     font-weight: 600 !important;
     width: auto !important;
     height: auto !important;
@@ -71,10 +71,16 @@
     color: #ffffff !important;
 }
 
+@media (max-width: 1200px) {
+    .moreButton {
+        width: 120px;
+    }
+}
+
 @media (max-width: 1024px) {
     .moreButton {
         font-size: 16px;
-        width: 120px;
+        margin-right: -10px;
     }
     
     .moreOptions {
@@ -82,14 +88,25 @@
     }
     
     .moreLink {
-        padding: 8px 12px;
-        font-size: 13px;
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+    }
+
+    .moreDropdown {
+        margin-left: -30px;
+        margin-right: -20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .moreButton {
+        font-size: 14px;
     }
 }
 
 @media (max-width: 768px) {
     .moreButton {
-        font-size: 14px;
+        font-size: 15px;
         width: 100px;
     }
     
@@ -98,8 +115,8 @@
     }
     
     .moreLink {
-        padding: 8px 10px;
-        font-size: 12px;
+        padding: 8px 10px !important;
+        font-size: 12px !important;
     }
 }
 
@@ -114,7 +131,7 @@
     }
     
     .moreLink {
-        padding: 6px 8px;
-        font-size: 11px;
+        padding: 6px 8px !important;
+        font-size: 11px !important;
     }
 }

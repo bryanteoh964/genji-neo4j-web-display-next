@@ -97,7 +97,7 @@
     color: white !important;
     transition: all 0.3s ease !important;
     text-align: left !important;
-    font-size: 13px !important;
+    font-size: 16px !important;
 }
 
 .characterLink:hover {
@@ -134,14 +134,21 @@
     }
     
     .characterLink {
-        padding: 7px 12px;
-        font-size: 13px;
+        padding: 7px 12px !important;
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .charactersButton {
+        font-size: 14px;
+        width: 120px;
     }
 }
 
 @media (max-width: 768px) {
     .charactersButton {
-        font-size: 14px;
+        font-size: 15px;
         width: 100px;
     }
     
@@ -155,8 +162,8 @@
     }
     
     .characterLink {
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 6px 10px !important;
+        font-size: 12px !important;
     }
 }
 
@@ -176,7 +183,7 @@
     }
     
     .characterLink {
-        padding: 5px 8px;
-        font-size: 11px;
+        padding: 5px 8px !important;
+        font-size: 11px !important;
     }
 }

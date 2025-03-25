@@ -40,19 +40,9 @@ const Navigation = () => {
                 <div className={styles.logoContainer}>
                     <Link href="/" className={styles.logoLink}>
                         <div className={styles.logo}>
-                            {/* <img 
-                                src="/images/genji_logo.png" 
-                                alt="Genji Poems Logo" 
-                                className={styles.logoImage}
-                            /> */}
-
-                        <LogoSVG width={30} height={59} />
-
+                            <LogoSVG width={240} height={90} />
                         </div>
-                        <h1 className={styles.siteTitle}>
-                            Genji
-                            <span className={styles.titleSecondary}>poems</span>
-                        </h1>
+
                     </Link>
                 </div>
                 
