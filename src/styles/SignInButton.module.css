@@ -1,43 +1,49 @@
 .userContainer {
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 5px;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding-bottom: 10px;
-  }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  position: relative;
+  margin-right: 16px;
+  margin-top: 20px;
+}
   
 .userLink {
   text-decoration: none;
-  color: #333;
+  color: #c49c3e;
   font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 20px;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  margin-right: 30px;
+}
+
+.userLink:hover {
+  color: #ffffff;
 }
 
 .signInButton {
   white-space: nowrap; 
-  display: inline-block; 
-  position: absolute;
-  top: 80px;
-  right: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
-  background-color: #e07a5f;
+  background-color: #c49c3e;
   color: white;
   transition: all 0.3s ease;
+  position: relative;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-top: 20px;
 }
 
 .signInButton:hover {
-  background-color: #c9683d; 
+  background-color: #b48c2e; 
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -64,44 +70,15 @@
 }
 
 @media (max-width: 768px) {
-  .userContainer {
-    top: 110px;
-    right: 10px;
-    padding: 3px 8px;
-  }
-
   .userLink, .signInButton {
-    top: 110px;
     padding: 6px 12px;
     font-size: 0.9em;
   }
 }
 
 @media (max-width: 480px) {
-  .userContainer {
-    top: 120px;
-    right: 5px;
-    padding: 2px 6px;
-  }
-
   .userLink, .signInButton {
-    top: 100px; 
-    right: 10px;
     padding: 4px 10px;
     font-size: 0.8em;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .userContainer {
-    background-color: #333;
-  }
-
-  .userLink {
-    color: #fff;
-  }
-
-  .userLink:hover {
-    background-color: #444;
   }
 }
