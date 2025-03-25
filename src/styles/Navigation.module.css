@@ -15,7 +15,7 @@
     width: 100%;
     height: 90px;
     margin: 0 auto;
-    padding: 0 24px 0 24px; 
+    padding: 10 0px;
 }
 
 .navLinksWrapper {
@@ -37,44 +37,11 @@
 }
 
 .logo {
-    margin-right: 12px;
     top: 15.62px;
-    left: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
-.logoImage {
-    width: 26px;
-    height: 59px;
-    width: 100%;
-    height: auto;
-}
-
-.siteTitle {
-    font-family: newsreader, serif;
-    color: #c49c3e;
-    font-size: 33.77px;
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-    letter-spacing: 8%;
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-  }
-  
-  .titleSecondary {
-    font-family: newsreader, serif;
-    color: #ffffff;
-    font-size: 33.77px;
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-    letter-spacing: 8%;
-    margin-left: 25px
-  }
 
 .navLinks {
     display: flex;
@@ -137,8 +104,24 @@
     align-items: center;
     height: 100%;
     margin-left: auto;
-    margin-right: 16px; 
     gap: 16px;
+}
+
+@media (max-width: 1200px) {
+    .navLinks a, 
+    .navLinks span,
+    .dropdownWrapper > div > span {
+        width: auto;
+        padding: 0 15px;
+    }
+    
+    .navLinks {
+        gap: 20px;
+    }
+
+    .userControls {
+        margin-left: -20px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -158,8 +141,8 @@
         gap: 20px;
     }
 
-    .logoImage {
-        height: 50px;
+    .userControls {
+        margin-left: -20px;
     }
 }
 
@@ -174,6 +157,10 @@
     
     .navLinks {
         gap: 10px;
+    }
+
+    .userControls {
+        gap: 12px;
     }
 }
 
@@ -242,22 +229,12 @@
     .navLinks a, 
     .navLinks span,
     .dropdownWrapper > div > span {
-        font-size: 14px;
+        font-size: 13px;
         padding: 5px 8px;
         height: auto;
         letter-spacing: 0.05em;
     }
-    
-    .siteTitle {
-        font-size: 1.3rem;
-    }
-    
-    /* .logo {
-        width: 35px;
-        height: 35px;
-        margin-right: 8px;
-    } */
-    
+
     .userControls {
         gap: 10px;
     }
@@ -278,14 +255,5 @@
     .logoContainer {
         flex-direction: column;
         text-align: center;
-    }
-    
-    /* .logo {
-        margin-right: 0;
-        margin-bottom: 5px;
-    } */
-    
-    .siteTitle {
-        font-size: 1.1rem;
     }
 }
