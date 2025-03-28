@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
 .userContainer {
   display: flex;
   align-items: center;
@@ -9,6 +11,7 @@
 }
   
 .userLink {
+  font-family: 'Lexend', sans-serif;
   text-decoration: none;
   color: #c49c3e;
   font-weight: 600;
@@ -23,6 +26,7 @@
 }
 
 .signInButton {
+  font-family: 'Lexend', sans-serif;
   white-space: nowrap; 
   display: inline-flex;
   align-items: center;
