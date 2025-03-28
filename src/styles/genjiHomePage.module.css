@@ -42,7 +42,7 @@
 .titleOverlay {
   position: absolute;
   height: 302px;
-  top: 800px;
+  margin-top: 23%;
   margin-right: 55%;
   width: 42%;
   text-align: right;
