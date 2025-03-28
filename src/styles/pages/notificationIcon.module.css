@@ -3,6 +3,7 @@
   display: inline-block;
   z-index: 1001;
   margin-right: -10px;
+  margin-left: 20px;
   margin-top: 20px;
 }
   
@@ -576,3 +577,4 @@
 .spinning {
   animation: spin 1s linear infinite;
 }
+
