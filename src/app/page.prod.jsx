@@ -13,8 +13,9 @@ const GenjiHomePage = () => {
 		  
 		  // Title parallax effect
 		  const titleOverlay = document.querySelector(`.${styles.titleOverlay}`);
+
 		  if (titleOverlay) {
-			titleOverlay.style.transform = `translateY(calc(-50% + ${scrollTop * 0.15}px))`;
+			titleOverlay.style.cssText += 'transform: translateY(calc(-50% + ' + (scrollTop * 0.18) + 'px)) !important;';
 		  }
 		  
 		  // Description text parallax effect

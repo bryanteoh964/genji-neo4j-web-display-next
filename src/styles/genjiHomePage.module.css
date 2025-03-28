@@ -25,6 +25,17 @@
   height: 100%;
   object-fit: cover;
   z-index: -1;
+  animation: slowZoom 20s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+@keyframes slowZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 
@@ -32,12 +43,24 @@
   position: absolute;
   height: 302px;
   top: 800px;
-  left: 51px;
-  transform: translateY(-50%);
+  margin-right: 55%;
   width: 42%;
   text-align: right;
   will-change: transform;
   transition: transform 0.1s ease-out;
+  animation: fadeInRight 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-50%);
+  }
 }
 
 .mainTitle {
@@ -192,7 +215,7 @@
   position: relative;
   will-change: transform;
   z-index: 5;
-  padding-right: 40px;
+  margin-right: 4%;
 }
 
 .descriptionText p {
@@ -230,7 +253,7 @@
   max-width: 600px;
   height: auto;
   border-radius: 10px;
-  padding-left: 40px;
+  padding-left: 6%;
 }
 
 
@@ -245,6 +268,15 @@
   
   .descriptionText, .titleOverlay {
     width: 45%;
+  }
+
+  .discover, .exquisitePoems, .emotionalHeart, 
+  .worldsFirst, .century, .number, .taleOfGenji {
+    font-size: 34px;
+  }
+
+  .descriptionText p {
+    font-size: 26px;
   }
   
   .statsContainer {
@@ -271,7 +303,7 @@
   .titleOverlay,
   .descriptionText p,
   .statsContainer {
-    transform: none !important; /* 在小屏幕上禁用视差效果 */
+    transform: none !important; 
     transition: none;
   }
   
