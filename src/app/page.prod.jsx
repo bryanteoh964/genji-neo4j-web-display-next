@@ -57,7 +57,7 @@ const GenjiHomePage = () => {
 				<br />
 				<span className={styles.emotionalHeart}>form the emotional heart of</span>
 				<br />
-				<span className={styles.worldsFirst}>the world's first novel, the</span>
+				<span className={styles.worldsFirst}>the world&apos;s first novel, the</span>
 				<br />
 				<span className={styles.century}>
 				  <span className={styles.number}>11</span>
