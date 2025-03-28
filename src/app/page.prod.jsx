@@ -9,29 +9,32 @@ const GenjiHomePage = () => {
 		const initialOffset = descriptionSection ? descriptionSection.offsetTop : 0;
 		
 		const handleScroll = () => {
-		  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		  
-		  // Title parallax effect
-		  const titleOverlay = document.querySelector(`.${styles.titleOverlay}`);
+			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+			
+			// Title parallax effect
+			const titleOverlay = document.querySelector(`.${styles.titleOverlay}`);
 
-		  if (titleOverlay) {
-			titleOverlay.style.cssText += 'transform: translateY(calc(-50% + ' + (scrollTop * 0.18) + 'px)) !important;';
-		  }
-		  
-		  // Description text parallax effect
-		  const descriptionText = document.querySelector(`.${styles.descriptionText}`);
-		  
-		  if (descriptionText && scrollTop > initialOffset - window.innerHeight) {
+			if (titleOverlay) {
+				titleOverlay.style.cssText += 'transform: translateY(calc(-50% + ' + (scrollTop * 0.2) + 'px)) !important;';
+			}
+			
+			// Description text parallax effect
+			const descriptionText = document.querySelector(`.${styles.descriptionText}`);
+    
+			if (descriptionText && scrollTop > initialOffset - window.innerHeight) {
 			const relativeScroll = Math.max(0, scrollTop - (initialOffset - window.innerHeight/2));
-			const offset = 100 - relativeScroll * 0.6;
+		
+			const startPosition = -200; 
+			const maxScrollPosition = 500;
 			
-			const finalOffset = Math.max(-180, offset);
+			const scrollPercentage = Math.min(1, relativeScroll / maxScrollPosition);
+			
+			const offset = startPosition + (scrollPercentage * 200);
+
+			const finalOffset = Math.min(100, offset);
+			
 			descriptionText.querySelector('p').style.transform = `translateY(${finalOffset}px)`;
-			
-			descriptionText.style.position = 'relative';
-			descriptionText.style.zIndex = '5';
-		  }
-		  
+			}
 		};
 		
 		setTimeout(handleScroll, 100);

@@ -230,11 +230,12 @@
   padding: 0;
   position: relative;
 
-  transform: translateY(100px);
+  transform: translateY(-200px);
   transition: transform 0.1s ease-out;
   will-change: transform;
   white-space: pre-line;
 }
+
 
 .italicText {
   font-style: italic;
