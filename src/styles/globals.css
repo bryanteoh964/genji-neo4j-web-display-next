@@ -22,7 +22,7 @@ body {
 	/* font-family: Meiryo, sans-serif; */
 	/* font-family: "MS PGothic", sans-serif; */
 	/* font-family : 'ヒラギノ角ゴ ProN' , 'Hiragino Kaku Gothic ProN' , '游ゴシック' , '游ゴシック体' , YuGothic , 'Yu Gothic' , 'ＭＳ ゴシック' , 'MS Gothic' , HiraKakuProN-W3 , 'TakaoExゴシック' , TakaoExGothic , 'MotoyaLCedar' , 'Droid Sans Japanese' , sans-serif; */
-
+  
 	font-style: normal;
 	font-weight: 400;
 	font-size: 1rem;
@@ -37,10 +37,20 @@ body p,
 .section_container p,
 .section_container li {
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.85);
+    color: #737373;
     line-height: 1.6;
     margin-bottom: 1em;
 } 
+
+/* hide scroll bar */
+html {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0; 
+}
 
 .main {
 	top: 0;
@@ -48,10 +58,15 @@ body p,
 	margin: 0;
 	padding: 0;
 	position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .bottom {
 	min-height: 80vh;	
+  flex: 1;
 }
 
 .section_frame {
@@ -61,7 +76,7 @@ body p,
 
 .section_container {
 	margin: 80px 0;
-	width: 920px;
+	width: 1440px;
 	min-height: 460px;
 	text-align: left;
 }
@@ -129,79 +144,3 @@ form, button {
 	margin-right: auto;
 	border: 1px solid lightgray ;
   }
-
-  @media (max-width: 1024px) {
-	h1.main-title {
-        font-size: 1.5rem;
-    }
-
-    .section_container {
-        width: 90%;
-        margin: 60px auto;
-    }
-}
-
-@media (max-width: 768px) {
-	h1.main-title {
-        font-size: 1rem;
-        letter-spacing: 1px;
-    }
-
-    body {
-        font-size: 0.9rem;
-        line-height: 20px;
-    }
-
-    body p,
-    .section_container p,
-    .section_container li {
-        font-size: 13px;
-    }
-
-    .section_container {
-        margin: 40px auto;
-        min-height: auto;
-    }
-
-    .section_container h1 {
-        font-size: 1.8rem;
-    }
-
-    .bottom {
-        min-height: 70vh;
-    }
-
-    table {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-	h1.main-title {
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-    }
-
-    body {
-        font-size: 0.85rem;
-        line-height: 18px;
-    }
-
-    body p,
-    .section_container p,
-    .section_container li {
-        font-size: 12px;
-    }
-
-    .section_container h1 {
-        font-size: 1.5rem;
-    }
-
-    [type=JP], [type=non-JP] {
-        writing-mode: horizontal-tb;
-    }
-
-    table, th, td {
-        font-size: 11px;
-    }
-}

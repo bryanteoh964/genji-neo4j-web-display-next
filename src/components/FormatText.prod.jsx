@@ -1,9 +1,7 @@
-// turn italic, bold, bolditalic text in database from markdown to html component
 import React from 'react';
 
-const FormatText = ({ text }) => {
+const FormatText = ({ text, className }) => {
     const parseText = (text) => {
-
         const str = String(text || '');
         const list = [];
         let curIndex = 0;
@@ -57,8 +55,10 @@ const FormatText = ({ text }) => {
         return null;
     }
 
+    const paragraphClassName = className ? `${className} mb-4` : "mb-4";
+
     return (
-        <p className="mb-4">
+        <p className={paragraphClassName}>
             {parseText(text).map((list, index) => {
                 switch (list.type) {
                     case 'bold':
@@ -87,7 +87,7 @@ const FormatText = ({ text }) => {
     );
 };
 
-const FormatContent = ({ content }) => {
+const FormatContent = ({ content, className }) => {
     if (!content) {
         return null;
     }
@@ -99,10 +99,12 @@ const FormatContent = ({ content }) => {
             .map(p => p.trim())
             .filter(p => p.length > 0);
 
+        const containerClassName = className ? `${className} space-y-4` : "space-y-4";
+
         return (
-            <div className="space-y-4">
+            <div className={containerClassName}>
                 {paragraphs.map((paragraph, index) => (
-                    <FormatText key={index} text={paragraph} />
+                    <FormatText key={index} text={paragraph} className={className} />
                 ))}
             </div>
         );

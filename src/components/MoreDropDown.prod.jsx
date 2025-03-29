@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/searchDropDown.module.css';
+import styles from '../styles/pages/moreDropDown.module.css';
 
-const SearchDropDown = () => {
+const MoreDropDown = () => {
     // State to track if the dropdown is open or closed
     const [isOpen, setIsOpen] = useState(false);
 
@@ -34,29 +34,47 @@ const SearchDropDown = () => {
     return (
         <div
             ref={dropdownRef}
-            className={`${styles.searchDropdown} ${isOpen ? styles.open : ''}`}
+            className={`${styles.moreDropdown} ${isOpen ? styles.open : ''}`}
         >
-            <button onClick={handleMenuClick} className={styles.searchButton}>
-                Search
+            <button onClick={handleMenuClick} className={styles.moreButton}>
+                more
             </button>
 
             {/* Render the dropdown options only if the dropdown is open */}
-            {isOpen && <SearchOptions setIsOpen={setIsOpen} />}
+            {isOpen && <MoreOptions setIsOpen={setIsOpen} />}
         </div>
     );
 };
 
-const SearchOptions = ({ setIsOpen }) => {
+const MoreOptions = ({ setIsOpen }) => {
     return (
-        <div className={styles.searchOptions}>
-            <Link href="/search/search-by-metadata" className={styles.searchLink} onClick={() => setIsOpen(false)}>
-                By Metadata
+        <div className={styles.moreOptions}>
+
+            <Link href="/characters/map" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                map
             </Link>
-            <Link href="/search/search-by-keyword" className={styles.searchLink} onClick={() => setIsOpen(false)}>
-                By Keyword
+
+            <Link href="/characters" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                relationships
+            </Link>
+
+            <Link href="/characters/timeline" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                timeline
+            </Link>
+
+            <Link href="/acknowledgements" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                acknowledgements
+            </Link>
+
+            <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                sources & resources
+            </Link>
+
+            <Link href="/bug" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                report a bug
             </Link>
         </div>
     );
 };
 
-export default SearchDropDown;
+export default MoreDropDown;

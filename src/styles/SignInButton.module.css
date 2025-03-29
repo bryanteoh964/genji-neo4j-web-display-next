@@ -1,36 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
 .userContainer {
-    display: relative;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding-bottom: 10px;
-  }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  position: relative;
+  margin-right: 16px;
+  margin-top: 20px;
+}
   
 .userLink {
+  font-family: 'Lexend', sans-serif;
   text-decoration: none;
-  color: #333;
+  color: #c49c3e;
   font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 20px;
+  font-size: 18px;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  margin-right: 30px;
+}
+
+.userLink:hover {
+  color: #ffffff;
 }
 
 .signInButton {
+  font-family: 'Lexend', sans-serif;
+  white-space: nowrap; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px 16px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
+  font-size: 1rem;
   font-weight: 500;
-}
-
-.signInButton {
-  background-color: #0542a5;
+  background-color: #c49c3e;
   color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-top: 20px;
 }
 
 .signInButton:hover {
-  background-color: #1e61a5;
+  background-color: #b48c2e; 
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -56,28 +73,68 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1400px) {
   .userContainer {
-    padding: 3px 8px;
-  }
-
-  .userLink, .signInButton {
-    padding: 6px 12px;
-    font-size: 0.9em;
+    margin-right: 20px;
   }
 }
 
-@media (prefers-color-scheme: dark) {
+@media (min-width: 1200px) and (max-width: 1399px) {
   .userContainer {
-    background-color: #333;
+    margin-right: 18px;
   }
+}
 
+@media (max-width: 1200px) {
+  .userContainer {
+    margin-right: -10px;
+    margin-top: 18px;
+  }
+  
+  
+  .signInButton {
+    padding: 8px 15px;
+    font-size: 0.95rem;
+    margin-right: 25px;
+    margin-left: 25px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .userContainer {
+    margin-right: 12px;
+    gap: 8px;
+  }
+  
   .userLink {
-    color: #fff;
+    font-size: 15px;
+    margin-right: 20px;
   }
-
-  .userLink:hover {
-    background-color: #444;
+  
+  .signInButton {
+    padding: 7px 14px;
+    font-size: 0.9rem;
+    margin-right: 20px;
+    margin-left: 20px;
   }
-
 }
+
+@media (max-width: 900px) {
+  .userContainer {
+    margin-right: 10px;
+  }
+  
+  .userLink {
+    font-size: 14px;
+    margin-right: 15px;
+  }
+  
+  .signInButton {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+}
+

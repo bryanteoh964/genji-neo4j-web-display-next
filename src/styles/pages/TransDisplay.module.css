@@ -1,0 +1,337 @@
+.userTranslationsSection {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.translationsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.translationsHeader h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0f0f0f;
+  margin: 0;
+}
+
+.viewTranslationsButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.8125rem;
+  color: #606060;
+  background: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.viewTranslationsButton:hover {
+  background-color: #f2f2f2;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modalHeader {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f0f0f;
+}
+
+.modalControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.closeButton, .refreshButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #606060;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+  width: 2rem;
+  height: 2rem;
+}
+
+.closeButton:hover, .refreshButton:hover:not(:disabled) {
+  background-color: #f2f2f2;
+  color: #0f0f0f;
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error Alert */
+.errorAlert {
+  margin: 0.5rem 1rem;
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  border-left: 4px solid #ef4444;
+  color: #b91c1c;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.translationsList {
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 4rem);
+}
+
+.translationItem {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.hiddenTranslation {
+  background-color: #f9fafb;
+  border-color: #e5e7eb;
+  opacity: 0.7;
+}
+
+.translationContent {
+  flex: 1;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  width: 100%;
+}
+
+.userInfoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.translationAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.translatorName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.translationDate {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+
+/* Updated translation item layout */
+.translationItem {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  transition: background-color 0.2s;
+}
+
+.translationContent {
+  flex: 1;
+}
+
+.translationContent p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #0f0f0f;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: left;
+}
+
+.translationMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  margin-top: 0.5rem;
+}
+
+.hiddenBadge {
+  font-size: 0.75rem;
+  color: #f59e0b;
+  padding: 0.125rem 0.375rem;
+  background-color: #fef3c7;
+  border-radius: 9999px;
+}
+
+.adminActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.toggleHideButton, .deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.translationItem:hover .toggleHideButton,
+.translationItem:hover .deleteButton {
+  opacity: 1;
+}
+
+.toggleHideButton {
+  color: #3b82f6;
+}
+
+.toggleHideButton:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.deleteButton {
+  color: #ef4444;
+}
+
+.deleteButton:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.loadingMessage, .emptyMessage {
+  padding: 1.5rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.refreshingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  background-color: #f9fafb;
+  border-radius: 0.25rem;
+}

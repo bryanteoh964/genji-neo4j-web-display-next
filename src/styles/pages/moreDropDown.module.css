@@ -1,0 +1,137 @@
+.moreDropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    margin-left: -20px;
+    margin-right: -30px;
+}
+
+.moreButton {
+    width: 134px;
+    height: 27px;
+    font-family: 'Lexend', sans-serif;
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: #c49c3e;
+    padding: 0;
+    line-height: 150%;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.moreButton:hover {
+    color: #ffffff;
+}
+
+.moreOptions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(128, 128, 128, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    min-width: 180px;
+    z-index: 1001;
+    display: block;
+    padding: 8px 0;
+    margin-top: 5px;
+}
+
+.open .moreOptions {
+    display: block;
+    text-align: left;
+}
+
+.moreLink {
+    display: block !important;
+    padding: 8px 15px !important;
+    text-decoration: none !important;
+    color: #c49c3e !important;
+    transition: all 0.3s ease !important;
+    text-align: left !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    width: auto !important;
+    height: auto !important;
+    justify-content: flex-start !important;
+    letter-spacing: normal !important;
+}
+
+.moreLink:hover {
+    background-color: rgba(196, 156, 62, 0.2) !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 1200px) {
+    .moreButton {
+        width: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .moreButton {
+        font-size: 16px;
+        margin-right: -10px;
+    }
+    
+    .moreOptions {
+        min-width: 160px;
+    }
+    
+    .moreLink {
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+    }
+
+    .moreDropdown {
+        margin-left: -30px;
+        margin-right: -20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .moreButton {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .moreButton {
+        font-size: 15px;
+        width: 100px;
+    }
+    
+    .moreOptions {
+        min-width: 140px;
+    }
+    
+    .moreLink {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .moreButton {
+        font-size: 13px;
+        width: 90px;
+    }
+    
+    .moreOptions {
+        min-width: 120px;
+    }
+    
+    .moreLink {
+        padding: 6px 8px !important;
+        font-size: 11px !important;
+    }
+}

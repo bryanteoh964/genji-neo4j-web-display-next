@@ -1,525 +1,943 @@
-.container {
-    max-width: 1300px;
+.poemPageContainer {
+    max-width: 100%;
     margin: 0 auto;
-    padding: 20px 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-	sans-serif;
-    color: var(--poem-color, #333);
-
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
 }
 
-.title {
-    align-items: center;
-    text-align: center;
-    font-size: 2em;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+.loadingContainer {
     display: flex;
-    flex-direction: column;
-}
-
-.poemContainer {
-    display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    padding: 20px;
-    margin-right: 55%;
-  }
-
-.poemTitle {
-    margin-bottom: 0.2em;
-    font-size: 1em;
-}
-
-.chapterTitle {
-    margin-bottom: 0.4em;
-    font-size: 0.8em;
+    min-height: 300px;
+    font-size: 1.2rem;
     color: #666;
 }
 
-.prominentPoemText {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-start;
-    align-items: flex-start;
-    overflow-x: auto;
-    width: 100%;
-    max-width: 100%;
-    text-align: center;
+
+.headerInfoSection {
+    display: grid;
+    grid-template-columns: repeat(48, 1fr);
+    grid-template-rows: repeat(6, minmax(min-content, auto));
+    gap: 10px;
+    margin-bottom: 0px;
+    background-color: rgba(182, 215, 209, 0.3);
+    padding: 15px;
+    border-radius: 20px;
   }
   
-.poemLine {
+
+  .logoSection {
+    grid-column: 6 / 10;
+    grid-row: 2 / 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #222;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  
+
+  .speakerSection {
+    grid-column: 11 / 19;
+    grid-row: 2 / 6;
+    background-color: #e07a5f;
+    border-radius: 30px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .speakerSection h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  .proxyInfo {
+    margin-top: 10px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 5px;
+  }
+  
+  .proxyInfo span {
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  
+
+  .chapterInfo {
+    grid-column: 19 / 25;
+    grid-row: 2 / 4;
+    background-color: #828282;
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .chapterInfo h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffeb3b;
+    letter-spacing: 0.5px;
+  }
+  
+
+  .poemTypeInfo {
+    grid-column: 19 / 22;
+    grid-row: 4 / 6;
+    background-color: #f0e68c;
+    border-radius: 30px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .poemTypeInfo h3 {
+    margin: 0;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .tagsList {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 35px;
-    padding-right: 35px;
+    width: 100%;
   }
   
-.character {
-    font-size: 1.5em;
-    margin-bottom: 0.2em;
+  .tagItem {
+    margin: 2px 0;
+    text-align: center;
+    font-size: 0.7rem;
+    width: 100%;
+  }
 
-    writing-mode: vertical-rl;
-    text-orientation: upright;
+  .poemCodeInfo {
+    grid-column: 22 / 25;
+    grid-row: 4 / 6;
+    background-color: #5e5e5e;
+    border-radius: 30px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffeb3b;
+    font-size: 0.7rem;
+  }
+  
+  .poemCodeInfo h3 {
+    margin: 0;
+    font-size: 0.65rem;
+    text-align: center;
+    font-weight: bold;
+    color: #ffeb3b;
+  }
+  
+
+
+  .ageInfo {
+    grid-column: 25 / 29;
+    grid-row: 2 / 5;
+    background-color: #e6af4b;
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .ageInfo h3 {
+    margin: 0;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+
+  .chapterTitleSource {
+    grid-column: 25 / 29;
+    grid-row: 5 / 6;
+    background-color: #cac196;
+    border-radius: 15px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+  }
+
+  .chapterTitleSource h3 {
+    margin: 0;
+    font-size: 0.7rem;
+    text-align: center;
+    font-weight: bold;
   }
 
 
-.japaneseLine {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #000000;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-
-.romajiLine {
-    font-size: 1em;
-    color: #333;
-    padding-bottom: 11px;
-    margin-bottom: 10px;
-}
-
-
-.contentWrapper {
+  .characterNameInfo {
+    grid-column: 29 / 33;
+    grid-row: 2 / 3;
+    background-color: #a5c1e5;
+    border-radius: 15px;
+    padding: 8px;
     display: flex;
-    gap: 30px;
-}
-
-.tableOfContents {
-    width: 200px;
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.tableOfContents h2 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    color: var(--poem-color, #333);
-    border-bottom: 2px solid var(--poem-color, #333);
-    padding-bottom: 5px;
-}
-
-.tableOfContents ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.tableOfContents li {
-    margin-bottom: 10px;
-}
-
-.tableOfContents a {
-    text-decoration: none;
-    color: #333;
-    transition: color 0.3s ease;
-}
-
-.tableOfContents a:hover {
-    color: var(--poem-color, #666);
-}
-
-.mainContent {
-    flex: 1;
-    text-align: left;
-}
-
-.section {
-    margin-bottom: 30px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.sectionTitle {
-    color: var(--poem-color, #333);
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--poem-color, #333);
-    padding-bottom: 5px;
-    text-align: center;
-}
-
-.poemInfo {
     flex-direction: column;
-    align-items: flex-start;
-}
+    justify-content: center;
+    align-items: center;
+    color: #333;
+  }
+  
+  .characterNameInfo h3 {
+    margin: 0;
+    font-size: 0.7rem;
+    text-align: center;
+    font-weight: bold;
+  }
+  
 
-.poemInfo .prominentPoemInInfo {
-    font-size: medium;
-    padding: 30px 100px;
-    border-radius: 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  .seasonInfo {
+    grid-column: 29 / 33;
+    grid-row: 3 / 6;
+    background-color: #d783c9;
+    border-radius: 30px;
+    padding: 10px;
     display: flex;
-    justify-content: space-around;
-}
-
-.infoCard {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 15px;
-    flex: 1;
-    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .seasonInfo h3 {
+    margin: 0;
+    font-size: 0.9rem;
     text-align: center;
-}
+    font-weight: bold;
+  }
+  
 
-.narrativeContextCard p {
-    text-align: left;
-}
-
-.poemText {
-    flex: 2;
-    width: 100%;
+  .addresseeSection {
+    grid-column: 33 / 41;
+    grid-row: 2 / 6;
+    background-color: #9b7dd4;
+    border-radius: 30px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .addresseeSection h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
     text-align: center;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+
+  .characterLink {
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    transition: all 0.2s ease;
+  }
+  
+  .characterLink:hover {
+    text-decoration: underline;
+    transform: scale(1.05);
+  }
+  
+
+/* main area */
+.mainContentSection {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 0;
+    min-height: calc(100vh - 150px);
 }
 
-.japanese {
+/* left poem itself */
+.poemOriginalSection {
+    background-color: #f2f2ee;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.japaneseText {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.japaneseTextLine {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.japaneseChar {
+    font-size: 2.5em;
+    margin-bottom: 0.2em;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
     font-family: "Noto Sans JP", sans-serif;
 }
 
-.translations, .allusion, .relatedPoems, .tags {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    font-size: 1em;
+.romajiText {
     text-align: left;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 30px 100px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.translation {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-}
-
-.translation h3 {
-    color: var(--poem-color, #333);
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--poem-color, #e0e0e0);
-    text-align: center;
-}
-
-.translation p {
-    margin: 0;
-    line-height: 1.6;
-    text-align: center;
-}
-
-.translation .translator-name {
-    font-weight: bold;
+.romajiLine {
+    font-size: 2em;
+    color: #333;
     margin-bottom: 5px;
 }
 
-.translation .page-number {
-    font-style: italic;
-    color: #666;
+.favButtonContainer {
     margin-top: 10px;
 }
 
-.allusionInfo {
-    margin-bottom: 15px;
+/* mid translation part */
+.translationsSection {
+    background-color: #fdfdda;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-.allusionInfo .allusionPoems {
-    text-align: center;
-}
-
-.relatedPoemTag, .poemTag {
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.relatedPoemTag:hover, .poemTag:hover {
-    background-color: var(--poem-color, #e0e0e0);
-}
-
-.addRelatedPoem, .addTag, .updateNotes {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-.characterTag {
-    display: inline-block;
-    background-color: #f0f0f0;
-    border: 2px solid #000000; 
-    border-radius: 20px; 
-    padding: 4px 15px;
-    margin: 5px;
-    text-decoration: none;
-    color: #333;
-    height: 40px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    line-height: 1;
-    box-sizing: border-box; 
-}
-
-.characterTag:hover {
-    background-color: #ffffff;
-    color: #000;
-}
-
-.backTop {
-    position: fixed;
-    bottom: 20px;
-    right: 70px;
-    color: #333;
-    background-color: #f0f0f0;
-    padding: 10px 15px;
+.translation {
+    margin-bottom: 20px;
+    padding: 15px;
     border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: background-color 0.3s ease;
-    display: flex;
-    flex-direction: row; 
-    justify-content: center;
-    text-align: center;
-    width: auto;  
-    white-space: nowrap;
 }
 
-.backTop:hover {
+.translation:nth-child(1) {
+    background-color: #f5e1c9; /* Waley */
+}
+
+.translation:nth-child(2) {
+    background-color: #ffdab9; /* Seidensticker */
+}
+
+.translation:nth-child(3) {
+    background-color: #fff9c4; /* Tyler */
+}
+
+.translation:nth-child(4) {
+    background-color: #e6ffe6; /* Washburn */
+}
+
+.translation:nth-child(5) {
+    background-color: #e6f3ff; /* Cranston */
+}
+
+.translation h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.translationContent p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.pageReference {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 8px;
+}
+
+.userTranslationSection {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.userTranslationSection h3 {
+    margin-top: 0;
+    color: #2e7d32;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.userTranslationInput {
+    width: 100%;
+    min-height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.userTranslationsDisplay {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.userTranslationsDisplay h3 {
+    margin-top: 0;
+    color: #1565c0;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.userTranslationsContainer {
+    margin-top: 10px;
+    min-height: 50px;
+}
+
+
+.tabsSection {
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.tabsHeader {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabButton {
+    flex: 1;
+    padding: 15px 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tabButton:hover {
+    background-color: #e6e6e6;
+}
+
+.activeTab {
+    color: #c41e3a; 
+    border-bottom: 3px solid #c41e3a;
+    font-weight: bold;
+}
+
+.tabContent {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+.meaningTabContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.narrativeContext, .paraphrase {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.narrativeContext h3, .paraphrase h3 {
+    margin-top: 0;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.narrativeContext p, .paraphrase p {
+    text-align: left;
+}
+
+.commentaryTabContent {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.notes {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+
+.moreDetailsTabContent {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detailItem {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.detailItem h3 {
+    margin-top: 0;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.allusionItem {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee;
+}
+
+.allusionItem:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.relatedPoemsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.relatedPoemLink {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.relatedPoemLink:hover {
     background-color: #e0e0e0;
 }
 
-@media (max-width: 1024px) {
-    .container {
-        padding: 15px 30px;
-    }
-
-    .contentWrapper {
-        flex-direction: column;
-    }
-
-    .tableOfContents {
-        width: 100%;
-        position: static;
-    }
-
-    .mainContent {
-        width: 100%;
-    }
-
-    .poemInfo {
-        flex-direction: column;
-    }
-
-    .infoCard, .poemText {
-        width: 100%;
-    }
-
-    .title {
-        font-size: 1.8em;
-    }
-
-    .poemContainer {
-        margin-right: 60%;
-        padding: 15px;
-    }
-
-    .poemLine {
-        padding-left: 25px;
-        padding-right: 25px;
-      }
-
-    .prominentPoemText {
-        padding: 1rem;
-    }
-
-    .character {
-        font-size: 1.3em;
-    }
+.furtherReadingSection, .contributorsSection {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 10px 25px;
-    }
+.furtherReadingSection h3, .contributorsSection h3 {
+    margin-top: 0;
+    font-size: 0.9rem;
+    color: #444;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
 
-    .title {
-        font-size: 1.6em;
-    }
-
-    .poemTitle {
-        font-size: 0.9em;
-    }
-
-    .chapterTitle {
-        font-size: 0.7em;
-    }
-
-    .poemContainer {
-        margin-right: 50%;
+@media (max-width: 1200px) {
+    .mainContentSection {
+      grid-template-columns: 1fr 1.5fr;
     }
     
-    .poemLine {
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-
-    .prominentPoemText .japanese {
-        font-size: 0.9em;
+    .tabsSection {
+      grid-column: span 2;
+      grid-row: 2;
+    }
+    
+    .tabsHeader {
+      position: sticky;
+      top: 0;
+      background-color: #f0f0f0;
+      z-index: 10;
+    }
+    
+  }
+  
+  @media (max-width: 968px) {
+    .headerInfoSection {
+      grid-template-columns: repeat(24, 1fr);
+      grid-template-rows: repeat(6, minmax(min-content, auto));
+    }
+    
+    .logoSection {
+      grid-column: 2 / 6;
+      grid-row: 1 / 3;
+    }
+    
+    .speakerSection {
+      grid-column: 6 / 14;
+      grid-row: 1 / 3;
+    }
+    
+    .chapterInfo {
+      grid-column: 14 / 23;
+      grid-row: 1 / 2;
+    }
+    
+    .poemTypeInfo {
+      grid-column: 14 / 18; 
+      grid-row: 2 / 3;
+    }
+    
+    .poemCodeInfo {
+      grid-column: 18 / 23;
+      grid-row: 2 / 3;
+    }
+    
+    .ageInfo {
+      grid-column: 2 / 8;
+      grid-row: 3 / 4;
+    }
+    
+    .chapterTitleSource {
+      grid-column: 8 / 14;
+      grid-row: 3 / 4;
+    }
+    
+    .characterNameInfo {
+      grid-column: 14 / 18;
+      grid-row: 3 / 4;
+    }
+    
+    .seasonInfo {
+      grid-column: 18 / 23;
+      grid-row: 3 / 4;
+    }
+    
+    .addresseeSection {
+      grid-column: 2 / 23;
+      grid-row: 4 / 6;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      font-size: 0.8rem;
+    }
+    
+    .speakerSection h3,
+    .chapterInfo h3,
+    .addresseeSection h3 {
+      font-size: 0.9rem;
+    }
+    
+    .poemTypeInfo h3,
+    .poemCodeInfo h3,
+    .characterNameInfo h3 {
+      font-size: 0.7rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .headerInfoSection {
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(9, minmax(min-content, auto));
+      gap: 6px;
+      padding: 10px;
+    }
+    
+    .logoSection {
+      grid-column: 1 / 4;
+      grid-row: 1 / 3;
+    }
+    
+    .speakerSection {
+      grid-column: 4 / 13;
+      grid-row: 1 / 3;
+    }
+    
+    .chapterInfo {
+      grid-column: 1 / 7;
+      grid-row: 3 / 4;
+    }
+    
+    .poemTypeInfo {
+      grid-column: 7 / 10;
+      grid-row: 3 / 4;
+    }
+    
+    .poemCodeInfo {
+      grid-column: 10 / 13;
+      grid-row: 3 / 4;
+    }
+    
+    .ageInfo {
+      grid-column: 1 / 5;
+      grid-row: 4 / 5;
+    }
+    
+    .chapterTitleSource {
+      grid-column: 5 / 9;
+      grid-row: 4 / 5;
+    }
+    
+    .characterNameInfo {
+      grid-column: 9 / 13;
+      grid-row: 4 / 5;
+    }
+    
+    .seasonInfo {
+      grid-column: 1 / 6;
+      grid-row: 5 / 6;
+    }
+    
+    .addresseeSection {
+      grid-column: 6 / 13;
+      grid-row: 5 / 7;
+    }
+    
+    .logo {
+      width: 60px;
+      height: 60px;
+      font-size: 0.7rem;
+    }
+    
+    .speakerSection h3,
+    .chapterInfo h3,
+    .addresseeSection h3,
+    .ageInfo h3,
+    .seasonInfo h3 {
+      font-size: 0.8rem;
+    }
+    
+    .poemTypeInfo h3,
+    .poemCodeInfo h3,
+    .characterNameInfo h3,
+    .chapterTitleSource h3 {
+      font-size: 0.6rem;
+    }
+    
+    .speakerSection a,
+    .addresseeSection a,
+    .chapterInfo span,
+    .ageInfo span,
+    .seasonInfo span {
+      font-size: 0.9rem;
+    }
+    
+    .poemTypeInfo span,
+    .poemCodeInfo span,
+    .characterNameInfo span,
+    .chapterTitleSource span {
+      font-size: 0.7rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .headerInfoSection {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: auto;
+      gap: 5px;
+      padding: 8px;
+    }
+    .logoSection {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+    
+    .speakerSection {
+      grid-column: 3 / 7;
+      grid-row: 1;
+    }
+    
+    .chapterInfo {
+      grid-column: 1 / 4;
+      grid-row: 2;
+    }
+    
+    .poemTypeInfo {
+      grid-column: 4 / 7;
+      grid-row: 2;
+    }
+    
+    .poemCodeInfo {
+      grid-column: 1 / 3;
+      grid-row: 3;
+    }
+    
+    .ageInfo {
+      grid-column: 3 / 7;
+      grid-row: 3;
+    }
+    
+    .characterNameInfo {
+      grid-column: 1 / 3;
+      grid-row: 4;
+    }
+    
+    .seasonInfo {
+      grid-column: 3 / 7;
+      grid-row: 4;
+    }
+    
+    .chapterTitleSource {
+      grid-column: 1 / 3;
+      grid-row: 5;
+    }
+    
+    .addresseeSection {
+      grid-column: 3 / 7;
+      grid-row: 5;
+    }
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+      font-size: 0.5rem;
+    }
+    
+    .speakerSection,
+    .chapterInfo,
+    .poemTypeInfo,
+    .poemCodeInfo,
+    .ageInfo,
+    .characterNameInfo,
+    .seasonInfo,
+    .chapterTitleSource,
+    .addresseeSection {
+      padding: 5px;
     }
 
-    .section {
-        padding: 15px;
+    .speakerSection h3,
+    .chapterInfo h3,
+    .addresseeSection h3,
+    .ageInfo h3,
+    .seasonInfo h3 {
+      font-size: 0.7rem;
+      margin-bottom: 3px;
     }
-
-    .translations, .allusion, .relatedPoems, .tags {
-        font-size: 1.1em;
+    
+    .poemTypeInfo h3,
+    .poemCodeInfo h3,
+    .characterNameInfo h3,
+    .chapterTitleSource h3 {
+      font-size: 0.5rem;
     }
-
-    .japaneseLine {
-        font-size: 1em;
+    
+    .speakerSection a,
+    .addresseeSection a,
+    .chapterInfo span,
+    .ageInfo span,
+    .seasonInfo span {
+      font-size: 0.7rem;
     }
-
-    .romajiLine {
-        font-size: 0.9em;
+    
+    .poemTypeInfo span,
+    .poemCodeInfo span,
+    .characterNameInfo span,
+    .chapterTitleSource span {
+      font-size: 0.6rem;
     }
-
-    .poemTitle {
-        font-size: 0.9em;
-    }
-
-    .chapterTitle {
-        font-size: 0.7em;
-    }
-
-    .prominentPoemText {
-        padding: 10px;
-    }
-
-    .character {
-        font-size: 1.2em;
-    }
-
-    .poemLine {
-        margin-left: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 5px 20px;
-    }
-
-    .title {
-        font-size: 1.4em;
-    }
-
-    .poemTitle {
-        font-size: 0.8em;
-    }
-
-    .chapterTitle {
-        font-size: 0.6em;
-    }
-
-    .prominentPoemText {
-        padding: 15px 10px;
-    }
-
-    .prominentPoemText .japanese {
-        font-size: 0.8em;
-    }
-
-    .section {
-        padding: 10px;
-    }
-
-    .translations, .allusion, .relatedPoems, .tags {
-        font-size: 1em;
-        padding: 15px;
-    }
-
-    .translation, .allusionTranslation {
-        padding: 10px;
-    }
-
-    .sectionTitle {
-        font-size: 1.2em;
-    }
-
-    .japaneseLine {
-        font-size: 0.8em;
-        margin-right: 20px;
-    }
-
-    .romajiLine {
-        font-size: 0.7em;
-        margin-right: -10px;
-        padding-bottom: 8%;
-    }
-
-    .poemContainer {
-        margin-right: 40%;
-    }
-
-    .poemTitle {
-        font-size: 0.8em;
-    }
-
-    .chapterTitle {
-        font-size: 0.6em;
-    }
-
-    .prominentPoemText {
-        padding: 5px;
-    }
-
-    .character {
-        font-size: 1em;
-        margin-bottom: 0.1em;
-    }
-
-    .poemLine {
-        margin-left: 10px;
-    }
-}
-
-
-@media (max-width: 320px) {
-    .container {
-        padding: 5px 15px;
-    }
-
-    .title {
-        font-size: 1.2em;
-    }
-
-    .poemTitle {
-        font-size: 0.7em;
-    }
-
-    .chapterTitle {
-        font-size: 0.5em;
-    }
-
-    .poemTitle {
-        font-size: 0.7em;
-    }
-
-    .chapterTitle {
-        font-size: 0.5em;
-    }
-
-    .character {
-        font-size: 0.9em;
-    }
-
-    .poemLine {
-        margin-left: 5px;
-    }
-}
+  }
+  
+  .speakerSection,
+  .chapterInfo,
+  .poemTypeInfo,
+  .poemCodeInfo,
+  .ageInfo,
+  .characterNameInfo,
+  .seasonInfo,
+  .chapterTitleSource,
+  .addresseeSection {
+    overflow: auto;
+    
+    word-wrap: break-word;
+    word-break: break-word;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    min-height: 40px;
+  }
+  
+  .characterLink,
+  .speakerSection span,
+  .chapterInfo span,
+  .poemTypeInfo span,
+  .poemCodeInfo span,
+  .ageInfo span,
+  .characterNameInfo span,
+  .seasonInfo span,
+  .chapterTitleSource span,
+  .addresseeSection span {
+    text-align: center;
+    max-width: 100%;
+  }

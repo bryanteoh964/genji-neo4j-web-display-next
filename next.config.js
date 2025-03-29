@@ -5,8 +5,8 @@ const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 const nextConfig = (phase) => ({
 	output: 'standalone',
 	experimental: {
-		scrollRestoration: true,
-		appDir: true
+		scrollRestoration: true
+		// appDir: true
 	},
 	pageExtensions: ['js', 'jsx']
 		.map((extension) => {
@@ -20,6 +20,15 @@ const nextConfig = (phase) => ({
 			'lh3.googleusercontent.com',
 			'googleusercontent.com'
 		],
+	},
+	webpack(config) {
+		// support svg
+		config.module.rules.push({
+		  test: /\.svg$/,
+		  use: ['@svgr/webpack']
+		});
+	
+		return config;
 	}
 })
 

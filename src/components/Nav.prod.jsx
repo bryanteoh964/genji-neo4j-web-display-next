@@ -1,57 +1,82 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import Link from 'next/link';
-import styles from '../styles/Navigation.module.css'
-import SearchOptions from './SearchDropDown.prod'
-import CharactersOptions from './CharactersDropDown.prod'
+import styles from '../styles/Navigation.module.css';
+import CharactersDropDown from './CharactersDropDown.prod';
+import MoreDropDown from './MoreDropDown.prod';
+import { SignIn } from './auth/signin-button.prod';
+import NotificationIcon from './NotificationIcon.prod';
+import { useSession } from 'next-auth/react';
+import LogoSVG from '../../public/images/genji_logo.svg';
 
-const Nav =()=> {
-    const [graph, setGraph] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(() =>{
-    const _ = async()=>{
-        const data = await fetch(`/api/character_names`);
-        const graphData = await data.json();
-        setGraph(graphData);
-        setIsLoading(false);
-    }
-    _()
-    },[]);
+const Navigation = () => {
+    const [graph, setGraph] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const { data: session } = useSession();
+
+    useEffect(() => {
+        const fetchCharacterData = async () => {
+            try {
+                const response = await fetch('/api/character_names');
+                const graphData = await response.json();
+                setGraph(graphData);
+            } catch (error) {
+                console.error('Error fetching character data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchCharacterData();
+    }, []);
 
     return (
-        <div className={styles.nav_frame}>
-            <nav className={styles.nav_container}>
-                <Link href="/" alt="Home Page">About</Link>
-                <Link href="/poems" alt="Genji Poem in multiple translations">Poems</Link>
-                <div>
-                    <>
-                    {isLoading ? 
-                            <div style={{fontSize: "15px", fontWeight: "bold", color: "gray", marginLeft: "10px" , marginRight: "10px"}}>Loading...</div>
-                        :
-                            <ReactFlowProvider>
-                                <CharactersOptions l={graph}/>
-                            </ReactFlowProvider>
-                    }
-                    </>
-                </div>
-                <Link href="/search/search-by-keyword" alt="Search page">Search</Link>
-                {/* <SearchOptions /> */}
-                {/*<Link href="/search" alt="Search character poem interactions">Search</Link> */}
-                {/* <Link href="/allusions">Allusions</Link> */}
-                {/* <Link href="/characters">Characters</Link>
-                
-                <Link href="/alt_characters">Alt Characters</Link>
-                <Link href="/allusions">Allusions</Link>
-                <Link href="/edit">Edit</Link> */}
-                <Link href="/acknowledgements" alt="Acknowledgements page">Acknowledgements</Link>
-                <Link href="/Sources" alt="Sources & Resources" className="long-text">Sources & Resources</Link>
-                <Link href="/bug" alt="Report page">Report A Bug</Link>
-            </nav>
-        </div>
-    )
-}
+        <div className={styles.navFrame}>
+            <div className={styles.navContainer}>
+                {/* Logo and Title */}
+                <div className={styles.logoContainer}>
+                    <Link href="/" className={styles.logoLink}>
+                        <div className={styles.logo}>
+                            <LogoSVG width={240} height={90} />
+                        </div>
 
-export default Nav
+                    </Link>
+                </div>
+                
+                {/* Navigation Links */}
+                <div className={styles.navLinksWrapper}>
+                    <nav className={styles.navLinks}>
+                        {/* Poem Search */}
+                        <Link href="/search/search-by-keyword">poem search</Link>
+                        
+                        {/* Characters Dropdown */}
+                        {isLoading ? (
+                            <div className={styles.dropdownWrapper}>
+                                <span className={styles.loadingLink}>characters</span>
+                            </div>
+                        ) : (
+                            <CharactersDropDown l={graph} />
+                        )}
+                        
+                        <Link href="/chapters">chapters</Link>
+
+                        {/* More Dropdown */}
+                        <MoreDropDown />
+                        
+                        <Link href="/about">about</Link>
+                    </nav>
+
+                    <div className={styles.userControls}>
+                        {session && <NotificationIcon />}
+                        <SignIn />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Navigation;

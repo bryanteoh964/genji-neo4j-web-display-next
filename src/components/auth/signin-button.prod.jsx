@@ -2,7 +2,7 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from 'next/link';
 import styles from '../../styles/SignInButton.module.css';
-import NotificationIcon from '../NotificationIcon.prod';
+// import NotificationIcon from '../NotificationIcon.prod';
 
 // sign in button on main page
 export function SignIn() {
@@ -16,13 +16,13 @@ export function SignIn() {
     return (
       <div className={styles.userContainer}>
 
-        <NotificationIcon />
+        {/* <NotificationIcon /> */}
 
         <Link href="/user" className={styles.userLink}>
           {session.user.name || session.user.email}
         </Link>
       </div>
-    )
+    );
   } 
 
   return (
@@ -32,5 +32,5 @@ export function SignIn() {
     >
       Sign In
     </button>
-  )
+  );
 }
