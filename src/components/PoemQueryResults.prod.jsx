@@ -4,13 +4,15 @@ import styles from '../styles/pages/poemDisplay.module.css';
 import FavButton from '../components/FavButton.prod';
 import ContributorView from '../components/ContributorView.prod';
 import DiscussionArea from '../components/DiscussionArea.prod';
-import FormatContent from '../components/FormatText.prod'
+import FormatContent from './FormatText.prod'
 import TransSubmit from '../components/TranslationSubmit.prod';
 import TransDisplay from '../components/TranslationDisplay.prod'
+import PoemNavigation from './PoemNavigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PoemDisplay = ({ poemData }) => {
-    // set default tab to "meaning"
-    const [activeTab, setActiveTab] = useState('meaning');
+
     const [poemState, setPoemState] = useState({
         speaker: [],
         addressee: [],
@@ -67,6 +69,21 @@ const PoemDisplay = ({ poemData }) => {
     };
     
     const chapter_name = chapterNames[chapter];
+
+    const [expandedPanels, setExpandedPanels] = useState({
+        summary: true,
+        context: false,
+        commentary: false,
+        details: false,
+        discussion: false
+      });
+      
+    const togglePanel = (panelName) => {
+        setExpandedPanels(prev => ({
+            ...prev,
+            [panelName]: !prev[panelName]
+        }));
+    };
 
     // check cache
     useEffect(() => {
@@ -195,111 +212,65 @@ const PoemDisplay = ({ poemData }) => {
         fetchPoemData();
     }, [chapter, number, numStr]);
 
+    const SpeakerAddresseeInfo = ({ speaker, addressee, poemId }) => {
+
+        const chapterName = chapterNames[chapter];
+        
+        return (
+            <div className={styles.translatorInfo}>
+                <div className={styles.speakerAddresseeContainer}>
+                    <div className={styles.speakerLine}>
+                        {Array.isArray(speaker) ? (
+                            speaker.map((spk, index) => (
+                                <a key={index} href={`/characters/${encodeURIComponent(spk)}`} className={styles.characterLink}>
+                                    {spk || "N/A"}{index === 0 ? ">>" : ""}
+                                </a>
+                            ))
+                        ) : (
+                            <a href={`/characters/${encodeURIComponent(speaker)}`} className={styles.characterLink}>
+                                {(speaker || "N/A")}{">>"}
+                            </a>
+                        )}
+                    </div>
+                    <div className={styles.addresseeLine}>
+                        {Array.isArray(addressee) ? (
+                            addressee.map((addr, index) => (
+                                <a key={index} href={`/characters/${encodeURIComponent(addr)}`} className={styles.characterLink}>
+                                    {index === 0 ? ">>" : ""}{addr || "N/A"}
+                                </a>
+                            ))
+                        ) : (
+                            <a href={`/characters/${encodeURIComponent(addressee)}`} className={styles.characterLink}>
+                                {">>"}{(addressee || "N/A")}
+                            </a>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.poemCodeContainer}>
+                    <div className={styles.poemCodeMain}>
+                        {poemId?.substring(0, 4)}<br/>{poemId?.substring(4)}
+                    </div>
+                    <div className={styles.chapterName}>
+                        {chapterName?.split(' ').slice(-1)[0] || ''}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     if (poemState.isLoading) {
         return <div className={styles.loadingContainer}>Loading poem...</div>;
     }
 
     return (
         <div className={styles.poemPageContainer}>
-            {/* upper area info */}
-            <div className={styles.headerInfoSection}>
-                {/* <div className={styles.logoSection}>
-                    <div className={styles.logo}>GENJI LOGO</div>
-                </div> */}
-                
-                <div className={styles.speakerSection}>
-                    <h3>SPEAKER</h3>
-                    {Array.isArray(poemState.speaker) ? (
-                        poemState.speaker.map((speaker, index) => (
-                            <a key={index} href={`/characters/${encodeURIComponent(speaker)}`} className={styles.characterLink}>
-                                {speaker || "N/A"}
-                            </a>
-                        ))
-                    ) : (
-                        <a href={`/characters/${encodeURIComponent(poemState.speaker)}`} className={styles.characterLink}>
-                            {poemState.speaker || "N/A"}
-                        </a>
-                    )}
+            <section className={styles.imageSection}>
+                <img 
+                    className={styles.fullBackgroundImage} 
+                    src="/images/poem_background.jpg" 
+                    alt="Poem background" 
+                />
 
-                    {poemState.proxy && (
-                        <div className={styles.proxyInfo}>
-                            <span>PROXY POET</span>
-                            <a href={`/characters/${encodeURIComponent(poemState.proxy)}`}>
-                                {poemState.proxy}
-                            </a>
-                        </div>
-                    )}
-                </div>
-                
-                <div className={styles.chapterInfo}>
-                    <h3>CHAPTER</h3>
-                    <span>{chapter}: {chapter_name}</span>
-                </div>
-                
-                <div className={styles.poemTypeInfo}>
-                    <h3>POEM TYPE</h3>
-                    {poemState.tag && poemState.tag.length > 0 ? (
-                        <div className={styles.tagsList}>
-                        {poemState.tag.map((tag, index) => (
-                            <span key={index} className={styles.tagItem}>{tag}</span>
-                        ))}
-                        </div>
-                    ) : (
-                        <span>-</span>
-                    )}
-                </div>
-
-                <div className={styles.poemCodeInfo}>
-                    <h3>POEM CODE</h3>
-                    <span>{poemState.poemId}</span>
-                </div>
-                
-                <div className={styles.ageInfo}>
-                    <h3>AGE OF GENJI</h3>
-                    <span>{poemState.age || '-'}</span>
-                </div>
-                
-                <div className={styles.chapterTitleSource}>
-                    <h3>CHAPTER TITLE SOURCE</h3>
-                    {poemState.tag.length > 0 && (poemState.tag.some(tagArray => tagArray[0] === 'Chapter Title Poem'))
-                        ?  <span>{"yes"}</span>
-                        : <span>{"-"}</span>
-                    }
-                </div>
-
-                <div className={styles.characterNameInfo}>
-                    <h3>CHARACTER NAME</h3>
-                    {poemState.repCharacter ? 
-                        <span>{poemState.repCharacter}</span>
-                        : <span>{"-"}</span>
-                    }
-                </div>
-                
-
-                <div className={styles.seasonInfo}>
-                    <h3>SEASON</h3>
-                    <span>{poemState.season || "-"}</span>
-                </div>
-
-                
-                <div className={styles.addresseeSection}>
-                    <h3>ADDRESSEE</h3>
-                    {Array.isArray(poemState.addressee) ? (
-                        poemState.addressee.map((addressee, index) => (
-                            <a key={index} href={`/characters/${encodeURIComponent(addressee)}`} className={styles.characterLink}>
-                                {addressee || "N/A"}
-                            </a>
-                        ))
-                    ) : (
-                        <a href={`/characters/${encodeURIComponent(poemState.addressee)}`} className={styles.characterLink}>
-                            {poemState.addressee || "N/A"}
-                        </a>
-                    )}
-                </div>
-            </div>
-            
-            {/* main area */}
-            <div className={styles.mainContentSection}>
                 {/* left part: poem itself */}
                 <div className={styles.poemOriginalSection}>
                     <div className={styles.japaneseText}>
@@ -314,264 +285,453 @@ const PoemDisplay = ({ poemData }) => {
                         ))}
                     </div>
                     
-                    <div className={styles.romajiText}>
-                        {poemState.JPRM[1]?.split('\n').map((line, index) => (
-                            <p key={`rm-${index}`} className={styles.romajiLine}>{line}</p>
-                        ))}
-                    </div>
-                    
-                    {/* add fav button */}
                     <div className={styles.favButtonContainer}>
                         <FavButton poemId={poemState.poemId} JPRM={poemState.JPRM[0]} />
                     </div>
                 </div>
-                
-                {/* mid translation part */}
-                <div className={styles.translationsSection}>
-                    {/* Waley */}
-                    <div className={styles.translation}>
-                        <h3>Waley</h3>
-                        <div className={styles.translationContent}>
-                            {Array.isArray(poemState.trans.Waley) ? (
+
+                <div className={styles.romajiText}>
+                    {poemState.JPRM[1]?.split('\n').map((line, index) => (
+                        <p key={`rm-${index}`} className={styles.romajiLine}>{line}</p>
+                    ))}
+                </div>
+
+                {/* right part: info grid */}
+                <div className={styles.poemInfoGrid}>
+                    <div className={`${styles.gridBox} ${styles.speakerBox}`}>
+                        <span className={styles.label}>
+                            {Array.isArray(poemState.speaker) ? (
                                 <>
-                                    {typeof poemState.trans.Waley[0] === 'string' && 
-                                     poemState.trans.Waley[0] !== 'N/A' && 
-                                     poemState.trans.Waley[0].split('\n').map((line, index) => (
-                                        <p key={`waley-${index}`}>{line}</p>
+                                    {poemState.speaker.map((speaker, index) => (
+                                        <a key={index} href={`/characters/${encodeURIComponent(speaker)}`} className={styles.characterLink}>
+                                            {speaker || "N/A"}
+                                        </a>
                                     ))}
-                                    {poemState.trans.Waley[1] !== '-1' && (
-                                        <p className={styles.pageReference}>Page: {poemState.trans.Waley[1]}</p>
-                                    )}
+                                    <span className={styles.poemFromText}>
+                                        POEM FROM
+                                        <span className={styles.arrowFrom}>{">>"}</span>
+                                    </span>
                                 </>
                             ) : (
-                                <p>{poemState.trans.Waley}</p>
+                                <>
+                                    <a href={`/characters/${encodeURIComponent(poemState.speaker)}`} className={styles.characterLink}>
+                                        {poemState.speaker || "N/A"}
+                                    </a>
+                                    <span className={styles.poemFromText}>
+                                        POEM FROM
+                                        <span className={styles.arrowFrom}>{">>"}</span>
+                                    </span>
+                                </>
                             )}
+                        </span>
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.addresseeBox}`}>
+                        <span className={styles.label}>
+                            {Array.isArray(poemState.addressee) ? (
+                                <>
+                                    {poemState.addressee.map((addr, index) => (
+                                        <a key={index} href={`/characters/${encodeURIComponent(addr)}`} className={styles.characterLink}>
+                                            {addr || "N/A"}
+                                        </a>
+                                    ))}
+                                    <span className={styles.poemToText}>
+                                        POEM TO
+                                        <span className={styles.arrowTo}>{">>"}</span>
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <a href={`/characters/${encodeURIComponent(poemState.addressee)}`} className={styles.characterLink}>
+                                        {(poemState.addressee || "N/A")}
+                                    </a>
+                                    <span className={styles.poemToText}>
+                                        POEM TO
+                                        <span className={styles.arrowTo}>{">>"}</span>
+                                    </span>
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.ageBox}`}>
+                        <span className={styles.ageVal}>{(poemState.age < 10 ? `0${poemState.age}` : poemState.age) || '00'}</span>
+                        <span className={styles.ageLabel}>GENJI&apos;S AGE</span>    
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.messengerBox}`}>
+                        <span className={styles.messengerValue}>{poemState.messenger || 'NONE'}</span>
+                        <span className={styles.messengerLabel}>MESSENGER</span> 
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.connectedBox}`}>
+                        <span className={styles.label}>CONNECTED POEMS</span>
+                        <div className={styles.arrows}>
+                            <span>◀</span>
+                            <span>▶</span>
                         </div>
                     </div>
                     
-                    {/* Seidensticker */}
-                    <div className={styles.translation}>
-                        <h3>Seidensticker</h3>
-                        <div className={styles.translationContent}>
-                            {typeof poemState.trans.Seidensticker === 'string' && 
-                             poemState.trans.Seidensticker !== 'N/A' && 
-                             poemState.trans.Seidensticker.split('\n').map((line, index) => (
-                                <p key={`seidensticker-${index}`}>{line}</p>
-                            ))}
+                    <div className={`${styles.gridBox} ${styles.poemTypeBox}`}>
+                        <div className={styles.poemTypeContainer}>
+                            <span className={styles.poemTypeLabel}>
+                                <span>TYPE</span>
+                                <span>POEM</span>
+                            </span>
+                            <div className={styles.checkboxGroup}>
+                                <span>PROFERRED {poemState.tag?.some(item => item[0] === 'Proferred Poem' && item[1]) ? '☑' : '☐'}</span>
+                                <span>REPLY {poemState.tag?.some(item => item[0]?.includes('Reply Poem') && item[1]) ? '☑' : '☐'}</span>
+                                <span>SOLILOQUY {poemState.tag?.some(item => item[0]?.includes('Soliloquy') && item[1]) ? '☑' : '☐'}</span>
+                                <span>GROUP {poemState.tag?.some(item => item[0]?.includes('Group Poem') && item[1]) ? '☑' : '☐'}</span>
+                            </div>
                         </div>
                     </div>
                     
-                    {/* Tyler */}
-                    <div className={styles.translation}>
-                        <h3>Tyler</h3>
-                        <div className={styles.translationContent}>
-                            {typeof poemState.trans.Tyler === 'string' && 
-                             poemState.trans.Tyler !== 'N/A' && 
-                             poemState.trans.Tyler.split('\n').map((line, index) => (
-                                <p key={`tyler-${index}`}>{line}</p>
-                            ))}
+                    <div className={`${styles.gridBox} ${styles.poemTechBox}`}>
+                        <div className={styles.techList}>
+                            <span>{poemState.pt?.some(item => item[0] === 'kakekotoba' && item[1]) ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faCircle} />} KAKEKOTOBA</span>
+                            <span>{poemState.pt?.some(item => item[0] === 'engo' && item[1]) ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faCircle} />} ENGO</span>
+                            <span>{poemState.pt?.some(item => item[0] === 'utamakura' && item[1]) ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faCircle} />} UTAMAKURA</span>
+                            <span>{poemState.pt?.some(item => item[0] === 'makurakotoba' && item[1]) ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faCircle} />} MAKURAKOTOBA</span>
                         </div>
+                        <span className={styles.poemTechLabel}>
+                                <span>TECHNIQUE</span>
+                                <span>POETIC</span>
+                        </span>
                     </div>
-                    
-                    {/* Washburn */}
-                    <div className={styles.translation}>
-                        <h3>Washburn</h3>
-                        <div className={styles.translationContent}>
-                            {typeof poemState.trans.Washburn === 'string' && 
-                             poemState.trans.Washburn !== 'N/A' && 
-                             poemState.trans.Washburn.split('\n').map((line, index) => (
-                                <p key={`washburn-${index}`}>{line}</p>
-                            ))}
-                        </div>
-                    </div>
-                    
-                    {/* Cranston */}
-                    <div className={styles.translation}>
-                        <h3>Cranston</h3>
-                        <div className={styles.translationContent}>
-                            {typeof poemState.trans.Cranston === 'string' && 
-                             poemState.trans.Cranston !== 'N/A' && 
-                             poemState.trans.Cranston.split('\n').map((line, index) => (
-                                <p key={`cranston-${index}`}>{line}</p>
-                            ))}
-                        </div>
-                    </div>
-                    
-                    {/* user translation input */}
-                    <TransSubmit pageType="poem" identifier={`${chapter}-${number}`} />
-                    
-                    {/* show user translations */}
-                    <TransDisplay pageType="poem" identifier={`${chapter}-${number}`} />
 
+                    <div className={`${styles.gridBox} ${styles.emptyBox}`}> </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.spokenBox}`}>
+                        <div className={styles.spokenContainer}>
+                            <span>spoken</span>
+                            <br/>
+                            {/* <span className={styles.crossedOut}>written</span> */}
+                            <span>written</span>
+                        </div>
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.chapterBox}`}>
+                        <div className={styles.chapterPoemLabel}>
+                            <span>CHAPTER</span>
+                            <span>POEM</span>
+                        </div>
+                        <div className={styles.mainContent}>
+                            <div className={styles.numberContainer}>
+                                <span>{(chapter < 10 ? `0${chapter}` : chapter)}</span>
+                                <span>{(number < 10 ? `0${number}` : number)}</span>
+                            </div>
+                            <span className={styles.chapterKanji}>
+                                {chapter_name?.split(' ').slice(-1)[0]}
+                            </span>
+                        </div>
+                        <div className={styles.chapterEnglish}>
+                            {chapter_name?.split(' ').slice(0, -1).join(' ')}
+                        </div>
+                    </div>
+                    
+                    <div className={`${styles.gridBox} ${styles.seasonBox}`}>
+                        <span className={styles.seasonLabel}>{poemState.season ? poemState.season : 'SEASON'}</span>
+                        <span className={styles.seasonIcon}>
+                            {poemState.season?.toLowerCase() === ('spring') && '🌸'}
+                            {poemState.season?.toLowerCase() === ('summer') && '☀️'}
+                            {poemState.season?.toLowerCase() === ('autumn') && '🍁'}
+                            {poemState.season?.toLowerCase() === ('winter') && '❄️'}
+                            {!poemState.season && '-'}
+                        </span>
+                    </div>
                 </div>
-                
-                {/* right tab area */}
-                <div className={styles.tabsSection}>
-                    {/* tab switch logic */}
-                    <div className={styles.tabsHeader}>
-                        <button 
-                            className={`${styles.tabButton} ${activeTab === 'meaning' ? styles.activeTab : ''}`}
-                            onClick={() => setActiveTab('meaning')}
-                        >
-                            MEANING
-                        </button>
-                        <button 
-                            className={`${styles.tabButton} ${activeTab === 'commentary' ? styles.activeTab : ''}`}
-                            onClick={() => setActiveTab('commentary')}
-                        >
-                            COMMENTARY
-                        </button>
-                        <button 
-                            className={`${styles.tabButton} ${activeTab === 'moreDetails' ? styles.activeTab : ''}`}
-                            onClick={() => setActiveTab('moreDetails')}
-                        >
-                            MORE DETAILS
-                        </button>
+
+                <PoemNavigation />
+            </section>
+
+            <section className={styles.analysisSection}>
+                <div className={styles.analysisContainer}>
+                    {/* Left Side - Analysis Panels with Toggles */}
+                    <div className={styles.analysisLeft}>
+                        <h2 className={styles.translationsHeader}>ANALYSIS</h2>
+                            {/* Poem Summary Panel */}
+                            <div className={styles.analysisPanel}>
+                                <div className={styles.panelHeader} onClick={() => togglePanel('summary')}>
+                                    <h2>POEM SUMMARY</h2>
+                                    <div className={`${styles.toggleArrow} ${expandedPanels.summary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                        ▼
+                                    </div>
+                                </div>
+                                <div className={`${styles.panelContent} ${expandedPanels.summary ? styles.expanded : styles.collapsed}`}>
+                                    {poemState.paraphrase && <FormatContent content={poemState.paraphrase} />}
+                                </div>
                     </div>
-                    
-                    {/* tab content */}
-                    <div className={styles.tabContent}>
-                        {/* meaning tab */}
-                        {activeTab === 'meaning' && (
-                            <div className={styles.meaningTabContent}>
-                                {poemState.narrativeContext && (
-                                    <div className={styles.narrativeContext}>
-                                        <h3>NARRATIVE CONTEXT</h3>
-                                        <p>{poemState.narrativeContext}</p>
-                                    </div>
-                                )}
-                                
-                                {poemState.paraphrase && (
-                                    <div className={styles.paraphrase}>
-                                        <h3>PARAPHRASE</h3>
-                                        <p>{poemState.paraphrase}</p>
-                                    </div>
-                                )}
+
+                    {/* Narrative Context Panel */}
+                    <div className={styles.analysisPanel}>
+                        <div className={styles.panelHeader} onClick={() => togglePanel('context')}>
+                            <h2>NARRATIVE CONTEXT</h2>
+                            <div className={`${styles.toggleArrow} ${expandedPanels.context ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className={`${styles.panelContent} ${expandedPanels.context ? styles.expanded : styles.collapsed}`}>
+                            {poemState.narrativeContext && <FormatContent content={poemState.narrativeContext} />}  
+                        </div>
+                    </div>
+
+                    {/* Commentary Panel */}
+                    <div className={styles.analysisPanel}>
+                        <div className={styles.panelHeader} onClick={() => togglePanel('commentary')}>
+                            <h2>COMMENTARY</h2>
+                            <div className={`${styles.toggleArrow} ${expandedPanels.commentary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className={`${styles.panelContent} ${expandedPanels.commentary ? styles.expanded : styles.collapsed}`}>
+                            {poemState.notes && <FormatContent content={poemState.notes} />}
+                        </div>
+                    </div>
+
+                    {/* More Details Panel */}
+                    <div className={styles.analysisPanel}>
+                        <div className={styles.panelHeader} onClick={() => togglePanel('details')}>
+                            <h2>MORE DETAILS</h2>
+                            <div className={`${styles.toggleArrow} ${expandedPanels.details ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className={`${styles.panelContent} ${expandedPanels.details ? styles.expanded : styles.collapsed}`}>
+                        {poemState.paperMediumType && (
+                            <div className={styles.detailItem}>
+                                <h3>PAPER/MEDIUM</h3>
+                                {poemState.paperMediumType && <FormatContent content={poemState.paperMediumType} />}
                             </div>
                         )}
                         
-                        {/* commentary tab */}
-                        {activeTab === 'commentary' && (
-                            <div className={styles.commentaryTabContent}>
-                                {poemState.notes && (
-                                    <div className={styles.notes}>
-                                        {/* <h3>COMMENTARY</h3> */}
-                                        <FormatContent content={poemState.notes} />
-                                    </div>
-                                )}
+                        {poemState.deliveryStyle && (
+                            <div className={styles.detailItem}>
+                                <h3>DELIVERY STYLE</h3>
+                                {poemState.deliveryStyle && <FormatContent content={poemState.deliveryStyle} />}
+                            </div>
+                        )}
 
-                                {/* user commentary */}
-                                <DiscussionArea 
-                                    pageType="poem"
-                                    identifier={`${chapter}-${number}`}
-                                />
+                        {poemState.source && poemState.source.length > 0 && (
+                            <div className={styles.detailItem}>
+                                <h3>ALLUSIONS</h3>
+                                {poemState.source.map((source, idx) => (
+                                    <div key={idx} className={styles.allusionItem}>
+                                        <p><strong>Poet:</strong> {source.poet && <FormatContent content={source.poet} />}</p>
+                                        <p><strong>Source:</strong> {source.source && <FormatContent content={source.source + (source.order ? ` ${source.order}` : '')} />}</p>
+                                        <p><strong>Original:</strong> {source.honka && <FormatContent content={source.honka} />}</p>
+                                    </div>
+                            ))}
                             </div>
                         )}
                         
-                        {/* more detail tab */}
-                        {activeTab === 'moreDetails' && (
-                            <div className={styles.moreDetailsTabContent}>
-                                {poemState.paperMediumType && (
-                                    <div className={styles.detailItem}>
-                                        <h3>PAPER/MEDIUM</h3>
-                                        <p>{poemState.paperMediumType}</p>
-                                    </div>
-                                )}
-                                
-                                {poemState.deliveryStyle && (
-                                    <div className={styles.detailItem}>
-                                        <h3>DELIVERY STYLE</h3>
-                                        <p>{poemState.deliveryStyle}</p>
-                                    </div>
-                                )}
+                        {poemState.season && (
+                            <div className={styles.detailItem}>
+                                <h3>SEASON IN NARRATIVE</h3>
+                                <FormatContent content={poemState.season} />
+                            </div>
+                        )}
+                        
+                        {poemState.kigo && poemState.kigo.jp && (
+                            <div className={styles.detailItem}>
+                                <h3>SEASONAL WORD</h3>
+                                <FormatContent content={`${poemState.kigo.jp} - ${poemState.kigo.en}`} />
+                            </div>
+                        )}
+                        
+                        {poemState.pt && (
+                            <div className={styles.detailItem}>
+                                <h3>POETIC TECHNIQUE</h3>
+                                <FormatContent content={poemState.pt} />
+                            </div>
+                        )}
 
-                                {poemState.source.length > 0 && (
-                                    <div className={styles.detailItem}>
-                                        <h3>ALLUSIONS</h3>
-                                        {poemState.source.map((source, idx) => (
-                                            <div key={idx} className={styles.allusionItem}>
-                                                <p><strong>Poet:</strong> {source.poet}</p>
-                                                <p><strong>Source:</strong> {source.source + (source.order ? ` ${source.order}` : '')}</p>
-                                                <p><strong>Original:</strong> {source.honka}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                                
-                                {poemState.season && (
-                                    <div className={styles.detailItem}>
-                                        <h3>SEASON IN NARRATIVE</h3>
-                                        <p>{poemState.season}</p>
-                                    </div>
-                                )}
-                                
-                                {poemState.kigo && poemState.kigo.jp && (
-                                    <div className={styles.detailItem}>
-                                        <h3>SEASONAL WORD</h3>
-                                        <p>{poemState.kigo.jp} - {poemState.kigo.en}</p>
-                                    </div>
-                                )}
-                                
-                                {poemState.pt && (
-                                    <div className={styles.detailItem}>
-                                        <h3>POETIC TECHNIQUE</h3>
-                                        <p>{poemState.pt}</p>
-                                    </div>
-                                )}
-
-                                {poemState.pw.name && (
-                                    <div className={styles.detailItem}>
-                                        <h3>POETIC WORD</h3>
-                                        <p>{poemState.pw.kanji_hiragana} - {poemState.pw.name}</p>
-                                    </div>
-                                )}
-                                
-                                {(poemState.placeOfComp || poemState.placeOfReceipt) && (
-                                    <div className={styles.detailItem}>
-                                        <h3>PLACE OF COMPOSITION / RECEIPT</h3>
-                                        {poemState.placeOfComp === poemState.placeOfReceipt 
-                                            ? <p>{poemState.placeOfComp}</p>
-                                            : <p>{poemState.placeOfComp} / {poemState.placeOfReceipt}</p>
-                                        }
-                                    </div>
-                                )}
-                                
-                                {poemState.rel.length > 0 && (
-                                    <div className={styles.detailItem}>
-                                        <h3>RELATED POEMS</h3>
-                                        <div className={styles.relatedPoemsContainer}>
-                                            {poemState.rel.map((rel, idx) => (
-                                                <a 
-                                                    key={idx}
-                                                    // move leading zero
-                                                    href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
-                                                    className={styles.relatedPoemLink}
-                                                >
-                                                    {rel[0]}
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                                
-                                {/* <div className={styles.furtherReadingSection}>
-                                    <h3>FURTHER READING</h3>
-                                    no conetent now
-                                </div> */}
-                                
-                                <div className={styles.contributorsSection}>
-                                    <h3>CONTRIBUTORS</h3>
-                                    {/* contributor list */}
-                                    <ContributorView
-                                        pageType="poem"
-                                        identifier={`${chapter}-${number}`}
-                                    />
+                        {poemState.pw && poemState.pw.name && (
+                            <div className={styles.detailItem}>
+                                <h3>POETIC WORD</h3>
+                                <FormatContent content={`${poemState.pw.kanji_hiragana} - ${poemState.pw.name}`} />
+                            </div>
+                        )}
+                        
+                        {poemState.rel && poemState.rel.length > 0 && (
+                            <div className={styles.detailItem}>
+                            <h3>RELATED POEMS</h3>
+                                <div className={styles.relatedPoemsContainer}>
+                                    {poemState.rel.map((rel, idx) => (
+                                    <a 
+                                        key={idx}
+                                        href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
+                                        className={styles.relatedPoemLink}
+                                    >
+                                        {rel[0]}
+                                    </a>
+                                    ))}
                                 </div>
                             </div>
                         )}
+                        
+                            <div className={styles.contributorsSection}>
+                                <h3>CONTRIBUTORS</h3>
+                                <ContributorView
+                                pageType="poem"
+                                identifier={`${chapter}-${number}`}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Discussion Panel */}
+                    <div className={styles.analysisPanel}>
+                        <div className={styles.panelHeader} onClick={() => togglePanel('discussion')}>
+                            <h2>DISCUSSION</h2>
+                            <div className={`${styles.toggleArrow} ${expandedPanels.discussion ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className={`${styles.panelContent} ${expandedPanels.discussion ? styles.expanded : styles.collapsed}`}>
+                        <DiscussionArea 
+                            pageType="poem"
+                            identifier={`${chapter}-${number}`}
+                        />
+                        </div>
+                    </div>
+                </div>
+
+                    {/* Right Side - Translations */}
+                    <div className={styles.translationsRight}>
+                    <h2 className={styles.translationsHeader}>TRANSLATIONS</h2>
+                    
+                    {/* Waley Translation */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            {Array.isArray(poemState.trans.Waley) ? (
+                                <>
+                                {typeof poemState.trans.Waley[0] === 'string' && 
+                                poemState.trans.Waley[0] !== 'N/A' && (
+                                    <FormatContent content={poemState.trans.Waley[0]} />
+                                )}
+                                </>
+                            ) : (
+                                <FormatContent content={poemState.trans.Waley} />
+                            )}
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>WALEY</div>
+                        </div>
+                    </div>
+                    
+                    {/* Seidensticker Translation */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            {typeof poemState.trans.Seidensticker === 'string' && 
+                            poemState.trans.Seidensticker !== 'N/A' && (
+                                <FormatContent content={poemState.trans.Seidensticker} />
+                            )}
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>SEIDENSTICKER</div>
+                        </div>
+                    </div>
+                    
+                    {/* Tyler Translation */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            {typeof poemState.trans.Tyler === 'string' && 
+                            poemState.trans.Tyler !== 'N/A' && (
+                                <FormatContent content={poemState.trans.Tyler} />
+                            )}
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>TYLER</div>
+                        </div>
+                    </div>
+                    
+                    {/* Washburn Translation */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            {typeof poemState.trans.Washburn === 'string' && 
+                            poemState.trans.Washburn !== 'N/A' && (
+                                <FormatContent content={poemState.trans.Washburn} />
+                            )}
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>WASHBURN</div>
+                        </div>
+                    </div>
+                    
+                    {/* Cranston Translation */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            {typeof poemState.trans.Cranston === 'string' && 
+                            poemState.trans.Cranston !== 'N/A' && (
+                                <FormatContent content={poemState.trans.Cranston} />
+                            )}
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>CRANSTON</div>
+                        </div>
+                    </div>
+                    
+                    {/* Original Text */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            <p className={styles.originalJapanese}>{poemState.JPRM[0]}</p>
+                            <br/>
+                            <p className={styles.originalRomaji}>{poemState.JPRM[1]}</p>
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>ORIGINAL</div>
+                        </div>
+                    </div>
+                    
+                    {/* User Translation Input */}
+                    <div className={styles.translationCard}>
+                        <div className={styles.translationContent}>
+                            <TransSubmit pageType="poem" identifier={`${chapter}-${number}`} />
+                            <TransDisplay pageType="poem" identifier={`${chapter}-${number}`} />
+                        </div>
+                        <div className={styles.translationMeta}>
+                            <SpeakerAddresseeInfo 
+                                speaker={poemState.speaker}
+                                addressee={poemState.addressee}
+                                poemId={poemState.poemId}
+                            />
+                            <div className={styles.translatorName}>YOURS</div>
+                        </div>
                     </div>
                 </div>
             </div>
+            </section>
         </div>
     );
 };

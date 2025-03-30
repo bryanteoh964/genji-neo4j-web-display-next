@@ -42,7 +42,7 @@
 .titleOverlay {
   position: absolute;
   height: 302px;
-  top: 800px;
+  margin-top: 23%;
   margin-right: 55%;
   width: 42%;
   text-align: right;
@@ -216,6 +216,19 @@
   will-change: transform;
   z-index: 5;
   margin-right: 4%;
+  animation: fadeInRight_text 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInRight_text {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) translateY(-200);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-200);
+  }
 }
 
 .descriptionText p {
