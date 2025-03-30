@@ -356,7 +356,7 @@ const PoemDisplay = ({ poemData }) => {
                     
                     <div className={`${styles.gridBox} ${styles.ageBox}`}>
                         <span className={styles.ageVal}>{(poemState.age < 10 ? `0${poemState.age}` : poemState.age) || '00'}</span>
-                        <span className={styles.ageLabel}>GENJI'S AGE</span>    
+                        <span className={styles.ageLabel}>GENJI&apos;S AGE</span>    
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.messengerBox}`}>
