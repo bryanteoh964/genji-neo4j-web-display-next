@@ -619,12 +619,6 @@
   color: white;
   opacity: 0.3;
   border-radius: 10px;
-  font-family: 'Sofia Sans Extra Condensed', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 0.02rem;
-  text-transform: uppercase;
   margin-left: auto;
 }
 
@@ -642,12 +636,17 @@
 
 .characterLink {
   color: white;
-  text-decoration: none;
+  text-decoration: none !important;
   margin: 0 4px;
   transition: opacity 0.2s;
-  text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 0.5px;
+  font-family: 'Sofia Sans Extra Condensed', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 21px !important;
+  letter-spacing: 0.02rem !important;
+  text-transform: uppercase !important;
 }
 
 .characterLink:hover {
