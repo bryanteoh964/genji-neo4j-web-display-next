@@ -1,38 +1,28 @@
 .userTranslationsSection {
-  margin-top: 1.5rem;
-  width: 100%;
+  margin-top: 0;
 }
 
 .translationsHeader {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.translationsHeader h3 {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #0f0f0f;
-  margin: 0;
+  justify-content: flex-end;
+  margin-bottom: 15px;
 }
 
 .viewTranslationsButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  border: 1px solid #e5e7eb;
-  font-size: 0.8125rem;
-  color: #606060;
-  background: transparent;
-  transition: all 0.2s;
+  padding: 10px 20px;
+  background-color: rgba(75, 75, 75, 0.66);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .viewTranslationsButton:hover {
-  background-color: #f2f2f2;
+  background-color: rgba(75, 75, 75, 0.8);
 }
 
 /* Modal Styles */
@@ -42,7 +32,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,16 +46,17 @@
 }
 
 .modalContent {
-  background-color: white;
+  background-color: #BFAE93;
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
-  border-radius: 0.5rem;
+  border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.3s ease-out;
+  padding: 20px;
 }
 
 @keyframes slideUp {
@@ -75,7 +66,7 @@
 
 .modalHeader {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(75, 75, 75, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,9 +74,10 @@
 
 .modalHeader h3 {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: 24px;
   font-weight: 600;
-  color: #0f0f0f;
+  color: #4B4B4B;
+  font-family: 'Lexend', sans-serif;
 }
 
 .modalControls {
@@ -222,12 +214,15 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: #374151;
+  font-family: 'Lexend', sans-serif;
 }
 
 .translationDate {
   color: #6b7280;
   font-size: 0.75rem;
   margin-left: auto;
+  font-family: 'Lexend', sans-serif;
+  color: rgba(75, 75, 75, 0.6);
 }
 
 /* Updated translation item layout */
@@ -255,6 +250,9 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   text-align: left;
+  font-family: 'Lexend', sans-serif;
+  color: #4B4B4B;
+  font-size: 16px;
 }
 
 .translationMeta {
