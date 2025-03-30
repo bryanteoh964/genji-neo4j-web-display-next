@@ -6,6 +6,7 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 15px;
+  margin-right: 20%;
 }
 
 .viewTranslationsButton {
