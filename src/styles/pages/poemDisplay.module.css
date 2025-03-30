@@ -111,9 +111,9 @@
 }
 
 .favButtonContainer {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+  position: relative;
+  margin-top: 20px;
+  margin-left: 150px;
   z-index: 1000;
 }
 
@@ -1341,9 +1341,16 @@ border-radius: 10px;
     left: auto;
     transform: none;
     top: 0;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     height: auto;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .favButtonContainer {
+    margin-top: 30px;
+    margin-left: 0%;
   }
 
   .japaneseText {
@@ -1419,6 +1426,10 @@ border-radius: 10px;
     margin-bottom: 20px;
   }
   
+  .favButtonContainer {
+    margin-top: 25px;
+  }
+  
   .japaneseChar {
     font-size: 28px;
   }
@@ -1453,6 +1464,10 @@ border-radius: 10px;
   .poemOriginalSection {
     width: 95%;
     margin-bottom: 15px;
+  }
+  
+  .favButtonContainer {
+    margin-top: 20px;
   }
   
   .japaneseChar {
