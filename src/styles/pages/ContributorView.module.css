@@ -3,6 +3,7 @@
   display: block; 
   width: 100%; 
   text-align: center;
+  color: #ffffff;
 }
 
 .noContributorsText {
@@ -10,6 +11,7 @@
   padding: 0;
   width: 100%;
   text-align: center;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .contributorSearchSection {
@@ -29,41 +31,48 @@
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: #9CA3AF;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .contributorSearchInput {
   width: 100%;
   padding: 8px 8px 8px 36px;
-  border: 1px solid #D1D5DB;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
   font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .contributorSearchInput:focus {
   outline: none;
-  border-color: #60A5FA;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.contributorSearchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .contributorSearchResults {
   margin-top: 8px;
   max-height: 160px;
   overflow-y: auto;
-  border: 1px solid #E5E7EB;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
+  background-color: #737373;
 }
 
 .contributorSearchResultItem {
   padding: 8px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  color: #ffffff;
 }
 
 .contributorSearchResultItem:hover {
-  background-color: #F3F4F6;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .userInfo {
@@ -77,67 +86,93 @@
   height: 24px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .addButton {
-  color: #2563EB;
+  color: #c0c0c0;
   font-size: 14px;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .addButton:hover {
-  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .contributorList {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: center !important;
 }
 
 .contributorItem {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 0;
+  align-items: center !important;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.05);
   width: 100%;
 }
 
 .contributorLink {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   text-decoration: none;
-  color: #374151;
+  color: #ffffff;
   width: 80%;
 }
 
 .contributorLink:hover {
-  text-decoration: underline;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .removeButton {
-  color: #DC2626;
+  color: #ff6b6b;
   font-size: 14px;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 4px 60px;
+  border-radius: 4px;
 }
 
 .removeButton:hover {
-  text-decoration: underline;
+  background-color: rgba(255, 99, 99, 0.1);
 }
 
 .errorMessage {
-  color: #DC2626;
-  background-color: #FEE2E2;
-  border: 1px solid #FECACA;
+  color: #ff6b6b;
+  background-color: rgba(255, 99, 99, 0.1);
+  border: 1px solid rgba(255, 99, 99, 0.2);
   border-radius: 6px;
   padding: 8px 12px;
   margin: 8px 0;
   text-align: center;
   font-weight: 500;
+}
+
+/* 自定义滚动条样式 */
+.contributorSearchResults::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contributorSearchResults::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.contributorSearchResults::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.contributorSearchResults::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }

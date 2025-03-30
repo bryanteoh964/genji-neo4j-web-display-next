@@ -6,49 +6,60 @@ const FormatText = ({ text, className }) => {
         const list = [];
         let curIndex = 0;
 
-        // pattern for italic, bold, bolditalic
-        const pattern = /(\[.*?\]\(.*?\)|\*\*\*.*?\*\*\*|\*\*.*?\*\*|_.*?_|\*.*?\*)/g;
-        
-        let match = pattern.exec(str);
-        while (match !== null) {
-            // plain text part before the first pattern appears
-            if (match.index > curIndex) {
-                list.push({ type: 'plain', text: str.slice(curIndex, match.index) });
-            }
-            
-            // middle part
-            const formatText = match[0];
+        const lines = str.split('\n');
 
-            if (formatText.indexOf('[') === 0 && formatText.includes('](')) {
-                const linkMatch = formatText.match(/\[(.*?)\]\((.*?)\)/);
-                if (linkMatch) {
-                    list.push({ 
-                        type: 'link', 
-                        text: linkMatch[1],  // url title
-                        url: linkMatch[2]    // url
-                    });
+        return lines.map((line, lineIndex) => {
+            const lineList = [];
+            curIndex = 0;
+
+            // pattern for italic, bold, bolditalic
+            const pattern = /(\[.*?\]\(.*?\)|\*\*\*.*?\*\*\*|\*\*.*?\*\*|_.*?_|\*.*?\*)/g;
+            
+            let match = pattern.exec(line);
+            while (match !== null) {
+                // plain text part before the first pattern appears
+                if (match.index > curIndex) {
+                    lineList.push({ type: 'plain', text: line.slice(curIndex, match.index) });
                 }
-            } else if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
-                list.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
-            } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
-                list.push({ type: 'bold', text: formatText.slice(2, -2) });
-            } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
-                      (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
-                list.push({ type: 'italic', text: formatText.slice(1, -1) });
-            } else {
-                list.push({ type: 'plain', text: formatText });
+                
+                // middle part
+                const formatText = match[0];
+
+                if (formatText.indexOf('[') === 0 && formatText.includes('](')) {
+                    const linkMatch = formatText.match(/\[(.*?)\]\((.*?)\)/);
+                    if (linkMatch) {
+                        lineList.push({ 
+                            type: 'link', 
+                            text: linkMatch[1],  // url title
+                            url: linkMatch[2]    // url
+                        });
+                    }
+                } else if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
+                    lineList.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
+                } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
+                    lineList.push({ type: 'bold', text: formatText.slice(2, -2) });
+                } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
+                          (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
+                    lineList.push({ type: 'italic', text: formatText.slice(1, -1) });
+                } else {
+                    lineList.push({ type: 'plain', text: formatText });
+                }
+                
+                curIndex = match.index + match[0].length;
+                match = pattern.exec(line);
             }
-            
-            curIndex = match.index + match[0].length;
-            match = pattern.exec(str);
-        }
 
-        // the rest part after the last patterned text
-        if (curIndex < str.length) {
-            list.push({ type: 'plain', text: str.slice(curIndex) });
-        }
+            // the rest part after the last patterned text
+            if (curIndex < line.length) {
+                lineList.push({ type: 'plain', text: line.slice(curIndex) });
+            }
 
-        return list;
+            return {
+                type: 'line',
+                content: lineList,
+                isLastLine: lineIndex === lines.length - 1
+            };
+        });
     };
 
     if (!text) {
@@ -59,30 +70,35 @@ const FormatText = ({ text, className }) => {
 
     return (
         <p className={paragraphClassName}>
-            {parseText(text).map((list, index) => {
-                switch (list.type) {
-                    case 'bold':
-                        return <strong key={index} className="font-bold">{list.text}</strong>;
-                    case 'italic':
-                        return <em key={index} className="italic">{list.text}</em>;
-                    case 'bolditalic':
-                        return <strong key={index} className="font-bold italic">{list.text}</strong>;
-                    case 'link':
-                        return (
-                            <a 
-                                key={index} 
-                                href={list.url}
-                                className="text-blue-600 hover:text-blue-800 underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {list.text}
-                            </a>
-                        );
-                    default:
-                        return <span key={index}>{list.text}</span>;
-                }
-            })}
+            {parseText(text).map((line, lineIndex) => (
+                <React.Fragment key={lineIndex}>
+                    {line.content.map((item, index) => {
+                        switch (item.type) {
+                            case 'bold':
+                                return <strong key={index} className="font-bold">{item.text}</strong>;
+                            case 'italic':
+                                return <em key={index} className="italic">{item.text}</em>;
+                            case 'bolditalic':
+                                return <strong key={index} className="font-bold italic">{item.text}</strong>;
+                            case 'link':
+                                return (
+                                    <a 
+                                        key={index} 
+                                        href={item.url}
+                                        className="text-blue-600 hover:text-blue-800 underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {item.text}
+                                    </a>
+                                );
+                            default:
+                                return <span key={index}>{item.text}</span>;
+                        }
+                    })}
+                    {!line.isLastLine && <br />}
+                </React.Fragment>
+            ))}
         </p>
     );
 };

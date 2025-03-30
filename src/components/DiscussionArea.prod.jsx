@@ -781,7 +781,7 @@ const DiscussionArea = ({ pageType, identifier }) => {
       )}
 
       <div className={styles.discussionHeader}>
-        <h3 className={styles.discussionTitle}>Discussion</h3>
+        <h3 className={styles.discussionTitle}></h3>
         <button 
           onClick={handleRefresh} 
           className={styles.refreshButton}
