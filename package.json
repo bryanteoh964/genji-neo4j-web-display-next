@@ -19,6 +19,9 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@auth/mongodb-adapter": "^3.5.3",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "antd": "^4.24.12",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.8",
@@ -27,6 +30,7 @@
     "d3-geo-projection": "^4.0.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "font-awesome": "^4.7.0",
     "graph-data-structure": "^3.3.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.460.0",
