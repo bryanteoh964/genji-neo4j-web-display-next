@@ -25,7 +25,7 @@ const GenjiHomePage = () => {
 			const relativeScroll = Math.max(0, scrollTop - (initialOffset - window.innerHeight/2));
 		
 			const startPosition = -200; 
-			const maxScrollPosition = 500;
+			const maxScrollPosition = 800;
 			
 			const scrollPercentage = Math.min(1, relativeScroll / maxScrollPosition);
 			
