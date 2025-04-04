@@ -1,25 +1,31 @@
 .userTranslationsSection {
   margin-top: 0;
+  height: 60px; 
+  display: flex;
+  align-items: flex-start;
+  padding-top: 5px;
 }
 
 .translationsHeader {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
-  margin-right: 20%;
+  margin: 0;
+  width: 100%;
+  padding-top: 0px;
 }
 
 .viewTranslationsButton {
-  padding: 10px 20px;
+  padding: 5px 10px;
   background-color: rgba(75, 75, 75, 0.66);
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   font-family: 'Lexend', sans-serif;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  height: 25px;
 }
 
 .viewTranslationsButton:hover {
@@ -148,12 +154,12 @@
 
 .translationItem {
   padding: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #dfcbab;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
-  background-color: white;
+  background-color: #dfcbab !important;
   transition: background-color 0.2s;
 }
 
