@@ -636,6 +636,9 @@
   padding-left: 5px;
   margin-bottom: -5px;
   margin-top: -3px;
+  overflow-x: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .addresseeLine {
@@ -643,6 +646,9 @@
   align-items: right;
   justify-content: right;
   padding-right: 5px;
+  overflow-x: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .characterLink:hover {
