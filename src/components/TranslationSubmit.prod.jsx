@@ -71,13 +71,11 @@ const TransSubmit = ({ pageType, identifier }) => {
 
   return (
     <div className={styles.userTranslationSection}>
-      <h3>HOW WOULD YOU TRANSLATE THIS POEM?</h3>
-      
       {session ? (
         <>
           <textarea 
             className={styles.userTranslationInput} 
-            placeholder="Write your translation here..."
+            placeholder="How would you translate this poem? Write your translation here..."
             value={translation}
             onChange={(e) => setTranslation(e.target.value)}
           />

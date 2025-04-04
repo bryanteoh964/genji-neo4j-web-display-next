@@ -69,37 +69,39 @@ const FormatText = ({ text, className }) => {
     const paragraphClassName = className ? `${className} mb-4` : "mb-4";
 
     return (
-        <p className={paragraphClassName}>
-            {parseText(text).map((line, lineIndex) => (
-                <React.Fragment key={lineIndex}>
-                    {line.content.map((item, index) => {
-                        switch (item.type) {
-                            case 'bold':
-                                return <strong key={index} className="font-bold">{item.text}</strong>;
-                            case 'italic':
-                                return <em key={index} className="italic">{item.text}</em>;
-                            case 'bolditalic':
-                                return <strong key={index} className="font-bold italic">{item.text}</strong>;
-                            case 'link':
-                                return (
-                                    <a 
-                                        key={index} 
-                                        href={item.url}
-                                        className="text-blue-600 hover:text-blue-800 underline"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {item.text}
-                                    </a>
-                                );
-                            default:
-                                return <span key={index}>{item.text}</span>;
-                        }
-                    })}
-                    {!line.isLastLine && <br />}
-                </React.Fragment>
-            ))}
-        </p>
+        <div className={paragraphClassName}>
+            <p>
+                {parseText(text).map((line, lineIndex) => (
+                    <React.Fragment key={lineIndex}>
+                        {line.content.map((item, index) => {
+                            switch (item.type) {
+                                case 'bold':
+                                    return <strong key={index} className="font-bold">{item.text}</strong>;
+                                case 'italic':
+                                    return <em key={index} className="italic">{item.text}</em>;
+                                case 'bolditalic':
+                                    return <strong key={index} className="font-bold italic">{item.text}</strong>;
+                                case 'link':
+                                    return (
+                                        <a 
+                                            key={index} 
+                                            href={item.url}
+                                            className="text-blue-600 hover:text-blue-800 underline"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {item.text}
+                                        </a>
+                                    );
+                                default:
+                                    return <span key={index}>{item.text}</span>;
+                            }
+                        })}
+                        {!line.isLastLine && <br />}
+                    </React.Fragment>
+                ))}
+            </p>
+        </div>
     );
 };
 

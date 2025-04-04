@@ -1,45 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 .navFrame {
-    width: 100%;
-    height: 90px;
+    width: 1440px;
+    height: 70px;
     box-sizing: border-box;
     background-color: #737373;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
 }
 
 .navContainer {
     display: flex;
     align-items: center;
-    width: 100%;
-    height: 90px;
-    margin: 0 auto;
-    padding: 10 0px;
+    width: 1440px;
+    height: 70px;
+    justify-content: space-between;
 }
 
 .navLinksWrapper {
     display: flex;
     align-items: center;
-    margin-left: auto;
+
 }
 
 .logoContainer {
+    position: relative;
     display: flex;
     align-items: center;
-    margin-right: auto;
+
 }
 
 .logoLink {
+    position: relative;
     display: flex;
     align-items: center;
     text-decoration: none;
 }
 
 .logo {
-    top: 15.62px;
+    position: relative;
+    top: -5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,7 +53,7 @@
     align-items: center;
     justify-content: flex-end;
     height: 100%;
-    gap: 40px;
+    gap: 48px;
 }
 
 .navLinks a, 
@@ -68,6 +71,7 @@
     color: #c49c3e;
     line-height: 150%;
     letter-spacing: 0.1em;
+    vertical-align: middle;
     transition: color 0.3s ease;
     cursor: pointer;
     text-align: center;
@@ -105,157 +109,6 @@
     display: flex;
     align-items: center;
     height: 100%;
-    margin-left: auto;
     gap: 16px;
 }
 
-@media (max-width: 1200px) {
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        width: auto;
-        padding: 0 15px;
-    }
-    
-    .navLinks {
-        gap: 20px;
-    }
-
-    .userControls {
-        margin-left: -20px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        width: auto;
-        padding: 0 15px;
-        font-size: 16px;
-    }
-    
-    .siteTitle {
-        font-size: 1.6rem;
-    }
-    
-    .navLinks {
-        gap: 20px;
-    }
-
-    .userControls {
-        margin-left: -20px;
-    }
-}
-
-@media (max-width: 900px) {
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        padding: 0 10px;
-        font-size: 14px;
-        letter-spacing: 0.05em;
-    }
-    
-    .navLinks {
-        gap: 10px;
-    }
-
-    .userControls {
-        gap: 12px;
-    }
-}
-
-@media (max-width: 768px) {
-    .navFrame {
-        height: auto;
-        min-height: 90px;
-        padding: 10px 0;
-    }
-    
-    .navContainer {
-        flex-direction: column;
-        height: auto;
-        padding: 10px 15px;
-    }
-    
-    .navLinksWrapper {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .navLinks {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin: 15px 0;
-        gap: 15px;
-    }
-    
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        width: auto;
-        font-size: 15px;
-    }
-    
-    .userControls {
-        width: 100%;
-        justify-content: center;
-        margin: 10px 0;
-        margin-right: 0;
-    }
-    
-    .logoContainer {
-        margin: 0 auto 10px;
-    }
-    
-    .dropdownWrapper {
-        position: relative;
-    }
-}
-
-@media (max-width: 480px) {
-    .navFrame {
-        padding: 5px 0;
-    }
-    
-    .navContainer {
-        padding: 5px 10px;
-    }
-    
-    .navLinks {
-        gap: 10px;
-    }
-    
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        font-size: 13px;
-        padding: 5px 8px;
-        height: auto;
-        letter-spacing: 0.05em;
-    }
-
-    .userControls {
-        gap: 10px;
-    }
-
-    .dropdownWrapper > div {
-        position: static;
-    }
-}
-
-@media (max-width: 360px) {
-    .navLinks a, 
-    .navLinks span,
-    .dropdownWrapper > div > span {
-        font-size: 12px;
-        padding: 4px 6px;
-    }
-    
-    .logoContainer {
-        flex-direction: column;
-        text-align: center;
-    }
-}
