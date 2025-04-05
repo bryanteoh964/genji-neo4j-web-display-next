@@ -22,7 +22,7 @@ export async function GET(req) {
         const contributor = await db.collection('contribution').findOne( { pageType, identifier } );
 
         if(!contributor|| contributor.length === 0) 
-            return NextResponse.json({ message: 'no contributor' }, { status: 404 });
+            return NextResponse.json({ contributor: [], message: 'no contributor' }, { status: 200 });
 
         const contributorObjects = contributor.contributors.map(id => ({
             contributor: id
