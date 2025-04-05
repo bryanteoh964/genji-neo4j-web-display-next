@@ -4,7 +4,7 @@
     align-items: center;
     height: 100%;
     margin-left: -20px;
-    margin-right: -30px;
+    margin-right: -40px;
 }
 
 .moreButton {
@@ -69,69 +69,4 @@
 .moreLink:hover {
     background-color: rgba(196, 156, 62, 0.2) !important;
     color: #ffffff !important;
-}
-
-@media (max-width: 1200px) {
-    .moreButton {
-        width: 120px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .moreButton {
-        font-size: 16px;
-        margin-right: -10px;
-    }
-    
-    .moreOptions {
-        min-width: 160px;
-    }
-    
-    .moreLink {
-        padding: 8px 12px !important;
-        font-size: 13px !important;
-    }
-
-    .moreDropdown {
-        margin-left: -30px;
-        margin-right: -20px;
-    }
-}
-
-@media (max-width: 900px) {
-    .moreButton {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 768px) {
-    .moreButton {
-        font-size: 15px;
-        width: 100px;
-    }
-    
-    .moreOptions {
-        min-width: 140px;
-    }
-    
-    .moreLink {
-        padding: 8px 10px !important;
-        font-size: 12px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .moreButton {
-        font-size: 13px;
-        width: 90px;
-    }
-    
-    .moreOptions {
-        min-width: 120px;
-    }
-    
-    .moreLink {
-        padding: 6px 8px !important;
-        font-size: 11px !important;
-    }
 }

@@ -360,16 +360,27 @@ const PoemDisplay = ({ poemData }) => {
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.messengerBox}`}>
-                        <span className={styles.messengerValue}>{poemState.messenger || 'NONE'}</span>
+                        <span className={styles.messengerValue}>
+                            {poemState.messenger ? (
+                                <a href={`/characters/${encodeURIComponent(poemState.messenger)}`} className={styles.characterLink}>
+                                    {poemState.messenger}
+                                </a>
+                            ) : (
+                                'NONE'
+                            )}
+                        </span>
+
                         <span className={styles.messengerLabel}>MESSENGER</span> 
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.connectedBox}`}>
-                        <span className={styles.label}>CONNECTED POEMS</span>
-                        <div className={styles.arrows}>
+                        <div className={styles.connectedArrows}>
                             <span>◀</span>
                             <span>▶</span>
                         </div>
+
+                        <span className={styles.connectedLabel}>CONNECTED POEMS</span>
+
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.poemTypeBox}`}>
@@ -417,17 +428,23 @@ const PoemDisplay = ({ poemData }) => {
                             <span>POEM</span>
                         </div>
                         <div className={styles.mainContent}>
-                            <div className={styles.numberContainer}>
-                                <span>{(chapter < 10 ? `0${chapter}` : chapter)}</span>
-                                <span>{(number < 10 ? `0${number}` : number)}</span>
+                            <div className={styles.chapterKanjiContainer}>
+                                <div className={styles.numberContainer}>
+                                    <span>{(chapter < 10 ? `0${chapter}` : chapter)}</span>
+                                    <span>{(number < 10 ? `0${number}` : number)}</span>
+                                </div>
+
+                                <div className={styles.chapterEnglish}>
+                                    {chapter_name?.split(' ').slice(0, -1).join(' ')}
+                                </div>
                             </div>
-                            <span className={styles.chapterKanji}>
-                                {chapter_name?.split(' ').slice(-1)[0]}
-                            </span>
+                            <div className={styles.chapterKanjiContainer}>
+                                <span className={styles.chapterKanji}>
+                                    {chapter_name?.split(' ').slice(-1)[0]}
+                                </span>
+                            </div>
                         </div>
-                        <div className={styles.chapterEnglish}>
-                            {chapter_name?.split(' ').slice(0, -1).join(' ')}
-                        </div>
+                        
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.seasonBox}`}>
@@ -542,7 +559,9 @@ const PoemDisplay = ({ poemData }) => {
                         {poemState.pt && (
                             <div className={styles.detailItem}>
                                 <h3>POETIC TECHNIQUE</h3>
-                                <FormatContent content={poemState.pt} />
+                                {poemState.pt.map((item, idx) => (
+                                    <FormatContent key={idx} content={item[0]} />
+                                ))}
                             </div>
                         )}
 
@@ -701,7 +720,7 @@ const PoemDisplay = ({ poemData }) => {
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <p className={styles.originalJapanese}>{poemState.JPRM[0]}</p>
-                            <br/>
+ 
                             <p className={styles.originalRomaji}>{poemState.JPRM[1]}</p>
                         </div>
                         <div className={styles.translationMeta}>

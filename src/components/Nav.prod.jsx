@@ -40,7 +40,7 @@ const Navigation = () => {
                 <div className={styles.logoContainer}>
                     <Link href="/" className={styles.logoLink}>
                         <div className={styles.logo}>
-                            <LogoSVG width={240} height={90} />
+                            <LogoSVG width={240} height={80} />
                         </div>
 
                     </Link>
