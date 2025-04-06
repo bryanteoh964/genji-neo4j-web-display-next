@@ -492,6 +492,7 @@ export function generateTimeline(timeline_info) {
 export function singleCharacterTimeline(timeline_info) {
 
     var info = []
+    var i = 0;
     for (const [
         chapter_name,
         chapter_number,
@@ -505,9 +506,12 @@ export function singleCharacterTimeline(timeline_info) {
         summer,
         fall,
         winter,
+        autumn,
     ] of timeline_info) {
+        i += 1
 		info.push(
             {
+                id: ("event_" + i.toString()), 
 				chapter: chapter_name,
                 chapter_number: chapter_number,
 
@@ -520,8 +524,9 @@ export function singleCharacterTimeline(timeline_info) {
 
 				spring: spring,
 				summer: summer,
-				fall: fall,
-				winter: winter
+				fall: fall, 
+				winter: winter,
+                autumn: autumn 
 			}
         )
 	}
