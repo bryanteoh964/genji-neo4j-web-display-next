@@ -13,12 +13,13 @@ h1.title {
 .section_frame {
 	display: flex;
 	justify-content: center;
+  background-color: #737373;
 }
 
 .section_container {
-  margin: 20px 0 0px 0;
-  width: 920px;
-  min-height: 460px;
+  margin: 0;
+  width: 100%;
+  max-height: 1080px;
   text-align: center;
 }
 
@@ -35,6 +36,5 @@ h1.title {
   .section_frame {
     display: flex;
     justify-content: left;
-    margin-left: 20px;
   }
 }
