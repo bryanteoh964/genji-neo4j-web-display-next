@@ -4,6 +4,7 @@ import {BackTop} from 'antd';
 import ContributorView from './ContributorView.prod'
 import FormatContent from './FormatText.prod';
 import DiscussionArea from './DiscussionArea.prod'
+import ZoomableGanttChart from './ZoomableGanttChart'; 
 
 // format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -83,6 +84,9 @@ export default function CharacterDetail({ name }) {
     const [timeline, setTimeline] = useState([]) 
 
     // Mak: This Character's Timeline 
+    const gantt = useRef([]) 
+	const [isLoading, setIsLoading] = useState(true)
+
 	useEffect(() =>{
         const _ = async() =>{
             try {
@@ -181,31 +185,26 @@ export default function CharacterDetail({ name }) {
     }
 
     //Mak: timeline
-    if (timeline.length > 0) {
+    
+    if (isLoading) { 
+        if (timeline.length > 0) {
+            
+        }
         try {
             var ordered_info = timeline
             ordered_info = ordered_info.sort((a,b) => {
             function see(a) {
-                var month_days = [31,28,31,30,31,30,31,31,30,31,30,31]
-                var n_value = 0
-                if (a.day != null) {
-                    n_value += a.day
+                if (a.spring) {
+                    return a.age_of_genji * 10000 + 3 * 100 + 1
+                } else if (a.summer) {
+                    return a.age_of_genji * 10000 + 6 * 100 + 1
+                } else if (a.fall || a.autumn) {
+                    return a.age_of_genji * 10000 + 9 * 100 + 1
+                } else if (a.winter) {
+                    return a.age_of_genji * 10000 + 12 * 100 + 1
+                } else { 
+                    return a.age_of_genji * 10000 + a.month * 100 + a.day
                 }
-                if (a.month != null) {
-                    for (const i = 0; i < a.month; a++) {
-                        n_value += month_days[i]
-                    }
-                }
-                if (n_value == 0) {
-                    if (a.winter) {n_value = 335}
-                    if (a.spring) {n_value = 60}
-                    if (a.summer) {n_value = 152}
-                    if (a.fall) {n_value = 244} 
-                }
-                
-                n_value += 365*(a.age_of_genji-1)
-
-                return n_value
             }
             var a_value = see(a)
             var b_value = see(b)
@@ -214,8 +213,12 @@ export default function CharacterDetail({ name }) {
         })
 
         document.getElementById("timeline_elements").innerHTML = "";
+
+        var ganttTimeline = []
         for (const oi of ordered_info) { 
             var descrip_div = document.createElement("div")
+            descrip_div.id = oi.id 
+            descrip_div.className = "descripDiv"
             descrip_div.style.display = "inline-block"
             descrip_div.style.minWidth = "320px"
             descrip_div.style.textAlign = "left"
@@ -262,6 +265,7 @@ export default function CharacterDetail({ name }) {
             if (oi.spring) {JP_season.innerHTML = "春"}
             if (oi.summer) {JP_season.innerHTML = "夏"}
             if (oi.fall) {JP_season.innerHTML = "秋"}
+            if (oi.autumn) {JP_season.innerHTML = "秋"} 
             season_div.appendChild(JP_season)
  
             var EN_season = document.createElement("h5")
@@ -269,6 +273,7 @@ export default function CharacterDetail({ name }) {
             if (oi.spring) {EN_season.innerHTML = "spring"}
             if (oi.summer) {EN_season.innerHTML = "summer"}
             if (oi.fall) {EN_season.innerHTML = "autumn"}
+            if (oi.autumn) {EN_season.innerHTML = "autumn"}
             EN_season.style.marginTop = "10px"
             EN_season.style.marginBottom = "0"
             EN_season.style.marginLeft = "auto"
@@ -300,13 +305,80 @@ export default function CharacterDetail({ name }) {
             paragraph.innerHTML += oi.english + "<br>" + "<br>"
             descrip_div.appendChild(paragraph)
 
-            
-            document.getElementById("timeline_elements").appendChild(descrip_div) 
-        } 
-        } catch (error) {
+            document.getElementById("timeline_elements").appendChild(descrip_div)  
 
-        }
-    }
+            //Add to Timeline Gantt Chart 
+            var genji_age = oi.age_of_genji.toString()
+            if (genji_age.length == 1) {
+                genji_age = "000" + genji_age
+            } else {
+                genji_age = "00" + genji_age
+            }
+            var genji_age_next = (oi.age_of_genji+1).toString()
+            if (genji_age_next.length == 1) {
+                genji_age_next = "000" + genji_age_next
+            } else {
+                genji_age_next = "00" + genji_age_next
+            } 
+
+            if (oi.spring) {
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-03-01"), endDate: new Date(genji_age+"-05-31"), id: oi.id})
+            } else if (oi.summer) {
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-06-01"), endDate: new Date(genji_age+"-08-31"), id: oi.id})
+            } else if (oi.fall || oi.autumn) {
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-09-01"), endDate: new Date(genji_age+"-11-30"), id: oi.id})
+            } else if (oi.winter) {
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-02-28"), id: oi.id})
+            } else if (oi.day != null) {
+                var dd = oi.day.toString()
+                if (dd.length == 1) {
+                    dd = "0" + dd
+                }
+                var mm = oi.month.toString()
+                if (mm.length == 1) {
+                    mm = "0" + mm
+                }
+                var mm_next = (oi.month + 1).toString()
+                if (mm_next.length  == 1) {
+                    mm_next = "0" + mm_next
+                } 
+                if (oi.month == 12) {
+                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-12-" + dd), endDate: new Date(genji_age_next+"-01-" +dd), id: oi.id})
+                } else {
+                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-"+mm+ "-" + dd), endDate: new Date(genji_age+"-"+mm_next+ "-" +dd), id: oi.id})
+                }
+            } else if (oi.month != null) { 
+                var mm = oi.month.toString() 
+                if (mm.length == 1) {
+                    mm = "0" + mm
+                }
+                var mm_next = (oi.month + 1).toString()
+                if (mm_next.length  == 1) {
+                    mm_next = "0" + mm_next
+                } 
+                if (oi.month == 12) {
+                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-01-01"), id: oi.id})
+                } else { 
+                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-"+mm+ "-01"), endDate: new Date(genji_age+"-"+mm_next+ "-01"), id: oi.id})
+                }
+            } else {
+                ganttTimeline.push({task: "Year Event", startDate: new Date(genji_age+"-01-01"), endDate: new Date(genji_age+"-06-01"), id: oi.id}) 
+            }
+
+        } 
+        
+        gantt.current = ganttTimeline
+        } catch (error) {
+            setTimeout(() => {
+                if (timeline.length == 0) {
+                    document.getElementById("timeline_window").style.display = "none" 
+                    document.getElementById("timeline_gantt").style.display = "none" 
+                } 
+            }, 2000) 
+        } 
+    } else {
+
+    } 
 
     return (
         
@@ -385,7 +457,7 @@ export default function CharacterDetail({ name }) {
                         {Object.keys(poemsByChapter).length > 0 ? (
                             Object.entries(poemsByChapter).map(([chapterKey, poems]) => {
                                 const [chapterNum, chapterName] = chapterKey.split(': ');
-                                return (
+                                return ( 
                                     <CollapsibleChapter 
                                         key={chapterKey}
                                         chapterNum={chapterNum}
@@ -399,22 +471,18 @@ export default function CharacterDetail({ name }) {
                         )}
                     </div> 
 
-                    {
-                        function() {
-                            if (timeline.length > 0) {
-                                return (
-                                    <div style={{width: "fit-content", height: "fit-content",marginLeft: "auto", marginRight: "auto"}}>
-                                        <div style={{marginLeft: "auto", marginRight: "auto", width: "900px", height: "500px", borderRadius: "10px", backgroundColor: "#5451a3", overflow: "hidden", padding: 0}}>
-                                            <div style={{width: "100%", overflowX:"scroll", height: "100%", overflowY: "hidden", boxShadow: "inset 5px 5px 10px rgba(0, 0, 0, 0.25),  inset -5px 5px 10px rgba(0, 0, 0, 0.25),  inset 5px -5px 10px rgba(0, 0, 0, 0.25),  inset -5px -5px 10px rgba(0, 0, 0, 0.25)"}}> 
-                                                <div id="timeline_elements" style={{zIndex: 0, paddingLeft: "50px", paddingRight: "50px", color: "#000", display: "flex"}}></div>
-                                            </div>
-                                        </div> 
-                                        <h3 style={{float:"right", color: "black"}}>(𖤓 = Genji`s Age)</h3>
-                                    </div>
-                                )
-                            }
-                        }()
-                    }
+                    <div id="timeline_window" style={{width: "fit-content", height: "fit-content",marginLeft: "auto", marginRight: "auto"}}>
+                        <div style={{marginLeft: "auto", marginRight: "auto", maxWidth: "1000px", height: "500px", borderRadius: "10px", backgroundColor: "#5451a3", overflow: "hidden", padding: 0}}>
+                            <div style={{width: "100%", overflowX:"scroll", height: "100%", overflowY: "hidden", boxShadow: "inset 5px 5px 10px rgba(0, 0, 0, 0.25),  inset -5px 5px 10px rgba(0, 0, 0, 0.25),  inset 5px -5px 10px rgba(0, 0, 0, 0.25),  inset -5px -5px 10px rgba(0, 0, 0, 0.25)"}}> 
+                                <div id="timeline_elements" style={{zIndex: 0, paddingLeft: "50px", paddingRight: "50px", color: "#000", display: "flex"}}></div>
+                            </div> 
+                        </div> 
+                        <h3 style={{color: "black"}}>(𖤓 = Genji`s Age)</h3>
+                    </div>
+
+                    <div id="timeline_gantt" >
+                        <ZoomableGanttChart  data={gantt.current} /> 
+                    </div>
                 </div>
             </div>
 
