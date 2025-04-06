@@ -626,6 +626,11 @@
   display: flex;
   align-items: left;
   justify-content: left;
+  padding-left: 5px;
+  margin-bottom: -5px;
+  margin-top: -3px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .addresseeLine {
@@ -647,6 +652,9 @@
   line-height: 21px !important;
   letter-spacing: 0.02rem !important;
   text-transform: uppercase !important;
+  padding-right: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .characterLink:hover {

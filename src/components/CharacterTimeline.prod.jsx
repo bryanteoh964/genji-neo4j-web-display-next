@@ -43,30 +43,18 @@ export default function CharacterTimeline({l}) {
 
         ordered_info = ordered_info.sort((a,b) => {
             function see(a) {
-                var month_days = [31,28,31,30,31,30,31,31,30,31,30,31]
-                var n_value = 0
-                if (a.day != null) {
-                    n_value += a.day
-                }
-                if (a.month != null) {
-                    for (const i = 0; i < a.month; a++) {
-                        n_value += month_days[i]
-                    }
-                }
-                if (n_value == 0) {
-                    if (a.winter) {n_value = 335}
-                    if (a.spring) {n_value = 60}
-                    if (a.summer) {n_value = 152}
-                    if (a.fall) {n_value = 244} 
-                }
-                
-                if (showAll) {
-                    n_value += 365*(a.age_of_genji-1)
-                }
-
-
-                return n_value
-            }
+                if (a.spring) {
+                    return a.age_of_genji * 10000 + 3 * 100 + 1
+                } else if (a.summer) {
+                    return a.age_of_genji * 10000 + 6 * 100 + 1
+                } else if (a.fall || a.autumn) {
+                    return a.age_of_genji * 10000 + 9 * 100 + 1
+                } else if (a.winter) {
+                    return a.age_of_genji * 10000 + 12 * 100 + 1
+                } else { 
+                    return a.age_of_genji * 10000 + a.month * 100 + a.day
+                } 
+            } 
             var a_value = see(a)
             var b_value = see(b)
             

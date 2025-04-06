@@ -28,7 +28,8 @@ export async function GET(req) {
 			b.spring,
 			b.summer,
 			b.fall,
-			b.winter
+			b.winter,
+			b.autumn
 			`
 		))
 
