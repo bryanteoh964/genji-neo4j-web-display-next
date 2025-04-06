@@ -92,13 +92,26 @@ const PoemDisplay = ({ poemData }) => {
                 setPoemState(prev => ({...prev, isLoading: true}));
                 
                 const cacheKey = `poem_${chapter}_${number}`;
-                const cachedPoem = localStorage.getItem(cacheKey);
+                const cacheTimeKey = `poem_${chapter}_${number}_time`;
                 
-                if (cachedPoem) {
+                const cachedPoem = localStorage.getItem(cacheKey);
+                const cachedTime = localStorage.getItem(cacheTimeKey);
+                
+                const now = Date.now();
+                const expirationTime = 3600000;
+
+                if (cachedPoem && cachedTime && (now - parseInt(cachedTime, 10)) < expirationTime) {
                     const poemData = JSON.parse(cachedPoem);
                     setPoemState(prev => ({...prev, ...poemData, isLoading: false}));
                     return;
                 }
+
+                // remove cache if expired
+                if (cachedPoem && cachedTime && (now - parseInt(cachedTime, 10)) >= expirationTime) {
+                    localStorage.removeItem(cacheKey);
+                    localStorage.removeItem(cacheTimeKey);
+                }
+
                 
                 const response = await fetch(`/api/poems?chapter=${chapter}&&number=${numStr}`);
                 if (response.status !== 200) {
@@ -196,12 +209,17 @@ const PoemDisplay = ({ poemData }) => {
                 };
                 
 
-                console.log(responseData)
+                // console.log(responseData)
 
                 setPoemState(prev => ({...prev, ...newPoemState}));
                 
-                localStorage.setItem(cacheKey, JSON.stringify(newPoemState));
-                setTimeout(() => localStorage.removeItem(cacheKey), 3600000);
+                try {
+                    const now = Date.now();
+                    localStorage.setItem(cacheKey, JSON.stringify(newPoemState));
+                    localStorage.setItem(cacheTimeKey, now.toString());
+                } catch (storageError) {
+                    console.error('Cache storage failed:', storageError);
+                }
                 
             } catch (error) {
                 console.error('Error fetching poem data:', error);
@@ -556,7 +574,7 @@ const PoemDisplay = ({ poemData }) => {
                             </div>
                         )}
                         
-                        {poemState.pt && (
+                        {poemState.pt && poemState.pt.length > 0 && (
                             <div className={styles.detailItem}>
                                 <h3>POETIC TECHNIQUE</h3>
                                 {poemState.pt.map((item, idx) => (
