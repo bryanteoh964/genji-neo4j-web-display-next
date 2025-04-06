@@ -2,7 +2,6 @@ const { getSession } = require('../../neo4j_driver/route.prod.js');
 const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
 //var kuromoji = require("kuromoji");
 
-
 // let tokenizer = null;
 // const initializeTokenizer = () => {
 //   return new Promise((resolve, reject) => {
@@ -32,8 +31,6 @@ const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
 //       return [text]; // if failed tokenizing, return original text
 //     }
 //   }
-
-  
 
 // api for keyword poem search
 async function generalSearch(q) {

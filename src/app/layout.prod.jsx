@@ -11,6 +11,7 @@ import { SessionProvider } from 'next-auth/react'
 export const metadata = {
   title: 'The Tale of Genji Poem Database',
   description: 'The Tale of Genji Poem Database Website',
+  // viewport: 'width=device-width, initial-scale=1',
 };
 
 const Layout = ({ children }) => {

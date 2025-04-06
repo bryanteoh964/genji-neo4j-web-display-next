@@ -29,6 +29,23 @@ const getChapterName = (String) => {
   return chapterNames[formattedKey] || "Unknown Chapter"; // Return default if not found
 };
 
+const getChapterNamRomanji = (String) => {
+  const chapterNames = {
+    '01': 'Kiritsubo', '02': 'Hahakigi', '03': 'Utsusemi', '04': 'Yūgao', '05': 'Wakamurasaki', '06': 'Suetsumuhana', '07': 'Momiji no Ga', '08': 'Hana no En', '09': 'Aoi',
+    '10': 'Sakaki', '11': 'Hana Chiru Sato', '12': 'Suma', '13': 'Akashi', '14': 'Miotsukushi', '15': 'Yomogiu', '16': 'Sekiya', '17': 'E Awase', '18': 'Matsukaze',
+    '19': 'Usugumo', '20': 'Asagao', '21': 'Otome', '22': 'Tamakazura', '23': 'Hatsune', '24': 'Kochō', '25': 'Hotaru', '26': 'Tokonatsu', '27': 'Kagaribi',
+    '28': 'Nowaki', '29': 'Miyuki', '30': 'Fujibakama', '31': 'Makibashira', '32': 'Umegae', '33': 'Fuji no Uraba', '34': 'Wakana: Jō', '35': 'Wakana: Ge',
+    '36': 'Kashiwagi', '37': 'Yokobue', '38': 'Suzumushi', '39': 'Yūgiri', '40': 'Minori', '41': 'Maboroshi', '42': 'Niou Miya', '43': 'Kōbai', '44': 'Takekawa',
+    '45': 'Hashihime', '46': 'Shii ga Moto', '47': 'Agemaki', '48': 'Sawarabi', '49': 'Yadorigi', '50': 'Azumaya', '51': 'Ukifune', '52': 'Kagerō', '53': 'Tenarai',
+    '54': 'Yume no Ukihashi'
+  };
+  // Ensure chapterKey is a string and zero-padded (e.g., '1' -> '01')
+  const formattedKey = String.toString().padStart(2, '0');
+
+  return chapterNames[formattedKey] || "Unknown Chapter";
+};
+
+
 const getChapterNamKanji = (String) => {
   const chapterNames = {
     '01': '桐壺', '02': '帚木', '03': '空蝉', '04': '夕顔', '05': '若紫', '06': '末摘花', '07': '紅葉賀', '08': '花宴', '09': '葵', 
@@ -39,11 +56,6 @@ const getChapterNamKanji = (String) => {
     '45': '橋姫', '46': '椎本', '47': '総角', '48': '早蕨', '49': '宿木', '50': '東屋', '51': '浮舟', '52': '蜻蛉', '53': '手習', 
     '54': '夢浮橋'
   };  
-  return chapterNames[String];
-}
-
-const getChapterName_noJP = (String) => {
-  const chapterNames = {'1':'Kiritsubo','2':'Hahakigi','3':'Utsusemi','4':'Yūgao','5':'Wakamurasaki','6':'Suetsumuhana','7':'Momiji no Ga','8':'Hana no En','9':'Aoi','10':'Sakaki','11':'Hana Chiru Sato','12':'Suma','13':'Akashi','14':'Miotsukushi','15':'Yomogiu','16':'Sekiya','17':'E Awase','18':'Matsukaze','19':'Usugumo','20':'Asagao','21':'Otome','22':'Tamakazura','23':'Hatsune','24':'Kochō','25':'Hotaru','26':'Tokonatsu','27':'Kagaribi','28':'Nowaki','29':'Miyuki','30':'Fujibakama','31':'Makibashira','32':'Umegae','33':'Fuji no Uraba','34':'Wakana: Jō','35':'Wakana: Ge','36':'Kashiwagi','37':'Yokobue','38':'Suzumushi','39':'Yūgiri','40':'Minori','41':'Maboroshi','42':'Niou Miya','43':'Kōbai','44':'Takekawa','45':'Hashihime','46':'Shii ga Moto','47':'Agemaki','48':'Sawarabi','49':'Yadorigi','50':'Azumaya','51':'Ukifune','52':'Kagerō','53':'Tenarai','54':'Yume no Ukihashi'};
   return chapterNames[String];
 }
 
@@ -62,11 +74,11 @@ const PoemSearch = () => {
 
   const [filters, setFilters] = useState({
     chapterNum: {
-      label: "Chapters",
+      label: "Chapter",
       options: {},
     },
     speaker_name: {
-      label: "Speaker Name",
+      label: "Poem From >>",
       options: {},
     },
     speaker_gender: {
@@ -78,7 +90,7 @@ const PoemSearch = () => {
       },
     },
     addressee_name: {
-      label: "Addressee Name",
+      label: ">> Poem To",
       options: {},
     },
     addressee_gender: {
@@ -88,6 +100,10 @@ const PoemSearch = () => {
         female: { checked: true },
         nonhuman: { checked: true },
       },
+    },
+    genji_age: {
+      label: "Genji's Age",
+      options: {},
     },
     //   season: {
     //       label: 'Season',
@@ -242,7 +258,6 @@ const PoemSearch = () => {
               : Object.values(result.addressee_name).join(""),
             addressee_gender: Object.values(result.addressee_gender).join(""),
             speaker_name: Object.values(result.speaker_name).join(""),
-            speaker_color: Object.values(result.speaker_color).join(""),
             speaker_gender: Object.values(result.speaker_gender).join(""),
             season: Object.values(result.season).join(""),
             peotic_tech: Object.values(result.peotic_tech).join(""),
@@ -349,126 +364,6 @@ const PoemSearch = () => {
     return acc;
   }, {});
 
-  // const chapterData = useMemo(() => {
-  //   // Start with the default counts for all chapters
-  //   const originalCounts = { ...defaultChapterCounts };
-  
-  //   // Calculate the filtered counts
-  //   const filteredCounts = Object.keys(defaultChapterCounts).reduce((acc, chapterNum) => {
-  //     acc[chapterNum] = 0; // Initialize all chapters to 0
-  //     return acc;
-  //   }, {});
-  
-  //   filteredResults.forEach((poem) => {
-  //     filteredCounts[poem.chapterNum] = (filteredCounts[poem.chapterNum] || 0) + 1;
-  //   });
-  
-  //   const labels = Object.keys(defaultChapterCounts).sort((a, b) => a - b);
-  
-  //   return {
-  //     labels,
-  //     datasets: [
-  //       {
-  //         label: 'Original Poems per Chapter',
-  //         data: labels.map((label) => originalCounts[label] || 0),
-  //         backgroundColor: 'rgba(192, 192, 192, 0.6)', // Gray for default data
-  //       },
-  //       {
-  //         label: 'Filtered Poems per Chapter',
-  //         data: labels.map((label) => filteredCounts[label] || 0),
-  //         backgroundColor: labels.map((label) =>
-  //           filteredCounts[label] > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0)' // Highlight filtered chapters
-  //         ),
-  //       },
-  //     ],
-  //   };
-  // }, [filteredResults]);
-
-  //   const chartOptions = {
-  //   maintainAspectRatio: false,
-  //   scales: {
-  //     y: {
-  //       beginAtZero: true,
-  //     },
-  //   },
-  //   plugins: {
-  //     tooltip: {
-  //       callbacks: {
-  //         label: function (context) {
-  //           const chapterNum = context.label; // Get the chapter number from the label
-  //           const chapterName = getChapterName(chapterNum); // Get the chapter name
-  //           const poemsCount = context.raw; // Get the number of poems
-  //           return `${poemsCount} poems found in ${chapterName}`;
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
-  // - - -- - - - - -- -- - -
-
-  // const chapterData = useMemo(() => {
-  //   // Initialize filtered counts for ages 1-75, starting with 0 poems for each age
-  //   const filteredCounts = {};
-  //   for (let age = 1; age <= 75; age++) {
-  //     filteredCounts[age] = 0;
-  //   }
-  
-  //   // Calculate filtered counts based on Genji's age for each poem
-  //   filteredResults.forEach((poem) => {
-  //     const poemAge = poem.genji_age; // Assuming genji_age is available in each poem
-  //     if (poemAge >= 1 && poemAge <= 75) {
-  //       filteredCounts[poemAge] += 1;
-  //     }
-  //   });
-  
-  //   // Create the X-axis labels (ages 1 to 75)
-  //   const labels = Array.from({ length: 75 }, (_, index) => index + 1); // Ages 1 to 75
-  
-  //   // Prepare the chart data
-  //   return {
-  //     labels,
-  //     datasets: [
-  //       {
-  //         label: 'Filtered Poems per Age',
-  //         data: labels.map((label) => filteredCounts[label] || 0), // Get poem count for each age, default to 0
-  //         backgroundColor: labels.map((label) =>
-  //           filteredCounts[label] > 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0)' // Highlight ages with poems
-  //         ),
-  //       },
-  //     ],
-  //   };
-  // }, [filteredResults]);
-  
-  // const chartOptions = {
-  //   maintainAspectRatio: false,
-  //   scales: {
-  //     x: {
-  //       // Keep all ages (1 to 75) on the X-axis
-  //       beginAtZero: true,
-  //       ticks: {
-  //         stepSize: 1, // Ensure every age (1-75) is shown on the X-axis
-  //       },
-  //     },
-  //     y: {
-  //       beginAtZero: true, // Ensure the Y-axis starts at 0
-  //     },
-  //   },
-  //   plugins: {
-  //     tooltip: {
-  //       callbacks: {
-  //         label: function (context) {
-  //           const age = context.label; // Get the age from the label
-  //           const poemsCount = context.raw; // Get the number of poems
-  //           return `${poemsCount} poems found at age ${age}`;
-  //         },
-  //       },
-  //     },
-  //   },
-  // };  
-
-  // -- - - -- - - -- --
-
-
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
     const originalCounts = { ...defaultChapterCounts };
@@ -485,54 +380,115 @@ const PoemSearch = () => {
   
     const labels = Object.keys(defaultChapterCounts).sort((a, b) => a - b);
   
+    // Determine the background color for the original bars (regular)
+    const getBackgroundColor = (chapterNum) => {
+      const originalCount = originalCounts[chapterNum] || 0;
+      const filteredCount = filteredCounts[chapterNum] || 0;
+  
+      // If the counts are different and neither is zero, change the original bars to 50% white
+      if (originalCount !== filteredCount && originalCount !== 0 && filteredCount !== 0) {
+        return 'rgba(255, 255, 255, 0.5)'; // 50% white for original bars when they differ and neither count is zero
+      } else {
+        return 'rgba(0, 0, 0, 0.7)'; // Gray for original bars when they are the same or one of the counts is zero
+      }
+    };
+  
     return {
       labels,
       datasets: [
         {
           label: 'Original Poems per Chapter',
           data: labels.map((label) => originalCounts[label] || 0),
-          backgroundColor: 'rgba(192, 192, 192, 0.6)', // Gray for original data
-          barPercentage: 0.9, // Make the gray bars slightly narrower
-          categoryPercentage: 0.9, // Adjust spacing between bars
-          order: 1, // Render this dataset first
+          backgroundColor: labels.map(getBackgroundColor), // Apply dynamic backgroundColor
+          barPercentage: 0.8, // Make the bars slightly narrower
+          categoryPercentage: 0.8, // Adjust spacing between bars
+          order: 2, // Render this dataset first
         },
         {
           label: 'Filtered Poems per Chapter',
           data: labels.map((label) => filteredCounts[label] || 0),
-          backgroundColor: 'rgba(75, 192, 192, 1)', // Fully opaque blue for filtered data
-          barPercentage: 1.0, // Make the blue bars slightly wider
-          categoryPercentage: 1.0, // Ensure blue bars fully cover gray bars
-          order: 2, // Render this dataset second (on top of gray bars)
+          backgroundColor: 'rgba(255, 255, 255, .9)', // White for filtered data
+          barPercentage: 0.8, // Make the filtered bars slightly wider
+          categoryPercentage: 0.8, // Ensure filtered bars fully cover original bars
+          order: 1, // Render this dataset second (on top of original bars)
         },
       ],
     };
   }, [filteredResults]);
-
+  
   const chartOptions = {
     maintainAspectRatio: false,
     scales: {
       x: {
-        stacked: true, // Enable stacking for the x-axis
+        display: false, // Hide the x-axis
+        stacked: true,
+        ticks: {
+          color: 'black',
+          font: {
+            family: 'Sans-serif',
+            size: 14,
+            weight: 'bold',
+          },
+        },
+        grid: {
+          display: false, // Remove vertical grid lines
+        },
       },
       y: {
         beginAtZero: true,
-        stacked: false, // Enable stacking for the y-axis
-      },
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            const chapterNum = context.label; // Get the chapter number from the label
-            const chapterName = getChapterName(chapterNum); // Get the chapter name
-            const poemsCount = context.raw; // Get the number of poems
-            return `${poemsCount} poems found in ${chapterName}`;
+        stacked: false,
+        ticks: {
+          color: 'black',
+          font: {
+            family: 'Sans-serif',
+            size: 14,
+            weight: 'bold',
           },
+          stepSize: 10,
+          callback: function (value) {
+            return value.toString().padStart(2, '0');
+          },
+        },
+        grid: {
+          drawBorder: false,
+          drawOnChartArea: true,
+          drawTicks: false,
+          color: 'rgba(0, 0, 0, 0.55)',
+          lineWidth: 1,
+        },
+        border: {
+          display: false,
         },
       },
     },
+    plugins: {
+      legend: {
+        display: false, // Keep this false since you're using custom legend
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const chapterNum = context.label;
+            const chapterName = getChapterName(chapterNum);
+            const poemsCount = context.raw;
+            
+            // For black bars (original poems)
+            if (context.datasetIndex === 0) {
+              return `Out of ${poemsCount} poems in ${chapterName}`;
+            }
+            // For white bars (filtered poems)
+            else {
+              return `${poemsCount} poems found`;
+            }
+          },
+        },
+        displayColors: true,
+        usePointStyle: true,
+      }
+    },
   };
-
+  
+  
   useEffect(() => {
     handleSearch(query);
   }, [query, handleSearch]);
@@ -542,8 +498,8 @@ const PoemSearch = () => {
     if (!e.target.value.trim()) setShowResults(false);
   };
 
-  // toggle control
-  const [openSections, setOpenSections] = useState(new Set(["chapterNum"]));
+  // toggle control for chapter
+  const [openSections, setOpenSections] = useState(new Set()); // Start with an empty Set to keep all sections closed
 
   const toggleSection = (category) => {
     setOpenSections((prev) => {
@@ -609,9 +565,17 @@ const PoemSearch = () => {
 
     return (
       <div className={styles.filterContainer}>
-        <div className={styles.filterHeader}>
-          <h2>Filters</h2>
-        </div>
+        <div className={styles.searchArea}>
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+          onFocus={() => setShowResults(true)}
+          placeholder="Enter Keyword..."
+          className={styles.searchInput}
+        />
+      </div>
         <div className={styles.filterScroll}>
           {Object.entries(filters).map(
             ([category, { label, options }]) =>
@@ -848,16 +812,16 @@ const PoemSearch = () => {
 
   const renderTranslation = (translation, translator) => {
     if (!translation) return <p>No translation available</p>;
-
+  
     return (
       <div className={styles.translation}>
         {translation.split("\n").map((line, index) => (
-          <div
+          <p
             key={`${translator}-line-${index}`}
             className={styles.translationLine}
           >
             {highlightMatch(line, query)}
-          </div>
+          </p>
         ))}
       </div>
     );
@@ -868,6 +832,7 @@ const PoemSearch = () => {
     setHoveredItem(index); // Just store the hovered index
   };
 
+  // Function to handle mouse leave event, keep popup open
   const handleMouseLeave = () => {
     setHoveredItem(null);
   };
@@ -880,21 +845,55 @@ const PoemSearch = () => {
           className={styles.resultItem}
           onMouseEnter={(event) => handleMouseEnter(index, event)}
           onMouseLeave={handleMouseLeave}
-          style={{ border: `2.5px solid ${result.speaker_color}` }}
         >
           <Link href={`/poems/${removeLeadingZero(result.chapterNum)}/${removeLeadingZero(result.poemNum)}`}>
             <div className={styles.resultContent}>
-              <h3 className={styles.resultTitle}>
-                {result.chapterNum} {result.chapterAbr}{" "}
-                {getChapterNamKanji(result.chapterNum)} {result.poemNum}
+              <h3
+                className={styles.resultTitleSpeaker}
+                style={{
+                    color:
+                    result.speaker_gender === 'male'
+                        ? '#436875'
+                        : result.speaker_gender === 'female'
+                        ? '#B03F2E'
+                        : 'inherit'
+                }}
+                >
+                {result.speaker_name} &raquo;
               </h3>
-              <h3 className={styles.resultTitle}>{result.speaker_name}</h3>
-              <div className={styles.japaneseText}>
-                {highlightMatch(result.japanese.split("\n")[0], query)}
+              <div className={styles.resultWrapper}>
+                <div className={styles.resultWrapperChapter}>
+                  <div className={styles.resultTitle}>
+                    {result.chapterNum} {result.chapterAbr}
+                  </div>
+                  <div className={styles.resultTitle}>
+                    {result.poemNum}
+                  </div>
+                </div>
+                <div className={styles.resultPoemKanji}>
+                  {getChapterNamKanji(result.chapterNum)}
+                </div>
               </div>
-              <div className={styles.romajiText}>
-                {highlightMatch(result.romaji.split("\n")[0], query)}
+              <div>
+                <div className={styles.japaneseText}>
+                  {highlightMatch(result.japanese.split("\n")[0], query)}
+                </div>
+                <div className={styles.romajiText}>
+                  {highlightMatch(result.romaji.split("\n")[0], query)}
+                </div>
               </div>
+              <h3 className={styles.resultTitleAddressee}
+                  style={{
+                      color:
+                      result.addressee_gender === 'male'
+                          ? '#436875'
+                          : result.addressee_gender === 'female'
+                          ? '#B03F2E'
+                          : 'inherit'
+                  }}
+                  >
+                  &raquo; {result.addressee_name}
+              </h3>
             </div>
           </Link>
         </div>
@@ -903,56 +902,168 @@ const PoemSearch = () => {
       {/* Hover Popup */}
       {hoveredItem !== null && (
         <div className={styles.hoverPopup}>
-          <div className={styles.resultContent}>
-            <h3 className={styles.resultTitle}>
-              Chapter {filteredResults[hoveredItem].chapterNum} -{" "}
-              {getChapterName(filteredResults[hoveredItem].chapterNum)} - Poem{" "}
-              {filteredResults[hoveredItem].poemNum}
-            </h3>
-            <h3 className={styles.resultSubTitle}>
-              {filteredResults[hoveredItem].speaker_name} →{" "}
-              {filteredResults[hoveredItem].addressee_name}
-            </h3>
-            <div className={styles.japaneseText}>
-              {highlightMatch(filteredResults[hoveredItem].japanese, query)}
+          <div className={styles.resulthoverContent}>
+            <div className={styles.hoverTop}>
+              <div className={styles.hoverTopFormattingLeft}>
+                <div className={styles.hoverjapaneseText}>
+                {highlightMatch(filteredResults[hoveredItem].japanese, query)}
+                </div>
+                <div className={styles.hoverromajiText}>
+                  {highlightMatch(filteredResults[hoveredItem].romaji, query)}
+                </div>
+              </div>  
+              <div className={styles.hoverTopFormattingRight}>
+                <div className={styles.hoverChapPoemNumber}>
+                  <div>
+                    <h3 className={styles.hoverresultTitle}>
+                    CHAPTER
+                    </h3>
+                    <h3 className={styles.hoverresultTitle}>
+                    POEM
+                    </h3>
+                  </div>
+                  <div>
+                    <h3 className={styles.hoverresultTitle}>
+                    {filteredResults[hoveredItem].chapterNum} 
+                    </h3>
+                    <h3 className={styles.hoverresultTitle}>
+                    {filteredResults[hoveredItem].poemNum}
+                    </h3>
+                  </div>
+                </div>
+                <div className={styles.hoverresultTitleName}>
+                  <div className={styles.chapterRomaji}>
+                    {getChapterNamRomanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                  <div className={styles.chapterKanji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum).split('').map((char, index) => (
+                      <div key={index}>{char}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className={styles.romajiText}>
-              {highlightMatch(filteredResults[hoveredItem].romaji, query)}
+            <div className={styles.resulthoverSubTitle}>
+              <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+              <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
             </div>
-            <div className={styles.translation}>
-              <h3 className={styles.translatorName}>Waley</h3>
-              {renderTranslation(
-                filteredResults[hoveredItem].waley_translation,
-                "Waley"
-              )}
-            </div>
-            <div className={styles.translation}>
-              <h3 className={styles.translatorName}>Seidensticker</h3>
-              {renderTranslation(
-                filteredResults[hoveredItem].seidensticker_translation,
-                "Seidensticker"
-              )}
-            </div>
-            <div className={styles.translation}>
-              <h3 className={styles.translatorName}>Tyler</h3>
-              {renderTranslation(
-                filteredResults[hoveredItem].tyler_translation,
-                "Tyler"
-              )}
-            </div>
-            <div className={styles.translation}>
-              <h3 className={styles.translatorName}>Washburn</h3>
-              {renderTranslation(
-                filteredResults[hoveredItem].washburn_translation,
-                "Washburn"
-              )}
-            </div>
-            <div className={styles.translation}>
-              <h3 className={styles.translatorName}>Cranston</h3>
-              {renderTranslation(
-                filteredResults[hoveredItem].cranston_translation,
-                "Cranston"
-              )}
+            <div className={styles.hoverBottom}>
+              {/* WALEY */}
+              <div className={styles.translation}>
+                {renderTranslation(filteredResults[hoveredItem].waley_translation, "Waley")}
+
+                <div className={styles.translationMeta}>
+                  <div className={styles.metaNames}>
+                    <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+                    <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+                  </div>
+                </div>
+                <div className={styles.translationMetaMid}>
+                  <div className={styles.metaChapter}>
+                    <span>{filteredResults[hoveredItem].chapterNum}{filteredResults[hoveredItem].chapterAbr}</span>
+                    <span>{filteredResults[hoveredItem].poemNum}</span>
+                  </div>
+                  <div className={styles.metaRomaji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                </div>
+                <h3 className={styles.translatorName}>WALEY</h3>
+              </div>
+
+              {/* WASHBURN */}
+              <div className={styles.translation}>
+                {renderTranslation(filteredResults[hoveredItem].washburn_translation, "Washburn")}
+
+                <div className={styles.translationMeta}>
+                  <div className={styles.metaNames}>
+                    <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+                    <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+                  </div>
+                </div>
+                <div className={styles.translationMetaMid}>
+                  <div className={styles.metaChapter}>
+                    <span>{filteredResults[hoveredItem].chapterNum}{filteredResults[hoveredItem].chapterAbr}</span>
+                    <span>{filteredResults[hoveredItem].poemNum}</span>
+                  </div>
+                  <div className={styles.metaRomaji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                </div>
+                <h3 className={styles.translatorName}>WASHBURN</h3>
+              </div>
+
+              {/* SEIDENSTICKER */}
+              <div className={styles.translation}>
+                {renderTranslation(filteredResults[hoveredItem].seidensticker_translation, "Seidensticker")}
+
+                <div className={styles.translationMeta}>
+                  <div className={styles.metaNames}>
+                    <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+                    <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+                  </div>
+                </div>
+                <div className={styles.translationMetaMid}>
+                  <div className={styles.metaChapter}>
+                    <span>{filteredResults[hoveredItem].chapterNum}{filteredResults[hoveredItem].chapterAbr}</span>
+                    <span>{filteredResults[hoveredItem].poemNum}</span>
+                  </div>
+                  <div className={styles.metaRomaji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                </div>
+                <h3 className={styles.translatorName}>SEIDENSTICKER</h3>
+              </div>
+
+              {/* CRANSTON */}
+              <div className={styles.translation}>
+                {renderTranslation(filteredResults[hoveredItem].cranston_translation, "Cranston")}
+
+                <div className={styles.translationMeta}>
+                  <div className={styles.metaNames}>
+                    <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+                    <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+                  </div>
+                </div>
+                <div className={styles.translationMetaMid}>
+                  <div className={styles.metaChapter}>
+                    <span>{filteredResults[hoveredItem].chapterNum}{filteredResults[hoveredItem].chapterAbr}</span>
+                    <span>{filteredResults[hoveredItem].poemNum}</span>
+                  </div>
+                  <div className={styles.metaRomaji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                </div>
+                <h3 className={styles.translatorName}>CRANSTON</h3>
+              </div>
+
+              {/* TYLER */}
+              <div className={styles.translation}>
+                {renderTranslation(filteredResults[hoveredItem].tyler_translation, "Tyler")}
+
+                <div className={styles.translationMeta}>
+                  <div className={styles.metaNames}>
+                    <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
+                    <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+                  </div>
+                </div>
+                <div className={styles.translationMetaMid}>
+                  <div className={styles.metaChapter}>
+                    <span>{filteredResults[hoveredItem].chapterNum}{filteredResults[hoveredItem].chapterAbr}</span>
+                    <span>{filteredResults[hoveredItem].poemNum}</span>
+                  </div>
+                  <div className={styles.metaRomaji}>
+                    {getChapterNamKanji(filteredResults[hoveredItem].chapterNum)}
+                  </div>
+                </div>
+                <h3 className={styles.translatorName}>TYLER</h3>
+              </div>
+
+              {/* SUMMARY */}
+              <div className={styles.translation}>
+                <h3 className={styles.translatorName}>SUMMARY</h3>
+                <p>No Summary Available</p>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -962,19 +1073,13 @@ const PoemSearch = () => {
 
   return (
     <div className={styles.poemSearch}>
+      <img 
+        className={styles.fullBackgroundImage} 
+        src="/images/searchpage_background5.png" 
+        alt="Genji background" 
+      />
       <div className={styles.chartContainer}>
         <Bar data={chapterData} options={chartOptions} />
-      </div>
-      <div className={styles.searchArea}>
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          onFocus={() => setShowResults(true)}
-          placeholder="Enter Keyword..."
-          className={styles.searchInput}
-        />
       </div>
 
       <div className={styles.mainContent}>
@@ -987,9 +1092,17 @@ const PoemSearch = () => {
           {showResults && results.length > 0 && (
             <>
               <div className={styles.resultCount}>
-                Found {filteredResults.length} poems
+                <div className={styles.resultCountText}>
+                  <span>POEMS</span>
+                  <span>FOUND</span>
+                </div>
+                <div className={styles.resultCountNumber}>
+                  {filteredResults.length.toString().padStart(3, '0')}
+                </div>
                 {Object.values(filters).some(({ options }) =>
                   Object.values(options).some(({ checked }) => checked)
+                ) && (
+                  <div className={styles.filterIndicator}></div>
                 )}
               </div>
               {renderResults()}
