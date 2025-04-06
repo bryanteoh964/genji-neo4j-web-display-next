@@ -1,15 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 .pageContainer {
-    width: 100%;
-    overflow-x: hidden; 
-    position: relative;
-    overflow-y: hidden;
-  }
+  width: 1440px;
+  margin: 0 auto;
+  overflow-x: auto;
+  position: relative;
+  overflow-y: hidden;
+  background-color: #737373;
+  min-width: 1440px;
+}
 
 .heroImageSection {
-  height: 100vh;
-  width: 100%;
+  height: 1000px;
+  width: 1440px;
   position: relative;
   display: flex;
   align-items: center;
@@ -21,10 +24,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 1440px;
+  height: 1000px;
   object-fit: cover;
-  z-index: -1;
   animation: slowZoom 20s ease-in-out infinite alternate;
   transform-origin: center center;
 }
@@ -41,10 +43,10 @@
 
 .titleOverlay {
   position: absolute;
+  width: 582px;
   height: 302px;
-  top: 800px;
-  margin-right: 55%;
-  width: 42%;
+  margin-top: 500px;
+  margin-right: 850px;
   text-align: right;
   will-change: transform;
   transition: transform 0.1s ease-out;
@@ -197,6 +199,7 @@
   position: relative;
   padding: 4rem 0;
   overflow: visible;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .contentWrapper {
@@ -211,25 +214,38 @@
 }
 
 .descriptionText {
-  width: 42%;
+  width: 542.53px;
+  height: 612px;
   position: relative;
   will-change: transform;
   z-index: 5;
-  margin-right: 4%;
+  margin-right: 0px;
+  animation: fadeInRight_text 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInRight_text {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) translateY(-200);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(-200);
+  }
 }
 
 .descriptionText p {
   color: white;
   text-align: right;
   font-family: 'Lexend', sans-serif;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 500;
   line-height: 140%;
-  letter-spacing: 0;
+  letter-spacing: 0rem;
   margin: 0;
   padding: 0;
   position: relative;
-
   transform: translateY(-200px);
   transition: transform 0.1s ease-out;
   will-change: transform;
@@ -251,107 +267,10 @@
 
 .statsImage {
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   height: auto;
   border-radius: 10px;
   padding-left: 6%;
 }
 
 
-@media (max-width: 1200px) {
-  .contentWrapper {
-    padding: 0 40px;
-  }
-  
-  .titleOverlay {
-    left: 40px;
-  }
-  
-  .descriptionText, .titleOverlay {
-    width: 45%;
-  }
-
-  .discover, .exquisitePoems, .emotionalHeart, 
-  .worldsFirst, .century, .number, .taleOfGenji {
-    font-size: 34px;
-  }
-
-  .descriptionText p {
-    font-size: 26px;
-  }
-  
-  .statsContainer {
-    width: 55%;
-  }
-}
-
-@media (max-width: 991px) {
-  .descriptionText p {
-    font-size: 24px;
-  }
-  
-  .discover, .exquisitePoems, .emotionalHeart, 
-  .worldsFirst, .century, .number, .taleOfGenji {
-    font-size: 32px;
-  }
-  
-  .highlightD {
-    font-size: 56px;
-  }
-}
-
-@media (max-width: 768px) {
-  .titleOverlay,
-  .descriptionText p,
-  .statsContainer {
-    transform: none !important; 
-    transition: none;
-  }
-  
-  .contentWrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .titleOverlay {
-    width: 80%;
-    left: 10%;
-    text-align: center;
-    top: 50%;
-  }
-  
-  .mainTitle, .discover, .exquisitePoems, .emotionalHeart, 
-  .worldsFirst, .century, .number, .taleOfGenji {
-    text-align: center;
-  }
-  
-  .descriptionText {
-    width: 90%;
-    margin-bottom: 40px;
-  }
-  
-  .descriptionText p {
-    text-align: center;
-    transform: translateY(0) !important;
-  }
-  
-  .statsContainer {
-    width: 90%;
-    padding-left: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .discover, .exquisitePoems, .emotionalHeart, 
-  .worldsFirst, .century, .number, .taleOfGenji {
-    font-size: 24px;
-  }
-  
-  .highlightD {
-    font-size: 40px;
-  }
-  
-  .descriptionText p {
-    font-size: 18px;
-  }
-}

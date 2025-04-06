@@ -4,6 +4,8 @@
   padding: 1rem;
   overflow-x: hidden; 
   word-wrap: break-word;
+  background-color: #737373;
+  color: #ffffff;
 }
 
 .inputSection {
@@ -20,8 +22,9 @@
   height: 2.5rem;
   border-radius: 9999px;
   overflow: hidden;
-  background-color: #e5e7eb;
+  background-color: rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .avatarImage {
@@ -36,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3b82f6;
+  background-color: rgba(255, 255, 255, 0.2);
   color: white;
   font-weight: 500;
 }
@@ -51,14 +54,20 @@
   padding: 0.75rem;
   padding-right: 3rem;
   border: none;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   background: transparent;
   font-size: 0.875rem;
+  color: #ffffff;
+}
+
+.commentInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Lexend', sans-serif;
 }
 
 .commentInput:focus {
   outline: none;
-  border-bottom: 2px solid #3b82f6;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .sendButton {
@@ -67,15 +76,15 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 0.5rem;
-  color: #6b7280;
+  color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   transition: all 0.2s;
   background: transparent;
 }
 
 .sendButton:hover {
-  color: #3b82f6;
-  background-color: #f3f4f6;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sendButton:disabled {
@@ -94,6 +103,10 @@
   flex-direction: column;
   width: 100%;
   max-width: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .commentCard {
@@ -121,19 +134,19 @@
 .userName {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #0f0f0f;
+  color: #ffffff;
 }
 
 .timestamp {
   font-size: 0.8125rem;
-  color: #606060;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .commentText {
   font-size: 0.875rem;
   line-height: 1.4;
   text-align: left;
-  color: #0f0f0f;
+  color: rgba(255, 255, 255, 0.9);
   margin-top: 0.25rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -155,14 +168,15 @@
   padding: 0.375rem 0.5rem;
   border-radius: 9999px;
   font-size: 0.8125rem;
-  color: #606060;
+  color: rgba(255, 255, 255, 0.6);
   background: transparent;
   transition: all 0.2s;
   white-space: nowrap;
 }
 
 .actionButton:hover {
-  background-color: #f2f2f2;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .likeButton, .likedButton {
@@ -178,15 +192,16 @@
 }
 
 .likeButton {
-  color: #606060;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .likedButton {
-  color: #3b82f6;
+  color: #c0c0c0;
 }
 
 .likeButton:hover, .likedButton:hover {
-  background-color: #f2f2f2;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .likeCount {
@@ -197,10 +212,12 @@
 .editInput {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   margin-bottom: 8px;
   font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .editActions {
@@ -215,25 +232,25 @@
   font-size: 14px;
   cursor: pointer;
   border: none;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .saveButton {
-  background-color: #3b82f6;
-  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .saveButton:hover {
-  background-color: #2563eb;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .cancelButton {
-  background-color: #f3f4f6;
-  color: #4b5563;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .cancelButton:hover {
-  background-color: #e5e7eb;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .hiddenComment {
@@ -242,15 +259,15 @@
 
 .hiddenBadge {
   font-size: 0.75rem;
-  color: #f59e0b;
+  color: #ffd700;
   padding: 0.125rem 0.375rem;
-  background-color: #fef3c7;
+  background-color: rgba(255, 215, 0, 0.1);
   border-radius: 9999px;
   margin-left: 0.5rem;
 }
 
 .replyToggle {
-  color: #065fd4;
+  color: #c0c0c0;
   font-size: 0.8125rem;
 }
 
@@ -266,12 +283,15 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  padding: 1rem;
 }
 
 .replyInputWrapper {
   display: flex;
   gap: 0.75rem;
-  width: 100%;
+  width: 80%;
 }
 
 .replyInputContainer {
@@ -281,12 +301,13 @@
 }
 
 .replyInput {
-  width: 100%;
+  width: 80%;
   padding: 0.75rem;
   border: none;
   border-bottom: 1px solid #e5e7eb;
   background: transparent;
   font-size: 0.875rem;
+  color: #ffffff;
 }
 
 .replyInput:focus {
@@ -323,9 +344,9 @@
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  color: #065fd4;
+  color: #000000;
   padding: 0.125rem 0.375rem;
-  background-color: #e8f0fe;
+  background-color: #ffffff;
   border-radius: 9999px;
   margin-bottom: 0.5rem;
 }
@@ -473,23 +494,44 @@
 }
 
 .loginPrompt {
-  width: 100%;
   padding: 20px;
   text-align: center;
-  border: 1px dashed #d1d5db;
-  border-radius: 6px;
-  background-color: #f9fafb;
+  border: 1px dashed rgba(75, 75, 75, 0.2);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
   margin: 10px 0;
+  color: #4B4B4B;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 500;
 }
 
 .loginLink {
-  color: #3b82f6;
+  color: #4B4B4B;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .loginLink:hover {
-  color: #2563eb;
+  opacity: 0.8;
   text-decoration: underline;
+}
+
+/* 自定义滚动条样式 */
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }

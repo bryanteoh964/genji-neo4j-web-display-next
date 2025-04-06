@@ -63,22 +63,28 @@
 .layoutContainer {
     position: relative;
     width: 100%;
-    contain: layout;
+    min-height: calc(100vh - 150px); /* 减去header和footer的高度 */
     padding: 0 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .mainContent {
-    min-height: 500px; 
-    position: relative;
+    flex: 1; /* 使其填充剩余空间 */
     width: 100%;
     background-color: #f9f9f9;
     border-radius: 10px;
     margin-top: 20px;
     padding: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .poemPageContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     position: relative;
     width: 100%;
@@ -88,11 +94,10 @@
 }
 
 .search_display_container {
-    min-height: 300px;
-    position: relative;
+    flex: 1;
     width: 100%;
-    transition: height 0.3s ease-in-out;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 768px) {

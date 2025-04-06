@@ -18,7 +18,7 @@
   font-size: 18px;
   transition: color 0.3s ease;
   white-space: nowrap;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 
 .userLink:hover {
@@ -41,7 +41,7 @@
   color: white;
   transition: all 0.3s ease;
   position: relative;
-  margin-right: 30px;
+  margin-right: 20px;
   margin-left: 30px;
   margin-top: 20px;
 }
@@ -72,69 +72,3 @@
     opacity: 1;
   }
 }
-
-@media (min-width: 1400px) {
-  .userContainer {
-    margin-right: 20px;
-  }
-}
-
-@media (min-width: 1200px) and (max-width: 1399px) {
-  .userContainer {
-    margin-right: 18px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .userContainer {
-    margin-right: -10px;
-    margin-top: 18px;
-  }
-  
-  
-  .signInButton {
-    padding: 8px 15px;
-    font-size: 0.95rem;
-    margin-right: 25px;
-    margin-left: 25px;
-    margin-top: 18px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .userContainer {
-    margin-right: 12px;
-    gap: 8px;
-  }
-  
-  .userLink {
-    font-size: 15px;
-    margin-right: 20px;
-  }
-  
-  .signInButton {
-    padding: 7px 14px;
-    font-size: 0.9rem;
-    margin-right: 20px;
-    margin-left: 20px;
-  }
-}
-
-@media (max-width: 900px) {
-  .userContainer {
-    margin-right: 10px;
-  }
-  
-  .userLink {
-    font-size: 14px;
-    margin-right: 15px;
-  }
-  
-  .signInButton {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    margin-right: 15px;
-    margin-left: 15px;
-  }
-}
-
