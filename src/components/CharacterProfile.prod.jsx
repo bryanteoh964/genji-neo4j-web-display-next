@@ -293,6 +293,7 @@ export default function CharacterDetail({ name }) {
             var paragraph = document.createElement("p")
             paragraph.style.backgroundColor = "#e6e6e6"
             paragraph.style.border = "solid 2px black"
+            paragraph.style.color = "black" 
             paragraph.style.fontFamily = "Monospace"
             paragraph.style.padding = "5px"
             paragraph.style.height = "150px"
