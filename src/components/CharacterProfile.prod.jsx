@@ -244,8 +244,8 @@ export default function CharacterDetail({ name }) {
             var age_div = document.createElement("h1")
             age_div.style.fontFamily = "Georgia, serif"
             age_div.innerHTML = oi.age_of_genji.toString() + " 𖤓 " 
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
             if (oi.month != null) {
-                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
                 age_div.innerHTML += months[oi.month-1] 
                 if (oi.day != null) {
                     age_div.innerHTML += " " + oi.day.toString() 
@@ -322,14 +322,22 @@ export default function CharacterDetail({ name }) {
                 genji_age_next = "00" + genji_age_next
             } 
 
+            var date_info = character.name + "<br>" + oi.age_of_genji + " 𖤓 "
+            if (oi.month) {
+                date_info += " " + months[oi.month-1] 
+            } 
+            if (oi.day) {
+                date_info += " " + oi.day 
+            }
+
             if (oi.spring) {
-                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-03-01"), endDate: new Date(genji_age+"-05-31"), id: oi.id})
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-03-01"), endDate: new Date(genji_age+"-05-31"), id: oi.id, value: "<strong>" + date_info + "Spring </strong> <br><br>" + oi.english + "<br><br>"})
             } else if (oi.summer) {
-                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-06-01"), endDate: new Date(genji_age+"-08-31"), id: oi.id})
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-06-01"), endDate: new Date(genji_age+"-08-31"), id: oi.id, value: "<strong>" + date_info + "Summer </strong> <br><br>" + oi.english + "<br><br>"})
             } else if (oi.fall || oi.autumn) {
-                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-09-01"), endDate: new Date(genji_age+"-11-30"), id: oi.id})
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-09-01"), endDate: new Date(genji_age+"-11-30"), id: oi.id, value: "<strong>" + date_info + "Autumn </strong> <br><br>" + oi.english + "<br><br>"})
             } else if (oi.winter) {
-                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-02-28"), id: oi.id})
+                ganttTimeline.push({task: "Seasonal Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-02-28"), id: oi.id, value: "<strong>" + date_info + "Winter </strong> <br><br>" + oi.english + "<br><br>"})
             } else if (oi.day != null) {
                 var dd = oi.day.toString()
                 if (dd.length == 1) {
@@ -344,9 +352,9 @@ export default function CharacterDetail({ name }) {
                     mm_next = "0" + mm_next
                 } 
                 if (oi.month == 12) {
-                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-12-" + dd), endDate: new Date(genji_age_next+"-01-" +dd), id: oi.id})
+                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-12-" + dd), endDate: new Date(genji_age_next+"-01-" +dd), id: oi.id, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>"})
                 } else {
-                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-"+mm+ "-" + dd), endDate: new Date(genji_age+"-"+mm_next+ "-" +dd), id: oi.id})
+                    ganttTimeline.push({task: "Day Event", startDate: new Date(genji_age+"-"+mm+ "-" + dd), endDate: new Date(genji_age+"-"+mm_next+ "-" +dd), id: oi.id, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>"})
                 }
             } else if (oi.month != null) { 
                 var mm = oi.month.toString() 
@@ -358,12 +366,12 @@ export default function CharacterDetail({ name }) {
                     mm_next = "0" + mm_next
                 } 
                 if (oi.month == 12) {
-                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-01-01"), id: oi.id})
+                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age_next+"-01-01"), id: oi.id, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>"})
                 } else { 
-                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-"+mm+ "-01"), endDate: new Date(genji_age+"-"+mm_next+ "-01"), id: oi.id})
+                    ganttTimeline.push({task: "Month Event", startDate: new Date(genji_age+"-"+mm+ "-01"), endDate: new Date(genji_age+"-"+mm_next+ "-01"), id: oi.id, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>"})
                 }
             } else {
-                ganttTimeline.push({task: "Year Event", startDate: new Date(genji_age+"-01-01"), endDate: new Date(genji_age+"-06-01"), id: oi.id}) 
+                ganttTimeline.push({task: "Year Event", startDate: new Date(genji_age+"-01-01"), endDate: new Date(genji_age+"-06-01"), id: oi.id, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>"})  
             }
 
         } 
@@ -375,7 +383,7 @@ export default function CharacterDetail({ name }) {
                     document.getElementById("timeline_window").style.display = "none" 
                     document.getElementById("timeline_gantt").style.display = "none" 
                 } 
-            }, 2000) 
+            }, 3000)  
         } 
     } else {
 
@@ -389,7 +397,7 @@ export default function CharacterDetail({ name }) {
                 identifier={character.name}
             />
             
-            <h1 className={styles.title}>
+            <h1 className={styles.title} style={{textShadow: "1px 1px 1px #000, 1px 1px 1px #000"}}>  
                 <span className={styles.nameEnglish}>{character.name}</span>
                 <span className={styles.nameJapanese}>{character.japanese_name}</span>
             </h1>
@@ -414,13 +422,13 @@ export default function CharacterDetail({ name }) {
                             </div>
 
                             <div className={styles.characterInfo}>
-                                <p><strong>Alternative Names:</strong> {character['Alternative names'] || 'N/A'}</p>
-                                <p><strong>Gender:</strong> {character.gender || 'N/A'}</p>
-                                <p><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
+                                <p style={{color: "black"}}><strong>Alternative Names:</strong> {character['Alternative names'] || 'N/A'}</p>
+                                <p style={{color: "black"}}><strong>Gender:</strong> {character.gender || 'N/A'}</p>
+                                <p style={{color: "black"}}><strong>Japanese Name:</strong> {character.japanese_name || 'N/A'}</p>
                             </div>
                         </div>
                         <div id="about" className={styles.description}>
-                            <h2 className={styles.aboutTitle}>About</h2>
+                            <h2 className={styles.aboutTitle} style={{textShadow: "1px 1px 2px #000, 1px 1px 5px #ccc"}}>About</h2>
                             <div className={styles.descriptionContent}>
                                 <FormatContent content={character.Description} />
                             </div>

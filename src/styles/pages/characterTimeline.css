@@ -1,9 +1,9 @@
 /**/
 .glow {
-  color: #e95353;
+  color: #b43131;
   font-family:Georgia, 'Times New Roman', Times, serif;
   font-size:xx-large;
-  text-shadow: #FC0 1px 0 10px ;
+  text-shadow: #FC0 1px 1px 3px ;
 }
 
 
@@ -270,7 +270,7 @@ datalist {
 /* Speech Bubble */
 .japanese {
   writing-mode:  vertical-rl;
-  font-size: 75px;
+  font-size: 30px;
   color:black;
 }
 
