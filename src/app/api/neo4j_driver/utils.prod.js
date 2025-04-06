@@ -445,6 +445,7 @@ export function generateGeneology(resGraph, resGraph2, resGraph3) { //resGraph =
 export function generateTimeline(timeline_info) {
 
     var info = []
+    var i = 0;
     for (const [
         name,
         color,
@@ -461,7 +462,9 @@ export function generateTimeline(timeline_info) {
         summer,
         fall,
         winter,
+        autumn,
     ] of timeline_info) {
+        i += 1
 		info.push(
             {
 				name: name,
@@ -480,8 +483,10 @@ export function generateTimeline(timeline_info) {
 				spring: spring,
 				summer: summer,
 				fall: fall,
-				winter: winter
-			}
+				winter: winter,
+                autumn: autumn,
+                id: ("event_" + i.toString()), 
+			} 
         )
 	}
     //console.log(info)
