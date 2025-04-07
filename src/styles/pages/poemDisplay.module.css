@@ -1,26 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;600;700&display=swap');
 
 .poemPageContainer {
-    max-width: 100%;
-    overflow-x: hidden; 
-    position: relative;
-    overflow-y: hidden;
+  width: 1440px;
+  margin: 0 auto;
+  overflow-x: auto;
+  position: relative;
+  overflow-y: hidden;
+  background-color: #737373;
+  min-width: 1440px;
 }
 
 .loadingContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 300px;
-    font-size: 1.2rem;
-    color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.2rem;
+  color: #666;
 }
 
 .imageSection {
-  height: 700px;
-  width: 100%;
+  height: 500px;
+  width: 1440px;
   position: relative;
   display: flex;
   align-items: center;
@@ -32,12 +36,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 700px;
+  width: 1440px;
+  height: 500px;
   object-fit: cover;
   animation: slowZoom 20s ease-in-out infinite alternate;
   transform-origin: center center;
-  z-index: -1;
 }
 
 @keyframes slowZoom {
@@ -53,11 +56,10 @@
 /* poem itself */
 .poemOriginalSection {
   position: absolute;
-  left: 5%;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  top: 20%;
+  width: 287px;
+  height: 288px;
+  top: 79px;
+  left: 110.95px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -75,7 +77,7 @@
 .japaneseTextLine {
   display: flex;
   flex-direction: column;
-  margin: 0 15px;
+  margin: 0 10px;
 }
 
 .japaneseChar {
@@ -91,12 +93,13 @@
 }
 
 .romajiText {
-  position: absolute;  
-  left: 40%;          
-  top: 18%;           
+  position: absolute;            
   text-align: left;
   opacity: 80%;
-  width: 40%;        
+  width: 387px;
+  height: 290px;
+  top: 70px;
+  left: 508.5px;
 }
 
 .romajiLine {
@@ -112,8 +115,8 @@
 
 .favButtonContainer {
   position: relative;
-  margin-top: 20px;
-  margin-left: 150px;
+  margin-top: 0px;
+  margin-left: 130px;
   z-index: 1000;
 }
 
@@ -383,7 +386,7 @@
   margin: 0 auto;
 }
 
-/* 左侧分析面板 */
+/* left side - analysis panels */
 .analysisLeft {
   width: 50%;
   padding: 10px 20px 30px 20px;
@@ -467,7 +470,6 @@
     padding 0.2s ease-in;
 }
 
-/* 自定义滚动条样式 */
 .expanded::-webkit-scrollbar {
   width: 8px;
 }
@@ -498,7 +500,6 @@
     padding 0.15s ease-out;
 }
 
-/* 详细信息样式 */
 .detailItem {
   margin-bottom: 15px;
   padding-bottom: 15px;
@@ -574,6 +575,8 @@
 }
 
 .translationCard {
+  width: 665px;
+  height: 120px;
   display: flex;
   margin-bottom: 20px;
   background-color: #BFAE93;
@@ -583,7 +586,9 @@
 
 .translationContent {
   flex: 1;
-  padding: 15px 20px;
+  padding: 5px 15px;
+  width: 160px;
+  height: 120px;
 }
 
 .translationContent p {
@@ -606,6 +611,8 @@
 }
 
 .translatorInfo {
+  width: 160px;
+  height: 30px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -615,14 +622,14 @@
   display: flex;
   flex-direction: column;
   background-color: #4B4B4B;
-  width: 150px;
+  width: 160px;
+  height: 30px;
   color: white;
   opacity: 0.3;
-  border-radius: 10px;
-  margin-left: auto;
 }
 
 .speakerLine {
+  width: 160px;
   display: flex;
   align-items: left;
   justify-content: left;
@@ -637,21 +644,6 @@
   display: flex;
   align-items: right;
   justify-content: right;
-}
-
-.characterLink {
-  color: white;
-  text-decoration: none !important;
-  margin: 0 4px;
-  transition: opacity 0.2s;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  font-family: 'Sofia Sans Extra Condensed', sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  line-height: 21px !important;
-  letter-spacing: 0.02rem !important;
-  text-transform: uppercase !important;
   padding-right: 5px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -665,52 +657,59 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  width: 100%;
-  padding-top: 20px;
-  height: auto;
+  width: 160px;
+  height: 60px;
+  left: 505px;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .poemCodeMain {
+  height: 60px;
   text-align: right;
   color: #ffffff;
+  position: relative;
   line-height: 1.2;
   font-family: 'Martian Mono', sans-serif;
   font-weight: 600;
-  font-size: 24.15px;
-  line-height: 22.14px;
+  font-size: 16px;
+  line-height: 102%;
   letter-spacing: -0.01rem;
+  vertical-align: middle;
+  top: 5px;
+  right: 10px;
+  opacity: 0.6;
 }
 
 .chapterName {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   color: #ffffff;
-  margin: 0;
-  height: auto;
-  padding: 0;
+  position: relative;
   white-space: nowrap;
   font-family: Noto Sans JP;
   font-weight: 500;
-  font-size: 21.74px;
-  line-height: 22.14px;
+  font-size: 14px;
+  line-height: 111%;
   letter-spacing: 0.09rem;
   vertical-align: bottom;
+  top: 5px;
+  right: 5px;
+  opacity: 0.6;
 }
 
 .translatorName {
+  width: 160px;
+  height: 30px;
   color: #ffffff;
-  margin-top: auto;
   background-color: rgba(255, 255, 255, 0.2);
-  padding: 10px 10px;
   font-family: 'Lexend', sans-serif;
   font-weight: 600;
-  font-size: 20px;
-  line-height: 10px;
-  letter-spacing: 0.02rem;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: -0.05rem;
   text-align: right;
   vertical-align: middle;
   text-transform: uppercase;
-  border-radius: 20px;
   white-space: nowrap;
 }
 
@@ -744,7 +743,7 @@
 
 /* Original Japanese and Romaji specific styles */
 .originalJapanese {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: "Noto Sans JP", sans-serif !important;
   font-size: 1rem;
   line-height: 1.7;
 }
@@ -753,12 +752,13 @@
   font-family: 'Lexend', sans-serif;
   font-size: 0.9rem;
   line-height: 1.7;
+  padding-top: 10px;
 }
 
 .navigationContainer {
   display: flex;
   justify-content: center;
-    margin-top: 20px;
+  margin-top: 20px;
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -769,15 +769,15 @@
 .navigationButton {
   background-color: transparent;
   color: #ffffff;
-    border: none;
+  border: none;
   border-radius: 10px;
   padding: 10px 20px;
   font-weight: bold;
   margin: 0 10px;
-    cursor: pointer;
+  cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
   font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 500;
+  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 4%;
@@ -792,24 +792,22 @@
 
 .poemInfoGrid {
   position: absolute;
-  right: 80px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 550px;
-  height: 550px;
+  left: 950px;
+  top: 33.5px;
+  width: 455px;
+  height: 440px;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(20, 1fr);
-  grid-gap: 10px;
+  grid-gap: 5px;
   color: white;
-  z-index: 10000;
 }
 
 .gridBox {
   padding: 10px;
   border-radius: 10px;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -829,8 +827,8 @@
 
 .poemFromText, .poemToText {
   color: #ffffff;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
   white-space: nowrap;
   font-family: 'Lexend', sans-serif;
@@ -876,6 +874,17 @@
   color: #436875;
 }
 
+.speakerAddresseeContainer .characterLink {
+  color: #FFFFFF !important;
+  font-family: 'Sofia Sans Extra Condensed', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 21px !important;
+  letter-spacing: 0.02rem !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+}
+
 .ageVal {
   font-family: 'Lexend', sans-serif;
   font-weight: 500;
@@ -897,7 +906,7 @@
   color: #FFFFFF;
 }
 
-.messengerValue {
+.messengerValue, .messengerValue a {
   font-family: 'Lexend', sans-serif;
   font-weight: 500;
   font-size: 14px;
@@ -920,7 +929,7 @@
   line-height: 100%;
   letter-spacing: 0rem;
   text-align: center;
-    text-transform: uppercase;
+  text-transform: uppercase;
   color: #FFFFFF;
 }
 
@@ -957,6 +966,35 @@
   grid-row: 8 / 12;
   background-color: #486339;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.connectedLabel {
+  font-family: 'Lexend', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 10px !important;
+  line-height: 100% !important;
+  letter-spacing: 0rem !important;
+  vertical-align: middle !important;
+  text-transform: uppercase !important;
+  opacity: 0.75 !important;
+}
+
+.connectedArrows {
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-bottom: 10px !important;
+}
+
+.connectedArrows span {
+  font-size: 45px !important;
+  color: #FFFFFF !important;
 }
 
 .poemTypeBox {
@@ -981,6 +1019,8 @@
 .techList {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  padding-left: 15px;
 }
 
 .techList span {
@@ -988,6 +1028,13 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 700;
+  font-size: 12.66px;
+  line-height: 100%;
+  letter-spacing: 0.1;
+  vertical-align: middle;
+  text-transform: uppercase;
 }
 
 .poemTechLabel {
@@ -1006,15 +1053,15 @@
   display: flex;
   flex-direction: column;
   opacity: 0.5;
-  margin-left: 20px;
+  margin-left: 10px;
   align-items: flex-start;
 }
 
 .emptyBox {
-grid-column: 5 / 6;
-grid-row: 12 / 16;
-background-color: #767D43;
-border-radius: 10px;  
+  grid-column: 5 / 6;
+  grid-row: 12 / 16;
+  background-color: #767D43;
+  border-radius: 10px;  
 }
 
 .spokenBox {
@@ -1025,7 +1072,7 @@ border-radius: 10px;
 }
 
 .chapterBox {
-  grid-column: 1 / 7;
+  grid-column: 1 / 8;
   grid-row: 16 / -1;
   background-color: #436875;
   border-radius: 20px;
@@ -1047,7 +1094,9 @@ border-radius: 10px;
   flex-direction: row;
   gap: 1rem;
   opacity: 0.5;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 25px;
+  margin-left: -35px;
 }
 
 .mainContent {
@@ -1056,6 +1105,14 @@ border-radius: 10px;
   align-items: center;
   flex: 1;
   justify-content: center;
+  margin-bottom: 10px;
+}
+
+.chapterKanjiContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 30px;
 }
 
 .numberContainer {
@@ -1070,6 +1127,7 @@ border-radius: 10px;
   letter-spacing: -0.01rem;
   color: #FFFFFF;
   margin-bottom: 0.5rem;
+  margin-left: 80px;
 }
 
 .chapterKanji {
@@ -1081,8 +1139,8 @@ border-radius: 10px;
   line-height: 109%;
   letter-spacing: 0.09rem;
   color: #FFFFFF;
-  margin-top: 0.5rem;
-  margin-left: 0.5rem;
+  margin-top: -5px;
+  padding-left: 0px;
 }
 
 .chapterEnglish {
@@ -1096,13 +1154,12 @@ border-radius: 10px;
   text-transform: uppercase;
   position: absolute;
   bottom: 1rem;
-  left: calc(50% - 8px);
-  transform: translateX(-50%);
   width: 100%;
+  margin-bottom: -5px;
 }
 
 .seasonBox {
-  grid-column: 7 / -1;
+  grid-column: 8 / -1;
   grid-row: 16 / -1;
   background-color: #CC683D;
   border-radius: 20px;
@@ -1194,8 +1251,8 @@ border-radius: 10px;
   font-family: 'Lexend', sans-serif;
   font-weight: 700;
   font-size: 15.36px;
-  line-height: 86%;
-  letter-spacing: 25%;
+  line-height: 95%;
+  letter-spacing: 0.25rem;
   text-transform: uppercase;
   writing-mode: vertical-lr;
   transform: rotate(180deg);
@@ -1206,7 +1263,7 @@ border-radius: 10px;
   display: flex;
   flex-direction: column;
   opacity: 0.5;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .checkboxGroup {
@@ -1220,7 +1277,7 @@ border-radius: 10px;
 .checkboxGroup span {
   font-family: 'Lexend', sans-serif;
   font-weight: 400;
-  font-size: 12.66px;
+  font-size: 12px;
   line-height: 100%;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
@@ -1241,265 +1298,3 @@ border-radius: 10px;
   color: #FFFFFF;
   opacity: 0.33;
 }
-
-/* 媒体查询 */
-@media screen and (max-width: 1600px) {
-  .imageSection {
-    height: 600px;
-  }
-  
-  .fullBackgroundImage {
-    height: 600px;
-  }
-  
-  .poemInfoGrid {
-    width: 500px;
-    height: 500px;
-    right: 60px;
-  }
-  
-  .japaneseChar {
-    font-size: 36px;
-  }
-  
-  .romajiLine {
-    font-size: 32px;
-  }
-}
-
-@media screen and (max-width: 1366px) {
-  .imageSection {
-    height: 550px;
-  }
-  
-  .fullBackgroundImage {
-    height: 550px;
-  }
-  
-  .poemInfoGrid {
-    width: 450px;
-    height: 450px;
-    right: 40px;
-  }
-  
-  .poemOriginalSection {
-    width: 45%;
-  }
-  
-  .japaneseChar {
-    font-size: 32px;
-  }
-  
-  .romajiLine {
-    font-size: 28px;
-  }
-  
-  .ageVal {
-    font-size: 70px;
-  }
-  
-  .numberContainer span {
-    font-size: 45px;
-  }
-
-  .poemTypeContainer {
-    gap: 5px;
-  }
-
-  .poemTypeLabel {
-    font-size: 12px;
-    margin-left: 10px;
-  }
-
-  .techList span {
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-
-  .poemTechBox {
-    padding: 0.8rem;
-  }
-
-  .chapterKanji {
-    margin-left: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .imageSection {
-    height: auto;
-    min-height: 900px;
-    display: flex;
-    flex-direction: column;
-    padding: 40px 20px 80px;
-    position: relative;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .fullBackgroundImage {
-    height: 100%;
-    min-height: 900px;
-  }
-  
-  .poemOriginalSection {
-    position: relative;
-    width: 90%;
-    left: auto;
-    transform: none;
-    top: 0;
-    margin-bottom: 40px;
-    height: auto;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .favButtonContainer {
-    margin-top: 30px;
-    margin-left: 0%;
-  }
-
-  .japaneseText {
-    justify-content: center;
-  }
-  
-  .romajiText {
-    position: relative;
-    width: 90%;
-    left: auto;
-    transform: none;
-    text-align: center;
-    top: 0;
-    margin-bottom: 30px;
-  }
-  
-  .poemInfoGrid {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    right: auto;
-    top: auto;
-    transform: none;
-    margin: 0 auto;
-    grid-template-rows: repeat(20, 1fr);
-  }
-
-  .navigationContainer {
-    bottom: 20px;
-  }
-
-  .poemTypeContainer {
-    gap: 5px;
-  }
-
-  .poemTypeLabel {
-    font-size: 12px;
-    margin-left: 10px;
-    white-space: nowrap;
-  }
-
-  .checkboxGroup span {
-    white-space: nowrap;
-  }
-
-  .techList span {
-    font-size: 0.75rem;
-    white-space: nowrap;
-  }
-
-  .poemTechBox {
-    padding: 0.6rem;
-  }
-
-  .poemTechLabel {
-    margin-left: 10px;
-    white-space: nowrap;
-  }
-  
-}
-
-@media screen and (max-width: 768px) {
-  .imageSection {
-    min-height: 800px;
-    padding: 30px 15px 80px;
-  }
-  
-  .fullBackgroundImage {
-    min-height: 800px;
-  }
-  
-  .poemOriginalSection {
-    margin-bottom: 20px;
-  }
-  
-  .favButtonContainer {
-    margin-top: 25px;
-  }
-  
-  .japaneseChar {
-    font-size: 28px;
-  }
-  
-  .romajiText {
-    margin-bottom: 20px;
-  }
-  
-  .romajiLine {
-    font-size: 24px;
-    line-height: 40px;
-  }
-  
-  .poemInfoGrid {
-    width: 350px;
-    height: 350px;
-    margin-top: 0;
-    grid-gap: 6px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .imageSection {
-    min-height: 700px;
-    padding: 20px 10px 80px;
-  }
-  
-  .fullBackgroundImage {
-    min-height: 700px;
-  }
-  
-  .poemOriginalSection {
-    width: 95%;
-    margin-bottom: 15px;
-  }
-  
-  .favButtonContainer {
-    margin-top: 20px;
-  }
-  
-  .japaneseChar {
-    font-size: 24px;
-  }
-  
-  .romajiText {
-    width: 95%;
-    margin-bottom: 15px;
-  }
-  
-  .romajiLine {
-    font-size: 20px;
-    line-height: 32px;
-  }
-  
-  .poemInfoGrid {
-    width: 300px;
-    height: 300px;
-    margin-top: 0;
-    grid-gap: 4px;
-  }
-
-  .poemTechBox {
-    padding: 0.4rem;
-  }
-}
-
