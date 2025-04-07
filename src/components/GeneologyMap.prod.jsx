@@ -135,7 +135,7 @@ export default function GeneologyMap({l}) {
 
 	if (!loaded.current) {
 		for (const c of character_info) {
-			characters.current.push({ id: c.identifier, position: {x: c.x, y: c.y }, data: { label: c.english_name }, draggable: true, style: {border: "1px solid " + c.color, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)'}, hidden: true}, )
+			characters.current.push({ id: c.identifier, position: {x: c.x, y: c.y }, data: { label: c.english_name }, draggable: true, style: {border: "3px solid " + c.color, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)'}, hidden: true}, )
 		}
 	
 		for (const l of linkages) {
@@ -145,7 +145,7 @@ export default function GeneologyMap({l}) {
 		for (const c of children) {
 			for (const nd of characters.current) {
 				if (nd.id == c.child) {
-					relationships.current.push({ id: c.parent1 + " + " + c.parent2 + " -> " + c.child, source: c.parent1 + " + " + c.parent2, target: c.child, style:{ stroke: nd.style.border.slice(nd.style.border.indexOf("1px solid ")+10), strokeWidth: '2'},type: 'smoothstep', hidden: true})
+					relationships.current.push({ id: c.parent1 + " + " + c.parent2 + " -> " + c.child, source: c.parent1 + " + " + c.parent2, target: c.child, style:{ stroke: nd.style.border.slice(nd.style.border.indexOf("3px solid ")+10), strokeWidth: '2'},type: 'smoothstep', hidden: true})
 				} 
 			}
 		}
@@ -162,7 +162,7 @@ export default function GeneologyMap({l}) {
 					} else { 
 						malas.current[nd.id] = 1
 					}
-					relationships.current.push({ id: nd.id + " - " + malas.current[nd.id].toString(), source: nd.id, target: link_id, style:{ stroke: nd.style.border.slice(nd.style.border.indexOf("1px solid ")+10), strokeWidth: '2'},type: 'smoothstep', hidden: true})
+					relationships.current.push({ id: nd.id + " - " + malas.current[nd.id].toString(), source: nd.id, target: link_id, style:{ stroke: nd.style.border.slice(nd.style.border.indexOf("3px solid ")+10), strokeWidth: '2'},type: 'smoothstep', hidden: true})
 				} 
 			}
 		}
@@ -173,7 +173,7 @@ export default function GeneologyMap({l}) {
 				for (const nd of characters.current) { 
 					if (nd.id == rel.of) {  
 						var s = nd.style.border + ""
-						edge.style.stroke = s.slice(s.indexOf("1px solid ")+10)
+						edge.style.stroke = s.slice(s.indexOf("3px solid ")+10)
 						if (rel.is.includes("daughter") || rel.is.includes("son") ) { 
 							edge.data.type = "smoothstep"
 						} else 
@@ -184,7 +184,7 @@ export default function GeneologyMap({l}) {
 				for (const nd of characters.current) {
 					if (nd.id == rel.character) {
 						var s = nd.style.border + ""
-						edge.style.stroke = s.slice(s.indexOf("1px solid ")+10) 
+						edge.style.stroke = s.slice(s.indexOf("3px solid ")+10) 
 						if (rel.is == "ostensible child") {
 							edge.data.type = "smoothstep" 
 						} else if (rel.is.includes("adopted")) {
@@ -698,7 +698,7 @@ export default function GeneologyMap({l}) {
 
 		if (character1 == "" || character2 == "") {
 			document.getElementById("relationship").innerHTML = "Please enter two character names."
-			document.getElementById("relationship").style.color = "gray"
+			document.getElementById("relationship").style.color = "red"
 			return
 		} else if (!character1_found || !character2_found) {
 			document.getElementById("relationship").innerHTML = "Please enter correct character names."
@@ -810,7 +810,7 @@ export default function GeneologyMap({l}) {
 
 			if (rel_diagram.length > 0) { 
 				document.getElementById("relationship").innerHTML = character1 + " ㅤandㅤ " + character2 + " ㅤare related!"
-				document.getElementById("relationship").style.color = "black"
+				document.getElementById("relationship").style.color = "#9dfca5"
 
 				//Graph the details !!!
 				var rel_details = []
@@ -863,7 +863,7 @@ export default function GeneologyMap({l}) {
 				handleTransform("Genji")
 			} else {
 				document.getElementById("relationship").innerHTML = character1 + " ㅤandㅤ " + character2 + " ㅤare not related."
-				document.getElementById("relationship").style.color = "#5875a3"
+				document.getElementById("relationship").style.color = "#9dfbfc"
 			}
 			
 			// ********************** //
@@ -958,9 +958,9 @@ export default function GeneologyMap({l}) {
                   <option value="jp" >Japanese</option> 
             </select> 
 			<button id="disableMenuButton" style={{borderRadius: "50%", margin: '4px', marginRight: '8px',visibility: 'hidden'}} title="disable menu" onClick={() => {disableMenu(); document.getElementById('mySearch').value = ""}} >✖</button>
-			<input onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)} autocomplete="off" type="text" id="mySearch" onClick={(e) => {if (e.target.value == "") {myFunction(""); disableMenu2()} else {disableMenu2()}}} onKeyUp={(e) => myFunction(e.target.value)} title="Type in a character name" onSelectCapture={() => {document.getElementById('myMenu').style.display = 'block';  document.getElementById('disableMenuButton').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "1px solid #ddd", marginBottom: '10px'}}/>
+			<input onDrop={(e) => drop(e)} onDragOver={(e) => allowDrop(e)} autocomplete="off" type="text" id="mySearch" onClick={(e) => {if (e.target.value == "") {myFunction(""); disableMenu2()} else {disableMenu2()}}} onKeyUp={(e) => myFunction(e.target.value)} title="Type in a character name" onSelectCapture={() => {document.getElementById('myMenu').style.display = 'block';  document.getElementById('disableMenuButton').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "3px solid #ddd", marginBottom: '10px'}}/>
 			<button id="disableMenuButton2" style={{borderRadius: "50%", marginLeft: '10px', marginRight: '10px',visibility: 'hidden', }} title="disable menu" onClick={() => {disableMenu2(); document.getElementById('mySearch2').value = ""}}>✖</button>
-			<input onDrop={(e) => drop2(e)} onDragOver={(e) => allowDrop(e)} autocomplete="off" type="text" id="mySearch2" onClick={(e) => {if (e.target.value == "") {myFunction2(""); disableMenu()} else {disableMenu()}}} onKeyUp={(e) => myFunction2(e.target.value)} title="Type in a character name" onSelectCapture={() => {document.getElementById('myMenu2').style.display = 'block';  document.getElementById('disableMenuButton2').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "1px solid #ddd", marginBottom: '10px'}}/>
+			<input onDrop={(e) => drop2(e)} onDragOver={(e) => allowDrop(e)} autocomplete="off" type="text" id="mySearch2" onClick={(e) => {if (e.target.value == "") {myFunction2(""); disableMenu()} else {disableMenu()}}} onKeyUp={(e) => myFunction2(e.target.value)} title="Type in a character name" onSelectCapture={() => {document.getElementById('myMenu2').style.display = 'block';  document.getElementById('disableMenuButton2').style.visibility = 'visible'}} style={{width: "175px", fontSize: "13px", padding: "11px", border: "3px solid #ddd", marginBottom: '10px'}}/>
 			<button style={{borderRadius: "50%", margin: '4px', marginRight: '8px', marginLeft: "15px"}} title="disable menu" onClick={() => findRel()}>⇄</button>
 			<div style={{position: 'relative', height:0, width: 0, marginLeft: "auto", marginRight: "auto"}}>
 				<div style={{position: 'absolute', height:'0px', width: '520px', zIndex: 1}}>
