@@ -168,12 +168,12 @@ const UserTranslationsDisplay = ({ pageType, identifier }) => {
   return (
     <div className={styles.userTranslationsSection}>
       <div className={styles.translationsHeader}>
-        <button 
+        <div 
           className={styles.viewTranslationsButton} 
           onClick={() => setShowModal(true)}
         >
           View All Translations ({visibleTranslations.length})
-        </button>
+        </div>
       </div>
 
       {showModal && (

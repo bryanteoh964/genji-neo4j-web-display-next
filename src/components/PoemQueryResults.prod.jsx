@@ -44,7 +44,9 @@ const PoemDisplay = ({ poemData }) => {
         age: "",
         repCharacter: "",
         placeOfComp: "",
-        placeOfReceipt: ""
+        placeOfReceipt: "",
+        spoken: "",
+        written: ""
     });
     
     const chapter = poemData.chapterNum;
@@ -205,7 +207,9 @@ const PoemDisplay = ({ poemData }) => {
                     age: responseData[18],
                     repCharacter: responseData[19],
                     placeOfComp: responseData[20],
-                    placeOfReceipt: responseData[21]
+                    placeOfReceipt: responseData[21],
+                    spoken: responseData[22],
+                    written: responseData[23]
                 };
                 
 
@@ -285,7 +289,7 @@ const PoemDisplay = ({ poemData }) => {
             <section className={styles.imageSection}>
                 <img 
                     className={styles.fullBackgroundImage} 
-                    src="/images/poem_background.jpg" 
+                    src="/images/poem_background_1.jpg" 
                     alt="Poem background" 
                 />
 
@@ -433,10 +437,28 @@ const PoemDisplay = ({ poemData }) => {
                     
                     <div className={`${styles.gridBox} ${styles.spokenBox}`}>
                         <div className={styles.spokenContainer}>
-                            <span>spoken</span>
-                            <br/>
-                            {/* <span className={styles.crossedOut}>written</span> */}
-                            <span>written</span>
+                            {/* no data shown if no data is available */}
+                            {poemState.spoken && (
+                                <>
+                                    {poemState.spoken === 'no' ? (
+                                        <span className={styles.crossedOut}>spoken</span> 
+                                    ) : (
+                                        <span>spoken</span>
+                                    )}
+                                </>
+                            )}
+
+                            {(poemState.spoken || poemState.written) && <br/>}
+
+                            {poemState.written && (
+                                <>
+                                    {poemState.written === 'no' ? (
+                                        <span className={styles.crossedOut}>written</span> 
+                                    ) : (
+                                        <span>written</span>
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div>
                     
@@ -468,10 +490,10 @@ const PoemDisplay = ({ poemData }) => {
                     <div className={`${styles.gridBox} ${styles.seasonBox}`}>
                         <span className={styles.seasonLabel}>{poemState.season ? poemState.season : 'SEASON'}</span>
                         <span className={styles.seasonIcon}>
-                            {poemState.season?.toLowerCase() === ('spring') && '🌸'}
-                            {poemState.season?.toLowerCase() === ('summer') && '☀️'}
-                            {poemState.season?.toLowerCase() === ('autumn') && '🍁'}
-                            {poemState.season?.toLowerCase() === ('winter') && '❄️'}
+                            {poemState.season?.toLowerCase() === ('spring') && '❀'}
+                            {poemState.season?.toLowerCase() === ('summer') && '☼'}
+                            {poemState.season?.toLowerCase() === ('autumn') && '✾'}
+                            {poemState.season?.toLowerCase() === ('winter') && '❋'}
                             {!poemState.season && '-'}
                         </span>
                     </div>

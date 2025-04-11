@@ -81,13 +81,13 @@ const TransSubmit = ({ pageType, identifier }) => {
           />
           
           <div className={styles.translationControls}>
-            <button 
+            <div
               className={styles.submitButton}
               onClick={handleSubmit}
               disabled={submitting || !translation.trim()}
             >
               {submitting ? 'Submitting...' : 'Submit Translation'}
-            </button>
+            </div>
             
             {success && (
               <div className={styles.successMessage}>

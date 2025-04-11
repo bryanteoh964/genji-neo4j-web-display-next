@@ -8,7 +8,7 @@ async function getData (chapter, number){
 	//all the get method and return the db data
 	const queries = {
 
-		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style',
+		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style, g.Spoken as spoken, g.Written as written',
 		resHonkaInfo:  'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[n:ALLUDES_TO]->(h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source), (h)<-[:AUTHOR_OF]-(a:People), (h)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) where g.pnum ends with "' + number + '" return h.Honka as honka, h.Romaji as romaji, s.title as title, a.name as poet, r.order as order, p.name as translator, t.translation as translation, n.notes as notes',
 		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel',
 		resPnum : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH (CASE WHEN "' + number + '" < 10 THEN \'0\' + toString("' + number + '") ELSE toString($number) END) RETURN g.pnum as pnum',
@@ -45,6 +45,8 @@ async function getData (chapter, number){
 		let	handwriting_description = result['res'].records[0]?.get('handwriting_description') || null;
 		let	paper_or_medium_type = result['res'].records[0]?.get('paper_or_medium_type') || null;
 		let delivery_style = result['res'].records[0]?.get('delivery_style') || null;
+		let spoken = result['res'].records[0]?.get('spoken') || null;
+		let written = result['res'].records[0]?.get('written') || null;
 		
 		
 		//for transtemp
@@ -137,7 +139,9 @@ async function getData (chapter, number){
 						genji_age,
 						repCharacter,
 						placeOfComp,
-						placeOfReceipt
+						placeOfReceipt,
+						spoken,
+						written
 					];
 
 		return (data);
