@@ -7,17 +7,18 @@ async function getTranslatorData(name) {
   try {
     const result = await session.readTransaction(tx => 
       tx.run(
-        'MATCH (p:People {name: $name}) RETURN p.Bio as bio',
+        'MATCH (p:People {name: $name}) RETURN p.Bio as bio, p.FullName as fullName',
         { name }
       )
     );
     
     const bio = result.records[0]?.get('bio') || null;
+    const fullName = result.records[0]?.get('fullName') || null;
     
-    return bio;
+    return { bio, fullName };
   } catch(error) {
-    console.error('Failed to fetch translator bio:', error);
-    throw new Error('Failed to fetch translator bio');
+    console.error('Failed to fetch translator info:', error);
+    throw new Error('Failed to fetch translator info');
   } finally {
     await session.close();
   }
@@ -32,13 +33,13 @@ export const GET = async (request) => {
       return new Response(JSON.stringify({ message: "Translator name is required" }), { status: 400 });
     }
     
-    const bio = await getTranslatorData(name);
+    const { bio, fullName } = await getTranslatorData(name);
     
     if (!bio) {
       return new Response(JSON.stringify({ message: "Translator not found" }), { status: 404 });
     }
     
-    return new Response(JSON.stringify({ bio }), { status: 200 });
+    return new Response(JSON.stringify({ bio: bio, fullName: fullName }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ message: "Internal server error" }), { status: 500 });
   }
