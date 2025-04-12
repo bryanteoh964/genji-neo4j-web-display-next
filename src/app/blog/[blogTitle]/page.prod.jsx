@@ -20,16 +20,16 @@ const BlogPage = ({ params }) => {
                     if (pngResponse.ok) {
                         setImageSrc(`/images/${blogTitle}.png`);
                     } else {
-                        setImageSrc('/images/blogs_banner.jpg');
+                        setImageSrc('/images/blog_banner.jpg');
                     }
                 }
             } catch (error) {
-                setImageSrc('/images/blogs_banner.jpg');
+                setImageSrc('/images/blog_banner.jpg');
             }
         };
 
         const fetchContent = async () => {
-            const res = await fetch(`/api/blogs/getSingle?title=${blogTitle}`);
+            const res = await fetch(`/api/blog/getSingle?title=${blogTitle}`);
             const data = await res.json();
             setContent(data.content);
             setIsLoading(false);

@@ -16,7 +16,7 @@ export default function BlogsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   async function getBlogNames() {
-    const response = await fetch('/api/blogs/getBlogList');
+    const response = await fetch('/api/blog/getBlogList');
     const data = await response.json();
     return data.titles;
   }
@@ -33,11 +33,11 @@ export default function BlogsPage() {
       <div className={styles.heroSection}>
         <img
           className={styles.fullBackgroundImage}
-          src="/images/blogs_banner.jpg"
-          alt="blogs background"
+          src="/images/blog_banner.jpg"
+          alt="blog background"
         />
         <div className={styles.titleOverlay}>
-          <span className={styles.nameEnglish}>BLOGS</span>
+          <span className={styles.nameEnglish}>BLOG</span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function BlogsPage() {
               ) : (
                 blogNames.map((blogTitle) => (
                   <div key={blogTitle} className={styles.blogItem}>
-                    <Link href={`/blogs/${blogTitle}`} className={styles.nameInDescription}>
+                    <Link href={`/blog/${blogTitle}`} className={styles.nameInDescription}>
                     <span className={styles.nameInDescription}>{blogTitle}</span>
                   </Link>
                 </div>
