@@ -16,20 +16,19 @@
 
 .viewTranslationsButton {
   padding: 5px 10px;
-  background-color: rgba(75, 75, 75, 0.66);
-  color: white;
+  color: #797979;
   border: none;
-  border-radius: 10px;
   font-family: 'Lexend', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   height: 25px;
+  text-decoration: underline;
 }
 
 .viewTranslationsButton:hover {
-  background-color: rgba(75, 75, 75, 0.8);
+  color: #4B4B4B;
 }
 
 /* Modal Styles */

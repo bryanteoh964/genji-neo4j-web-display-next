@@ -50,24 +50,28 @@ const MoreOptions = ({ setIsOpen }) => {
     return (
         <div className={styles.moreOptions}>
 
-            <Link href="/characters/map" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                map
+            <Link href="/articles" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                articles
+            </Link>
+
+            <Link href="/teamMembers" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                team members
+            </Link>
+
+            <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                sources & resources
             </Link>
 
             <Link href="/characters" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 relationships
             </Link>
 
+            <Link href="/characters/map" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                map
+            </Link>
+
             <Link href="/characters/timeline" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 timeline
-            </Link>
-
-            <Link href="/acknowledgements" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                acknowledgements
-            </Link>
-
-            <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                sources & resources
             </Link>
 
             <Link href="/bug" className={styles.moreLink} onClick={() => setIsOpen(false)}>

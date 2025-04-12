@@ -1,6 +1,6 @@
 .userTranslationSection {
   margin-top: 0;
-  padding: 10px;
+  padding-top: 10px;
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;
@@ -15,7 +15,7 @@
 }
 
 .userTranslationInput {
-  width: 100%;
+  width: 400px;
   height: 35px;
   padding: 5px 10px;
   border: 1px solid rgba(75, 75, 75, 0.2);
@@ -39,13 +39,11 @@
 }
 
 .submitButton {
-  padding: 5px 10px;
-  background-color: rgba(75, 75, 75, 0.66);
-  color: white;
+  padding: 0px 0px;
+  color: #787878;
   border: none;
-  border-radius: 10px;
   font-family: 'Lexend', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -54,7 +52,7 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: rgba(75, 75, 75, 0.8);
+  color: #4B4B4B;
 }
 
 .submitButton:disabled {
@@ -81,24 +79,21 @@
 }
 
 .loginPrompt {
-  padding: 20px;
+  padding-top: 30px;
   text-align: center;
-  border: 1px dashed rgba(75, 75, 75, 0.2);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 18px;
 }
 
 .loginLink {
-  color: #4B4B4B;
-  text-decoration: none;
+  color: #787878;
+  text-decoration: underline;
   font-family: 'Lexend', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
 .loginLink:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+  color: #4B4B4B;
 }
 
 /* User Translations Display Styles */
