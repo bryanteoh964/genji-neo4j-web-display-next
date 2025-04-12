@@ -846,7 +846,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/articles/translators/Waley" className={styles.translatorName}>WALEY</a>
+                            <a href="/blogs/translators/Waley" className={styles.translatorName}>WALEY</a>
                         </div>
                     </div>
                     
@@ -864,7 +864,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/articles/translators/Seidensticker" className={styles.translatorName}>SEIDENSTICKER</a>
+                            <a href="/blogs/translators/Seidensticker" className={styles.translatorName}>SEIDENSTICKER</a>
                         </div>
                     </div>
                     
@@ -882,7 +882,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/articles/translators/Tyler" className={styles.translatorName}>TYLER</a>
+                            <a href="/blogs/translators/Tyler" className={styles.translatorName}>TYLER</a>
                         </div>
                     </div>
                     
@@ -900,7 +900,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/articles/translators/Washburn" className={styles.translatorName}>WASHBURN</a>
+                            <a href="/blogs/translators/Washburn" className={styles.translatorName}>WASHBURN</a>
                         </div>
                     </div>
                     
@@ -918,7 +918,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/articles/translators/Cranston" className={styles.translatorName}>CRANSTON</a>
+                            <a href="/blogs/translators/Cranston" className={styles.translatorName}>CRANSTON</a>
                         </div>
                     </div>
                     

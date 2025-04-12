@@ -11,19 +11,19 @@ const translators = [
   { name: 'About Royall Tyler' },
 ];
 
-export default function TranslatorsPage() {
-  const [articleNames, setArticleNames] = useState([]);
+export default function BlogsPage() {
+  const [blogNames, setBlogNames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function getArticleNames() {
-    const response = await fetch('/api/articles/getArticleList');
+  async function getBlogNames() {
+    const response = await fetch('/api/blogs/getBlogList');
     const data = await response.json();
     return data.titles;
   }
 
   useEffect(() => {
-    getArticleNames().then(names => {
-      setArticleNames(names);
+    getBlogNames().then(names => {
+      setBlogNames(names);
       setIsLoading(false);
     });
   }, []);
@@ -33,11 +33,11 @@ export default function TranslatorsPage() {
       <div className={styles.heroSection}>
         <img
           className={styles.fullBackgroundImage}
-          src="/images/articles_banner.jpg"
-          alt="articles background"
+          src="/images/blogs_banner.jpg"
+          alt="blogs background"
         />
         <div className={styles.titleOverlay}>
-          <span className={styles.nameEnglish}>ARTICLES</span>
+          <span className={styles.nameEnglish}>BLOGS</span>
         </div>
       </div>
 
@@ -45,27 +45,27 @@ export default function TranslatorsPage() {
         <div id="about" className={styles.description}>
           <div className={styles.descriptionContent}>
             <div className={styles.translatorList}>
-              {isLoading ? (
+              {/* {isLoading ? (
                 <div className={styles.loading}>Loading...</div>
               ) : (
                 translators.map((translator) => (
-                  <div key={translator.name} className={styles.articleItem}>
+                  <div key={translator.name} className={styles.blogItem}>
                     <Link 
-                      href={`/articles/translators/${translator.name.split(' ')[2]}`}
+                      href={`/blogs/${translator.name.split(' ')[2]}`}
                     className={styles.nameInDescription}
                   >
                     <span className={styles.nameInDescription}>{translator.name}</span>
                   </Link>
                 </div>
-              )))}
+              )))} */}
 
               {isLoading ? (
                 <div className={styles.loading}></div>
               ) : (
-                articleNames.map((articleTitle) => (
-                  <div key={articleTitle} className={styles.articleItem}>
-                    <Link href={`/articles/${articleTitle}`} className={styles.nameInDescription}>
-                    <span className={styles.nameInDescription}>{articleTitle}</span>
+                blogNames.map((blogTitle) => (
+                  <div key={blogTitle} className={styles.blogItem}>
+                    <Link href={`/blogs/${blogTitle}`} className={styles.nameInDescription}>
+                    <span className={styles.nameInDescription}>{blogTitle}</span>
                   </Link>
                 </div>
               )))}

@@ -50,8 +50,8 @@ const MoreOptions = ({ setIsOpen }) => {
     return (
         <div className={styles.moreOptions}>
 
-            <Link href="/articles" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                articles
+            <Link href="/blogs" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                blogs
             </Link>
 
             <Link href="/teamMembers" className={styles.moreLink} onClick={() => setIsOpen(false)}>

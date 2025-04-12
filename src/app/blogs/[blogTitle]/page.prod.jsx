@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import FormatContent from "../../../components/FormatText.prod"
 import styles from "../../../styles/pages/translatorProfile.module.css"
 
-const ArticlePage = ({ params }) => {
-    const { articleTitle } = params;
+const BlogPage = ({ params }) => {
+    const { blogTitle } = params;
     const [content, setContent] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [imageSrc, setImageSrc] = useState('');
@@ -12,24 +12,24 @@ const ArticlePage = ({ params }) => {
     useEffect(() => {
         const checkImage = async () => {
             try {
-                const jpgResponse = await fetch(`/images/${articleTitle}.jpg`);
+                const jpgResponse = await fetch(`/images/${blogTitle}.jpg`);
                 if (jpgResponse.ok) {
-                    setImageSrc(`/images/${articleTitle}.jpg`);
+                    setImageSrc(`/images/${blogTitle}.jpg`);
                 } else {
-                    const pngResponse = await fetch(`/images/${articleTitle}.png`);
+                    const pngResponse = await fetch(`/images/${blogTitle}.png`);
                     if (pngResponse.ok) {
-                        setImageSrc(`/images/${articleTitle}.png`);
+                        setImageSrc(`/images/${blogTitle}.png`);
                     } else {
-                        setImageSrc('/images/default_article.jpg');
+                        setImageSrc('/images/blogs_banner.jpg');
                     }
                 }
             } catch (error) {
-                setImageSrc('/images/default_article.jpg');
+                setImageSrc('/images/blogs_banner.jpg');
             }
         };
 
         const fetchContent = async () => {
-            const res = await fetch(`/api/articles/getSingle?title=${articleTitle}`);
+            const res = await fetch(`/api/blogs/getSingle?title=${blogTitle}`);
             const data = await res.json();
             setContent(data.content);
             setIsLoading(false);
@@ -37,7 +37,7 @@ const ArticlePage = ({ params }) => {
 
         checkImage();
         fetchContent();
-    }, [articleTitle]);
+    }, [blogTitle]);
 
     return (
         <div className={styles.translatorPage}>
@@ -45,10 +45,10 @@ const ArticlePage = ({ params }) => {
                 <img
                     className={styles.fullBackgroundImage}
                     src={imageSrc}
-                    alt="article background"
+                    alt="blog background"
                 />
                 <div className={styles.titleOverlay}>
-                    <span className={styles.nameEnglish}>{articleTitle.replaceAll('%20', ' ')}</span>
+                    <span className={styles.nameEnglish}>{blogTitle.replaceAll('%20', ' ')}</span>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@ const ArticlePage = ({ params }) => {
                             <div className={styles.loading}>Loading...</div>
                         ) : (
                             <>  
-                                <h1 className={styles.nameInDescription}>{articleTitle.replaceAll('%20', ' ')}</h1>
+                                <h1 className={styles.nameInDescription}>{blogTitle.replaceAll('%20', ' ')}</h1>
                                 <FormatContent content={content} className={styles.descriptionText} />
                             </>
                         )}
@@ -70,4 +70,4 @@ const ArticlePage = ({ params }) => {
     )
 }
 
-export default ArticlePage;
+export default BlogPage;
