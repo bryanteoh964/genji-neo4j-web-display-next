@@ -64,7 +64,7 @@ const page = () => {
                     &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#436875' }}>William Zeng</span>
                 </p>
                 <p>
-                    In addition to the team members listed above, Genjipoems.org has been made possible by the efforts of many generations of students in J. Keith Vincent's classes at Boston University. Beginning in the fall semester of 2016, over 200 students have entered the poems and translations into the database and added metadata and commentary. 
+                    In addition to the team members listed above, Genjipoems.org has been made possible by the efforts of many generations of students in J. Keith Vincent&apos;s classes at Boston University. Beginning in the fall semester of 2016, over 200 students have entered the poems and translations into the database and added metadata and commentary. 
                 </p>
                 <p>
                     Many thanks to all of these students for their efforts.
