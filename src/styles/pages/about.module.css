@@ -1,0 +1,40 @@
+.aboutPageContainer {
+    width: 1440px;
+    margin: 0 auto;
+    overflow-x: auto;
+    position: relative;
+    overflow-y: hidden;
+    background-color: #737373;
+    min-width: 1440px;
+  }
+
+.imageSection {
+    height: 500px;
+    width: 1440px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .fullBackgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1440px;
+    height: 500px;
+    object-fit: cover;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+    transform-origin: center center;
+  }
+  
+  @keyframes slowZoom {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
+  }
+  

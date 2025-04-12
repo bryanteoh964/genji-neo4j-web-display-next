@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
 .userHomePage {
-  max-width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #333;
   position: relative;
+  font-family: 'Lexend', sans-serif;
 }
 
 .loading, .error, .noUser {
@@ -29,7 +31,7 @@
 
 .topEditButton {
   padding: 0.5rem 1rem;
-  background-color: rgba(80, 80, 80, 0.9);
+  background-color: rgba(191, 174, 147, 0.9);
   color: white;
   border: none;
   border-radius: 4px;
@@ -42,7 +44,7 @@
 }
 
 .topEditButton:hover {
-  background-color: rgba(49, 49, 49, 0.9);
+  background-color: rgba(191, 174, 147, 0.7);
 }
 
 /* Profile Header */
@@ -77,7 +79,7 @@
   align-items: center;
   justify-content: center;
   background-color: #f0f0f0;
-  color: #666;
+  color: #C49C3E;
 }
 
 .userInfo {
@@ -95,21 +97,21 @@
 
 .usernameDisplay {
   font-size: 0.9rem;
-  color: #777;
+  color: #BFAE93;
   font-weight: 500;
 }
 
 .userName {
   font-size: 2rem;
   margin: 0;
-  color: #333;
+  color: #BFAE93;
   line-height: 1.2;
   text-align: left;
 }
 
 .userTagline {
   font-size: 1rem;
-  color: #777;
+  color: #BFAE93;
   margin-top: -0.5rem;
 }
 
@@ -117,7 +119,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 2rem;
-  color: #666;
+  color: #BFAE93;
   font-size: 0.9rem;
 }
 
@@ -128,7 +130,7 @@
 }
 
 .metaItem a {
-  color: rgba(80, 80, 80, 0.9);
+  color: rgba(191, 174, 147, 0.9);
   text-decoration: none;
 }
 
@@ -140,7 +142,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #555;
+  color: #BFAE93;
   font-size: 0.95rem;
 }
 
@@ -148,7 +150,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #555;
+  color: #BFAE93;
   font-size: 0.95rem;
 }
 
@@ -164,7 +166,7 @@
 
 .userBio {
   line-height: 1.6;
-  color: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
   text-align: left;
 }
 
@@ -173,9 +175,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  color: #333;
+  background-color: #BFAE93;
+  border: none;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -216,16 +218,17 @@
 .editProfile label {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #555;
+  color: #ffffff;
   text-align: left;
 }
 
 .nameInput, .bioInput, .locationInput, .websiteInput, .taglineInput, .occupationInput {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 4px;
   font-size: 1rem;
   width: 100%;
+  background-color: #BFAE93;
 }
 
 .bioInput {
@@ -293,17 +296,17 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background-color: #f8f9fa;
+  background-color: #BFAE93;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  border: 1px solid #eaeaea;
+  border: none;
 }
 
 .statValue {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #333;
+  color: #ffffff;
   margin: 0.5rem 0;
 }
 
@@ -381,19 +384,20 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  color: #777;
+  color: #BFAE93;
   transition: all 0.2s;
   text-align: center;
+  font-family: "Lexend", sans-serif;
 }
 
 .tabButton:hover {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #BFAE93;
+  color: #ffffff;
 }
 
 .activeTab {
-  color: #c41e3a;
-  border-bottom: 3px solid #c41e3a;
+  color: #C49C3E;
+  border-bottom: 3px solid #C49C3E;
 }
 
 /* Hidden Section Bar */
@@ -411,7 +415,7 @@
 .hiddenSectionTitle {
   font-size: 1.25rem;
   margin: 0;
-  color: #777;
+  color: #BFAE93;
   font-weight: 600;
 }
 
@@ -442,6 +446,10 @@
   color: #333;
 }
 
+.tabContentTitle {
+  color: #BFAE93;
+}
+
 /* Comments Section */
 .commentsList {
   display: flex;
@@ -451,10 +459,9 @@
 
 .commentCard {
   padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
+  background-color: #BFAE93;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
 }
@@ -514,8 +521,8 @@
 
 .contributionCard {
   padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
+  background-color: #BFAE93;
+  border: none;
   border-radius: 8px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
@@ -529,7 +536,7 @@
 .contributionTitle {
   font-size: 1rem;
   margin: 0;
-  color: #333;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -557,8 +564,8 @@
 
 .favoriteCard {
   padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
+  background-color: #BFAE93;
+  border: none;
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
@@ -574,7 +581,7 @@
 .favoriteTitle {
   font-size: 1.1rem;
   margin: 0 0 0.5rem 0;
-  color: #333;
+  color: #797979;
   font-weight: 600;
 }
 
@@ -590,10 +597,11 @@
 }
 
 .japaneseLine {
+  font-family: "Noto Sans JP", sans-serif;
   margin: 0.25rem 0;
   line-height: 1.5;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.85);
+  font-size: 16px;
+  color: #ffffff;
 }
 
 /* Common Components */
@@ -601,7 +609,7 @@
   padding: 2rem;
   text-align: center;
   color: #666;
-  background-color: #f9f9f9;
+  background-color: #BFAE93;
   border-radius: 4px;
   margin: 0;
 }
@@ -616,8 +624,8 @@
 }
 
 .loginPrompt {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
+  background-color: #BFAE93;
+  border: none;
   border-radius: 8px;
   padding: 2rem;
   text-align: center;
@@ -669,89 +677,12 @@
 }
 
 .signInButton {
-  background-color: #af5644;
+  background-color: #BFAE93;
   color: white;
-  border: 1px solid #af5644;
+  border: none;
+  text-decoration: underline;
 }
 
 .signInButton:hover {
-  background-color: #db634b;
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-  .userHomePage {
-    padding: 1.5rem 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .profileHeader {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-  }
-  
-  .topEditButtonContainer {
-    position: static;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .userBio, .additionalInfo, .editButton {
-    align-self: center;
-    text-align: center;
-  }
-  
-  .userMeta {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .statsRow {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .formRow {
-    flex-direction: column;
-  }
-  
-  .contributionsList {
-    grid-template-columns: 1fr;
-  }
-  
-  .userName {
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .userHomePage {
-    padding: 1rem 0.5rem;
-  }
-  
-  .sectionHeader {
-    padding: 0.75rem;
-  }
-  
-  .tabContent {
-    padding: 1rem;
-  }
-  
-  .userName {
-    font-size: 1.5rem;
-  }
-  
-  .statValue {
-    font-size: 1.5rem;
-  }
-  
-  .commentCard, .contributionCard, .favoriteCard {
-    padding: 0.75rem;
-  }
-
+  font-weight: 600;
 }

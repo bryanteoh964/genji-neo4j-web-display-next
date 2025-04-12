@@ -1,8 +1,18 @@
 import "../../styles/globals.css";
+import styles from "../../styles/pages/about.module.css";
 
 const page = () => {
   return (
-    <section className="section_frame">
+	<div className={styles.aboutPageContainer}>
+
+		<section className={styles.imageSection}>
+                <img 
+                    className={styles.fullBackgroundImage} 
+                    src="/images/about_background.png" 
+                    alt="about background" 
+                />
+		</section>
+
       <div className="section_container">
 	 	<h1 className="main-title">THE TALE OF GENJI POETRY DATABASE</h1>
 
@@ -43,7 +53,7 @@ const page = () => {
 		As the great courtier-poet Fujiwara Shunzei would exclaim scarcely two centuries after her <i>Tale</i> was completed, &quot;Any poet who tries to write poetry without knowing <i>the Tale of Genji</i> should be ashamed of themselves!&quot; (源氏見ざる歌詠みは遺恨なり)
 		</p>
       </div>
-    </section>
+    </div>
   );
 };
 

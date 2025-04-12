@@ -26,11 +26,11 @@ export function SignIn() {
   } 
 
   return (
-    <button 
+    <div 
       onClick={() => signIn()} 
       className={styles.signInButton}
     >
       Sign In
-    </button>
+    </div>
   );
 }
