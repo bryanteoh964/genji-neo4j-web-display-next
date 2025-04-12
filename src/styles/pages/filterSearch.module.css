@@ -28,6 +28,14 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
+  font-weight: 600;
+  color: black;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: 'Lexend', sans-serif;
+  line-height: 10px;
+  letter-spacing: 0.05rem;
+  vertical-align: bottom;
 }
 
 .searchInput:focus {
@@ -81,6 +89,7 @@
   /* overflow-y: auto; */
   padding: 0;
   width: 95%;
+  margin-top: 5px;
 }
 
 .filterSectionHeader {
@@ -200,16 +209,110 @@
 /* result area */
 .resultsArea {
   flex: 1;
-  overflow-y: auto;
   height: 445px;
   padding-top: 10px;
   width: 1100px;
+  overflow-y: scroll; /* Enable scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
+
+.resultsArea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.toggleButton {
+  opacity: 0.8;
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 87%;
+  letter-spacing: 0.8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+/* Active (Genji Age) style */
+.toggleButton.byAge {
+  color: white;
+}
+
+/* Default (Chapters) style */
+.toggleButton:not(.byAge) {
+  color: var(--genji-3-gold, #C49C3E);
+  border-color: var(--genji-3-gold, #C49C3E);
+  background-color: rgba(196, 156, 62, 0.15);
+}
+
+
+.filterOnlyResultsLabel {
+  color: var(--1-TEXT-TYPICAL-grey-30, #4B4B4B);
+  font-family: 'Lexend', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.filterResultsLabel {
+  color: var(--1-TEXT-TYPICAL-grey-30, #4B4B4B);
+  font-family: 'Lexend', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 320px;
+}
+
+.clearFiltersButton {
+  background: none;
+  border: none;
+  color: #C49C3E;
+  font-family: 'Lexend', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, color 0.3s ease; /* added color transition */
+}
+
+.clearFiltersButton:hover {
+  opacity: 1;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
 
 .resultCount {
   position: absolute;
   top: 105px;
-  right: 255px;
+  right: 290px;
   padding: 12px 16px;
   border-radius: 8px;
   color: white;
@@ -428,6 +531,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin-bottom: 20px;
+  width: 90%;
 }
 
 .error {
@@ -469,7 +573,10 @@
   left: 50%;
   height: 500px;
   transform: translate(-50%, -50%);
-  background: #676767;
+  background-image: url('/images/searchpage_background6.png');
+  background-size: cover; /* This ensures the image covers the entire element */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
   z-index: 1000;
   width: 1440px;
   pointer-events: none;
@@ -505,10 +612,10 @@
 .hoverresultTitle {
   color: white;
   font-size: 16px;
-  font-weight: bold;
   margin : 0px;
   padding: 0px;
   text-align: left;
+  font-weight: 700;
 }
 
 .hoverresultTitleName {
@@ -525,7 +632,7 @@
 
 .chapterRomaji {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: #FFF;
   font-style: normal;
@@ -579,15 +686,15 @@
   height: 50px;
 }
 
-.hoverjapaneseText {
+.hoverPopup .hoverjapaneseText {
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   color: white;
 }
 
 .hoverromajiText {
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   color: white;
 }
 
@@ -660,6 +767,15 @@
   border-radius: 4px;
   box-sizing: border-box; 
   margin-bottom: 10px; 
+}
+
+.summaryTranslation {
+  position: relative;
+  line-height: 1.4;
+  border-radius: 20px;
+  max-width: 665px;
+  height: 120px;
+  overflow: hidden;
 }
 
 .translation {
@@ -800,8 +916,34 @@
   background-color: rgba(67, 104, 117, 0.66);
 }
 
-.translation:nth-of-type(6) .translatorName {
-  background-color: rgba(255, 255, 255, 0.33);
+.summaryLine {
+  margin: 0px 180px 0px 15px; 
+  line-height: 1.5;
+  color: white;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: left;
+}
+
+.summaryName {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  color: #ffffff;
+  z-index: 10;
+  padding: 10px 10px;
+  font-family: 'Lexend', sans-serif;
+  white-space: nowrap;
+  line-height: 10px;
+  letter-spacing: -0.05rem;
+  text-align: right;
+  width: 160px;
+  height: 10px;
+  vertical-align: middle;
 }
 
 .translationLine {

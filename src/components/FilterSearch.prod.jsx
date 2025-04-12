@@ -72,6 +72,11 @@ const PoemSearch = () => {
   const [searchAddressee, setSearchAddressee] = useState("");
   const [searchChapter, setSearchChapter] = useState("");
 
+  const ageOptions = {};
+  for (let age = 1; age <= 75; age++) {
+    ageOptions[age.toString()] = { label: `${age} years`, checked: false };
+  }
+
   const [filters, setFilters] = useState({
     chapterNum: {
       label: "Chapter",
@@ -103,7 +108,7 @@ const PoemSearch = () => {
     },
     genji_age: {
       label: "Genji's Age",
-      options: {},
+      options: ageOptions,
     },
     //   season: {
     //       label: 'Season',
@@ -151,25 +156,30 @@ const PoemSearch = () => {
 
   useEffect(() => {
     if (!results.length) return;
-
+  
     const chapters = new Set();
     const addressees = new Set();
     const speakers = new Set();
     const speakerGenders = new Map();
     const addresseeGenders = new Map();
-
+    const genjiAges = new Set(); // Add this
+  
     results.forEach((result) => {
       if (result.chapterNum) chapters.add(result.chapterNum);
       if (result.addressee_name) {
         addressees.add(result.addressee_name);
-        addresseeGenders.set(result.addressee_name, result.addressee_gender); // Store gender info
+        addresseeGenders.set(result.addressee_name, result.addressee_gender);
       }
       if (result.speaker_name) {
         speakers.add(result.speaker_name);
-        speakerGenders.set(result.speaker_name, result.speaker_gender); // Store gender info
+        speakerGenders.set(result.speaker_name, result.speaker_gender);
+      }
+      // Add this to collect all unique ages
+      if (result.genji_age && result.genji_age !== "") {
+        genjiAges.add(result.genji_age);
       }
     });
-
+  
     setFilters((prev) => ({
       ...prev,
       chapterNum: {
@@ -187,7 +197,7 @@ const PoemSearch = () => {
         options: Array.from(addressees).reduce(
           (acc, name) => ({
             ...acc,
-            [name]: { checked: false, gender: addresseeGenders.get(name) }, // Store gender inside
+            [name]: { checked: false, gender: addresseeGenders.get(name) },
           }),
           {}
         ),
@@ -197,7 +207,19 @@ const PoemSearch = () => {
         options: Array.from(speakers).reduce(
           (acc, name) => ({
             ...acc,
-            [name]: { checked: false, gender: speakerGenders.get(name) }, // Store gender inside
+            [name]: { checked: false, gender: speakerGenders.get(name) },
+          }),
+          {}
+        ),
+      },
+      // Add this for Genji ages
+      genji_age: {
+        ...prev.genji_age,
+        label: "Genji's Age",
+        options: Array.from(genjiAges).sort((a, b) => parseInt(a) - parseInt(b)).reduce(
+          (acc, age) => ({
+            ...acc,
+            [age]: { checked: false, label: `${age} years` },
           }),
           {}
         ),
@@ -248,11 +270,11 @@ const PoemSearch = () => {
             chapterNum: (
               Object.values(result.chapterNum).join("")
             ),
-            // genji_age: Object.values(result.genji_age).join(""),
             poemNum: (Object.values(result.poemNum).join("")),
             chapterAbr: Object.values(result.chapterAbr).join(""),
             japanese: Object.values(result.japanese).join(""),
             romaji: Object.values(result.romaji).join(""),
+            paraphrase: result.paraphrase ? Object.values(result.paraphrase).join("") : "",
             addressee_name: typeof result.addressee_name === "string" 
               ? result.addressee_name 
               : Object.values(result.addressee_name).join(""),
@@ -261,6 +283,7 @@ const PoemSearch = () => {
             speaker_gender: Object.values(result.speaker_gender).join(""),
             season: Object.values(result.season).join(""),
             peotic_tech: Object.values(result.peotic_tech).join(""),
+            genji_age: Object.values(result.genji_age).join(""),
             waley_translation: Object.values(result.waley_translation).join(""),
             seidensticker_translation: Object.values(
               result.seidensticker_translation
@@ -348,6 +371,8 @@ const PoemSearch = () => {
               return activeOptions.includes(result.season);
             case "poetic_tech":
               return activeOptions.includes(result.poetic_tech);
+            case "genji_age":
+              return activeOptions.includes(result.genji_age);
             default:
               return true;
           }
@@ -356,6 +381,25 @@ const PoemSearch = () => {
     });
   }, [filters, results]);
 
+  const handleClearFilters = () => {
+    const clearedFilters = Object.keys(filters).reduce((acc, filterKey) => {
+      const clearedOptions = Object.entries(filters[filterKey].options).reduce((optAcc, [optionKey, _]) => {
+        const shouldDefaultTrue =
+          (filterKey === 'speaker_gender' || filterKey === 'addressee_gender') &&
+          (optionKey === 'male' || optionKey === 'female' || optionKey === 'nonhuman');
+  
+        optAcc[optionKey] = { checked: shouldDefaultTrue };
+        return optAcc;
+      }, {});
+  
+      acc[filterKey] = { ...filters[filterKey], options: clearedOptions };
+      return acc;
+    }, {});
+  
+    setFilters(clearedFilters);
+    setQuery(""); // Clear the keyword search input
+  };
+  
   const defaultChapterCounts = [
     9, 14, 2, 19, 25, 14, 17, 8, 24, 33, 4, 48, 30, 17, 6, 3, 9, 16, 10, 13, 16, 14, 6, 14, 8, 4, 2, 4, 9, 8, 21, 11, 20, 24, 18, 11, 8, 6, 26, 12, 26, 1, 4, 24, 13, 21, 31, 15, 24, 11, 22, 11, 28, 1,
   ].reduce((acc, count, index) => {
@@ -487,7 +531,126 @@ const PoemSearch = () => {
       }
     },
   };
+
+  const [showByAge, setShowByAge] = useState(false);
+
+  const defaultAgeCounts = [...Array(75)].reduce((acc, _, i) => {
+    const age = (i + 1).toString(); // "1" to "75"
+    acc[age] = 0;
+    return acc;
+  }, {});
+
+  const ageData = useMemo(() => {
+    const originalCounts = { ...defaultAgeCounts };
   
+    results.forEach((poem) => {
+      const age = poem.genji_age?.toString();
+      if (age) originalCounts[age] = (originalCounts[age] || 0) + 1;
+    });
+  
+    const filteredCounts = { ...defaultAgeCounts };
+    filteredResults.forEach((poem) => {
+      const age = poem.genji_age?.toString();
+      if (age) filteredCounts[age] = (filteredCounts[age] || 0) + 1;
+    });
+  
+    const labels = Object.keys(originalCounts);
+  
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Original Poems per Age',
+          data: labels.map((label) => originalCounts[label] || 0),
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          barPercentage: 0.4, // Skinnier bars
+          categoryPercentage: 1,
+          order: 2,
+        },
+        {
+          label: 'Filtered Poems per Age',
+          data: labels.map((label) => filteredCounts[label] || 0),
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          barPercentage: 0.4,
+          categoryPercentage: 1,
+          order: 1,
+        },
+      ],
+    };
+  }, [results, filteredResults]);
+  
+  // Chart options (to show x-axis and custom styling)
+  const chartOptionsAge = {
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        display: true, // Hide the x-axis
+        stacked: true,
+        ticks: {
+          color: 'black',
+          font: {
+            family: 'Sans-serif',
+            size: 14,
+            weight: 'bold',
+          },
+        },
+        grid: {
+          display: false, // Remove vertical grid lines
+        },
+      },
+      y: {
+        beginAtZero: true,
+        stacked: false,
+        ticks: {
+          color: 'black',
+          font: {
+            family: 'Sans-serif',
+            size: 14,
+            weight: 'bold',
+          },
+          stepSize: 10,
+          callback: function (value) {
+            return value.toString().padStart(2, '0');
+          },
+        },
+        grid: {
+          drawBorder: false,
+          drawOnChartArea: true,
+          drawTicks: false,
+          color: 'rgba(0, 0, 0, 0.55)',
+          lineWidth: 1,
+        },
+        border: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false, // Keep this false since you're using custom legend
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const chapterNum = context.label;
+            const chapterName = getChapterName(chapterNum);
+            const poemsCount = context.raw;
+            
+            // For black bars (original poems)
+            if (context.datasetIndex === 0) {
+              return `Out of ${poemsCount} poems in ${chapterName}`;
+            }
+            // For white bars (filtered poems)
+            else {
+              return `${poemsCount} poems found`;
+            }
+          },
+        },
+        displayColors: true,
+        usePointStyle: true,
+      }
+    },
+  };
   
   useEffect(() => {
     handleSearch(query);
@@ -565,6 +728,18 @@ const PoemSearch = () => {
 
     return (
       <div className={styles.filterContainer}>
+        <button 
+          className={`${styles.toggleButton} ${showByAge ? styles.byAge : ''}`}
+          onClick={() => setShowByAge((prev) => !prev)}
+        >
+          {showByAge ? 'Graph by Chapter' : 'Graph by Genji\'s Age'}
+        </button>
+        <div className={styles.filterHeader}>
+          <span className={styles.filterOnlyResultsLabel}>FILTERS</span>
+          <button className={styles.clearFiltersButton} onClick={handleClearFilters}>
+            CLEAR ALL
+          </button>
+        </div>
         <div className={styles.searchArea}>
         <input
           ref={searchInputRef}
@@ -810,8 +985,25 @@ const PoemSearch = () => {
     );
   };
 
+  const renderSummary = (paraphrase, translator) => {
+    if (!paraphrase) return <p>No Summary Available</p>;
+  
+    return (
+      <div className={styles.summaryTranslation}>
+        {paraphrase.split("\n").map((line, index) => (
+          <p
+            key={`${translator}-line-${index}`}
+            className={styles.summaryLine}
+          >
+            {highlightMatch(line, query)}
+          </p>
+        ))}
+      </div>
+    );
+  };
+
   const renderTranslation = (translation, translator) => {
-    if (!translation) return <p>No translation available</p>;
+    if (!translation) return <p>No Translation Available</p>;
   
     return (
       <div className={styles.translation}>
@@ -944,8 +1136,30 @@ const PoemSearch = () => {
               </div>
             </div>
             <div className={styles.resulthoverSubTitle}>
-              <span>{filteredResults[hoveredItem].speaker_name} &raquo;</span>
-              <span>&raquo; {filteredResults[hoveredItem].addressee_name}</span>
+              <span
+                style={{
+                  color:
+                    filteredResults[hoveredItem].speaker_gender === 'male'
+                      ? '#436875'
+                      : filteredResults[hoveredItem].speaker_gender === 'female'
+                      ? '#B03F2E'
+                      : 'inherit',
+                }}
+              >
+                {filteredResults[hoveredItem].speaker_name} &raquo;
+              </span>
+              <span
+                style={{
+                  color:
+                    filteredResults[hoveredItem].addressee_gender === 'male'
+                      ? '#436875'
+                      : filteredResults[hoveredItem].addressee_gender === 'female'
+                      ? '#B03F2E'
+                      : 'inherit',
+                }}
+              >
+                &raquo; {filteredResults[hoveredItem].addressee_name}
+              </span>
             </div>
             <div className={styles.hoverBottom}>
               {/* WALEY */}
@@ -1059,9 +1273,10 @@ const PoemSearch = () => {
               </div>
 
               {/* SUMMARY */}
-              <div className={styles.translation}>
-                <h3 className={styles.translatorName}>SUMMARY</h3>
-                <p>No Summary Available</p>
+              <div className={styles.summaryTranslation}>
+                <h3 className={styles.summaryName}>POEM SUMMARY</h3>
+                {/* add paraphrase data as summary */}
+                {renderSummary(filteredResults[hoveredItem].paraphrase, "Paraphrase")}
               </div>
               
             </div>
@@ -1075,17 +1290,31 @@ const PoemSearch = () => {
     <div className={styles.poemSearch}>
       <img 
         className={styles.fullBackgroundImage} 
-        src="/images/searchpage_background5.png" 
+        src={showByAge 
+          ? "/images/searchpage_background7.png" 
+          : "/images/searchpage_background5.png"} 
         alt="Genji background" 
       />
-      <div className={styles.chartContainer}>
-        <Bar data={chapterData} options={chartOptions} />
+      <div
+        className={styles.chartContainer}
+        style={{
+          top: showByAge ? '135px' : '110px',
+          left: showByAge ? '53%' : '52.4%',
+        }}
+      >
+        <Bar
+          data={showByAge ? ageData : chapterData}
+          options={showByAge ? chartOptionsAge : chartOptions}
+        />
       </div>
+
+
 
       <div className={styles.mainContent}>
         <aside className={styles.filterSidebar}>{renderFilters()}</aside>
 
         <main className={styles.resultsArea}>
+          <span className={styles.filterResultsLabel}>RESULTS</span>
           {isLoading && <div className={styles.loading}>Searching...</div>}
           {error && <div className={styles.error}>{error}</div>}
 

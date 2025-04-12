@@ -432,7 +432,7 @@ export default function CharacterDetail({ name }) {
             <div className={styles.characterProfileContainer}>
                 {/* Search Dropdown Section */}
                 <div className={styles.analysisPanel}>
-                    <div className={styles.panelHeader} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                    <div className={styles.panelHeader}>
                         <input
                             ref={searchInputRef}
                             type="text"
@@ -440,8 +440,9 @@ export default function CharacterDetail({ name }) {
                             placeholder="Search Characters..."
                             value={searchTerm}
                             onChange={handleSearchChange}
-                            onFocus={handleSearchFocus}
                         />
+                        <div className={styles.panelMedium} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        </div>
                         <div 
                             className={`${styles.toggleArrow} ${isDropdownOpen ? styles.arrowExpanded : styles.arrowCollapsed}`}
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
