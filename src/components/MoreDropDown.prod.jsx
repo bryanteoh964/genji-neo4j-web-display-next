@@ -58,6 +58,10 @@ const MoreOptions = ({ setIsOpen }) => {
                 team members
             </Link>
 
+            <Link href="/articles/Collaborate" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                collaborate
+            </Link>
+
             <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 sources & resources
             </Link>
