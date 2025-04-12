@@ -59,9 +59,9 @@
   margin: 0;
 }
 
-.japaneseText {
+.japaneseText p {
   font-size: 1.1rem;
   line-height: 1.8;
   margin: 8px 0;
-  color: #444;
+  color: #444 !important;
 }
