@@ -64,13 +64,13 @@ const page = () => {
                     &nbsp;&nbsp;&nbsp;&nbsp;<span style={{ color: '#436875' }}>William Zeng</span>
                 </p>
                 <p>
-                    In addition to the team members listed above, <span style={{ color: '#436875' }}>Genjipoems.org</span> has been made possible by the efforts of many generations of students in <span style={{ color: '#436875' }}>J. Keith Vincent</span>’s classes at Boston University. Beginning in the fall semester of 2016, over 200 students have entered the poems and translations into the database and added metadata and commentary. 
+                    In addition to the team members listed above, Genjipoems.org has been made possible by the efforts of many generations of students in J. Keith Vincent&apos;s classes at Boston University. Beginning in the fall semester of 2016, over 200 students have entered the poems and translations into the database and added metadata and commentary. 
                 </p>
                 <p>
                     Many thanks to all of these students for their efforts.
                 </p>
                 <p>
-                    Thanks also for generous financial support from the <a href="https://www.bu.edu/urop/about/" target="_blank" style={{ color: '#436875' }}>Boston University Undergraduate Research Program</a> and Professor <span style={{ color: '#436875' }}>Dennis Washburn</span>.
+                    Thanks also for generous financial support from the <a href="https://www.bu.edu/urop/about/" target="_blank" style={{ color: '#FFFFFF' }}>Boston University Undergraduate Research Program</a> and Professor <span style={{ color: '#FFFFFF' }}>Dennis Washburn</span>.
                 </p>
 			</div>
 		</div>

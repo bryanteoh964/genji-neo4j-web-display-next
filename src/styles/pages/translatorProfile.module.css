@@ -100,12 +100,12 @@
   padding: 1rem 0;
 }
 
-.articleItem {
+.blogItem {
   width: 100%;
   padding: 0.5rem 0;
 }
 
-.articleLink {
+.blogLink {
   color: #4B4B4B;
   font-size: 16px;
   font-weight: 800;
