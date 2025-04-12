@@ -9,7 +9,7 @@ import TransSubmit from '../components/TranslationSubmit.prod';
 import TransDisplay from '../components/TranslationDisplay.prod'
 import PoemNavigation from './PoemNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PoemDisplay = ({ poemData }) => {
 
@@ -46,7 +46,12 @@ const PoemDisplay = ({ poemData }) => {
         placeOfComp: "",
         placeOfReceipt: "",
         spoken: "",
-        written: ""
+        written: "",
+        season_evidence: "",
+        placeOfComp_evidence: "",
+        placeOfReceipt_evidence: "",
+        groupPoems: [],
+        replyPoems: []
     });
     
     const chapter = poemData.chapterNum;
@@ -209,7 +214,12 @@ const PoemDisplay = ({ poemData }) => {
                     placeOfComp: responseData[20],
                     placeOfReceipt: responseData[21],
                     spoken: responseData[22],
-                    written: responseData[23]
+                    written: responseData[23],
+                    season_evidence: responseData[24],
+                    placeOfComp_evidence: responseData[25],
+                    placeOfReceipt_evidence: responseData[26],
+                    groupPoems: responseData[27],
+                    replyPoems: responseData[28]
                 };
                 
 
@@ -396,12 +406,25 @@ const PoemDisplay = ({ poemData }) => {
                     </div>
                     
                     <div className={`${styles.gridBox} ${styles.connectedBox}`}>
-                        <div className={styles.connectedArrows}>
+                        {/* <div className={styles.connectedArrows}>
                             <span>◀</span>
                             <span>▶</span>
-                        </div>
+                        </div> */}
 
-                        <span className={styles.connectedLabel}>CONNECTED POEMS</span>
+                        {/* show nothing when no data is available */}
+                        {poemState.proxy ? ( 
+                            <>
+                                <a href={`/characters/${encodeURIComponent(poemState.proxy)}`} className={styles.characterLink}>
+                                    {poemState.proxy}
+                                </a>
+                                <span className={styles.connectedLabel}>PROXY POET</span>
+                            </>
+                        ) : (
+                            <>
+                                <span>-</span>
+                                <span className={styles.connectedLabel}>PROXY POET</span>
+                            </>
+                        )}
 
                     </div>
                     
@@ -507,10 +530,24 @@ const PoemDisplay = ({ poemData }) => {
                     {/* Left Side - Analysis Panels with Toggles */}
                     <div className={styles.analysisLeft}>
                         <h2 className={styles.translationsHeader}>ANALYSIS</h2>
+                            
+                            {/* Narrative Context Panel */}
+                            <div className={styles.analysisPanel}>
+                                <div className={styles.panelHeader} onClick={() => togglePanel('context')}>
+                                    <h2>WHERE WE ARE IN THE TALE</h2>
+                                    <div className={`${styles.toggleArrow} ${expandedPanels.context ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                        ▼
+                                    </div>
+                                </div>
+                                <div className={`${styles.panelContent} ${expandedPanels.context ? styles.expanded : styles.collapsed}`}>
+                                    {poemState.narrativeContext && <FormatContent content={poemState.narrativeContext} />}  
+                                </div>
+                            </div>
+
                             {/* Poem Summary Panel */}
                             <div className={styles.analysisPanel}>
                                 <div className={styles.panelHeader} onClick={() => togglePanel('summary')}>
-                                    <h2>POEM SUMMARY</h2>
+                                    <h2>WHAT THE POEM IS SAYING</h2>
                                     <div className={`${styles.toggleArrow} ${expandedPanels.summary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
                                         ▼
                                     </div>
@@ -518,143 +555,272 @@ const PoemDisplay = ({ poemData }) => {
                                 <div className={`${styles.panelContent} ${expandedPanels.summary ? styles.expanded : styles.collapsed}`}>
                                     {poemState.paraphrase && <FormatContent content={poemState.paraphrase} />}
                                 </div>
-                    </div>
+                            </div>
 
-                    {/* Narrative Context Panel */}
-                    <div className={styles.analysisPanel}>
-                        <div className={styles.panelHeader} onClick={() => togglePanel('context')}>
-                            <h2>NARRATIVE CONTEXT</h2>
-                            <div className={`${styles.toggleArrow} ${expandedPanels.context ? styles.arrowExpanded : styles.arrowCollapsed}`}>
-                                ▼
-                            </div>
-                        </div>
-                        <div className={`${styles.panelContent} ${expandedPanels.context ? styles.expanded : styles.collapsed}`}>
-                            {poemState.narrativeContext && <FormatContent content={poemState.narrativeContext} />}  
-                        </div>
-                    </div>
-
-                    {/* Commentary Panel */}
-                    <div className={styles.analysisPanel}>
-                        <div className={styles.panelHeader} onClick={() => togglePanel('commentary')}>
-                            <h2>COMMENTARY</h2>
-                            <div className={`${styles.toggleArrow} ${expandedPanels.commentary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
-                                ▼
-                            </div>
-                        </div>
-                        <div className={`${styles.panelContent} ${expandedPanels.commentary ? styles.expanded : styles.collapsed}`}>
-                            {poemState.notes && <FormatContent content={poemState.notes} />}
-                        </div>
-                    </div>
-
-                    {/* More Details Panel */}
-                    <div className={styles.analysisPanel}>
-                        <div className={styles.panelHeader} onClick={() => togglePanel('details')}>
-                            <h2>MORE DETAILS</h2>
-                            <div className={`${styles.toggleArrow} ${expandedPanels.details ? styles.arrowExpanded : styles.arrowCollapsed}`}>
-                                ▼
-                            </div>
-                        </div>
-                        <div className={`${styles.panelContent} ${expandedPanels.details ? styles.expanded : styles.collapsed}`}>
-                        {poemState.paperMediumType && (
-                            <div className={styles.detailItem}>
-                                <h3>PAPER/MEDIUM</h3>
-                                {poemState.paperMediumType && <FormatContent content={poemState.paperMediumType} />}
-                            </div>
-                        )}
-                        
-                        {poemState.deliveryStyle && (
-                            <div className={styles.detailItem}>
-                                <h3>DELIVERY STYLE</h3>
-                                {poemState.deliveryStyle && <FormatContent content={poemState.deliveryStyle} />}
-                            </div>
-                        )}
-
-                        {poemState.source && poemState.source.length > 0 && (
-                            <div className={styles.detailItem}>
-                                <h3>ALLUSIONS</h3>
-                                {poemState.source.map((source, idx) => (
-                                    <div key={idx} className={styles.allusionItem}>
-                                        <p><strong>Poet:</strong> {source.poet && <FormatContent content={source.poet} />}</p>
-                                        <p><strong>Source:</strong> {source.source && <FormatContent content={source.source + (source.order ? ` ${source.order}` : '')} />}</p>
-                                        <p><strong>Original:</strong> {source.honka && <FormatContent content={source.honka} />}</p>
+                            {/* Commentary Panel */}
+                            <div className={styles.analysisPanel}>
+                                <div className={styles.panelHeader} onClick={() => togglePanel('commentary')}>
+                                    <h2>COMMENTARY</h2>
+                                    <div className={`${styles.toggleArrow} ${expandedPanels.commentary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                        ▼
                                     </div>
-                            ))}
-                            </div>
-                        )}
-                        
-                        {poemState.season && (
-                            <div className={styles.detailItem}>
-                                <h3>SEASON IN NARRATIVE</h3>
-                                <FormatContent content={poemState.season} />
-                            </div>
-                        )}
-                        
-                        {poemState.kigo && poemState.kigo.jp && (
-                            <div className={styles.detailItem}>
-                                <h3>SEASONAL WORD</h3>
-                                <FormatContent content={`${poemState.kigo.jp} - ${poemState.kigo.en}`} />
-                            </div>
-                        )}
-                        
-                        {poemState.pt && poemState.pt.length > 0 && (
-                            <div className={styles.detailItem}>
-                                <h3>POETIC TECHNIQUE</h3>
-                                {poemState.pt.map((item, idx) => (
-                                    <FormatContent key={idx} content={item[0]} />
-                                ))}
-                            </div>
-                        )}
-
-                        {poemState.pw && poemState.pw.name && (
-                            <div className={styles.detailItem}>
-                                <h3>POETIC WORD</h3>
-                                <FormatContent content={`${poemState.pw.kanji_hiragana} - ${poemState.pw.name}`} />
-                            </div>
-                        )}
-                        
-                        {poemState.rel && poemState.rel.length > 0 && (
-                            <div className={styles.detailItem}>
-                            <h3>RELATED POEMS</h3>
-                                <div className={styles.relatedPoemsContainer}>
-                                    {poemState.rel.map((rel, idx) => (
-                                    <a 
-                                        key={idx}
-                                        href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
-                                        className={styles.relatedPoemLink}
-                                    >
-                                        {rel[0]}
-                                    </a>
-                                    ))}
+                                </div>
+                                <div className={`${styles.panelContent} ${expandedPanels.commentary ? styles.expanded : styles.collapsed}`}>
+                                    {poemState.notes && <FormatContent content={poemState.notes} />}
                                 </div>
                             </div>
-                        )}
-                        
-                            <div className={styles.contributorsSection}>
-                                <h3>CONTRIBUTORS</h3>
-                                <ContributorView
-                                pageType="poem"
-                                identifier={`${chapter}-${number}`}
-                                />
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Discussion Panel */}
-                    <div className={styles.analysisPanel}>
-                        <div className={styles.panelHeader} onClick={() => togglePanel('discussion')}>
-                            <h2>DISCUSSION</h2>
-                            <div className={`${styles.toggleArrow} ${expandedPanels.discussion ? styles.arrowExpanded : styles.arrowCollapsed}`}>
-                                ▼
+                            {/* More Details Panel */}
+                            <div className={styles.analysisPanel}>
+                                <div className={styles.panelHeader} onClick={() => togglePanel('details')}>
+                                    <h2>MORE DETAILS</h2>
+                                    <div className={`${styles.toggleArrow} ${expandedPanels.details ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                        ▼
+                                    </div>
+                                </div>
+                                <div className={`${styles.panelContent} ${expandedPanels.details ? styles.expanded : styles.collapsed}`}>
+                                {poemState.paperMediumType && (
+                                    <div className={styles.detailItem}>
+                                        <h3>PAPER/MEDIUM</h3>
+                                        {poemState.paperMediumType && <FormatContent content={poemState.paperMediumType} />}
+                                    </div>
+                                )}
+                                
+                                {poemState.deliveryStyle && (
+                                    <div className={styles.detailItem}>
+                                        <h3>DELIVERY STYLE</h3>
+                                        {poemState.deliveryStyle && <FormatContent content={poemState.deliveryStyle} />}
+                                    </div>
+                                )}
+
+                                {poemState.source && poemState.source.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>ALLUSIONS</h3>
+                                        {poemState.source.map((source, idx) => (
+                                            <div key={idx} className={styles.allusionItem}>
+                                                <p><strong>Poet:</strong> {source.poet && <FormatContent content={source.poet} />}</p>
+                                                <p><strong>Source:</strong> {source.source && <FormatContent content={source.source + (source.order ? ` ${source.order}` : '')} />}</p>
+                                                <p><strong>Original:</strong> {source.honka && <FormatContent content={source.honka} />}</p>
+                                                <div className={styles.allusionTranslations}>
+                                                    <p><strong>Translations:</strong></p>
+                                                    {source.translation.map((trans, tIdx) => (
+                                                        <div key={tIdx} className={styles.translationItem}>
+                                                            <p className={styles.source_translatorName}>{trans[0] + ': '}</p>
+                                                            <p className={styles.translationText}>{trans[1]}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                    ))}
+                                    </div>
+                                )}
+                                
+
+                                {poemState.season && (
+                                    <div className={styles.detailItem}>
+                                        <h3>SEASON IN NARRATIVE</h3>
+                                        <div className={styles.withEvidence}>
+                                            <FormatContent content={poemState.season} />
+                                            {poemState.season_evidence && (
+                                                <div className={styles.evidenceContainer}>
+                                                    <FontAwesomeIcon 
+                                                        icon={faInfoCircle} 
+                                                        className={styles.infoIcon}
+                                                    />
+                                                    <div className={styles.evidenceTooltip}>
+                                                        <FormatContent content={poemState.season_evidence} />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {poemState.kigo && poemState.kigo.jp && (
+                                    <div className={styles.detailItem}>
+                                        <h3>SEASONAL WORD</h3>
+                                        <FormatContent content={`${poemState.kigo.jp}`} />
+                                        <FormatContent content={`${poemState.kigo.en}`} />
+                                    </div>
+                                )}
+                                
+                                {poemState.pt && poemState.pt.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>POETIC TECHNIQUES EMPLOYED</h3>
+                                        {poemState.pt.map((item, idx) => (
+                                            <FormatContent key={idx} content={item[0]} />
+                                        ))}
+                                    </div>
+                                )}
+
+                                {poemState.pw && poemState.pw.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>POETIC WORD</h3>
+                                        {poemState.pw.map((word, index) => (
+                                            <div key={index} className={styles.poeticWordItem}>
+                                                <FormatContent content={`${word.kanji_hiragana} - ${word.name}`} />
+                                                {word.english_equiv && (
+                                                    <div className={styles.poeticWordDetails}>
+                                                        <FormatContent content={word.english_equiv} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {poemState.placeOfComp && (
+                                    <div className={styles.detailItem}>
+                                        <h3>COMPOSED AT</h3>
+                                        <div className={styles.withEvidence}>
+                                            <FormatContent content={poemState.placeOfComp} />
+                                            {poemState.placeOfComp_evidence && (
+                                                <div className={styles.evidenceContainer}>
+                                                    <FontAwesomeIcon 
+                                                        icon={faInfoCircle} 
+                                                        className={styles.infoIcon}
+                                                    />
+                                                    <div className={styles.evidenceTooltip}>
+                                                        <FormatContent content={poemState.placeOfComp_evidence} />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {poemState.placeOfReceipt && (
+                                    <div className={styles.detailItem}>
+                                        <h3>RECEIVED AT</h3>
+                                        <div className={styles.withEvidence}>
+                                            <FormatContent content={poemState.placeOfReceipt} />
+                                            {poemState.placeOfReceipt_evidence && (
+                                                <div className={styles.evidenceContainer}>
+                                                    <FontAwesomeIcon 
+                                                        icon={faInfoCircle} 
+                                                        className={styles.infoIcon}
+                                                    />
+                                                    <div className={styles.evidenceTooltip}>
+                                                        <FormatContent content={poemState.placeOfReceipt_evidence} />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            
+                                {poemState.tag 
+                                    && (
+                                           poemState.tag.some(item => item[0] === 'Character Name Poem' && item[1])
+                                        || poemState.tag.some(item => item[0] === 'Chapter Title Poem' && item[1])
+                                        || poemState.tag.some(item => item[0] === 'Morning After Poem' && item[1])
+                                        || poemState.tag.some(item => item[0] === 'Proxy Poem' && item[1])
+                                    )
+                                    && (
+                                        <div className={styles.detailItem}>
+                                            <h3>TAGS</h3>
+                                            {poemState.tag.map((tag, idx) => {
+                                                if (tag[0] === 'Chapter Title Poem' && tag[1]) {
+                                                    return <p key={idx}>Chapter Title Poem</p>;
+                                                }
+                                                if (tag[0] === 'Character Name Poem' && tag[1]) {
+                                                    return <p key={idx}>Character Name Poem</p>;
+                                                }
+                                                if (tag[0] === 'Morning After Poem' && tag[1]) {
+                                                    return <p key={idx}>Morning After Poem</p>;
+                                                }
+                                                if (tag[0] === 'Proxy Poem' && tag[1]) {
+                                                    return <p key={idx}>Proxy Poem</p>;
+                                                }
+                                                return null;
+                                            }).filter(Boolean)}
+                                        </div>
+                                )}
+
+                                {/* {poemState.tag && poemState.tag.some(item => item[0] === 'Character Name Poem' && item[1]) && (
+                                    <div className={styles.detailItem}>
+                                        <h3>REPRESENTATIVE CHARACTER</h3>
+                                        <FormatContent content={poemState.repCharacter} />
+                                    </div>
+                                )} */}
+                                
+                                {poemState.replyPoems && poemState.replyPoems.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>REPLY POEMS</h3>
+                                        <div className={styles.relatedPoemsContainer}>
+                                            {poemState.replyPoems.map((reply, idx) => (
+                                                <a 
+                                                    key={idx}
+                                                    href={`/poems/${parseInt(reply[0].substring(0, 2), 10)}/${parseInt(reply[0].substring(4, 6), 10)}`}
+                                                    className={styles.relatedPoemLink}
+                                                >
+                                                    {reply}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {poemState.rel && poemState.rel.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>INTERNAL ALLUSION POEMS</h3>
+                                            <div className={styles.relatedPoemsContainer}>
+                                                {poemState.rel.map((rel, idx) => (
+                                                <a 
+                                                    key={idx}
+                                                    href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
+                                                    className={styles.relatedPoemLink}
+                                                >
+                                                    {rel[0]}
+                                                </a>
+                                                ))}
+                                            </div>
+                                    </div>
+                                )}
+
+                                {poemState.groupPoems && poemState.groupPoems.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>GROUP POEMS</h3>
+                                        <div className={styles.relatedPoemsContainer}>
+                                            {poemState.groupPoems.map((group, idx) => (
+                                                <a 
+                                                    key={idx}
+                                                    href={`/poems/${parseInt(group[0].substring(0, 2), 10)}/${parseInt(group[0].substring(4, 6), 10)}`}
+                                                    className={styles.relatedPoemLink}
+                                                >
+                                                    {group}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}                                
+            
+                                    <div className={styles.contributorsSection}>
+                                        <h3>CONTRIBUTORS</h3>
+                                        <ContributorView
+                                        pageType="poem"
+                                        identifier={`${chapter}-${number}`}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Discussion Panel */}
+                            <div className={styles.analysisPanel}>
+                                <div className={styles.panelHeader} onClick={() => togglePanel('discussion')}>
+                                    <h2>DISCUSSION</h2>
+                                    <div className={`${styles.toggleArrow} ${expandedPanels.discussion ? styles.arrowExpanded : styles.arrowCollapsed}`}>
+                                        ▼
+                                    </div>
+                                </div>
+                                <div className={`${styles.panelContent} ${expandedPanels.discussion ? styles.expanded : styles.collapsed}`}>
+                                <DiscussionArea 
+                                    pageType="poem"
+                                    identifier={`${chapter}-${number}`}
+                                />
+                                </div>
                             </div>
                         </div>
-                        <div className={`${styles.panelContent} ${expandedPanels.discussion ? styles.expanded : styles.collapsed}`}>
-                        <DiscussionArea 
-                            pageType="poem"
-                            identifier={`${chapter}-${number}`}
-                        />
-                        </div>
-                    </div>
-                </div>
 
                     {/* Right Side - Translations */}
                     <div className={styles.translationsRight}>

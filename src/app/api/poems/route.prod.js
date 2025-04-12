@@ -14,7 +14,7 @@ async function getData (chapter, number){
 		resPnum : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH (CASE WHEN "' + number + '" < 10 THEN \'0\' + toString("' + number + '") ELSE toString($number) END) RETURN g.pnum as pnum',
 		resTag : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:TAGGED_AS]->(t:Tag) where g.pnum ends with "' + number + '" return t.Type as type',
 		resType : 'match (t:Tag) return t.Type as type',
-		resSeason : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:IN_SEASON_OF]->(s:Season) WHERE g.pnum ends with "' + number + '" RETURN s.name as season',
+		resSeason : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[r:IN_SEASON_OF]->(s:Season) WHERE g.pnum ends with "' + number + '" RETURN s.name as season, r.evidence as season_evidence',
 		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en',
 		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:EMPLOYS_POETIC_TECHNIQUE]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name',
 		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
@@ -22,8 +22,10 @@ async function getData (chapter, number){
 		resMessenger: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:MESSENGER_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
 		resGenjiAge: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:AT_GENJI_AGE_OF]->(age:Genji_Age) WHERE g.pnum ends with "' + number + '" RETURN age.age as genji_age',
 		resRepCharacter: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[tag_edge:TAGGED_AS]->(t:Tag {Type: "Character Name Poem"}) where g.pnum ends with "' + number + '" return tag_edge.character_name as repCharacter',
-		resPlaceOfComp: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:PLACE_OF_COMPOSITION]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfComp',
-		resPlaceOfReceipt: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:PLACE_OF_RECEIPT]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfReceipt'
+		resPlaceOfComp: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:PLACE_OF_COMPOSITION]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfComp, r.evidence as placeOfComp_evidence',
+		resPlaceOfReceipt: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:PLACE_OF_RECEIPT]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfReceipt, r.evidence as placeOfReceipt_evidence',
+		resGroup: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:IN_GROUP_OF]->(group:Group) where g.pnum ends with "' + number + '" match (otherPoems:Genji_Poem)-[:IN_GROUP_OF]->(group) where otherPoems.pnum <> g.pnum return otherPoems.pnum as groupMembers',
+		resReplyPoem: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:REPLY_TO]->(reply:Genji_Poem) where g.pnum ends with "' + number + '" return reply.pnum as replyPoem'
 	};
 
 	const result = {};
@@ -82,6 +84,7 @@ async function getData (chapter, number){
 
 		// season
 		let season = result['resSeason'].records[0]?.get('season') || null;
+		let season_evidence = result['resSeason'].records[0]?.get('season_evidence') || null;
 
 		// seasonal word
 		const kigo = {
@@ -94,12 +97,12 @@ async function getData (chapter, number){
 		tech = tech.map(technique => [technique, true]);
 
 		// poetic word
-		const poetic_word = {
-			name: result['resPoeticWord'].records[0]?.get('pw_name') || null,
-			kanji_hiragana: result['resPoeticWord'].records[0]?.get('kanji_hiragana') || null,
-			english_equiv: result['resPoeticWord'].records[0]?.get('english_equiv') || null,
-			gloss: result['resPoeticWord'].records[0]?.get('gloss') || null
-		}
+		const poetic_word = result['resPoeticWord'].records.map(record => ({
+			name: record.get('pw_name') || null,
+			kanji_hiragana: record.get('kanji_hiragana') || null,
+			english_equiv: record.get('english_equiv') || null,
+			gloss: record.get('gloss') || null
+		}));
 
 		// proxy
 		let proxy = result['resProxy'].records[0]?.get('name') || null;
@@ -116,6 +119,20 @@ async function getData (chapter, number){
 		// place
 		let placeOfComp = result['resPlaceOfComp'].records[0]?.get('placeOfComp') || null;
 		let placeOfReceipt = result['resPlaceOfReceipt'].records[0]?.get('placeOfReceipt') || null;
+		let placeOfComp_evidence = result['resPlaceOfComp'].records[0]?.get('placeOfComp_evidence') || null;
+		let placeOfReceipt_evidence = result['resPlaceOfReceipt'].records[0]?.get('placeOfReceipt_evidence') || null;
+
+		// group poems
+		let groupPoems = new Set()
+		result['resGroup'].records.map(e => {return toNativeTypes(e.get('groupMembers'))}).forEach(e => {groupPoems.add([Object.values(e).join('')])})
+		groupPoems = Array.from(groupPoems).flat()
+		groupPoems = groupPoems.map(e => [e, true])
+
+		// reply poem
+		let replyPoems = new Set()
+		result['resReplyPoem'].records.map(e => {return toNativeTypes(e.get('replyPoem'))}).forEach(e => {replyPoems.add([Object.values(e).join('')])})
+		replyPoems = Array.from(replyPoems).flat()
+		replyPoems = replyPoems.map(e => [e, true])
 
 		const data = [
 						exchange, 
@@ -141,7 +158,12 @@ async function getData (chapter, number){
 						placeOfComp,
 						placeOfReceipt,
 						spoken,
-						written
+						written,
+						season_evidence,
+						placeOfComp_evidence,
+						placeOfReceipt_evidence,
+						groupPoems,
+						replyPoems
 					];
 
 		return (data);
