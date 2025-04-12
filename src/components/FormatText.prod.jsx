@@ -12,46 +12,165 @@ const FormatText = ({ text, className }) => {
             const lineList = [];
             curIndex = 0;
 
-            // pattern for italic, bold, bolditalic
-            const pattern = /(\[.*?\]\(.*?\)|\*\*\*.*?\*\*\*|\*\*.*?\*\*|_.*?_|\*.*?\*)/g;
+            // First capture links with potential formatting inside them
+            const linkPattern = /\[(.*?)\]\((.*?)\)/g;
+            const otherPattern = /(\*\*\*.*?\*\*\*|\*\*.*?\*\*|_.*?_|\*.*?\*)/g;
             
-            let match = pattern.exec(line);
-            while (match !== null) {
-                // plain text part before the first pattern appears
-                if (match.index > curIndex) {
-                    lineList.push({ type: 'plain', text: line.slice(curIndex, match.index) });
-                }
+            let replacedLine = line;
+            const linkMatches = [];
+            
+            // First process all links and store them
+            let linkMatch = linkPattern.exec(line);
+            while (linkMatch !== null) {
+                const fullMatch = linkMatch[0];
+                const linkText = linkMatch[1];
+                const url = linkMatch[2];
                 
-                // middle part
-                const formatText = match[0];
-
-                if (formatText.indexOf('[') === 0 && formatText.includes('](')) {
-                    const linkMatch = formatText.match(/\[(.*?)\]\((.*?)\)/);
-                    if (linkMatch) {
-                        lineList.push({ 
-                            type: 'link', 
-                            text: linkMatch[1],  // url title
-                            url: linkMatch[2]    // url
+                // Store link information
+                linkMatches.push({
+                    fullMatch,
+                    linkText,
+                    url,
+                    startIndex: linkMatch.index,
+                    endIndex: linkMatch.index + fullMatch.length
+                });
+                
+                linkMatch = linkPattern.exec(line);
+            }
+            
+            // Sort links by their position in text
+            linkMatches.sort((a, b) => a.startIndex - b.startIndex);
+            
+            // Process the line with links and other formatting
+            if (linkMatches.length > 0) {
+                let lastIndex = 0;
+                
+                for (const link of linkMatches) {
+                    // Add plain text before the link
+                    if (link.startIndex > lastIndex) {
+                        lineList.push({ type: 'plain', text: line.slice(lastIndex, link.startIndex) });
+                    }
+                    
+                    // Process the link text for formatting
+                    const formattedLinkText = [];
+                    let currentIndex = 0;
+                    
+                    // Check for formatting within link text
+                    let formatMatch = otherPattern.exec(link.linkText);
+                    while (formatMatch !== null) {
+                        // Add plain text before formatted part
+                        if (formatMatch.index > currentIndex) {
+                            formattedLinkText.push({ 
+                                type: 'plain', 
+                                text: link.linkText.slice(currentIndex, formatMatch.index) 
+                            });
+                        }
+                        
+                        const formatText = formatMatch[0];
+                        
+                        if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
+                            formattedLinkText.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
+                        } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
+                            formattedLinkText.push({ type: 'bold', text: formatText.slice(2, -2) });
+                        } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
+                                  (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
+                            formattedLinkText.push({ type: 'italic', text: formatText.slice(1, -1) });
+                        } else {
+                            formattedLinkText.push({ type: 'plain', text: formatText });
+                        }
+                        
+                        currentIndex = formatMatch.index + formatMatch[0].length;
+                        formatMatch = otherPattern.exec(link.linkText);
+                    }
+                    
+                    // Add remaining plain text in link
+                    if (currentIndex < link.linkText.length) {
+                        formattedLinkText.push({ 
+                            type: 'plain', 
+                            text: link.linkText.slice(currentIndex) 
                         });
                     }
-                } else if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
-                    lineList.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
-                } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
-                    lineList.push({ type: 'bold', text: formatText.slice(2, -2) });
-                } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
-                          (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
-                    lineList.push({ type: 'italic', text: formatText.slice(1, -1) });
-                } else {
-                    lineList.push({ type: 'plain', text: formatText });
+                    
+                    // If no formatting found, keep simple link
+                    if (formattedLinkText.length === 0) {
+                        lineList.push({ 
+                            type: 'link', 
+                            text: link.linkText,
+                            url: link.url
+                        });
+                    } else {
+                        // Add link with formatting
+                        lineList.push({ 
+                            type: 'formattedLink', 
+                            content: formattedLinkText.length > 0 ? formattedLinkText : [{ type: 'plain', text: link.linkText }],
+                            url: link.url
+                        });
+                    }
+                    
+                    lastIndex = link.endIndex;
                 }
                 
-                curIndex = match.index + match[0].length;
-                match = pattern.exec(line);
-            }
-
-            // the rest part after the last patterned text
-            if (curIndex < line.length) {
-                lineList.push({ type: 'plain', text: line.slice(curIndex) });
+                // Add remaining text after the last link
+                if (lastIndex < line.length) {
+                    // Process regular formatting in the remaining text
+                    let remainingText = line.slice(lastIndex);
+                    let match = otherPattern.exec(remainingText);
+                    let remainingLastIndex = 0;
+                    
+                    while (match !== null) {
+                        if (match.index > remainingLastIndex) {
+                            lineList.push({ type: 'plain', text: remainingText.slice(remainingLastIndex, match.index) });
+                        }
+                        
+                        const formatText = match[0];
+                        
+                        if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
+                            lineList.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
+                        } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
+                            lineList.push({ type: 'bold', text: formatText.slice(2, -2) });
+                        } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
+                                  (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
+                            lineList.push({ type: 'italic', text: formatText.slice(1, -1) });
+                        } else {
+                            lineList.push({ type: 'plain', text: formatText });
+                        }
+                        
+                        remainingLastIndex = match.index + match[0].length;
+                        match = otherPattern.exec(remainingText);
+                    }
+                    
+                    if (remainingLastIndex < remainingText.length) {
+                        lineList.push({ type: 'plain', text: remainingText.slice(remainingLastIndex) });
+                    }
+                }
+            } else {
+                // If no links, process as before
+                let match = otherPattern.exec(line);
+                while (match !== null) {
+                    if (match.index > curIndex) {
+                        lineList.push({ type: 'plain', text: line.slice(curIndex, match.index) });
+                    }
+                    
+                    const formatText = match[0];
+                    
+                    if (formatText.indexOf('***') === 0 && formatText.lastIndexOf('***') === formatText.length - 3) {
+                        lineList.push({ type: 'bolditalic', text: formatText.slice(3, -3) });
+                    } else if (formatText.indexOf('**') === 0 && formatText.lastIndexOf('**') === formatText.length - 2) {
+                        lineList.push({ type: 'bold', text: formatText.slice(2, -2) });
+                    } else if ((formatText.indexOf('_') === 0 && formatText.lastIndexOf('_') === formatText.length - 1) ||
+                              (formatText.indexOf('*') === 0 && formatText.lastIndexOf('*') === formatText.length - 1)) {
+                        lineList.push({ type: 'italic', text: formatText.slice(1, -1) });
+                    } else {
+                        lineList.push({ type: 'plain', text: formatText });
+                    }
+                    
+                    curIndex = match.index + match[0].length;
+                    match = otherPattern.exec(line);
+                }
+                
+                if (curIndex < line.length) {
+                    lineList.push({ type: 'plain', text: line.slice(curIndex) });
+                }
             }
 
             return {
@@ -91,6 +210,29 @@ const FormatText = ({ text, className }) => {
                                             rel="noopener noreferrer"
                                         >
                                             {item.text}
+                                        </a>
+                                    );
+                                case 'formattedLink':
+                                    return (
+                                        <a 
+                                            key={index} 
+                                            href={item.url}
+                                            className="text-blue-600 hover:text-blue-800 underline"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {item.content.map((formatItem, formatIndex) => {
+                                                switch (formatItem.type) {
+                                                    case 'bold':
+                                                        return <strong key={formatIndex} className="font-bold">{formatItem.text}</strong>;
+                                                    case 'italic':
+                                                        return <em key={formatIndex} className="italic">{formatItem.text}</em>;
+                                                    case 'bolditalic':
+                                                        return <strong key={formatIndex} className="font-bold italic">{formatItem.text}</strong>;
+                                                    default:
+                                                        return <span key={formatIndex}>{formatItem.text}</span>;
+                                                }
+                                            })}
                                         </a>
                                     );
                                 default:

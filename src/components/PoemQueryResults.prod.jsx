@@ -846,7 +846,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <div className={styles.translatorName}>WALEY</div>
+                            <a href="/translators/Waley" className={styles.translatorName}>WALEY</a>
                         </div>
                     </div>
                     
@@ -864,7 +864,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <div className={styles.translatorName}>SEIDENSTICKER</div>
+                            <a href="/translators/Seidensticker" className={styles.translatorName}>SEIDENSTICKER</a>
                         </div>
                     </div>
                     
@@ -882,7 +882,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <div className={styles.translatorName}>TYLER</div>
+                            <a href="/translators/Tyler" className={styles.translatorName}>TYLER</a>
                         </div>
                     </div>
                     
@@ -900,7 +900,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <div className={styles.translatorName}>WASHBURN</div>
+                            <a href="/translators/Washburn" className={styles.translatorName}>WASHBURN</a>
                         </div>
                     </div>
                     
@@ -918,7 +918,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <div className={styles.translatorName}>CRANSTON</div>
+                            <a href="/translators/Cranston" className={styles.translatorName}>CRANSTON</a>
                         </div>
                     </div>
                     
