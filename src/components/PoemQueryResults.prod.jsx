@@ -78,7 +78,7 @@ const PoemDisplay = ({ poemData }) => {
     const chapter_name = chapterNames[chapter];
 
     const [expandedPanels, setExpandedPanels] = useState({
-        summary: true,
+        summary: false,
         context: false,
         commentary: false,
         details: false,
