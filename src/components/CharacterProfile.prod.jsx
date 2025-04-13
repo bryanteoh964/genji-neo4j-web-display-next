@@ -451,17 +451,22 @@ export default function CharacterDetail({ name }) {
                     <div className={`${styles.panelContent} ${isDropdownOpen ? styles.expanded : ''}`}>
                         <div className={styles.scrollableList}>
                             {filteredCharacters.length > 0 ? (
-                                filteredCharacters.map((name, index) => (
+                                filteredCharacters.map((character, index) => {
+                                    const characterName = character.name || character;
+                                    return (
                                     <div key={index} className={styles.characterItem}>
-                                        <button
-                                            className={styles.characterButton}
-                                            onClick={() => handleCharacterSelect(name)}
+                                        <Link 
+                                            href={`/characters/${encodeURIComponent(characterName)}`}
+                                            style={{ textDecoration: 'none' }}
                                         >
-                                            {name}
-                                        </button>
+                                            <button className={styles.characterButton}>
+                                            {characterName}
+                                            </button>
+                                        </Link>
                                     </div>
-                                ))
-                            ) : (
+                                    );
+                                })
+                                ) : (
                                 <div className={styles.noResults}>No Characters Found</div>
                             )}
                         </div>
@@ -488,6 +493,7 @@ export default function CharacterDetail({ name }) {
 
                         {/* Poems Search Results View */}
                         <div className={styles.poemsSection}>
+                            <span className={styles.filterResultsLabel}>IN POEMS</span>
                             {formattedPoems.length > 0 ? (
                                 <div className={styles.searchResults}>
                                     {formattedPoems.map((result, index) => (
@@ -556,6 +562,7 @@ export default function CharacterDetail({ name }) {
                             )}
                         </div>
 
+                        <span className={styles.filterResultsLabel}>RELATIONS</span>
                         <div className={styles.relatedCharacters}>
                             {Object.keys(groupedRelatedCharacters).length > 0 ? (
                                 Object.entries(groupedRelatedCharacters).map(([relationship, characters]) => (

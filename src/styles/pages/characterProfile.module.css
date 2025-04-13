@@ -97,6 +97,24 @@
     max-width: 100%;
 }
 
+.filterResultsLabel {
+    color: var(--1-TEXT-TYPICAL-grey-30, #4B4B4B);
+    font-family: 'Lexend', sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-self: flex-start;
+    align-items: center;
+  }
+
+
 .infoCard {
     width: 40%;
     background-color: #f9f9f9;
@@ -182,13 +200,18 @@
 .relatedCharacters {
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: left;
     background-color: #BFAE93;
     align-items: flex-start;
     padding: 36px 53px;
     border-radius: 10px;
     max-width: 100%;
+}
+
+.noPoemsMessage {
+    margin-top: 0px;
+    margin-bottom: 30px;
 }
 
 .sectionTitle {
@@ -446,6 +469,7 @@
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     text-decoration: none;
+    margin-bottom: 30px;
 }
 
 .resultItem {
