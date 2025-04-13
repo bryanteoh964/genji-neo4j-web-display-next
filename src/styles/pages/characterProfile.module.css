@@ -249,22 +249,6 @@
 .male {
     color: #436875
 }
-/* 
-.relationshipGroup {
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.relationshipTitle {
-    color: var(--character-color);
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--character-color);
-} */
 
 .relatedList {
     display: flex;
