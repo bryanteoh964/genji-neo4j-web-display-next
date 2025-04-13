@@ -2,7 +2,6 @@ import { getSession } from '../neo4j_driver/route.prod.js';
 import { toNativeTypes } from '../neo4j_driver/utils.prod.js';
 
 async function getChapterData(name) {
-  console.log(`Searching for chapter: "${name}"`);
   
   try {
     const session = await getSession();
