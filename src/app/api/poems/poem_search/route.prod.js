@@ -57,24 +57,28 @@ async function generalSearch(q) {
             OPTIONAL MATCH (p)<-[:SPEAKER_OF]-(speaker:Character)
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
+            OPTIONAL MATCH (p)-[:AT_GENJI_AGE_OF]->(ga:Genji_Age)
             WITH p, 
                 collect(DISTINCT {translator_name: COALESCE(translator.name, ""), text: t.translation}) AS translations,
                 collect(DISTINCT addressee.name) AS addressee_names,
                 collect(DISTINCT addressee.gender) AS addressee_genders,
                 speaker,
                 season,
-                pt
+                pt,
+                ga
             RETURN DISTINCT
                 p.Japanese AS Japanese,
                 p.pnum AS pnum,
                 p.Romaji AS Romaji,
+                COALESCE(p.paraphrase, "") AS paraphrase,
                 COALESCE(apoc.text.join(addressee_names, " & "), "") AS addressee_name,
                 COALESCE(apoc.text.join(addressee_genders, " & "), "") AS addressee_gender,
                 COALESCE(speaker.name, "") AS speaker_name,
                 COALESCE(speaker.gender, "") AS speaker_gender,
-                COALESCE(speaker.color, "") AS speaker_color,  // Added color property
+                COALESCE(speaker.color, "") AS speaker_color,
                 COALESCE(season.name, "") AS season,
                 COALESCE(pt.name, "") AS poetic_tech,
+                COALESCE(ga.age, "") AS genji_age,
                 COALESCE([x IN translations WHERE x.translator_name = "Waley"][0].text, "") AS Waley_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Seidensticker"][0].text, "") AS Seidensticker_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
@@ -101,6 +105,8 @@ async function generalSearch(q) {
                 chapterAbr: toNativeTypes(record.get('pnum').substring(2, 4)),
                 japanese: toNativeTypes(record.get('Japanese')),
                 romaji: toNativeTypes(record.get('Romaji')),
+                paraphrase: toNativeTypes(record.get('paraphrase')),
+                genji_age: toNativeTypes(record.get('genji_age')),
                 addressee_name: toNativeTypes(record.get('addressee_name')),
                 addressee_gender: toNativeTypes(record.get('addressee_gender')),
                 speaker_name: toNativeTypes(record.get('speaker_name')),
