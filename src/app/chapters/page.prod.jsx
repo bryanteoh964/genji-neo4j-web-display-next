@@ -1,14 +1,9 @@
-import "../../styles/globals.css";
+'use client';
+import { useParams } from 'next/navigation';
+import ChaptersListPage from '../../components/ChapterBaseProfile.prod'; // You'll need to create this
 
-const page = () => {
-  return (
-    <section className="section_frame">
-      <div className="section_container">
-	 	<h1 className="main-title">Chapter page</h1>
+export default function ChapterPage() {
+  const { name } = useParams();
 
-      </div>
-    </section>
-  );
-};
-
-export default page;
+  return <ChaptersListPage name={decodeURIComponent(name)} />;
+}

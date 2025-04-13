@@ -539,22 +539,50 @@ const PoemSearch = () => {
     acc[age] = 0;
     return acc;
   }, {});
+  
+  // Fill in your actual values
+  const hardcodedCounts = {
+    3: 7, 12: 2, 17: 35, 18: 42, 19: 16, 20: 8, 22: 22, 23: 15, 24: 16, 25: 8,
+    26: 41, 27: 22, 28: 17, 29: 24, 31: 29, 32: 19, 33: 10, 34: 4, 35: 14,
+    36: 42, 37: 22, 38: 12, 39: 33, 40: 14, 41: 9, 46: 6, 47: 11, 48: 11,
+    49: 8, 50: 32, 51: 12, 52: 26, 61: 1, 62: 22, 63: 2, 67: 6, 70: 17,
+    71: 48, 72: 32, 73: 16, 74: 55, 75: 7
+  };
+  
+  // Merge actual counts into full 1–75 range
+  Object.keys(hardcodedCounts).forEach((age) => {
+    defaultAgeCounts[age] = hardcodedCounts[age];
+  });  
+  
 
   const ageData = useMemo(() => {
     const originalCounts = { ...defaultAgeCounts };
   
-    results.forEach((poem) => {
-      const age = poem.genji_age?.toString();
-      if (age) originalCounts[age] = (originalCounts[age] || 0) + 1;
-    });
+    // Create filtered counts
+    const filteredCounts = Object.keys(defaultAgeCounts).reduce((acc, age) => {
+      acc[age] = 0;
+      return acc;
+    }, {});
   
-    const filteredCounts = { ...defaultAgeCounts };
     filteredResults.forEach((poem) => {
       const age = poem.genji_age?.toString();
-      if (age) filteredCounts[age] = (filteredCounts[age] || 0) + 1;
+      if (filteredCounts.hasOwnProperty(age)) {
+        filteredCounts[age] += 1;
+      }
     });
   
-    const labels = Object.keys(originalCounts);
+    const labels = Object.keys(defaultAgeCounts);
+  
+    const getBackgroundColor = (age) => {
+      const originalCount = originalCounts[age] || 0;
+      const filteredCount = filteredCounts[age] || 0;
+  
+      if (originalCount !== filteredCount && originalCount !== 0 && filteredCount !== 0) {
+        return 'rgba(255, 255, 255, 0.5)';
+      } else {
+        return 'rgba(0, 0, 0, 0.7)';
+      }
+    };
   
     return {
       labels,
@@ -562,8 +590,8 @@ const PoemSearch = () => {
         {
           label: 'Original Poems per Age',
           data: labels.map((label) => originalCounts[label] || 0),
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          barPercentage: 0.4, // Skinnier bars
+          backgroundColor: labels.map(getBackgroundColor), // Apply dynamic color
+          barPercentage: 0.4,
           categoryPercentage: 1,
           order: 2,
         },
@@ -577,7 +605,7 @@ const PoemSearch = () => {
         },
       ],
     };
-  }, [results, filteredResults]);
+  }, [results, filteredResults]);  
   
   // Chart options (to show x-axis and custom styling)
   const chartOptionsAge = {
@@ -632,13 +660,12 @@ const PoemSearch = () => {
       tooltip: {
         callbacks: {
           label: function (context) {
-            const chapterNum = context.label;
-            const chapterName = getChapterName(chapterNum);
+            const ageNum = context.label;
             const poemsCount = context.raw;
             
             // For black bars (original poems)
             if (context.datasetIndex === 0) {
-              return `Out of ${poemsCount} poems in ${chapterName}`;
+              return `Out of ${poemsCount} poems at age ${ageNum}`;
             }
             // For white bars (filtered poems)
             else {
@@ -1019,14 +1046,21 @@ const PoemSearch = () => {
     );
   };
 
+  
   const [hoveredItem, setHoveredItem] = useState(null);
-  const handleMouseEnter = (index) => {
-    setHoveredItem(index); // Just store the hovered index
-  };
+  const hoverTimeoutRef = useRef(null);
 
-  // Function to handle mouse leave event, keep popup open
+  const handleMouseEnter = (index) => {
+    // Clear any pending timeout to prevent flicker
+    clearTimeout(hoverTimeoutRef.current);
+    setHoveredItem(index);
+  };
+  
   const handleMouseLeave = () => {
-    setHoveredItem(null);
+    // Delay hiding to allow moving between tiles
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredItem(null);
+    }, 100); // Adjust delay as needed
   };
 
   const renderResults = () => (
