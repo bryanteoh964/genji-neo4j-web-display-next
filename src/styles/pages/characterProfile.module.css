@@ -7,15 +7,15 @@
     margin: 0 auto;
     padding: 20px 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-	sans-serif;
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
     color: var(--character-color);
 }
 
 .heroSection {
     position: relative;
     width: 100%;
-    height: 501px; 
+    height: 501px;
     overflow: hidden;
 }
 
@@ -29,17 +29,17 @@
 
 .titleOverlay {
     position: absolute;
-    top: 50%; 
-    left: 50%; 
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
     font-weight: bold;
     z-index: 2;
-    display: flex; 
+    display: flex;
     flex-direction: column;
     gap: 1em;
-    width: 75%; 
+    width: 75%;
     max-height: 100%;
     overflow: hidden;
     font-family: 'Lexend', sans-serif;
@@ -71,7 +71,8 @@
     border-bottom: 2px solid var(--character-color);
     padding-bottom: 10px;
     display: flex;
-    flex-direction: column; /*stack two titles*/
+    flex-direction: column;
+    /*stack two titles*/
     align-items: center;
 }
 
@@ -137,6 +138,7 @@
     width: 100%;
     text-align: left;
 }
+
 .descriptionText {
     line-height: 130%;
     font-weight: 400;
@@ -145,8 +147,8 @@
 
 .descriptionText,
 .descriptionText * {
-  color: #4B4B4B !important;
-  font-size: 16px;
+    color: #4B4B4B !important;
+    font-size: 16px;
 }
 
 
@@ -183,7 +185,7 @@
     margin-top: 30px;
     text-align: left;
     background-color: #BFAE93;
-    align-items: flex-start; 
+    align-items: flex-start;
     padding: 36px 53px;
     border-radius: 10px;
     max-width: 100%;
@@ -227,7 +229,8 @@
 .characterItem {
     width: 100%;
     text-align: left;
-    line-height: 130%; /* 31.2px */
+    line-height: 130%;
+    /* 31.2px */
 }
 
 .characterLink {
@@ -258,7 +261,7 @@
     padding: 0;
 }
 
-.poemList{
+.poemList {
     list-style-type: none;
     padding: 0;
 }
@@ -301,17 +304,20 @@
     transition: background-color 0.3s ease;
 }
 
-.relatedLink:hover, .poemLink:hover {
+.relatedLink:hover,
+.poemLink:hover {
     background-color: #f0f0f0;
 }
 
-.relatedName, .poemChapter {
+.relatedName,
+.poemChapter {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.relatedRelationship, .poemRelationship {
+.relatedRelationship,
+.poemRelationship {
     font-style: italic;
 }
 
@@ -351,7 +357,8 @@
     transform: rotate(180deg);
 }
 
-.error, .loading {
+.error,
+.loading {
     text-align: center;
     font-size: 1.2em;
     margin-top: 50px;
@@ -416,7 +423,7 @@
     border-radius: 5px;
     text-decoration: none;
     font-size: 14px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -455,6 +462,7 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
+
 .resulthoverContent {
     padding: 0px;
     margin: 0px;
@@ -496,7 +504,7 @@
     margin: 0px;
     line-height: 15.75px;
     letter-spacing: 0.32px;
-    min-height: 47px; 
+    min-height: 47px;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -528,8 +536,8 @@
 }
 
 .resultSubTitle {
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     font-size: 14px;
     background-color: #BFAE93;
@@ -603,9 +611,9 @@
 }
 
 .analysisPanel {
-margin-bottom: 15px;
-position: relative;
-width: 350px;
+    margin-bottom: 15px;
+    position: relative;
+    width: 350px;
 }
 
 .panelHeader {
@@ -626,80 +634,80 @@ width: 350px;
 
 
 .panelHeaderSearch {
-font-size: 16px;
-font-weight: 600;
-color: black;
-text-transform: uppercase;
-margin: 0;
-font-family: 'Lexend', sans-serif;
-line-height: 10px;
-letter-spacing: 0.05rem;
-vertical-align: bottom;
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+    text-transform: uppercase;
+    margin: 0;
+    font-family: 'Lexend', sans-serif;
+    line-height: 10px;
+    letter-spacing: 0.05rem;
+    vertical-align: bottom;
 }
 
 .toggleArrow {
-color: #9A9898;
-font-size: 0.8rem;
-transition: transform 0.2s ease-out;
-/* make larger */
-font-size: 1.2rem;
-font-weight: bold;
+    color: #9A9898;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease-out;
+    /* make larger */
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .arrowExpanded {
-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .arrowCollapsed {
-transform: rotate(0);
+    transform: rotate(0);
 }
 
 .panelContent {
-overflow: hidden;
-visibility: visible;
-opacity: 1;
-height: auto;
-max-height: 0;
-transition: all 0.25s ease-out;
-width: 100%;
-margin-top: 10px;
+    overflow: hidden;
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    max-height: 0;
+    transition: all 0.25s ease-out;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .scrollableList {
-max-height: 500px;
-overflow-y: auto;
-overflow-x: hidden;
-transition: max-height 0.25s ease-out;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: max-height 0.25s ease-out;
 }
 
 .expanded {
-max-height: 500px;
-overflow-y: hidden;
-padding: 10px 0 20px 0;
-visibility: visible;
-opacity: 1;
-transition: max-height 0.35s ease-in, opacity 0.25s ease-in, padding 0.2s ease-in;
-}  
+    max-height: 500px;
+    overflow-y: hidden;
+    padding: 10px 0 20px 0;
+    visibility: visible;
+    opacity: 1;
+    transition: max-height 0.35s ease-in, opacity 0.25s ease-in, padding 0.2s ease-in;
+}
 
 .characterButton {
-background: none;
-border: none;
-color: white;
-text-align: left;
-width: 95%;
-padding: 5px;
-font-size: 14px;
-font-family: 'Lexend', 'Noto Sans', sans-serif;
-font-weight: 400;
-font-size: 16px;
-line-height: 130%;
-margin-bottom: 1em;
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    width: 95%;
+    padding: 5px;
+    font-size: 14px;
+    font-family: 'Lexend', 'Noto Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    margin-bottom: 1em;
 }
 
 .characterButton:hover {
-background-color: #f0f0f0;
-color: black;
-cursor: pointer;
+    background-color: #f0f0f0;
+    color: black;
+    cursor: pointer;
 }
 
 .noResults {
@@ -708,7 +716,7 @@ cursor: pointer;
     color: white;
     font-family: 'Lexend', sans-serif;
 }
-  
+
 @media (max-width: 1024px) {
     .container {
         padding: 15px 30px;
@@ -736,7 +744,8 @@ cursor: pointer;
         flex-direction: column;
     }
 
-    .infoCard, .aboutSection {
+    .infoCard,
+    .aboutSection {
         width: 100%;
     }
 
@@ -744,7 +753,8 @@ cursor: pointer;
 
 @media (max-width: 768px) {
     .container {
-        padding: 10px 25px;;
+        padding: 10px 25px;
+        ;
     }
 
     .title {
@@ -768,7 +778,9 @@ cursor: pointer;
         font-size: 1.5em;
     }
 
-    .section, .relationshipGroup, .poemItem {
+    .section,
+    .relationshipGroup,
+    .poemItem {
         padding: 15px;
     }
 }
@@ -782,7 +794,8 @@ cursor: pointer;
         font-size: 1.8em;
     }
 
-    .characterInfo p, .descriptionContent {
+    .characterInfo p,
+    .descriptionContent {
         font-size: 13px;
     }
 
@@ -794,11 +807,14 @@ cursor: pointer;
         font-size: 1.2em;
     }
 
-    .relationshipTitle, .poemChapter {
+    .relationshipTitle,
+    .poemChapter {
         font-size: 1em;
     }
 
-    .section, .relationshipGroup, .poemItem {
+    .section,
+    .relationshipGroup,
+    .poemItem {
         padding: 10px;
     }
 }

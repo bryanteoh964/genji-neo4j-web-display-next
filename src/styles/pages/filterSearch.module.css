@@ -26,7 +26,7 @@
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   font-weight: 600;
   color: black;
@@ -41,7 +41,7 @@
 .searchInput:focus {
   outline: none;
   border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
 
 /* main area */
@@ -107,7 +107,8 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  line-height: 10px; /* 62.5% */
+  line-height: 10px;
+  /* 62.5% */
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: #9A9898;
@@ -121,6 +122,7 @@
   font-size: 14px;
   font-weight: 400;
 }
+
 .expanded {
   max-height: 200px;
   overflow-y: auto;
@@ -186,7 +188,8 @@
 .filterLabel {
   font-size: 14px;
   font-weight: 500;
-  color: #c0c0c0;;
+  color: #c0c0c0;
+  ;
 }
 
 .arrow {
@@ -212,18 +215,22 @@
   height: 445px;
   padding-top: 10px;
   width: 1100px;
-  overflow-y: scroll; /* Enable scroll */
+  overflow-y: scroll;
+  /* Enable scroll */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
   /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
 }
 
 .resultsArea::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 .toggleButton {
@@ -299,7 +306,8 @@
   letter-spacing: 0.6px;
   cursor: pointer;
   opacity: 0.85;
-  transition: opacity 0.2s ease, color 0.3s ease; /* added color transition */
+  transition: opacity 0.2s ease, color 0.3s ease;
+  /* added color transition */
 }
 
 .clearFiltersButton:hover {
@@ -343,7 +351,8 @@
 
 .searchResults {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Ensure 4 cards in a row */
+  grid-template-columns: repeat(6, 1fr);
+  /* Ensure 4 cards in a row */
   gap: 10px;
 }
 
@@ -361,6 +370,7 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
+
 .resulthoverContent {
   padding: 0px;
   margin: 0px;
@@ -529,7 +539,7 @@
   text-align: center;
   background: #BFAE93;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   width: 90%;
 }
@@ -546,7 +556,7 @@
   background-color: white;
   padding: 12px 16px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 }
 
@@ -574,9 +584,12 @@
   height: 500px;
   transform: translate(-50%, -50%);
   background-image: url('/images/searchpage_background6.png');
-  background-size: cover; /* This ensures the image covers the entire element */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-size: cover;
+  /* This ensures the image covers the entire element */
+  background-position: center;
+  /* Centers the image */
+  background-repeat: no-repeat;
+  /* Prevents the image from repeating */
   z-index: 1000;
   width: 1440px;
   pointer-events: none;
@@ -612,7 +625,7 @@
 .hoverresultTitle {
   color: white;
   font-size: 16px;
-  margin : 0px;
+  margin: 0px;
   padding: 0px;
   text-align: left;
   font-weight: 700;
@@ -648,7 +661,8 @@
   line-height: 1.2;
   font-style: normal;
   font-weight: 500;
-  line-height: 111%; /* 15.54px */
+  line-height: 111%;
+  /* 15.54px */
   letter-spacing: 1.26px;
   margin-top: 3px;
 }
@@ -679,7 +693,7 @@
   justify-content: center;
 }
 
-.hoverBottom > * {
+.hoverBottom>* {
   flex: 1 1 calc(50% - 10px);
   box-sizing: border-box;
   margin: 0;
@@ -757,7 +771,7 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .searchFilterInput {
@@ -765,8 +779,8 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; 
-  margin-bottom: 10px; 
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .summaryTranslation {
@@ -917,7 +931,7 @@
 }
 
 .summaryLine {
-  margin: 0px 180px 0px 15px; 
+  margin: 0px 180px 0px 15px;
   line-height: 1.5;
   color: white;
   font-family: 'Lexend', sans-serif;
@@ -947,7 +961,7 @@
 }
 
 .translationLine {
-  margin: 0px 180px 0px 15px; 
+  margin: 0px 180px 0px 15px;
   line-height: 1.5;
   color: #4B4B4B;
   font-family: 'Lexend', sans-serif;
