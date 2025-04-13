@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import Link from 'next/link';
 import styles from '../styles/Navigation.module.css';
-import CharactersDropDown from './CharactersDropDown.prod';
 import MoreDropDown from './MoreDropDown.prod';
 import { SignIn } from './auth/signin-button.prod';
 import NotificationIcon from './NotificationIcon.prod';
@@ -53,14 +52,9 @@ const Navigation = () => {
                         <Link href="/search/search-by-keyword">poem search</Link>
                         
                         {/* Characters Dropdown */}
-                        {isLoading ? (
-                            <div className={styles.dropdownWrapper}>
-                                <span className={styles.loadingLink}>characters</span>
-                            </div>
-                        ) : (
-                            <CharactersDropDown l={graph} />
-                        )}
+                        <Link href="/characters">characters</Link>
                         
+                        {/* Chapters Dropdown */}
                         <Link href="/chapters">chapters</Link>
 
                         {/* More Dropdown */}
