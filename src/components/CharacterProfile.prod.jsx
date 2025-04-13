@@ -1,11 +1,9 @@
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../styles/pages/characterProfile.module.css';
-import { BackTop } from 'antd';
-import ContributorView from './ContributorView.prod';
 import FormatContent from './FormatText.prod';
-import DiscussionArea from './DiscussionArea.prod';
-import ZoomableGanttChart from './ZoomableGanttChart'; 
+import ZoomableGanttChart from './ZoomableGanttChart.jsx';
 
 // Format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -58,14 +56,14 @@ export default function CharacterDetail({ name }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
     const [searchTerm, setSearchTerm] = useState(''); // State for search term
     const searchInputRef = useRef(null);
-    const [timeline, setTimeline] = useState([]) 
+    const [timeline, setTimeline] = useState([]);
     
     // Mak: This Character's Timeline 
-    const gantt = useRef([])  
-    const [isLoading, setIsLoading] = useState(true)
+    const gantt = useRef([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() =>{
-        const _ = async() =>{
+    useEffect(() => {
+        const fetchTimeline = async() => {
             try {
                 const data = await fetch(`/api/single_character_timeline?name=${name}`);
                 const timelineData = await data.json();
@@ -73,9 +71,9 @@ export default function CharacterDetail({ name }) {
             } catch (error) {
                 // No timeline info found for this character! 
             }
-        }
-        _()
-    },[]); 
+        };
+        fetchTimeline();
+    }, [name]);
 
     // Handle mouse events for poem hover effects
     const handleMouseEnter = (index, event) => {
@@ -117,15 +115,18 @@ export default function CharacterDetail({ name }) {
                     if (!response.ok) {
                         if (response.status === 404) {
                             setCharacterExists(false);
+                            console.error('Character not found: ', selectedCharacter);
+                            console.error('Response status: ', response.status);
+                            console.error('Response status text: ', response.statusText);
                         } else {
                             throw new Error('Failed to fetch character data');
                         }
                     } else {
-                        setCharacterExists(true);
                         return response.json();
                     }
                 })
                 .then(data => {
+                    console.log(selectedCharacter);
                     setCharacterData(data);
                 })
                 .catch(error => setError(error.message))
@@ -140,11 +141,6 @@ export default function CharacterDetail({ name }) {
         if (!isDropdownOpen) {
             setIsDropdownOpen(true);
         }
-    };
-
-    // Handle search input focus
-    const handleSearchFocus = () => {
-        setIsDropdownOpen(true);
     };
     
     // Function to handle character selection from the dropdown
@@ -419,7 +415,7 @@ export default function CharacterDetail({ name }) {
             <div className={styles.heroSection}>
                 <img
                     className={styles.fullBackgroundImage}
-                    src="/images/character_banner2.png"
+                    src="/images/character_banner3.png"
                     alt="Character background"
                 />
                 <div className={styles.titleOverlay}>

@@ -54,7 +54,7 @@ const MoreOptions = ({ setIsOpen }) => {
                 map
             </Link>
 
-            <Link href="/characters" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            <Link href="/characters/relationships" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 relationships
             </Link>
 
