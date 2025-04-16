@@ -58,12 +58,16 @@ const MoreOptions = ({ setIsOpen }) => {
                 team members
             </Link>
 
-            <Link href="/blog/Collaborate" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            <Link href="/collaborate" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 collaborate
             </Link>
 
             <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 sources & resources
+            </Link>
+
+            <Link href="/translators" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                translators
             </Link>
 
             <Link href="/characters/relationships" className={styles.moreLink} onClick={() => setIsOpen(false)}>
@@ -78,8 +82,10 @@ const MoreOptions = ({ setIsOpen }) => {
                 timeline
             </Link>
 
-            <Link href="/bug" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                report a bug
+            <Link href="https://docs.google.com/forms/d/e/1FAIpQLScY8ZrN5JlW-GJoeOWuJ9l4LPOwSViTMQBfEAJc4Z1O3ahK2w/viewform?usp=header" 
+                  target="_blank"
+                  className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                report an error
             </Link>
         </div>
     );

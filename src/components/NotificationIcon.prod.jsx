@@ -504,6 +504,8 @@ export default function NotificationIcon() {
       return `/poems/${chapter}/${poem}`;
     } else if (pageType === 'character') {
       return `/characters/${identifier}`;
+    } else if (pageType === 'blog') {
+      return `/blog`;
     } else {
       return `/${pageType}/${identifier}`;
     }
