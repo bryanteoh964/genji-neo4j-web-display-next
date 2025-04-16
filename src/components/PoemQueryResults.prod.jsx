@@ -51,7 +51,8 @@ const PoemDisplay = ({ poemData }) => {
         placeOfComp_evidence: "",
         placeOfReceipt_evidence: "",
         groupPoems: [],
-        replyPoems: []
+        replyPoems: [],
+        furtherReadings: []
     });
     
     const chapter = poemData.chapterNum;
@@ -219,7 +220,8 @@ const PoemDisplay = ({ poemData }) => {
                     placeOfComp_evidence: responseData[25],
                     placeOfReceipt_evidence: responseData[26],
                     groupPoems: responseData[27],
-                    replyPoems: responseData[28]
+                    replyPoems: responseData[28],
+                    furtherReadings: responseData[29]
                 };
                 
 
@@ -421,7 +423,7 @@ const PoemDisplay = ({ poemData }) => {
                             </>
                         ) : (
                             <>
-                                <span>-</span>
+                                <span className={styles.connectedValue}>NONE</span>
                                 <span className={styles.connectedLabel}>PROXY POET</span>
                             </>
                         )}
@@ -592,30 +594,7 @@ const PoemDisplay = ({ poemData }) => {
                                         {poemState.deliveryStyle && <FormatContent content={poemState.deliveryStyle} />}
                                     </div>
                                 )}
-
-                                {poemState.source && poemState.source.length > 0 && (
-                                    <div className={styles.detailItem}>
-                                        <h3>ALLUSIONS</h3>
-                                        {poemState.source.map((source, idx) => (
-                                            <div key={idx} className={styles.allusionItem}>
-                                                <p><strong>Poet:</strong> {source.poet && <FormatContent content={source.poet} />}</p>
-                                                <p><strong>Source:</strong> {source.source && <FormatContent content={source.source + (source.order ? ` ${source.order}` : '')} />}</p>
-                                                <p><strong>Original:</strong> {source.honka && <FormatContent content={source.honka} />}</p>
-                                                <div className={styles.allusionTranslations}>
-                                                    <p><strong>Translations:</strong></p>
-                                                    {source.translation.map((trans, tIdx) => (
-                                                        <div key={tIdx} className={styles.translationItem}>
-                                                            <p className={styles.source_translatorName}>{trans[0] + ': '}</p>
-                                                            <p className={styles.translationText}>{trans[1]}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                    ))}
-                                    </div>
-                                )}
                                 
-
                                 {poemState.season && (
                                     <div className={styles.detailItem}>
                                         <h3>SEASON IN NARRATIVE</h3>
@@ -793,7 +772,38 @@ const PoemDisplay = ({ poemData }) => {
                                             ))}
                                         </div>
                                     </div>
-                                )}                                
+                                )}           
+
+                                {poemState.source && poemState.source.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>ALLUSION(S)</h3>
+                                        {poemState.source.map((source, idx) => (
+                                            <div key={idx} className={styles.allusionItem}>
+                                                <p><strong>Poet:</strong> {source.poet && <FormatContent content={source.poet} />}</p>
+                                                <p><strong>Source:</strong> {source.source && <FormatContent content={source.source + (source.order ? ` ${source.order}` : '')} />}</p>
+                                                <p><strong>Original:</strong> {source.honka && <FormatContent content={source.honka} />}</p>
+                                                <div className={styles.allusionTranslations}>
+                                                    <p><strong>Translations:</strong></p>
+                                                    {source.translation.map((trans, tIdx) => (
+                                                        <div key={tIdx} className={styles.translationItem}>
+                                                            <p className={styles.source_translatorName}>{trans[0] + ': '}</p>
+                                                            <p className={styles.translationText}>{trans[1]}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                    ))}
+                                    </div>
+                                )}            
+
+                                {poemState.furtherReadings && poemState.furtherReadings.length > 0 && (
+                                    <div className={styles.detailItem}>
+                                        <h3>FURTHER READING</h3>
+                                        {poemState.furtherReadings.map((furtherReading, idx) => (
+                                            <p key={idx}>{furtherReading}</p>
+                                        ))}
+                                    </div>
+                                )}
             
                                     <div className={styles.contributorsSection}>
                                         <h3>CONTRIBUTORS</h3>
@@ -804,6 +814,8 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 </div>
                             </div>
+
+
 
                             {/* Discussion Panel */}
                             <div className={styles.analysisPanel}>
