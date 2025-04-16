@@ -25,7 +25,8 @@ async function getData (chapter, number){
 		resPlaceOfComp: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:PLACE_OF_COMPOSITION]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfComp, r.evidence as placeOfComp_evidence',
 		resPlaceOfReceipt: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:PLACE_OF_RECEIPT]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfReceipt, r.evidence as placeOfReceipt_evidence',
 		resGroup: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:IN_GROUP_OF]->(group:Group) where g.pnum ends with "' + number + '" match (otherPoems:Genji_Poem)-[:IN_GROUP_OF]->(group) where otherPoems.pnum <> g.pnum return otherPoems.pnum as groupMembers',
-		resReplyPoem: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:REPLY_TO]->(reply:Genji_Poem) where g.pnum ends with "' + number + '" return reply.pnum as replyPoem'
+		resReplyPoem: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:REPLY_TO]->(reply:Genji_Poem) where g.pnum ends with "' + number + '" return reply.pnum as replyPoem',
+		resFutherReading: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:DISCUSSED_IN]->(s:Source) where g.pnum ends with "' + number + '" return s.title as furtherReadings'
 	};
 
 	const result = {};
@@ -134,6 +135,12 @@ async function getData (chapter, number){
 		replyPoems = Array.from(replyPoems).flat()
 		replyPoems = replyPoems.map(e => [e, true])
 
+		// further reading
+		let furtherReadings = new Set()
+		result['resFutherReading'].records.map(e => {return toNativeTypes(e.get('furtherReadings'))}).forEach(e => {furtherReadings.add([Object.values(e).join('')])})
+		furtherReadings = Array.from(furtherReadings).flat()
+		furtherReadings = furtherReadings.map(e => [e, true])
+
 		const data = [
 						exchange, 
 						transTemp, 
@@ -163,7 +170,8 @@ async function getData (chapter, number){
 						placeOfComp_evidence,
 						placeOfReceipt_evidence,
 						groupPoems,
-						replyPoems
+						replyPoems,
+						furtherReadings
 					];
 
 		return (data);

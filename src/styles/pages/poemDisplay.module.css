@@ -1001,6 +1001,16 @@
   color: #FFFFFF !important;
 }
 
+.connectedValue {
+  font-family: 'Lexend', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.01rem;
+  text-align: center;
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
 .poemTypeBox {
   grid-column: 7 / -1;
   grid-row: 8 / 12;
@@ -1259,7 +1269,7 @@
 }
 
 .poemTypeLabel {
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Train One', sans-serif;
   font-weight: 700;
   font-size: 15.36px;
   line-height: 95%;
@@ -1269,12 +1279,11 @@
   transform: rotate(180deg);
   text-align: center;
   margin-right: 5px;
-  color: transparent;
-  -webkit-text-stroke: 1px #FFFFFF;
   display: flex;
   flex-direction: column;
   opacity: 0.5;
   margin-left: 10px;
+  color: #FFFFFF;
 }
 
 .checkboxGroup {

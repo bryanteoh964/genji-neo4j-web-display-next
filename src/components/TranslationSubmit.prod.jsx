@@ -75,7 +75,7 @@ const TransSubmit = ({ pageType, identifier }) => {
         <>
           <textarea 
             className={styles.userTranslationInput} 
-            placeholder="How would you translate this poem? Write your translation here..."
+            placeholder="Write your translation here..."
             value={translation}
             onChange={(e) => setTranslation(e.target.value)}
           />

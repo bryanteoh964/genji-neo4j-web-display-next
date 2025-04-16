@@ -17,15 +17,15 @@
 .userTranslationInput {
   width: 400px;
   height: 35px;
-  padding: 5px 10px;
-  border: 1px solid rgba(75, 75, 75, 0.2);
+  padding: 0px 0px;
+  border: 1px solid #BFAE93;
   border-radius: 10px;
   font-family: 'Lexend', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
+  font-weight: 500;
   color: #4B4B4B;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #BFAE93;
   resize: none;
-  margin-bottom: 5px;
   transition: all 0.2s;
   line-height: 1.2;
   white-space: pre-wrap;
@@ -34,8 +34,6 @@
 
 .userTranslationInput:focus {
   outline: none;
-  border-color: rgba(75, 75, 75, 0.4);
-  box-shadow: 0 0 0 2px rgba(75, 75, 75, 0.1);
 }
 
 .submitButton {
@@ -43,12 +41,13 @@
   color: #787878;
   border: none;
   font-family: 'Lexend', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
   height: 25px;
+  margin-top: 8px;
 }
 
 .submitButton:hover:not(:disabled) {
@@ -70,16 +69,14 @@
 
 .successMessage {
   color: #4B4B4B;
-  background-color: rgba(75, 75, 75, 0.1);
 }
 
 .errorMessage {
   color: #e07a5f;
-  background-color: rgba(224, 122, 95, 0.1);
 }
 
 .loginPrompt {
-  padding-top: 30px;
+  padding-top: 0px;
   text-align: center;
   font-size: 18px;
 }

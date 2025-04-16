@@ -8,18 +8,18 @@
 
 .translationsHeader {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-starts;
   margin: 0;
   width: 100%;
   padding-top: 0px;
 }
 
 .viewTranslationsButton {
-  padding: 5px 10px;
+  padding: 5px 0px;
   color: #797979;
   border: none;
   font-family: 'Lexend', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
