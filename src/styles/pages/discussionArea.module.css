@@ -499,18 +499,16 @@
 .loginPrompt {
   padding: 20px;
   text-align: center;
-  border: 1px dashed rgba(75, 75, 75, 0.2);
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #737373;
   margin: 10px 0;
-  color: #4B4B4B;
   font-family: 'Lexend', sans-serif;
   font-weight: 500;
 }
 
 .loginLink {
-  color: #4B4B4B;
-  text-decoration: none;
+  color: #c0c0c0;
+  text-decoration: underline;
   font-weight: 600;
   transition: all 0.2s;
 }
@@ -520,7 +518,6 @@
   text-decoration: underline;
 }
 
-/* 自定义滚动条样式 */
 .container::-webkit-scrollbar {
   width: 8px;
 }

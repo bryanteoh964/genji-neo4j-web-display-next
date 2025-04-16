@@ -787,7 +787,7 @@ const PoemDisplay = ({ poemData }) => {
                                                     {source.translation.map((trans, tIdx) => (
                                                         <div key={tIdx} className={styles.translationItem}>
                                                             <p className={styles.source_translatorName}>{trans[0] + ': '}</p>
-                                                            <p className={styles.translationText}>{trans[1]}</p>
+                                                            <p className={styles.translationText}>{<FormatContent content={trans[1]} />}</p>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -800,7 +800,7 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>FURTHER READING</h3>
                                         {poemState.furtherReadings.map((furtherReading, idx) => (
-                                            <p key={idx}>{furtherReading}</p>
+                                            <p key={idx}>{<FormatContent content={furtherReading[0]} />}</p>
                                         ))}
                                     </div>
                                 )}

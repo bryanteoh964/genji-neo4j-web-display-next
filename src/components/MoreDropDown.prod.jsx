@@ -66,6 +66,10 @@ const MoreOptions = ({ setIsOpen }) => {
                 sources & resources
             </Link>
 
+            <Link href="/translators" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+                translators
+            </Link>
+
             <Link href="/characters/relationships" className={styles.moreLink} onClick={() => setIsOpen(false)}>
                 relationships
             </Link>

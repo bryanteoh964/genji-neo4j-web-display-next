@@ -782,13 +782,14 @@ const DiscussionArea = ({ pageType, identifier }) => {
 
       <div className={styles.discussionHeader}>
         <h3 className={styles.discussionTitle}></h3>
-        <button 
-          onClick={handleRefresh} 
-          className={styles.refreshButton}
-          disabled={refreshing}
-        >
-          <RefreshCw size={18} className={`${refreshing ? styles.spinning : ''}`} />
-        </button>
+        {session && <button 
+            onClick={handleRefresh} 
+            className={styles.refreshButton}
+            disabled={refreshing}
+          >
+            <RefreshCw size={18} className={`${refreshing ? styles.spinning : ''}`} />
+          </button>
+        }
       </div>
 
       <div className={styles.inputSection}>
