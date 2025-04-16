@@ -1,55 +1,72 @@
-import "../../styles/globals.css";
-import styles from "../../styles/pages/about.module.css";
+'use client'
+import React, { useState, useEffect } from 'react';
+import FormatContent from "../../components/FormatText.prod"
+import styles from "../../styles/pages/blogTemplate.module.css"
 
-const page = () => {
-  return (
-	<div className={styles.aboutPageContainer}>
+const BlogPage = () => {
+    const [content, setContent] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-		<div className={styles.imageSection}>
-			<img 
-				className={styles.fullBackgroundImage} 
-				src="/images/about_background.png" 
-				alt="about background" 
-			/>
-			<div className={styles.titleOverlay}>
-				<span className={styles.nameEnglish}>SOURCES</span>
-			</div>
-		</div>
+    useEffect(() => {
+        const fetchContent = async () => {
+            const res = await fetch(`/api/blog/getSingle?title=Sources`);
+            const data = await res.json();
+            setContent(data.content);
+            setIsLoading(false);
+        };
 
-		<div className={styles.mainSection}>
-			<div className="section_container" style={{ marginTop: '0px' }}>
-        <h1 className={styles.mainTitle}>Sources and Further Resources</h1>
-            
-        <p>Thanks to Dennis Washburn, Royall Tyler, and Edwin Cranston for granting permission to use their translations of Genji poems.</p>
+        fetchContent();
+    }, []);
 
-        <p>The Japanese texts on this website and information on character relationships are taken from Professor Eiichi Shibuya&apos;s annotated digital edition of the Tale of Genji in Japanese, <a href="http://www.genji-monogatari.net/" target="_blank" style={{ color: '#436875' }}>源氏物語の世界 再編修正.</a></p>
+    return (
+        <div className={styles.translatorPage}>
+            <div className={styles.heroSection}>
+                <img
+                    className={styles.fullBackgroundImage}
+                    src={`/images/sources_banner.png`}
+                    alt="sources banner"
+                />
+                {/* <div className={styles.titleOverlay}>
+                    <span className={styles.nameEnglish}>ABOUT</span>
+                </div> */}
+            </div>
 
-        <p>Romanized versions of the poems are based on Edwin Cranston&apos;s edition.</p>
+            <div className={styles.mainSection}>
+                <div className={styles.analysisContainer}>
+                    {/* Left Side - Panels with Toggles */}
+                    <div className={styles.analysisLeft}>
+                        
+                        {/* Blogs Panel */}
+                        <div className={styles.analysisPanel}>
+                            
+                        </div>
 
-        <p>Translations of the Tale of Genji are avaible for purchase at the links below:</p>
+                        {/* Discusssion Panel */}
+                        <div className={styles.analysisPanel}>
+                            
+                        </div>
 
-        <ul>
-        <li> <a href="https://wwnorton.com/books/9780393353396" target="_blank" style={{ color: '#436875' }}>The Tale of Genji, translated by Dennis Washburn. Norton, 2016.</a> </li>
-        <li> <a href="https://www.penguinrandomhouse.com/books/530271/the-tale-of-genji-by-murasaki-shikibu/" target="_blank" style={{ color: '#436875' }}>The Tale of Genji, translated by Royall Tyler. Penguin, 2002.</a> </li>
-        <li>The Tale of Genji, translated by Edward Seidensticker, Knopf, 1976. 
-          <a href="https://www.penguinrandomhouse.com/books/625140/the-tale-of-genji-by-murasaki-shikibu-translated-and-introduction-by-edward-g-seidensticker/" target="_blank" style={{ color: '#436875' }}> Reissued by Everyman&apos;s Library, 1993.</a>
-        </li>
-        <li>The Tale of Genji, translated by Arthur Waley, 1925-1933. 
-          <a href="https://www.tuttlepublishing.com/books-by-country/the-tale-of-genji" target="_blank" style={{ color: '#436875' }}> Reissued by Tuttle, 2010.</a>
-        </li>
-        </ul>
+                        {/* Other Panel */}
+                        <div className={styles.analysisPanel}>
+                            
+                        </div>
+                    </div>
+                </div>
 
-        <p>Edwin Cranston&apos;s versions of the Genji poems can be found along with his commentary in
-          <a href="https://www.sup.org/books/title/?id=4046" target="_blank" style={{ color: '#436875' }}> A Waka Anthology Volume Two: Grasses of Remembrance, Stanford University Press, 2006.</a>
-        </p>
+                <div className={styles.description}>
+                    <div className={styles.descriptionContent}>
+                        {isLoading ? (
+                            <div className={styles.loading}>Loading...</div>
+                        ) : (
+                            <>  
+                                <FormatContent content={content} className={styles.descriptionText} />
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
-        <p>For more information and resources, see Professor Gaye Rowely&apos;s,
-          <a href="https://www.gayerowley.com/teaching/genji-bibliography/" target="_blank" style={{ color: '#436875' }}> The Tale of Genji: Bibliography of Translations and Studies.</a>
-        </p>
-			</div>
-		</div>
-	</div>
-  );
-};
-
-export default page;
+export default BlogPage;

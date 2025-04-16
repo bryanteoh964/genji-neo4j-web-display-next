@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '../styles/pages/blogTemplate.module.css';
 
 const FormatText = ({ text, className }) => {
     const parseText = (text) => {
@@ -11,6 +12,25 @@ const FormatText = ({ text, className }) => {
         return lines.map((line, lineIndex) => {
             const lineList = [];
             curIndex = 0;
+
+            // Handle indentation with &nbsp;
+            let indentMatch = line.match(/^(&nbsp;)+/);
+            let indentCount = 0;
+            if (indentMatch) {
+                indentCount = indentMatch[0].match(/&nbsp;/g).length;
+                line = line.slice(indentMatch[0].length);
+            }
+
+            // Check for heading (#) at the start of the line
+            if (line.startsWith('#')) {
+                const headingText = line.slice(1).trim();
+                return {
+                    type: 'heading',
+                    content: headingText,
+                    indent: indentCount,
+                    isLastLine: lineIndex === lines.length - 1
+                };
+            }
 
             // First capture links with potential formatting inside them
             const linkPattern = /\[(.*?)\]\((.*?)\)/g;
@@ -176,6 +196,7 @@ const FormatText = ({ text, className }) => {
             return {
                 type: 'line',
                 content: lineList,
+                indent: indentCount,
                 isLastLine: lineIndex === lines.length - 1
             };
         });
@@ -192,53 +213,58 @@ const FormatText = ({ text, className }) => {
             <p>
                 {parseText(text).map((line, lineIndex) => (
                     <React.Fragment key={lineIndex}>
-                        {line.content.map((item, index) => {
-                            switch (item.type) {
-                                case 'bold':
-                                    return <strong key={index} className="font-bold">{item.text}</strong>;
-                                case 'italic':
-                                    return <em key={index} className="italic">{item.text}</em>;
-                                case 'bolditalic':
-                                    return <strong key={index} className="font-bold italic">{item.text}</strong>;
-                                case 'link':
-                                    return (
-                                        <a 
-                                            key={index} 
-                                            href={item.url}
-                                            className="text-blue-600 hover:text-blue-800 underline"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {item.text}
-                                        </a>
-                                    );
-                                case 'formattedLink':
-                                    return (
-                                        <a 
-                                            key={index} 
-                                            href={item.url}
-                                            className="text-blue-600 hover:text-blue-800 underline"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {item.content.map((formatItem, formatIndex) => {
-                                                switch (formatItem.type) {
-                                                    case 'bold':
-                                                        return <strong key={formatIndex} className="font-bold">{formatItem.text}</strong>;
-                                                    case 'italic':
-                                                        return <em key={formatIndex} className="italic">{formatItem.text}</em>;
-                                                    case 'bolditalic':
-                                                        return <strong key={formatIndex} className="font-bold italic">{formatItem.text}</strong>;
-                                                    default:
-                                                        return <span key={formatIndex}>{formatItem.text}</span>;
-                                                }
-                                            })}
-                                        </a>
-                                    );
-                                default:
-                                    return <span key={index}>{item.text}</span>;
-                            }
-                        })}
+                        {line.indent > 0 && (
+                            <span dangerouslySetInnerHTML={{ __html: '&nbsp;'.repeat(line.indent * 4) }} />
+                        )}
+                        {line.type === 'heading' ? (
+                            <span className={styles.heading}>{line.content}</span>
+                        ) : (
+                            line.content.map((item, index) => {
+                                switch (item.type) {
+                                    case 'bold':
+                                        return <strong key={index} className="font-bold">{item.text}</strong>;
+                                    case 'italic':
+                                        return <em key={index} className="italic">{item.text}</em>;
+                                    case 'bolditalic':
+                                        return <strong key={index} className="font-bold italic">{item.text}</strong>;
+                                    case 'link':
+                                        return (
+                                            <a 
+                                                key={index} 
+                                                href={item.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {item.text}
+                                            </a>
+                                        );
+                                    case 'formattedLink':
+                                        return (
+                                            <a 
+                                                key={index} 
+                                                href={item.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                {item.content.map((formatItem, formatIndex) => {
+                                                    switch (formatItem.type) {
+                                                        case 'bold':
+                                                            return <strong key={formatIndex} className="font-bold">{formatItem.text}</strong>;
+                                                        case 'italic':
+                                                            return <em key={formatIndex} className="italic">{formatItem.text}</em>;
+                                                        case 'bolditalic':
+                                                            return <strong key={formatIndex} className="font-bold italic">{formatItem.text}</strong>;
+                                                        default:
+                                                            return <span key={formatIndex}>{formatItem.text}</span>;
+                                                    }
+                                                })}
+                                            </a>
+                                        );
+                                    default:
+                                        return <span key={index}>{item.text}</span>;
+                                }
+                            })
+                        )}
                         {!line.isLastLine && <br />}
                     </React.Fragment>
                 ))}
@@ -253,19 +279,44 @@ const FormatContent = ({ content, className }) => {
     }
 
     try {
-        // format each paragraph and combine them
+        // Split by single \n and keep empty strings to preserve multiple line breaks
         const paragraphs = String(content)
-            .split(/\\n/)
-            .map(p => p.trim())
-            .filter(p => p.length > 0);
+            .split('\\n')
+            .map(p => p.trim());
 
         const containerClassName = className ? `${className} space-y-4` : "space-y-4";
 
+        // Group consecutive empty paragraphs to create multiple line breaks
+        const result = [];
+        let emptyCount = 0;
+
+        for (let i = 0; i < paragraphs.length; i++) {
+            if (paragraphs[i] === '') {
+                emptyCount++;
+            } else {
+                // If we had empty lines before this paragraph, add appropriate breaks
+                if (emptyCount > 0) {
+                    for (let j = 0; j < emptyCount; j++) {
+                        result.push(<div key={`break-${i}-${j}`} style={{ height: '1em' }} />);
+                    }
+                    emptyCount = 0;
+                }
+                result.push(
+                    <FormatText key={i} text={paragraphs[i]} className={className} />
+                );
+            }
+        }
+
+        // Handle any remaining empty lines at the end
+        if (emptyCount > 0) {
+            for (let j = 0; j < emptyCount; j++) {
+                result.push(<div key={`break-end-${j}`} style={{ height: '1em' }} />);
+            }
+        }
+
         return (
             <div className={containerClassName}>
-                {paragraphs.map((paragraph, index) => (
-                    <FormatText key={index} text={paragraph} className={className} />
-                ))}
+                {result}
             </div>
         );
     } catch (error) {

@@ -1,11 +1,12 @@
 .container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0 0;
   overflow-x: hidden; 
   word-wrap: break-word;
   background-color: #737373;
   color: #ffffff;
+  font-family: 'Lexend', sans-serif;
 }
 
 .inputSection {
@@ -58,6 +59,7 @@
   background: transparent;
   font-size: 0.875rem;
   color: #ffffff;
+  font-family: 'Lexend', sans-serif;
 }
 
 .commentInput::placeholder {
@@ -105,8 +107,9 @@
   max-width: 100%;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0 0;
   margin-bottom: 1rem;
+  overflow-x: auto;
 }
 
 .commentCard {
