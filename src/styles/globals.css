@@ -57,27 +57,40 @@ html::-webkit-scrollbar {
 .main {
 	position: relative;
   	min-height: 100vh;
+	width: 1440px;
+	max-width: 1440px;
+	margin: 0 auto;
   	background-color: #737373;
 }
 
 .bottom {
+	width: 1440px;
+	max-width: 1440px;
+	margin: 0 auto;
 	min-height: 80vh;	
-  flex: 1;
-  background-color: #737373;
+  	flex: 1;
+ 	background-color: #737373;
 }
 
 .top {
-  background-color: #737373;
+	width: 1440px;
+	max-width: 1440px;
+	margin: 0 auto;
+    background-color: #737373;
 }
 
 .section_frame {
+	width: 1440px;
+	max-width: 1440px;
+	margin: 0 auto;
 	display: flex;
 	justify-content: center;
 }
 
 .section_container {
-	margin: 80px 0;
+	margin: 80px auto;
 	width: 1440px;
+	max-width: 1440px;
 	min-height: 460px;
 	text-align: left;
 }
