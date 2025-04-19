@@ -107,7 +107,7 @@ export default function CharacterTimeline({l}) {
             } else if (oi.month != null) {  
                 var mm = oi.month.toString() 
                 if (mm.length == 1) {
-                    mm = "0" + mm
+                    mm = "0" + mm 
                 } 
                 if (oi.month == 12) {
                     ganttTimeline.push({task: oi.name, startDate: new Date(genji_age+"-12-01"), endDate: new Date(genji_age+"-12-01"), id: oi.id, color: oi.color, value: "<strong>" + date_info + "</strong> <br><br>" + oi.english + "<br><br>" + oi.japanese + "<br><br>", year: oi.age_of_genji, myRange: myRange})
