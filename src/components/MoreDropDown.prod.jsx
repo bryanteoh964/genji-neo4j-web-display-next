@@ -85,7 +85,7 @@ const MoreOptions = ({ setIsOpen }) => {
             <Link href="https://docs.google.com/forms/d/e/1FAIpQLScY8ZrN5JlW-GJoeOWuJ9l4LPOwSViTMQBfEAJc4Z1O3ahK2w/viewform?usp=header" 
                   target="_blank"
                   className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                report an error
+                report an error/bug
             </Link>
         </div>
     );
