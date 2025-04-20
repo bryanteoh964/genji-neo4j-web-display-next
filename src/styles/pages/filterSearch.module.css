@@ -21,15 +21,16 @@
 }
 
 .searchInput {
-  width: 286px;
-  padding: 12px 16px;
+  width: 302px;
+  padding: 12px 16px 12px 0px;
   font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: none; /* Remove the border */
+  border-bottom: 2px solid #9A9898; /* Add bottom border with color */
+  border-radius: 0; /* Remove border radius */
+  background-color: transparent; /* Make the background transparent */
   transition: all 0.3s ease;
   font-weight: 600;
-  color: black;
+  color: #C0C0C0;
   text-transform: uppercase;
   margin: 0;
   font-family: 'Lexend', sans-serif;
@@ -40,8 +41,8 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  /* border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); */
 }
 
 /* main area */
