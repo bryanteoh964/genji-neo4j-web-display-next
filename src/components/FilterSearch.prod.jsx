@@ -1323,13 +1323,13 @@ const PoemSearch = () => {
                     className={`${styles.toggleButton} ${styles.chapter}`}
                     onClick={() => setShowByAge(false)}
                   >
-                    Graph by <strong>Chapter</strong>
+                    graph by <strong>chapter</strong>
                   </button>
                   <button
                     className={`${styles.toggleButton} ${styles.age}`}
                     onClick={() => setShowByAge(true)}
                   >
-                    Graph by <strong>Genji&apos;s Age</strong>
+                    graph by <strong>Genji&apos;s age</strong>
                   </button>
                 </div>
                 {Object.values(filters).some(({ options }) =>
