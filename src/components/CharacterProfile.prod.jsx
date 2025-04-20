@@ -4,6 +4,8 @@ import Link from 'next/link';
 import styles from '../styles/pages/characterProfile.module.css';
 import FormatContent from './FormatText.prod';
 import ZoomableGanttChart from './ZoomableGanttChart.jsx';
+import ContributorView from './ContributorView.prod'
+import DiscussionArea from './DiscussionArea.prod'
 
 // Format the database relationships into easy read text
 function formatRelationship(relationship) {
@@ -126,7 +128,6 @@ export default function CharacterDetail({ name }) {
                     }
                 })
                 .then(data => {
-                    console.log(selectedCharacter);
                     setCharacterData(data);
                 })
                 .catch(error => setError(error.message))
@@ -181,7 +182,7 @@ export default function CharacterDetail({ name }) {
     if (!characterExists) return <div className={styles.error}>Character does not exist.</div>;
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
 
-    const { allCharacterNames, character, relatedCharacters, relatedPoems } = characterData;
+    const { allCharacterNames, character, relatedCharacters, relatedPoems, nicknames } = characterData;
     const groupedRelatedCharacters = groupRelatedCharacters(relatedCharacters);
     const filteredCharacters = filterCharacters(allCharacterNames);
 
@@ -478,15 +479,20 @@ export default function CharacterDetail({ name }) {
                         <div className={styles.mainSection}>
                             <div id="about" className={styles.description}>
                                 <div className={styles.descriptionContent}>
-                                    <span
-                                        style={{
-                                            color: character.gender === 'male' ? '#436875' :
-                                                character.gender === 'female' ? '#B03F2E' : 'inherit'
-                                        }}
-                                    >
+                                    <span>
                                         {character.japanese_name || 'N/A'}
+
+                                        {nicknames && Object.values(nicknames).length > 0 && (
+                                        <div className={styles.nicknameSmall}>
+                                            AKA: {Object.values(nicknames).join(', ')}
+                                        </div>
+                                        )}
+
                                     </span>
-                                    <FormatContent content={character.Description} className={styles.descriptionText} />
+                                    <FormatContent 
+                                        content={character.Description === "N/A" ? "Character Summary Isn't Available, Under Construction" : character.Description} 
+                                        className={styles.descriptionText} 
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -606,6 +612,14 @@ export default function CharacterDetail({ name }) {
                     </div>
                 </div>
             </div>
+            <ContributorView
+                pageType="character"
+                identifier={character.name}
+            />
+            <DiscussionArea 
+                pageType="character"
+                identifier={`${character.name}`}
+            />
         </div>
     );
 }
