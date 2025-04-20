@@ -464,41 +464,23 @@ const PoemSearch = () => {
     maintainAspectRatio: false,
     scales: {
       x: {
-        display: false, // Hide the x-axis
+        display: false,
         stacked: true,
         ticks: {
-          color: 'black',
-          font: {
-            family: 'Sans-serif',
-            size: 14,
-            weight: 'bold',
-          },
+          display: false,
         },
         grid: {
-          display: false, // Remove vertical grid lines
+          display: false, // Removes vertical grid lines
         },
       },
       y: {
         beginAtZero: true,
         stacked: false,
         ticks: {
-          color: 'black',
-          font: {
-            family: 'Sans-serif',
-            size: 14,
-            weight: 'bold',
-          },
-          stepSize: 10,
-          callback: function (value) {
-            return value.toString().padStart(2, '0');
-          },
+          display: false,
         },
         grid: {
-          drawBorder: false,
-          drawOnChartArea: true,
-          drawTicks: false,
-          color: 'rgba(0, 0, 0, 0.55)',
-          lineWidth: 1,
+          display: false, // <-- This line removes horizontal grid lines
         },
         border: {
           display: false,
@@ -507,7 +489,7 @@ const PoemSearch = () => {
     },
     plugins: {
       legend: {
-        display: false, // Keep this false since you're using custom legend
+        display: false,
       },
       tooltip: {
         callbacks: {
@@ -515,13 +497,10 @@ const PoemSearch = () => {
             const chapterNum = context.label;
             const chapterName = getChapterName(chapterNum);
             const poemsCount = context.raw;
-            
-            // For black bars (original poems)
+  
             if (context.datasetIndex === 0) {
               return `Out of ${poemsCount} poems in ${chapterName}`;
-            }
-            // For white bars (filtered poems)
-            else {
+            } else {
               return `${poemsCount} poems found`;
             }
           },
@@ -530,7 +509,7 @@ const PoemSearch = () => {
         usePointStyle: true,
       }
     },
-  };
+  };  
 
   const [showByAge, setShowByAge] = useState(false);
 
@@ -615,12 +594,7 @@ const PoemSearch = () => {
         display: true, // Hide the x-axis
         stacked: true,
         ticks: {
-          color: 'black',
-          font: {
-            family: 'Sans-serif',
-            size: 14,
-            weight: 'bold',
-          },
+          display: false,
         },
         grid: {
           display: false, // Remove vertical grid lines
@@ -630,23 +604,10 @@ const PoemSearch = () => {
         beginAtZero: true,
         stacked: false,
         ticks: {
-          color: 'black',
-          font: {
-            family: 'Sans-serif',
-            size: 14,
-            weight: 'bold',
-          },
-          stepSize: 10,
-          callback: function (value) {
-            return value.toString().padStart(2, '0');
-          },
+          display: false,
         },
         grid: {
-          drawBorder: false,
-          drawOnChartArea: true,
-          drawTicks: false,
-          color: 'rgba(0, 0, 0, 0.55)',
-          lineWidth: 1,
+          display: false, // Remove horizontal grid lines
         },
         border: {
           display: false,
@@ -755,12 +716,6 @@ const PoemSearch = () => {
 
     return (
       <div className={styles.filterContainer}>
-        <button 
-          className={`${styles.toggleButton} ${showByAge ? styles.byAge : ''}`}
-          onClick={() => setShowByAge((prev) => !prev)}
-        >
-          {showByAge ? 'Graph by Chapter' : 'Graph by Genji\'s Age'}
-        </button>
         <div className={styles.filterHeader}>
           <span className={styles.filterOnlyResultsLabel}>FILTERS</span>
           <button className={styles.clearFiltersButton} onClick={handleClearFilters}>
@@ -1332,8 +1287,9 @@ const PoemSearch = () => {
       <div
         className={styles.chartContainer}
         style={{
-          top: showByAge ? '135px' : '110px',
-          left: showByAge ? '53%' : '52.4%',
+          top: showByAge ? '106px' : '98px',
+          left: showByAge ? '54.3%' : '53.6%',
+          width: showByAge ? '1230px' : '1253px',
         }}
       >
         <Bar
@@ -1355,12 +1311,26 @@ const PoemSearch = () => {
           {showResults && results.length > 0 && (
             <>
               <div className={styles.resultCount}>
+                <div className={styles.resultCountNumber}>
+                  {filteredResults.length.toString().padStart(3, '0')}
+                </div>
                 <div className={styles.resultCountText}>
                   <span>POEMS</span>
                   <span>FOUND</span>
                 </div>
-                <div className={styles.resultCountNumber}>
-                  {filteredResults.length.toString().padStart(3, '0')}
+                <div className={styles.buttonContainer}>
+                  <button
+                    className={`${styles.toggleButton} ${styles.chapter}`}
+                    onClick={() => setShowByAge(false)}
+                  >
+                    Graph by <strong>Chapter</strong>
+                  </button>
+                  <button
+                    className={`${styles.toggleButton} ${styles.age}`}
+                    onClick={() => setShowByAge(true)}
+                  >
+                    Graph by <strong>Genji&apos;s Age</strong>
+                  </button>
                 </div>
                 {Object.values(filters).some(({ options }) =>
                   Object.values(options).some(({ checked }) => checked)

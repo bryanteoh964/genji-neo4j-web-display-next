@@ -43,6 +43,7 @@
     max-height: 100%;
     overflow: hidden;
     font-family: 'Lexend', sans-serif;
+    opacity: 0.75;
 }
 
 .nameEnglish {
@@ -63,6 +64,12 @@
     letter-spacing: 13.65px;
     word-wrap: break-word;
 }
+
+.nicknameSmall {
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-top: 0px;
+  }
 
 .title {
     text-align: center;
@@ -91,8 +98,7 @@
     margin-bottom: 30px;
     margin-top: auto;
     gap: 30px;
-    background-color: #BFAE93;
-    padding: 20px 45px 57px 45px;
+    padding-bottom: 40px;
     border-radius: 10px;
     max-width: 100%;
 }
@@ -147,6 +153,7 @@
     justify-content: flex-start;
     align-items: center;
     text-align: center;
+    color: white;
 }
 
 .descriptionContent {
@@ -165,7 +172,7 @@
 
 .descriptionText,
 .descriptionText * {
-    color: #4B4B4B !important;
+    color: white !important;
     font-size: 16px;
 }
 
@@ -384,7 +391,10 @@
 .loading {
     text-align: center;
     font-size: 1.2em;
-    margin-top: 50px;
+    margin-top: 20px;
+    color: white;
+    font-family: 'Lexend', sans-serif;
+    font-size: 16px;
 }
 
 .contentWrapper {

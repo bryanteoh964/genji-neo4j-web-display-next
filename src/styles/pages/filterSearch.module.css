@@ -220,6 +220,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-left: 20px;
 
   /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
   scrollbar-width: none;
@@ -233,37 +234,41 @@
   /* Chrome, Safari, Opera */
 }
 
+.buttonContainer {
+  display: flex;
+  gap: 5px; /* spacing between buttons */
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 3px;
+}
+
 .toggleButton {
-  opacity: 0.8;
+  width: 200px;
+  height: 30px;
+  background: var(--1-GREY-WEBSITE-BACKGROUND, #737373);
+  text-align: left;
   font-family: 'Lexend', sans-serif;
   font-size: 16px;
   font-style: normal;
-  font-weight: 700;
-  line-height: 87%;
+  font-weight: 400;
+  line-height: 87%; /* 13.92px */
   letter-spacing: 0.8px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 8px 16px;
+  border: none;
   cursor: pointer;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  backdrop-filter: blur(4px);
+  padding-right: 10px;
+  z-index: 100;
 }
 
-/* Active (Genji Age) style */
-.toggleButton.byAge {
-  color: white;
+.chapter {
+  color: var(--U-white, #FFF);
+  color: rgba(255, 255, 255, 0.8); /* white at 80% opacity */
 }
 
-/* Default (Chapters) style */
-.toggleButton:not(.byAge) {
+.age {
   color: var(--genji-3-gold, #C49C3E);
-  border-color: var(--genji-3-gold, #C49C3E);
-  background-color: rgba(196, 156, 62, 0.15);
+  color: rgba(196, 156, 62, 0.8); /* gold at 80% opacity */
 }
-
 
 .filterOnlyResultsLabel {
   color: var(--1-TEXT-TYPICAL-grey-30, #4B4B4B);
@@ -319,18 +324,18 @@
 
 .resultCount {
   position: absolute;
-  top: 105px;
-  right: 290px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  top: 88px;
+  left: 125px;
   color: white;
   font-size: 26px;
   text-transform: uppercase;
-  font-weight: bold;
   letter-spacing: 3.84px;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap; /* Ensures items wrap to the next line if they exceed the width */
+  width: 240px;
 }
 
 .resultCountText {
@@ -338,15 +343,26 @@
   flex-direction: column;
   line-height: 1.2;
   opacity: 80%;
+  font-family: Lexend;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 87%; /* 13.92px */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 15px;
 }
 
 .resultCountNumber {
-  margin-top: 15px;
-  font-size: 90px;
-  font-weight: bold;
   color: white;
   opacity: 90%;
-}
+  font-family: Lexend;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 96px */
+  letter-spacing: 1px;
+  }
 
 
 .searchResults {
@@ -972,10 +988,8 @@
 
 .chartContainer {
   position: absolute;
-  top: 110px;
   z-index: 20;
-  width: 1268px;
-  left: 52.4%;
+  width: 1253px;
   transform: translateX(-50%);
   padding: 20px;
   padding-top: 0px;
