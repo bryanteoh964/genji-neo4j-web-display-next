@@ -729,7 +729,7 @@ const PoemSearch = () => {
           value={query}
           onChange={handleInputChange}
           onFocus={() => setShowResults(true)}
-          placeholder="Enter Keyword..."
+          placeholder="KEY WORD SEARCH"
           className={styles.searchInput}
         />
       </div>

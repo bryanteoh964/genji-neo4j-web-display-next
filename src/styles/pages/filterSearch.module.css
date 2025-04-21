@@ -30,7 +30,7 @@
   background-color: transparent; /* Make the background transparent */
   transition: all 0.3s ease;
   font-weight: 600;
-  color: #C0C0C0;
+  color: #e2e1e1;
   text-transform: uppercase;
   margin: 0;
   font-family: 'Lexend', sans-serif;
@@ -602,11 +602,8 @@
   transform: translate(-50%, -50%);
   background-image: url('/images/searchpage_background6.png');
   background-size: cover;
-  /* This ensures the image covers the entire element */
   background-position: center;
-  /* Centers the image */
   background-repeat: no-repeat;
-  /* Prevents the image from repeating */
   z-index: 1000;
   width: 1440px;
   pointer-events: none;
