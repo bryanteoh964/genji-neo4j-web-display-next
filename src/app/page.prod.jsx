@@ -51,7 +51,7 @@ const GenjiHomePage = () => {
 			  src="/images/genji_background.jpg" 
 			  alt="Genji background" 
 			/>
-			<div className={styles.titleOverlay}>
+			{/* <div className={styles.titleOverlay}>
 			  <h1 className={styles.mainTitle}>
 				<span className={styles.discover}>
 				  <span className={styles.highlightD}>D</span>iscover
@@ -71,7 +71,7 @@ const GenjiHomePage = () => {
 				<span className={styles.taleOfGenji}>The Tale of Genji</span>
 				<span className={styles.period}>.</span>
 			  </h1>
-			</div>
+			</div> */}
 			
 			{/* Scroll down indicator */}
 			<div className={styles.scrollDownIndicator}>
