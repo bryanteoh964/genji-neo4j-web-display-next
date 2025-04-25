@@ -125,15 +125,17 @@ const BlogPage = () => {
                     {isLoading ? (
                         <div className={styles.loading}>Loading...</div>
                     ) : (
-                        sources.map((source, index) => (
-                            <div key={index} className={styles.translationCard}>
-                                <div className={styles.translationContent}>
-                                    <FormatContent content={source.title.split(',').slice(2).join(',').replace(/"/g, '')}/>
-                            </div>
-                            <span className={styles.translatorName}>{source.author}</span>
+                        <div className={styles.sourcesScrollContainer}>
+                            {sources.map((source, index) => (
+                                <div key={index} className={styles.translationCard}>
+                                    <div className={styles.translationContent}>
+                                        <FormatContent content={source.title}/>
+                                    </div>
+                                    <span className={styles.translatorName} style={{backgroundColor: 'rgba(154, 152, 152, 0.66)'}}>{source.author}</span>
+                                </div>
+                            ))}
                         </div>
-                    )))}
-                    
+                    )}
                 </div>
             </div>
         </div>

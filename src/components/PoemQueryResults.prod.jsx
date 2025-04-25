@@ -25,7 +25,7 @@ const PoemDisplay = ({ poemData }) => {
             Cranston: 'N/A'
         },
         source: [],
-        rel: [],
+        relWithEvidence: [],
         tag: [],
         notes: "",
         isLoading: true,
@@ -52,7 +52,8 @@ const PoemDisplay = ({ poemData }) => {
         placeOfReceipt_evidence: "",
         groupPoems: [],
         replyPoems: [],
-        furtherReadings: []
+        furtherReadings: [],
+        spoken_or_written_evidence: ""
     });
     
     const chapter = poemData.chapterNum;
@@ -93,6 +94,14 @@ const PoemDisplay = ({ poemData }) => {
         }));
     };
 
+    const formatAuthorName = (fullName) => {
+        if (!fullName) return '';
+        const nameParts = fullName.trim().split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ');
+        return `${lastName}, ${firstName}`;
+      };
+
     // check cache
     useEffect(() => {
         const fetchPoemData = async () => {
@@ -130,7 +139,7 @@ const PoemDisplay = ({ poemData }) => {
                 const exchange = responseData[0];
                 const transTemp = responseData[1];
                 const sources = responseData[2];
-                const related = responseData[3];
+                const relatedWithEvidence = responseData[3];
                 const tags = responseData[4];
                 const pls = responseData[6];
                 
@@ -193,7 +202,7 @@ const PoemDisplay = ({ poemData }) => {
                     ],
                     trans: translations,
                     source: src_obj,
-                    rel: related,
+                    relWithEvidence: relatedWithEvidence,
                     tag: tags,
                     notes: exchange[0]?.segments[0]?.end?.properties?.notes,
                     isLoading: false,
@@ -221,7 +230,8 @@ const PoemDisplay = ({ poemData }) => {
                     placeOfReceipt_evidence: responseData[26],
                     groupPoems: responseData[27],
                     replyPoems: responseData[28],
-                    furtherReadings: responseData[29]
+                    furtherReadings: responseData[29],
+                    spoken_or_written_evidence: responseData[30]
                 };
                 
 
@@ -687,6 +697,29 @@ const PoemDisplay = ({ poemData }) => {
                                         </div>
                                     </div>
                                 )}
+
+                                {(poemState.spoken === 'yes' || poemState.written === 'yes') && (
+                                    <div className={styles.detailItem}>
+                                        <h3>SPOKEN OR WRITTEN</h3>
+                                        <div className={styles.withEvidence}>
+
+                                            {poemState.spoken === 'yes'  && <FormatContent content={ 'Is spoken' } />}
+                                            {poemState.written === 'yes'  && <FormatContent content={ 'Is written' } />}
+                                            
+                                            {poemState.spoken_or_written_evidence && (
+                                                <div className={styles.evidenceContainer}>
+                                                    <FontAwesomeIcon 
+                                                        icon={faInfoCircle} 
+                                                        className={styles.infoIcon}
+                                                    />
+                                                    <div className={styles.evidenceTooltip}>
+                                                        <FormatContent content={poemState.spoken_or_written_evidence} />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             
                                 {poemState.tag 
                                     && (
@@ -725,7 +758,7 @@ const PoemDisplay = ({ poemData }) => {
                                 
                                 {poemState.replyPoems && poemState.replyPoems.length > 0 && (
                                     <div className={styles.detailItem}>
-                                        <h3>REPLY POEMS</h3>
+                                        <h3>REPLY TO</h3>
                                         <div className={styles.relatedPoemsContainer}>
                                             {poemState.replyPoems.map((reply, idx) => (
                                                 <a 
@@ -740,18 +773,31 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 )}
                                 
-                                {poemState.rel && poemState.rel.length > 0 && (
+                                {poemState.relWithEvidence && poemState.relWithEvidence.length > 0 && (
                                     <div className={styles.detailItem}>
-                                        <h3>INTERNAL ALLUSION POEMS</h3>
+                                        <h3>INTERNAL ALLUSION</h3>
                                             <div className={styles.relatedPoemsContainer}>
-                                                {poemState.rel.map((rel, idx) => (
-                                                <a 
-                                                    key={idx}
-                                                    href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
-                                                    className={styles.relatedPoemLink}
-                                                >
-                                                    {rel[0]}
-                                                </a>
+                                                {poemState.relWithEvidence.map((rel, idx) => (
+                                                <div key={idx} className={styles.relatedPoemItem}>
+                                                    <a 
+                                                        href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
+                                                        className={styles.relatedPoemLink}
+                                                    >
+                                                        {rel[0]} 
+                                                    </a>
+                                            
+                                                    {rel[1] && (
+                                                        <div className={styles.evidenceContainer}>
+                                                            <FontAwesomeIcon 
+                                                                icon={faInfoCircle} 
+                                                                className={styles.infoIcon}
+                                                            />
+                                                            <div className={styles.evidenceTooltip}>
+                                                                <FormatContent content={rel[1]} />
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
                                                 ))}
                                             </div>
                                     </div>
@@ -759,7 +805,7 @@ const PoemDisplay = ({ poemData }) => {
 
                                 {poemState.groupPoems && poemState.groupPoems.length > 0 && (
                                     <div className={styles.detailItem}>
-                                        <h3>GROUP POEMS</h3>
+                                        <h3>GROUPED WITH</h3>
                                         <div className={styles.relatedPoemsContainer}>
                                             {poemState.groupPoems.map((group, idx) => (
                                                 <a 
@@ -800,7 +846,7 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>FURTHER READING</h3>
                                         {poemState.furtherReadings.map((furtherReading, idx) => (
-                                            <p key={idx}>{<FormatContent content={furtherReading[0]} />}</p>
+                                            <p key={idx}>{<FormatContent content={`${formatAuthorName(furtherReading.author)}, ${furtherReading.title}`}/>}</p>
                                         ))}
                                     </div>
                                 )}

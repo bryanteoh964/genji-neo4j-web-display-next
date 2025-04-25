@@ -30,7 +30,8 @@ const Layout = ({ children }) => {
        )}
         <main className="bottom">{children}</main>
         <Footer />
-        <Script id="chatbot-config">
+        {/* chatbot */}
+        {/* <Script id="chatbot-config">
           {`
             window.difyChatbotConfig = {
               token: '${process.env.NEXT_PUBLIC_DIFY_CHATBOT_TOKEN}',
@@ -42,7 +43,7 @@ const Layout = ({ children }) => {
           src={`${process.env.NEXT_PUBLIC_DIFY_API_BASE_URL}/embed.min.js`}
           id="dify-chatbot"
           defer
-        />
+        /> */}
         <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-4N5VNJMQSS"
