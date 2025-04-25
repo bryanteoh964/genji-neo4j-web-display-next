@@ -7,15 +7,17 @@ async function getBlogData(title) {
   try {
     const result = await session.readTransaction(tx => 
       tx.run(
-        'MATCH (b:Blog {title: $title}) OPTIONAL MATCH (b)<-[:AUTHOR_OF]-(a:People) RETURN b.content as content, a.email as authorEmail',
+        'MATCH (b:Blog {title: $title}) OPTIONAL MATCH (b)<-[:AUTHOR_OF]-(a:People) RETURN b.content as content, a.email as authorEmail, a.is_user as isUser',
         { title }
       )
     );
     
     const content = result.records[0]?.get('content') || null;
     const authorEmail = result.records[0]?.get('authorEmail') || null;
+    const isUser = result.records[0]?.get('isUser') || null;
+
     
-    return { content, authorEmail };
+    return { content, authorEmail, isUser };
   } catch(error) {
     console.error('Failed to fetch blog info:', error);
     throw new Error('Failed to fetch blog info');
@@ -33,13 +35,13 @@ export const GET = async (request) => {
       return new Response(JSON.stringify({ message: "Blog title is required" }), { status: 400 });
     }
     
-    const { content, authorEmail } = await getBlogData(title);
+    const { content, authorEmail, isUser } = await getBlogData(title);
     
     if (!content) {
       return new Response(JSON.stringify({ message: "Blog not found" }), { status: 404 });
     }
     
-    return new Response(JSON.stringify({ content: content, authorEmail: authorEmail }), { status: 200 });
+    return new Response(JSON.stringify({ content: content, authorEmail: authorEmail, isUser: isUser }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ message: "Internal server error" }), { status: 500 });
   }

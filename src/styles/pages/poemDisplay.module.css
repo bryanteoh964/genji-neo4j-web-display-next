@@ -1373,8 +1373,6 @@
 .evidenceTooltip {
   visibility: hidden;
   position: absolute;
-  top: 50%;
-  left: 100%;
   transform: translateY(-50%);
   padding: 12px 16px;
   background: rgba(191, 174, 147, 0.9);
@@ -1384,6 +1382,23 @@
   min-width: 300px;
   max-width: 400px;
   margin-left: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(158, 139, 106) transparent;
+}
+
+.evidenceTooltip::-webkit-scrollbar {
+  width: 6px;
+}
+
+.evidenceTooltip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.evidenceTooltip::-webkit-scrollbar-thumb {
+  background-color: #a69679;
+  border-radius: 3px;
 }
 
 .evidenceTooltip p {

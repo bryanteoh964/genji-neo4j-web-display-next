@@ -22,17 +22,36 @@ async function getBlogNames() {
   }
 }
 
+// need to avoid caching
 export const GET = async (request) => {
   try {
     const { titles } = await getBlogNames();
     
     if (!titles || titles.length === 0) {
-      return new Response(JSON.stringify({ message: "No blogs found" }), { status: 404 });
+      return new Response(JSON.stringify({ message: "No blogs found" }), { 
+        status: 404,
+        headers: {
+          'Cache-Control': 'no-store, max-age=0',
+          'Content-Type': 'application/json',
+        }
+      });
     }
     
-    return new Response(JSON.stringify({ titles: titles }), { status: 200 });
+    return new Response(JSON.stringify({ titles: titles }), { 
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+        'Content-Type': 'application/json',
+      }
+    });
   } catch (error) {
     console.error('Error:', error);
-    return new Response(JSON.stringify({ message: "Internal server error" }), { status: 500 });
+    return new Response(JSON.stringify({ message: "Internal server error" }), { 
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+        'Content-Type': 'application/json',
+      }
+    });
   }
 }

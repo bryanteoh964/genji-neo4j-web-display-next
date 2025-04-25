@@ -31,6 +31,7 @@ body {
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background-color: #737373;
 }
 
 body p,
@@ -57,15 +58,13 @@ html::-webkit-scrollbar {
 .main {
 	position: relative;
   	min-height: 100vh;
-	width: 1440px;
-	max-width: 1440px;
+	width: 100%;
 	margin: 0 auto;
   	background-color: #737373;
 }
 
 .bottom {
-	width: 1440px;
-	max-width: 1440px;
+	width: 100%;
 	margin: 0 auto;
 	min-height: 80vh;	
   	flex: 1;
@@ -73,8 +72,7 @@ html::-webkit-scrollbar {
 }
 
 .top {
-	width: 1440px;
-	max-width: 1440px;
+	width: 100%;
 	margin: 0 auto;
     background-color: #737373;
 }

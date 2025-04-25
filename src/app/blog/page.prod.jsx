@@ -38,7 +38,7 @@ const BlogPage = () => {
           setContent(blogData.content);
           
           // get author info
-          if (blogData.authorEmail) {
+          if (blogData.isUser === 'true' && blogData.authorEmail) {
             const apiUrl = `/api/user/getByEmail?email=${encodeURIComponent(blogData.authorEmail)}`;
             const authorRes = await fetch(apiUrl);
             const authorData = await authorRes.json();
@@ -66,7 +66,9 @@ const BlogPage = () => {
       const response = await fetch('/api/blog/getBlogList');
       const data = await response.json();
       const filteredTitles = data.titles.filter(title => 
-        !['About', 'Collaborate', 'Team Members', 'Genjipoems Blog', 'Sources', 'Privacy Policy', 'Terms of Service'].includes(title)
+        !['About', 'Collaborate', 'Team Members', 'Genjipoems Blog', 'Sources', 'Privacy Policy', 'Terms of Service',
+          'About Arthur Waley', 'About Dennis Washburn', 'About Edward Seidensticker', 'About Edwin Cranston', 'About Royall Tyler'
+        ].includes(title)
       );
       setBlogNames(filteredTitles);
     };

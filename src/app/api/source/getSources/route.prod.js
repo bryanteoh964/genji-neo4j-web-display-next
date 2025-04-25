@@ -7,7 +7,7 @@ async function getSourcesData() {
   try {
     const result = await session.readTransaction(tx => 
       tx.run(
-        'MATCH (s:Source) WHERE s.author IS NOT NULL RETURN s.title as title, s.author as author',
+        'MATCH (s:Source)<-[:AUTHOR_OF]-(a:People) WHERE s.on_source_page = "true" ORDER BY a.name RETURN s.title as title, a.name as author',
       )
     );
     
@@ -25,12 +25,25 @@ async function getSourcesData() {
   }
 }
 
+// need to avoid caching
 export const GET = async (request) => {
   try {
     const sources = await getSourcesData();
-    return new Response(JSON.stringify(sources), { status: 200 });
+    return new Response(JSON.stringify(sources), { 
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+        'Content-Type': 'application/json',
+      }
+    });
   } catch(error) {
     console.error('Failed to fetch sources:', error);
-    return new Response(JSON.stringify({ message: "Internal server error" }), { status: 500 });
+    return new Response(JSON.stringify({ message: "Internal server error" }), { 
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+        'Content-Type': 'application/json',
+      }
+    });
   }
 }
