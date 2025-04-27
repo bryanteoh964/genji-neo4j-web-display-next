@@ -284,7 +284,7 @@ export default function ChapterDetail({ name }) {
                           <div className={styles.resultWrapper}>
                             <div className={styles.resultWrapperChapter}>
                               <div className={styles.resultTitle}>
-                                {poem.chapterNum} {poem.chapterAbr}
+                                {poem.chapterNum}{poem.chapterAbr}
                               </div>
                               <div className={styles.resultTitle}>
                                 {poem.poemNum}

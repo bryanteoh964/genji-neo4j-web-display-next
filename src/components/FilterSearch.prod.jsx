@@ -1045,7 +1045,7 @@ const PoemSearch = () => {
               <div className={styles.resultWrapper}>
                 <div className={styles.resultWrapperChapter}>
                   <div className={styles.resultTitle}>
-                    {result.chapterNum} {result.chapterAbr}
+                    {result.chapterNum}{result.chapterAbr}
                   </div>
                   <div className={styles.resultTitle}>
                     {result.poemNum}
