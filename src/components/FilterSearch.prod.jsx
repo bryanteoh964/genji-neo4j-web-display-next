@@ -639,19 +639,19 @@ const PoemSearch = () => {
       }
     },
   };
-  
+
   useEffect(() => {
     handleSearch(query);
   }, [query, handleSearch]);
-
+  
   const handleInputChange = (e) => {
     setQuery(e.target.value);
     if (!e.target.value.trim()) setShowResults(false);
   };
-
+  
   // toggle control for chapter
   const [openSections, setOpenSections] = useState(new Set()); // Start with an empty Set to keep all sections closed
-
+  
   const toggleSection = (category) => {
     setOpenSections((prev) => {
       const newSet = new Set(prev);
@@ -663,47 +663,67 @@ const PoemSearch = () => {
       return newSet;
     });
   };
-
+  
+  // Auto-open sections when searching
+  useEffect(() => {
+    if (searchChapter.trim() !== '') {
+      setOpenSections(prev => new Set([...prev, 'chapterNum']));
+    }
+  }, [searchChapter]);
+  
+  useEffect(() => {
+    if (searchSpeaker.trim() !== '') {
+      setOpenSections(prev => new Set([...prev, 'speaker_name']));
+    }
+  }, [searchSpeaker]);
+  
+  useEffect(() => {
+    if (searchAddressee.trim() !== '') {
+      setOpenSections(prev => new Set([...prev, 'addressee_name']));
+    }
+  }, [searchAddressee]);
+  
   const renderFilters = () => {
     const selectedSpeakerGenders = Object.entries(
       filters.speaker_gender.options
     )
       .filter(([_, { checked }]) => checked)
       .map(([gender]) => gender);
-
+  
     const selectedAddresseeGenders = Object.entries(
       filters.addressee_gender.options
     )
       .filter(([_, { checked }]) => checked)
       .map(([gender]) => gender);
-
+  
     const filteredSpeakerOptions = Object.entries(
       filters.speaker_name.options
     ).filter(([name, { gender }]) => selectedSpeakerGenders.includes(gender));
-
+  
     const filteredAddresseeOptions = Object.entries(
       filters.addressee_name.options
     ).filter(([name, { gender }]) => selectedAddresseeGenders.includes(gender));
-
+  
     // Function to handle search input change for speaker names
     const handleSpeakerSearch = (e) => {
       setSearchSpeaker(e.target.value.toLowerCase());
     };
-
+  
     // Function to handle search input change for addressee names
     const handleAddresseeSearch = (e) => {
       setSearchAddressee(e.target.value.toLowerCase());
     };
-
-    // Function to filter names based on the search input
-    const filterNames = (names, searchTerm) => {
-      return names.filter((name) => name.toLowerCase().includes(searchTerm));
-    };
+  
     // Function to handle search input change for chapters
     const handleChapterSearch = (e) => {
       setSearchChapter(e.target.value.toLowerCase());
     };
-
+  
+    // Function to filter names based on the search input
+    const filterNames = (names, searchTerm) => {
+      return names.filter((name) => name.toLowerCase().includes(searchTerm));
+    };
+  
     // Function to filter chapters based on the search input (by name or number)
     const filterChapters = (chapters, searchTerm) => {
       return chapters.filter((chapterKey) => {
@@ -714,6 +734,21 @@ const PoemSearch = () => {
       });
     };
 
+    // Add this state for Genji's Age search
+    const [searchGenjiAge, setSearchGenjiAge] = useState('');
+
+    // Add this effect to auto-open Genji's Age section when searching
+    useEffect(() => {
+      if (searchGenjiAge.trim() !== '') {
+        setOpenSections(prev => new Set([...prev, 'genji_age']));
+      }
+    }, [searchGenjiAge]);
+
+    // Add this handler function for Genji's Age search
+    const handleGenjiAgeSearch = (e) => {
+      setSearchGenjiAge(e.target.value.toLowerCase());
+    };
+      
     return (
       <div className={styles.filterContainer}>
         <div className={styles.filterHeader}>
@@ -722,23 +757,309 @@ const PoemSearch = () => {
             CLEAR ALL
           </button>
         </div>
+        
+        {/* Keyword search at the top */}
         <div className={styles.searchArea}>
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          onFocus={() => setShowResults(true)}
-          placeholder="KEY WORD SEARCH"
-          className={styles.searchInput}
-        />
-      </div>
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={query}
+            onChange={handleInputChange}
+            onFocus={() => setShowResults(true)}
+            placeholder="KEY WORD SEARCH"
+            className={styles.keywordSearchInput}
+          />
+        </div>
+        
         <div className={styles.filterScroll}>
+          {/* Chapter Search Filter */}
+          <div className={styles.filterSection}>
+            <div
+              className={styles.filterSectionHeader}
+              onClick={() => toggleSection('chapterNum')}
+            >
+              <input
+                type="text"
+                placeholder="SEARCH CHAPTER"
+                value={searchChapter}
+                onChange={handleChapterSearch}
+                className={styles.searchInput}
+                onClick={(e) => e.stopPropagation()} // Prevent triggering the parent onClick
+              />
+              <span
+                className={`${styles.arrow} ${
+                  openSections.has('chapterNum') ? styles.arrowDown : ""
+                }`}
+              >
+                ▸
+              </span>
+            </div>
+            <div
+              className={`${styles.filterContent} ${
+                openSections.has('chapterNum') ? styles.expanded : ""
+              }`}
+            >
+              <div className={styles.chapterGrid}>
+                {filterChapters(
+                  Object.keys(filters.chapterNum.options),
+                  searchChapter
+                ).sort((a, b) => removeLeadingZero(a) - removeLeadingZero(b)).map((key, index) => (
+                  <Checkbox
+                    key={key}
+                    checked={filters.chapterNum.options[key]?.checked}
+                    onChange={() => handleFilterChange('chapterNum', key)}
+                    className={styles.chapterOption}
+                    style={{
+                      marginLeft: index !== 0 ? "0px" : "0px",
+                    }}
+                  >
+                    <div className={styles.chapterText}>
+                      <span>{removeLeadingZero(key)}</span>
+                      <span>{getChapterName(key)}</span>
+                    </div>
+                  </Checkbox>
+                ))}
+              </div>
+            </div>
+          </div>
+    
+          {/* Speaker Search Filter */}
+          <div className={styles.filterSection}>
+            <div
+              className={styles.filterSectionHeader}
+              onClick={() => toggleSection('speaker_name')}
+            >
+              <input
+                type="text"
+                placeholder="SEARCH SPEAKER"
+                value={searchSpeaker}
+                onChange={handleSpeakerSearch}
+                className={styles.searchInput}
+                onClick={(e) => e.stopPropagation()} // Prevent triggering the parent onClick
+              />
+              <span
+                className={`${styles.arrow} ${
+                  openSections.has('speaker_name') ? styles.arrowDown : ""
+                }`}
+              >
+                ▸
+              </span>
+            </div>
+            <div
+              className={`${styles.filterContent} ${
+                openSections.has('speaker_name') ? styles.expanded : ""
+              }`}
+            >
+              {/* Only show gender filters if search is empty */}
+              {searchSpeaker.trim() === '' && (
+                <>
+                  <div
+                    className={styles.speakerGenderFilters}
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {Object.entries(
+                      filters.speaker_gender.options
+                    ).map(([gender, { checked }]) => (
+                      <Checkbox
+                        key={gender}
+                        checked={checked}
+                        onChange={() =>
+                          handleFilterChange(
+                            "speaker_gender",
+                            gender
+                          )
+                        }
+                        className={styles.speakerGenderCheckbox}
+                      >
+                        {gender.charAt(0).toUpperCase() +
+                          gender.slice(1)}
+                      </Checkbox>
+                    ))}
+                  </div>
+                  <hr className={styles.divider} />
+                </>
+              )}
+              
+              {/* Filtered speaker names */}
+              <div className={styles.filterCheckboxContainer}>
+                {filterNames(
+                  filteredSpeakerOptions.map(
+                    ([key]) => key
+                  ),
+                  searchSpeaker
+                ).map((key) => (
+                  <Checkbox
+                    key={key}
+                    checked={
+                      filters.speaker_name.options[key]
+                        ?.checked
+                    }
+                    onChange={() =>
+                      handleFilterChange(
+                        "speaker_name",
+                        key
+                      )
+                    }
+                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                    style={{ marginLeft: "0px" }}
+                  >
+                    {key}
+                  </Checkbox>
+                ))}
+              </div>
+            </div>
+          </div>
+    
+          {/* Addressee Search Filter */}
+          <div className={styles.filterSection}>
+            <div
+              className={styles.filterSectionHeader}
+              onClick={() => toggleSection('addressee_name')}
+            >
+              <input
+                type="text"
+                placeholder="SEARCH ADDRESSEE"
+                value={searchAddressee}
+                onChange={handleAddresseeSearch}
+                className={styles.searchInput}
+                onClick={(e) => e.stopPropagation()} // Prevent triggering the parent onClick
+              />
+              <span
+                className={`${styles.arrow} ${
+                  openSections.has('addressee_name') ? styles.arrowDown : ""
+                }`}
+              >
+                ▸
+              </span>
+            </div>
+            <div
+              className={`${styles.filterContent} ${
+                openSections.has('addressee_name') ? styles.expanded : ""
+              }`}
+            >
+              {/* Only show gender filters if search is empty */}
+              {searchAddressee.trim() === '' && (
+                <>
+                  <div
+                    className={styles.addresseeGenderFilters}
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {Object.entries(
+                      filters.addressee_gender.options
+                    ).map(([gender, { checked }]) => (
+                      <Checkbox
+                        key={gender}
+                        checked={checked}
+                        onChange={() =>
+                          handleFilterChange(
+                            "addressee_gender",
+                            gender
+                          )
+                        }
+                        className={styles.addresseeGenderCheckbox}
+                      >
+                        {gender.charAt(0).toUpperCase() +
+                          gender.slice(1)}
+                      </Checkbox>
+                    ))}
+                  </div>
+                  <hr className={styles.divider} />
+                </>
+              )}
+              
+              {/* Filtered addressee names */}
+              <div className={styles.filterCheckboxContainer}>
+                {filterNames(
+                  filteredAddresseeOptions.map(
+                    ([key]) => key
+                  ),
+                  searchAddressee
+                ).map((key) => (
+                  <Checkbox
+                    key={key}
+                    checked={
+                      filters.addressee_name.options[key]
+                        ?.checked
+                    }
+                    onChange={() =>
+                      handleFilterChange(
+                        "addressee_name",
+                        key
+                      )
+                    }
+                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                    style={{ marginLeft: "0px" }}
+                  >
+                    {key}
+                  </Checkbox>
+                ))}
+              </div>
+            </div>
+          </div>
+    
+          {/* Genji's Age Search Filter */}
+          <div className={styles.filterSection}>
+            <div
+              className={styles.filterSectionHeader}
+              onClick={() => toggleSection('genji_age')}
+            >
+              <input
+                type="text"
+                placeholder="SEARCH GENJI'S AGE"
+                value={searchGenjiAge}
+                onChange={handleGenjiAgeSearch}
+                className={styles.searchInput}
+                onClick={(e) => e.stopPropagation()} // Prevent triggering the parent onClick
+              />
+              <span
+                className={`${styles.arrow} ${
+                  openSections.has('genji_age') ? styles.arrowDown : ""
+                }`}
+              >
+                ▸
+              </span>
+            </div>
+            <div
+              className={`${styles.filterContent} ${
+                openSections.has('genji_age') ? styles.expanded : ""
+              }`}
+            >
+              <div className={styles.filterOptions}>
+                {Object.entries(filters.genji_age.options)
+                  .filter(([age]) => age.toLowerCase().includes(searchGenjiAge.toLowerCase()))
+                  .map(([age, { checked }], index) => (
+                    <Checkbox
+                      key={age}
+                      checked={checked}
+                      onChange={() => handleFilterChange('genji_age', age)}
+                      className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                      style={{ marginLeft: index !== 0 ? "0px" : "0px" }}
+                    >
+                      {age}
+                    </Checkbox>
+                  ))}
+              </div>
+            </div>
+          </div>
+    
+          {/* Other Filter Sections */}
           {Object.entries(filters).map(
             ([category, { label, options }]) =>
-              // Skip the speaker_gender and addressee_gender categories
+              // Skip the already handled categories and gender categories
               category !== "speaker_gender" &&
-              category !== "addressee_gender" && (
+              category !== "addressee_gender" &&
+              category !== "chapterNum" &&
+              category !== "speaker_name" &&
+              category !== "addressee_name" &&
+              category !== "genji_age" && (
                 <div key={category} className={styles.filterSection}>
                   <div
                     className={styles.filterSectionHeader}
@@ -758,206 +1079,25 @@ const PoemSearch = () => {
                       openSections.has(category) ? styles.expanded : ""
                     }`}
                   >
-                    {category === "chapterNum" ? (
-                      <>
-                        <input
-                          type="text"
-                          placeholder="Search Chapter"
-                          value={searchChapter}
-                          onChange={handleChapterSearch}
-                          className={styles.searchChapterFilterInput}
-                        />
-                        <div className={styles.chapterGrid}>
-                          {filterChapters(
-                            Object.keys(options),
-                            searchChapter
-                          ).sort((a, b) => removeLeadingZero(a) - removeLeadingZero(b)).map((key, index) => (
-                            <Checkbox
-                              key={key}
-                              checked={options[key]?.checked}
-                              onChange={() => handleFilterChange(category, key)}
-                              className={styles.chapterOption}
-                              style={{
-                                marginLeft: index !== 0 ? "0px" : "0px",
-                              }}
-                            >
-                              <div className={styles.chapterText}>
-                                <span>{removeLeadingZero(key)}</span>
-                                <span>{getChapterName(key)}</span>
-                              </div>
-                            </Checkbox>
-                          ))}
-                        </div>
-                      </>
-                    ) : (
-                      <div className={styles.filterOptions}>
-                        {category !== "season" &&
-                          category !== "poetic_tech" &&
-                          category !== "misc" && (
-                            <>
-                              {category === "speaker_name" && (
-                                <>
-                                  <div
-                                    className={styles.speakerGenderFilters}
-                                    style={{
-                                      display: "flex",
-                                      gap: "5px",
-                                      marginBottom: "10px",
-                                    }}
-                                  >
-                                    {Object.entries(
-                                      filters.speaker_gender.options
-                                    ).map(([gender, { checked }]) => (
-                                      <Checkbox
-                                        key={gender}
-                                        checked={checked}
-                                        onChange={() =>
-                                          handleFilterChange(
-                                            "speaker_gender",
-                                            gender
-                                          )
-                                        }
-                                        className={styles.speakerGenderCheckbox}
-                                      >
-                                        {gender.charAt(0).toUpperCase() +
-                                          gender.slice(1)}
-                                      </Checkbox>
-                                    ))}
-                                  </div>
-                                  <hr className={styles.divider} />
-                                  {/* Search bar for speaker names */}
-                                  <input
-                                    type="text"
-                                    placeholder="Search Speaker"
-                                    value={searchSpeaker}
-                                    onChange={handleSpeakerSearch}
-                                    className={styles.searchFilterInput}
-                                  />
-                                  {/* Filtered speaker names */}
-                                  <div
-                                    className={styles.filterCheckboxContainer}
-                                  >
-                                    {filterNames(
-                                      filteredSpeakerOptions.map(
-                                        ([key]) => key
-                                      ),
-                                      searchSpeaker
-                                    ).map((key) => (
-                                      <Checkbox
-                                        key={key}
-                                        checked={
-                                          filters.speaker_name.options[key]
-                                            ?.checked
-                                        }
-                                        onChange={() =>
-                                          handleFilterChange(
-                                            "speaker_name",
-                                            key
-                                          )
-                                        }
-                                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                                        style={{ marginLeft: "0px" }}
-                                      >
-                                        {key}
-                                      </Checkbox>
-                                    ))}
-                                  </div>
-                                </>
-                              )}
-                              {category === "addressee_name" && (
-                                <>
-                                  <div
-                                    className={styles.addresseeGenderFilters}
-                                    style={{
-                                      display: "flex",
-                                      gap: "5px",
-                                      marginBottom: "10px",
-                                    }}
-                                  >
-                                    {Object.entries(
-                                      filters.addressee_gender.options
-                                    ).map(([gender, { checked }]) => (
-                                      <Checkbox
-                                        key={gender}
-                                        checked={checked}
-                                        onChange={() =>
-                                          handleFilterChange(
-                                            "addressee_gender",
-                                            gender
-                                          )
-                                        }
-                                        className={
-                                          styles.addresseeGenderCheckbox
-                                        }
-                                      >
-                                        {gender.charAt(0).toUpperCase() +
-                                          gender.slice(1)}
-                                      </Checkbox>
-                                    ))}
-                                  </div>
-                                  <hr className={styles.divider} />
-                                  {/* Search bar for addressee names */}
-                                  <input
-                                    type="text"
-                                    placeholder="Search Addressee"
-                                    value={searchAddressee}
-                                    onChange={handleAddresseeSearch}
-                                    className={styles.searchFilterInput}
-                                  />
-                                  {/* Filtered addressee names */}
-                                  <div
-                                    className={styles.filterCheckboxContainer}
-                                  >
-                                    {filterNames(
-                                      filteredAddresseeOptions.map(
-                                        ([key]) => key
-                                      ),
-                                      searchAddressee
-                                    ).map((key) => (
-                                      <Checkbox
-                                        key={key}
-                                        checked={
-                                          filters.addressee_name.options[key]
-                                            ?.checked
-                                        }
-                                        onChange={() =>
-                                          handleFilterChange(
-                                            "addressee_name",
-                                            key
-                                          )
-                                        }
-                                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                                        style={{ marginLeft: "0px" }}
-                                      >
-                                        {key}
-                                      </Checkbox>
-                                    ))}
-                                  </div>
-                                </>
-                              )}
-                            </>
-                          )}
-                        {category !== "speaker_name" &&
-                          category !== "addressee_name" &&
-                          Object.entries(options).map(
-                            ([key, { checked }], index) => (
-                              <Checkbox
-                                key={key}
-                                checked={checked}
-                                onChange={() =>
-                                  handleFilterChange(category, key)
-                                }
-                                className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                                style={{
-                                  marginLeft: index !== 0 ? "0px" : "0px",
-                                }}
-                              >
-                                {key}
-                              </Checkbox>
-                            )
-                          )}
-                      </div>
-                    )}
+                    <div className={styles.filterOptions}>
+                      {Object.entries(options).map(
+                        ([key, { checked }], index) => (
+                          <Checkbox
+                            key={key}
+                            checked={checked}
+                            onChange={() =>
+                              handleFilterChange(category, key)
+                            }
+                            className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                            style={{
+                              marginLeft: index !== 0 ? "0px" : "0px",
+                            }}
+                          >
+                            {key}
+                          </Checkbox>
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
               )
@@ -966,7 +1106,7 @@ const PoemSearch = () => {
       </div>
     );
   };
-
+  
   const renderSummary = (paraphrase, translator) => {
     if (!paraphrase) return <p>No Paraphrase Available</p>;
   
