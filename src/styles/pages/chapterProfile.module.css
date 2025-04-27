@@ -104,6 +104,15 @@
     text-transform: uppercase;
 }
 
+.nicknameSmall {
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-top: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 130%;
+    font-weight: 600;
+}
+
 
 .title {
     text-align: center;
