@@ -40,9 +40,8 @@
   margin: 0;
   font-family: 'Lexend', sans-serif;
   line-height: 10px;
-  letter-spacing: -0.05rem;
+  letter-spacing: 0.8px;
 }
-
 .keywordSearchInput:focus {
   outline: none;
   /* border-color: #1890ff;

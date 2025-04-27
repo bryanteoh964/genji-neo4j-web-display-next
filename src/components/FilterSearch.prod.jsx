@@ -71,6 +71,7 @@ const PoemSearch = () => {
   const [searchSpeaker, setSearchSpeaker] = useState("");
   const [searchAddressee, setSearchAddressee] = useState("");
   const [searchChapter, setSearchChapter] = useState("");
+  const [searchGenjiAge, setSearchGenjiAge] = useState('');
 
   const ageOptions = {};
   for (let age = 1; age <= 75; age++) {
@@ -162,7 +163,7 @@ const PoemSearch = () => {
     const speakers = new Set();
     const speakerGenders = new Map();
     const addresseeGenders = new Map();
-    const genjiAges = new Set(); // Add this
+    const genjiAges = new Set();
   
     results.forEach((result) => {
       if (result.chapterNum) chapters.add(result.chapterNum);
@@ -212,7 +213,6 @@ const PoemSearch = () => {
           {}
         ),
       },
-      // Add this for Genji ages
       genji_age: {
         ...prev.genji_age,
         label: "Genji's Age",
@@ -228,7 +228,6 @@ const PoemSearch = () => {
   }, [results]);
 
   // keyword search
-  // Modified handleSearch function to handle combined addressees
   const handleSearch = useCallback(
     debounce(async (searchQuery) => {
       setIsLoading(true);
@@ -253,9 +252,13 @@ const PoemSearch = () => {
           params.append("gender", selectedGenders.join(","));
         }
 
-        const response = await fetch(
-          `/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`
-        );
+        // const response = await fetch(
+        //   `/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`
+        // );
+        const response = queryToUse === "=#="
+          ? await fetch("/poems/default_poems.json")
+          : await fetch(`/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`);
+
 
         if (!response.ok) {
           throw new Error("Not found.");
@@ -264,6 +267,12 @@ const PoemSearch = () => {
         const data = await response.json();
         console.log("API Response:", data);
 
+        // If the query is =#=, set results to data otherwise process the data
+        if (queryToUse === "=#=") {
+          setResults(data);
+          setShowResults(true);
+          return; // Early return if fetching all poems
+        }
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map((result) => ({
@@ -382,23 +391,42 @@ const PoemSearch = () => {
   }, [filters, results]);
 
   const handleClearFilters = () => {
+    // Reset filters to their default state (keeping gender options)
     const clearedFilters = Object.keys(filters).reduce((acc, filterKey) => {
-      const clearedOptions = Object.entries(filters[filterKey].options).reduce((optAcc, [optionKey, _]) => {
-        const shouldDefaultTrue =
-          (filterKey === 'speaker_gender' || filterKey === 'addressee_gender') &&
-          (optionKey === 'male' || optionKey === 'female' || optionKey === 'nonhuman');
-  
-        optAcc[optionKey] = { checked: shouldDefaultTrue };
+      const clearedOptions = Object.entries(filters[filterKey].options).reduce((optAcc, [optionKey, option]) => {
+        // Keep gender filters but set them to default values
+        const shouldDefaultTrue = (filterKey === 'speaker_gender' || filterKey === 'addressee_gender') && 
+                                 (optionKey === 'male' || optionKey === 'female' || optionKey === 'nonhuman');
+        
+        // Preserve the option but reset its checked status
+        optAcc[optionKey] = {
+          ...option, // Keep any other properties of the option
+          checked: shouldDefaultTrue
+        };
         return optAcc;
       }, {});
-  
-      acc[filterKey] = { ...filters[filterKey], options: clearedOptions };
+      
+      acc[filterKey] = {
+        ...filters[filterKey],
+        options: clearedOptions
+      };
       return acc;
     }, {});
-  
+    
     setFilters(clearedFilters);
-    setQuery(""); // Clear the keyword search input
-  };
+    
+    // Clear the keyword search input
+    setQuery("");
+    
+    // Clear all search inputs
+    setSearchSpeaker("");
+    setSearchAddressee("");
+    setSearchChapter("");
+    setSearchGenjiAge(""); // Now this will work
+    
+    // Close all dropdown sections
+    setOpenSections(new Set());
+  }
   
   const defaultChapterCounts = [
     9, 14, 2, 19, 25, 14, 17, 8, 24, 33, 4, 48, 30, 17, 6, 3, 9, 16, 10, 13, 16, 14, 6, 14, 8, 4, 2, 4, 9, 8, 21, 11, 20, 24, 18, 11, 8, 6, 26, 12, 26, 1, 4, 24, 13, 21, 31, 15, 24, 11, 22, 11, 28, 1,
@@ -616,7 +644,7 @@ const PoemSearch = () => {
     },
     plugins: {
       legend: {
-        display: false, // Keep this false since you're using custom legend
+        display: false,
       },
       tooltip: {
         callbacks: {
@@ -733,9 +761,6 @@ const PoemSearch = () => {
         );
       });
     };
-
-    // Add this state for Genji's Age search
-    const [searchGenjiAge, setSearchGenjiAge] = useState('');
 
     // Add this effect to auto-open Genji's Age section when searching
     useEffect(() => {
@@ -1106,7 +1131,7 @@ const PoemSearch = () => {
       </div>
     );
   };
-  
+
   const renderSummary = (paraphrase, translator) => {
     if (!paraphrase) return <p>No Paraphrase Available</p>;
   
@@ -1155,7 +1180,7 @@ const PoemSearch = () => {
     // Delay hiding to allow moving between tiles
     hoverTimeoutRef.current = setTimeout(() => {
       setHoveredItem(null);
-    }, 100); // Adjust delay as needed
+    }, 100);
   };
 
   const renderResults = () => (
