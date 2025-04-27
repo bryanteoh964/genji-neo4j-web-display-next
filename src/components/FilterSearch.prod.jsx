@@ -968,7 +968,7 @@ const PoemSearch = () => {
   };
 
   const renderSummary = (paraphrase, translator) => {
-    if (!paraphrase) return <p>No Summary Available</p>;
+    if (!paraphrase) return <p>No Paraphrase Available</p>;
   
     return (
       <div className={styles.summaryTranslation}>
@@ -1263,7 +1263,7 @@ const PoemSearch = () => {
 
               {/* SUMMARY */}
               <div className={styles.summaryTranslation}>
-                <h3 className={styles.summaryName}>POEM SUMMARY</h3>
+                <h3 className={styles.summaryName}>PARAPHRASE</h3>
                 {/* add paraphrase data as summary */}
                 {renderSummary(filteredResults[hoveredItem].paraphrase, "Paraphrase")}
               </div>

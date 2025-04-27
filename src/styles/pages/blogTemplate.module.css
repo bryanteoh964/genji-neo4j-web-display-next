@@ -409,6 +409,10 @@
 
 .analysisSources {
   width: 636px;
+  position: sticky;
+  top: 20px;
+  height: 400px;
+  padding-top: 10px;
 }
 
 .descriptionSources {
@@ -534,4 +538,49 @@
 .translationCard:nth-of-type(5) .translatorName {
   background-color: rgba(67, 104, 117, 0.66);
 }
+
+.sourcesScrollContainer {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #BFAE93 transparent;
+}
+
+.sourcesScrollContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sourcesScrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sourcesScrollContainer::-webkit-scrollbar-thumb {
+    background-color: #BFAE93;
+    border-radius: 3px;
+}
+
+.sourcesScrollContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #a69679;
+}
+
+.rightSideMembers {
+  width: 50%;
+  padding: 10px 20px 30px 20px;
+  background-color: #737373;
+  text-align: left;
+}
+
+.membersHeader {
+  font-size: 24px;
+  color: #ffffff;
+  margin: 10px 0 20px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: 0.04rem;
+  font-family: 'Lexend', sans-serif;
+  text-align: left;
+}
+
 

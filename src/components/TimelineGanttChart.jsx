@@ -58,7 +58,7 @@ function TimelineGanttChart({ data }) {
       const yearString = d3.timeFormat("%Y-%m")(d);
       return parseInt(yearString, 10).toString(); 
     })
-    .style('font-size', '16px')       // Make the text bigger
+    .style('font-size', '20px')       // Make the text bigger
     .style('font-weight', 'bold')    // Make the text bold
     .style('-webkit-filter', 'drop-shadow(-1px 1px 2px rgba(255, 255, 255, 1))')
     .style('filter', 'drop-shadow(-1px 1px 2px rgba(255, 255, 255, 1))');
@@ -74,8 +74,7 @@ function TimelineGanttChart({ data }) {
       .attr("cy", d => y(d.task) + y.bandwidth() / 2)
       .attr("cx", d => x(d.startDate))
       .attr("r", 12) // Increased radius for better interaction
-      .attr('fill', (d) => d.color)
-      .attr('stroke', 'rgb(0, 0, 0)')
+      .attr('fill', "white")  
       .style("cursor", "pointer")
       .style("opacity", 1)
       .style("transition", "opacity 0.3s ease")
@@ -91,7 +90,7 @@ function TimelineGanttChart({ data }) {
           .style("font-size", "20px");
       })
       .on('mouseout', function (event, d) {
-        d3.select(this).attr('fill', d.color);
+        d3.select(this).attr('fill', "white");
         tooltip.transition()
         .duration(500)
         .style("opacity", 0);
@@ -131,10 +130,10 @@ function TimelineGanttChart({ data }) {
             return d3.timeFormat("%b %d")(d).toString();
           }
         })
-        .style('font-size', '16px')       // Make the text bigger
+        .style('font-size', '20px')       // Make the text bigger 
         .style('font-weight', 'bold')    // Make the text bold
         .style('-webkit-filter', 'drop-shadow(-1px 1px 2px rgba(255, 255, 255, 1))')
-        .style('filter', 'drop-shadow(-1px 1px 2px rgba(255, 255, 255, 1))');
+        .style('filter', 'drop-shadow(-1px 1px 2px rgba(255, 255, 255, 1))')
   
       g.selectAll(".bar")
         .attr("x", d => newXScale(d.startDate))
@@ -149,8 +148,8 @@ function TimelineGanttChart({ data }) {
   }, [data]);
 
   return (
-    <svg ref={svgRef} width="1440" height="600" style={{backgroundImage: "url(/images/timeline_background.png)", backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundColor: 'rgba(255, 255, 255, 0.5)', 
-      backgroundBlendMode: 'overlay'}}></svg>
+    <svg ref={svgRef} width="1440" height="600" style={{ backgroundImage: "url(/images/timeline_background.png)", backgroundRepeat: 'no-repeat', backgroundSize: 'cover', 
+      backgroundBlendMode: 'overlay'}}></svg> 
   );
 }
 

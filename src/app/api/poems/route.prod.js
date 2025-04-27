@@ -8,9 +8,9 @@ async function getData (chapter, number){
 	//all the get method and return the db data
 	const queries = {
 
-		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style, g.Spoken as spoken, g.Written as written',
+		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style, g.Spoken as spoken, g.Written as written, g.evidence_for_spoken_or_written as spoken_or_written_evidence',
 		resHonkaInfo:  'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[n:ALLUDES_TO]->(h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source), (h)<-[:AUTHOR_OF]-(a:People), (h)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) where g.pnum ends with "' + number + '" return h.Honka as honka, h.Romaji as romaji, s.title as title, a.name as poet, r.order as order, p.name as translator, t.translation as translation, n.notes as notes',
-		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel',
+		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel, r.evidence as internal_allusion_evidence',
 		resPnum : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH (CASE WHEN "' + number + '" < 10 THEN \'0\' + toString("' + number + '") ELSE toString($number) END) RETURN g.pnum as pnum',
 		resTag : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:TAGGED_AS]->(t:Tag) where g.pnum ends with "' + number + '" return t.Type as type',
 		resType : 'match (t:Tag) return t.Type as type',
@@ -26,7 +26,7 @@ async function getData (chapter, number){
 		resPlaceOfReceipt: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:PLACE_OF_RECEIPT]->(place:Place) where g.pnum ends with "' + number + '" return place.name as placeOfReceipt, r.evidence as placeOfReceipt_evidence',
 		resGroup: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:IN_GROUP_OF]->(group:Group) where g.pnum ends with "' + number + '" match (otherPoems:Genji_Poem)-[:IN_GROUP_OF]->(group) where otherPoems.pnum <> g.pnum return otherPoems.pnum as groupMembers',
 		resReplyPoem: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:REPLY_TO]->(reply:Genji_Poem) where g.pnum ends with "' + number + '" return reply.pnum as replyPoem',
-		resFutherReading: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:DISCUSSED_IN]->(s:Source) where g.pnum ends with "' + number + '" return s.title as furtherReadings'
+		resFutherReading: 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:DISCUSSED_IN]->(s:Source), (s)<-[:AUTHOR_OF]-(a:People) where g.pnum ends with "' + number + '" return s.title as furtherReadings, a.name as author'
 	};
 
 	const result = {};
@@ -50,7 +50,7 @@ async function getData (chapter, number){
 		let delivery_style = result['res'].records[0]?.get('delivery_style') || null;
 		let spoken = result['res'].records[0]?.get('spoken') || null;
 		let written = result['res'].records[0]?.get('written') || null;
-		
+		let spoken_or_written_evidence = result['res'].records[0]?.get('spoken_or_written_evidence') || null;
 		
 		//for transtemp
 		let transTemp = result['res'].records.map(e => toNativeTypes(e.get('trans'))).map(e => [e.end.properties.name, e.segments[0].end.properties.translation, e.segments[1].start.properties.WaleyPageNum])
@@ -58,10 +58,14 @@ async function getData (chapter, number){
 		let sources = result['resHonkaInfo'].records.map(e => [Object.values(toNativeTypes(e.get('honka'))).join(''), Object.values(toNativeTypes(e.get('title'))).join(''), Object.values(toNativeTypes(e.get('romaji'))).join(''), Object.values(toNativeTypes(e.get('poet'))).join(''), Object.values(toNativeTypes(e.get('order'))).join(''), Object.values(toNativeTypes(e.get('translator'))).join(''), Object.values(toNativeTypes(e.get('translation'))).join(''), e.get('notes') !== null ? Object.values(toNativeTypes(e.get('notes'))).join('') : 'N/A'])
 		
 		//related
-		let related = new Set()
-		result['resRel'].records.map(e => toNativeTypes(e.get('rel'))).forEach(e => related.add([Object.values(e).join('')]))
-		related = Array.from(related).flat()
-		related = related.map(e => [e, true])
+
+		let relatedWithEvidence = []
+		result['resRel'].records.forEach(e => {
+			const pnum = toNativeTypes(e.get('rel'))
+			const evidence = e.get('internal_allusion_evidence')
+			relatedWithEvidence.push([Object.values(pnum).join(''), evidence])
+		})
+
 
 		//res tag
 		let tags = new Set()
@@ -136,16 +140,21 @@ async function getData (chapter, number){
 		replyPoems = replyPoems.map(e => [e, true])
 
 		// further reading
-		let furtherReadings = new Set()
-		result['resFutherReading'].records.map(e => {return toNativeTypes(e.get('furtherReadings'))}).forEach(e => {furtherReadings.add([Object.values(e).join('')])})
-		furtherReadings = Array.from(furtherReadings).flat()
-		furtherReadings = furtherReadings.map(e => [e, true])
+		let furtherReadings = []
+		result['resFutherReading'].records.forEach(e => {
+			const title = toNativeTypes(e.get('furtherReadings'))
+			const author = toNativeTypes(e.get('author'))
+			furtherReadings.push({
+				title: Object.values(title).join(''),
+				author: Object.values(author).join('')
+			})
+		})
 
 		const data = [
 						exchange, 
 						transTemp, 
 						sources, 
-						related, 
+						relatedWithEvidence,
 						tags, 
 						ls, 
 						pls, 
@@ -171,7 +180,9 @@ async function getData (chapter, number){
 						placeOfReceipt_evidence,
 						groupPoems,
 						replyPoems,
-						furtherReadings
+						furtherReadings,
+						spoken_or_written_evidence
+						
 					];
 
 		return (data);

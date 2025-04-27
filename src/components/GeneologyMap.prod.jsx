@@ -1038,7 +1038,7 @@ export default function GeneologyMap({l}) {
 			onClick={() => {disableMenu(); disableMenu2()}}
 			onDrop={(e) => dropCharacter(e)} onDragOver={(e) => allowDrop(e)}
         > 
-            <Controls />
+            {/* <Controls /> */} 
             <Background color="#aaa"/>
         </ReactFlow>
         </div>
