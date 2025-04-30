@@ -42,7 +42,7 @@ const BlogPage = () => {
                                     <div className={styles.loading}>Loading...</div>
                                 ) : (
                                     <>  
-                                        <FormatContent content={content} className={styles.descriptionText} />
+                                        <FormatContent content={content.split('---')[0]} className={styles.descriptionText} />
                                     </>
                                 )}
                             </div>
@@ -52,8 +52,13 @@ const BlogPage = () => {
 
                 <div className={styles.rightSideMembers}>
                     <h2 className={styles.membersHeader}>TEAM MEMBERS</h2>
-                    <FormatContent content={memberContent} className={styles.descriptionText} />
-                    
+                    {isLoading ? (
+                                    <div className={styles.loading}>Loading...</div>
+                                ) : (
+                                    <>  
+                                        <FormatContent content={content.split('---')[1]} className={styles.descriptionText} />
+                                    </>
+                                )}
                 </div>
             </div>
         </div>

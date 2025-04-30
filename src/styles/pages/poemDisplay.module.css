@@ -521,6 +521,16 @@
   line-height: 1.6;
 }
 
+.detailItem p a {
+  color: #ffffff;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.detailItem p a:hover {
+  opacity: 0.8;
+}
+
 .relatedPoemsContainer {
   display: flex;
   flex-wrap: wrap;

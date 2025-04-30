@@ -475,7 +475,7 @@ const PoemDisplay = ({ poemData }) => {
                             {/* no data shown if no data is available */}
                             {poemState.spoken && (
                                 <>
-                                    {poemState.spoken === 'no' ? (
+                                    {poemState.spoken === 'false' ? (
                                         <span className={styles.crossedOut}>spoken</span> 
                                     ) : (
                                         <span>spoken</span>
@@ -487,7 +487,7 @@ const PoemDisplay = ({ poemData }) => {
 
                             {poemState.written && (
                                 <>
-                                    {poemState.written === 'no' ? (
+                                    {poemState.written === 'false' ? (
                                         <span className={styles.crossedOut}>written</span> 
                                     ) : (
                                         <span>written</span>
@@ -698,13 +698,13 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 )}
 
-                                {(poemState.spoken === 'yes' || poemState.written === 'yes') && (
+                                {(poemState.spoken === 'true' || poemState.written === 'true') && (
                                     <div className={styles.detailItem}>
                                         <h3>SPOKEN OR WRITTEN</h3>
                                         <div className={styles.withEvidence}>
 
-                                            {poemState.spoken === 'yes'  && <FormatContent content={ 'Is spoken' } />}
-                                            {poemState.written === 'yes'  && <FormatContent content={ 'Is written' } />}
+                                            {poemState.spoken === 'true'  && <FormatContent content={ 'Is spoken' } />}
+                                            {poemState.written === 'true'  && <FormatContent content={ 'Is written' } />}
                                             
                                             {poemState.spoken_or_written_evidence && (
                                                 <div className={styles.evidenceContainer}>
@@ -846,7 +846,7 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>FURTHER READING</h3>
                                         {poemState.furtherReadings.map((furtherReading, idx) => (
-                                            <p key={idx}>{<FormatContent content={`${formatAuthorName(furtherReading.author)}, ${furtherReading.title}`}/>}</p>
+                                            <p key={idx}>{<FormatContent content={`${furtherReading.title}`}/>}</p>
                                         ))}
                                     </div>
                                 )}

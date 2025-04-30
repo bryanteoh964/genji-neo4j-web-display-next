@@ -110,9 +110,9 @@ const BlogPage = () => {
                           <a href={authorInfo.homepage} className={styles.author}>{authorInfo.name}</a>
                           <br/>
                           <br/>
-                          <h2 className={styles.translationsHeader}>FURTHER READINGS</h2>
+                          {sources && sources.length > 0 &&<h2 className={styles.translationsHeader}>FURTHER READINGS</h2>}
                           <div className={styles.sourcesScrollContainer}>
-                            {sources && sources.length > 0 ? (
+                            {sources && sources.length > 0 && (
                                 sources.map((source, index) => (
                                     <div key={index} className={styles.translationCard}>
                                         <div className={styles.translationContent}>
@@ -121,9 +121,7 @@ const BlogPage = () => {
                                         <span className={styles.translatorName} style={{backgroundColor: 'rgba(154, 152, 152, 0.66)'}}>{source.author}</span>
                                     </div>
                                 ))
-                            ) : (
-                                <div className={styles.noSources}>No further readings available</div>
-                            )}
+                            )} 
                           </div>
                       </>
                   )}

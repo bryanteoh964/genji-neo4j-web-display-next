@@ -87,35 +87,35 @@ const BlogPage = () => {
                         <div className={styles.translationContent}>
                            <FormatContent content={translatorsInfo[0].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>ARTHUR WALEY</a>
+                        <span className={styles.translatorName}>ARTHUR WALEY</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[1].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>EDWARD SEIDENSTICKER</a>
+                        <span className={styles.translatorName}>EDWARD SEIDENSTICKER</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[2].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>ROYALL TYLER</a>
+                        <span className={styles.translatorName}>ROYALL TYLER</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[3].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>DENNIS WASHBURN</a>
+                        <span className={styles.translatorName}>DENNIS WASHBURN</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[4].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>EDWARD CRANSTON</a>
+                        <span className={styles.translatorName}>EDWIN CRANSTON</span>
                     </div>
 
                     <br/>

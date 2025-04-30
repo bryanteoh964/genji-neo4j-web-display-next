@@ -7,7 +7,7 @@ async function getSourceData(blogTitle) {
   try {
     const result = await session.readTransaction(tx => 
       tx.run(
-        'MATCH (b:Blog {title: $title})-[:INCLUDED_IN]->(s:Source) OPTIONAL MATCH (s)<-[:AUTHOR_OF]-(a:People) ORDER BY a.name RETURN s.title as title, a.name as author',
+        'MATCH (b:Blog {title: $title})<-[:INCLUDED_IN]-(s:Source) OPTIONAL MATCH (s)<-[:AUTHOR_OF]-(a:People) ORDER BY s.title RETURN s.title as title, a.name as author',
         { title: blogTitle }
       )
     );
