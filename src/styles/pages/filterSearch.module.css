@@ -301,14 +301,12 @@
   z-index: 100;
 }
 
-.chapter {
-  color: var(--U-white, #FFF);
-  color: rgba(255, 255, 255, 0.8); /* white at 80% opacity */
+.active {
+  color: rgba(255, 255, 255, 0.8); /* Full white */
 }
 
-.age {
-  color: var(--genji-3-gold, #C49C3E);
-  color: rgba(196, 156, 62, 0.8); /* gold at 80% opacity */
+.inactive {
+  color: rgba(196, 156, 62, 0.8); /* Gold */
 }
 
 .filterOnlyResultsLabel {
@@ -450,7 +448,7 @@
 
 .resultContent {
   /* background-color: #c4b59c; */
-  padding: 7px 10px;
+  padding: 8px 10px;
   font-family: 'Arial', sans-serif;
   text-align: left;
   border-radius: 10px;
@@ -463,25 +461,25 @@
 
 .resultTitleSpeaker {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   text-transform: uppercase;
   line-height: 15.75px;
   letter-spacing: 0.32px;
   margin: 0px;
   padding: 0px;
-  min-height: 45px;
+  min-height: 32px;
   min-width: 100%;
   font-family: 'Sofia Sans Extra Condensed';
 }
 
 .resultTitleAddressee {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
   text-transform: uppercase;
   margin: 0px;
   line-height: 15.75px;
   letter-spacing: 0.32px;
-  min-height: 47px;
+  min-height: 32px;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -491,9 +489,10 @@
 }
 
 .resultTitle {
-  color: #e8e2d2;
-  font-size: 28px;
-  font-weight: bold;
+  color: #ffffff;
+  opacity: 0.70;
+  font-size: 32px;
+  font-weight: 600;
   margin: 0px;
   padding: 0px;
   line-height: 1;
@@ -505,14 +504,15 @@
 }
 
 .japaneseText {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   color: #4B4B4B;
   font-family: 'Noto Sans JP';
+  margin-bottom: -3px;
 }
 
 .romajiText {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   color: #4B4B4B;
   font-family: 'Noto Sans JP';
@@ -539,7 +539,7 @@
   letter-spacing: -0.05rem;
   text-align: left;
   width: 100%;
-  height: 60px;
+  height: 88px;
   justify-content: flex-end;
   align-items: flex-start;
   gap: 15px;
@@ -547,17 +547,19 @@
 }
 
 .resultPoemKanji {
-  color: #e8e2d2;
-  font-size: 26px;
+  color: #ffffff;
+  opacity: 0.5;
+  font-size: 28.5px;
   writing-mode: vertical-rl;
   text-orientation: upright;
   margin: 0px;
-  height: 90px;
+  height: 100px;
   display: block;
   line-height: 1;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.15em;
   font-weight: 500;
   font-family: 'Noto Sans JP';
+  margin-top: 1px;
 }
 
 .resultWrapperChapter {

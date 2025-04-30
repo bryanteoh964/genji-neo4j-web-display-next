@@ -502,13 +502,14 @@ const PoemSearch = () => {
         },
       },
       y: {
-        beginAtZero: true,
+       beginAtZero: true,
         stacked: false,
+        max: 50, // ✅ This forces Y-axis max to 60
         ticks: {
           display: false,
         },
         grid: {
-          display: false, // <-- This line removes horizontal grid lines
+          display: false,
         },
         border: {
           display: false,
@@ -1485,13 +1486,17 @@ const PoemSearch = () => {
                 </div>
                 <div className={styles.buttonContainer}>
                   <button
-                    className={`${styles.toggleButton} ${styles.chapter}`}
+                    className={`${styles.toggleButton} ${
+                      showByAge ? styles.inactive : styles.active
+                    }`}
                     onClick={() => setShowByAge(false)}
                   >
                     graph by <strong>chapter</strong>
                   </button>
                   <button
-                    className={`${styles.toggleButton} ${styles.age}`}
+                    className={`${styles.toggleButton} ${
+                      showByAge ? styles.active : styles.inactive
+                    }`}
                     onClick={() => setShowByAge(true)}
                   >
                     graph by <strong>Genji&apos;s age</strong>
