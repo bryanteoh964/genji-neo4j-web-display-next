@@ -17,9 +17,10 @@ h1.title {
 }
 
 .section_container {
+  position: relative; 
   margin: 0;
-  width: 100%;
-  max-height: 1080px;
+  max-width: 1400px;
+  max-height: 100%;
   text-align: center;
 }
 
@@ -35,6 +36,17 @@ h1.title {
 @media (max-width: 1700px) {
   .section_frame {
     display: flex;
-    justify-content: left;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1600px) {
+  .section_frame {
+    display: flex;
+    justify-content: center;
+  }
+
+  .section_container {
+    max-width: 1400px;
   }
 }

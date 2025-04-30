@@ -112,15 +112,18 @@ export default function ChapterDetail({ name }) {
         
         const data = await res.json();
         // console.log("Frontend received data:", data);
-        
-        setChapterData(data.chapter);
+
+        setChapterData({
+          ...data.chapter,
+          nicktitles: data.nicktitles || [],
+        });
         
         // Convert the poems object to an array if it's not already
         const poemsArray = data.poems ? 
           (Array.isArray(data.poems) ? data.poems : Object.values(data.poems)) : 
           [];
         
-        console.log("Poems array:", poemsArray);
+        // console.log("Poems array:", poemsArray);
         setPoems(poemsArray);
         
       } catch (err) {
@@ -194,7 +197,7 @@ export default function ChapterDetail({ name }) {
               ref={searchInputRef}
               type="text"
               className={styles.panelHeaderSearch}
-              placeholder="Search Chapters..."
+              placeholder="Search Chapters"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -244,6 +247,14 @@ export default function ChapterDetail({ name }) {
                   >
                     Chapter {chapterData.chapter_number} Summary
                   </span>
+
+                  {chapterData.nicktitles && Object.values(chapterData.nicktitles).length > 0 && (
+                    <div className={styles.nicknameSmall}>
+                      AKA: {Object.values(chapterData.nicktitles).join(', ')}
+                    </div>
+                  )}
+
+                  
                   <div className={styles.descriptionText}>
                     <p className={styles.descriptionPlaceholder}>
                         <i>Chapter summary not available at this time. Under construction.</i>
@@ -284,7 +295,7 @@ export default function ChapterDetail({ name }) {
                           <div className={styles.resultWrapper}>
                             <div className={styles.resultWrapperChapter}>
                               <div className={styles.resultTitle}>
-                                {poem.chapterNum} {poem.chapterAbr}
+                                {poem.chapterNum}{poem.chapterAbr}
                               </div>
                               <div className={styles.resultTitle}>
                                 {poem.poemNum}
