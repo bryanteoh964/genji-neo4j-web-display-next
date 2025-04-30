@@ -197,7 +197,7 @@ export default function ChapterDetail({ name }) {
               ref={searchInputRef}
               type="text"
               className={styles.panelHeaderSearch}
-              placeholder="Search Chapters..."
+              placeholder="Search Chapters"
               value={searchTerm}
               onChange={handleSearchChange}
             />

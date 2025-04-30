@@ -434,7 +434,7 @@ export default function CharacterDetail({ name }) {
                             ref={searchInputRef}
                             type="text"
                             className={styles.panelHeaderSearch}
-                            placeholder="Search Characters..."
+                            placeholder="Search Characters"
                             value={searchTerm}
                             onChange={handleSearchChange}
                         />

@@ -710,7 +710,14 @@ const PoemSearch = () => {
       setOpenSections(prev => new Set([...prev, 'addressee_name']));
     }
   }, [searchAddressee]);
-  
+
+  // Add this effect to auto-open Genji's Age section when searching
+  useEffect(() => {
+    if (searchGenjiAge.trim() !== '') {
+      setOpenSections(prev => new Set([...prev, 'genji_age']));
+    }
+  }, [searchGenjiAge]);
+
   const renderFilters = () => {
     const selectedSpeakerGenders = Object.entries(
       filters.speaker_gender.options
@@ -761,13 +768,6 @@ const PoemSearch = () => {
         );
       });
     };
-
-    // Add this effect to auto-open Genji's Age section when searching
-    useEffect(() => {
-      if (searchGenjiAge.trim() !== '') {
-        setOpenSections(prev => new Set([...prev, 'genji_age']));
-      }
-    }, [searchGenjiAge]);
 
     // Add this handler function for Genji's Age search
     const handleGenjiAgeSearch = (e) => {

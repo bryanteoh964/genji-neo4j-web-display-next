@@ -15,7 +15,7 @@ const Footer = () => {
         
         <div className={styles.footerCenter}>
           <Link href="/">
-            <span className={styles.footerLink}>www.Genjipoems.org</span>
+            <span className={styles.footerLink}>www.genjipoems.org</span>
           </Link>
         </div>
         

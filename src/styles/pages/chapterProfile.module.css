@@ -34,7 +34,7 @@
 .titleOverlay {
     position: absolute;
     top: 70px;
-    right: 335px;
+    right: 80px;
     width: 1440px;
     height: 100%;
     display: flex;
@@ -711,6 +711,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #9A9898;
 }
 
 .panelMedium {
@@ -726,13 +728,24 @@
 .panelHeaderSearch {
     font-size: 16px;
     font-weight: 600;
-    color: black;
+    color: #e2e1e1;
     text-transform: uppercase;
     margin: 0;
     font-family: 'Lexend', sans-serif;
     line-height: 10px;
     letter-spacing: 0.05rem;
     vertical-align: bottom;
+    background-color: transparent;
+    border: none;
+}
+
+.panelHeaderSearch::placeholder {
+    color: #9A9898;
+    opacity: 1; /* Optional: ensures consistent opacity across browsers */
+}
+
+.panelHeaderSearch:focus {
+    outline: none;
 }
 
 .toggleArrow {
@@ -761,6 +774,32 @@
     transition: all 0.25s ease-out;
     width: 100%;
     margin-top: 10px;
+}
+
+/* Scrollable list styles */
+.scrollableList {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: max-height 0.25s ease-out;
+  
+/* Firefox scrollbar */
+    scrollbar-width: 8px;
+    scrollbar-color: #9A9898 transparent;
+}
+
+/* Chrome, Safari scrollbar customization */
+.scrollableList::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollableList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollableList::-webkit-scrollbar-thumb {
+    background-color: #9A9898;
+    border-radius: 8px;
 }
 
 .scrollableList {

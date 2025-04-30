@@ -32,7 +32,7 @@
   border: none; /* Remove the border */
   border-radius: 0; /* Remove border radius */
   background-color: transparent; /* Make the background transparent */
-  border-bottom: 2px solid #9A9898; /* 🔥 bottom border */
+  border-bottom: 2px solid #9A9898;
   transition: all 0.3s ease;
   font-weight: 600;
   color: #e2e1e1;
@@ -47,6 +47,12 @@
   /* border-color: #1890ff;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); */
 }
+
+.keywordSearchInput::placeholder {
+  color: #9A9898;
+  opacity: 1; /* Optional: ensures consistent opacity across browsers */
+}
+
 
 .searchInput {
   width: 302px;
@@ -72,6 +78,11 @@
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); */
 }
 
+.searchInput::placeholder {
+  color: #9A9898;
+  opacity: 1; /* Optional: ensures consistent opacity across browsers */
+}
+
 /* main area */
 .mainContent {
   display: flex;
@@ -83,7 +94,7 @@
   flex: 0 0 340px;
   position: sticky;
   top: 20px;
-  height: 450px;
+  height: 825px;
   padding-top: 10px;
   /* left items */
 }
@@ -118,6 +129,27 @@
   padding: 0;
   width: 100%;
   height: 100%;
+
+  scrollbar-width: 8px;
+  scrollbar-color: #9A9898 transparent;
+}
+
+.filterScroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+.filterScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filterScroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+  min-height: 50px;
+}
+
+.filterScroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .filterSectionHeader {
@@ -127,7 +159,6 @@
   width: 320px;
   cursor: pointer;
   user-select: none;
-  color: green;
 }
 
 .filterLabel {
@@ -188,24 +219,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-
-.filterScroll::-webkit-scrollbar {
-  width: 3px;
-}
-
-.filterScroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.filterScroll::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.filterScroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 .filterSection {
@@ -1064,6 +1077,10 @@
 @media (max-width: 1440px) {
   .resultsArea {
     height: 445px;
+  }
+
+  .filterSidebar {
+    max-height: 445px;
   }
 }
 
