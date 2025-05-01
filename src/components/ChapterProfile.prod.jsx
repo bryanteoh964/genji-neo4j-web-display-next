@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/characterProfile.module.css'; // You might need to adjust this path
+import styles from '../styles/pages/chapterProfile.module.css'; // You might need to adjust this path
 
 // Helper function to remove leading zeros from chapter or poem numbers
 function removeLeadingZero(numStr) {
@@ -112,15 +112,18 @@ export default function ChapterDetail({ name }) {
         
         const data = await res.json();
         // console.log("Frontend received data:", data);
-        
-        setChapterData(data.chapter);
+
+        setChapterData({
+          ...data.chapter,
+          nicktitles: data.nicktitles || [],
+        });
         
         // Convert the poems object to an array if it's not already
         const poemsArray = data.poems ? 
           (Array.isArray(data.poems) ? data.poems : Object.values(data.poems)) : 
           [];
         
-        console.log("Poems array:", poemsArray);
+        // console.log("Poems array:", poemsArray);
         setPoems(poemsArray);
         
       } catch (err) {
@@ -173,7 +176,15 @@ export default function ChapterDetail({ name }) {
           alt="Chapter background"
         />
         <div className={styles.titleOverlay}>
-          <span className={styles.nameEnglish}>{chapterData.chapter_name}</span>
+          <div className={styles.titleContainer}>
+            <span className={styles.nameEnglish}>{chapterData.chapter_name}</span>
+            <span className={styles.chapterNumber}>
+              {chapterData.chapter_number.padStart(2, '0')}
+            </span>
+            <span className={styles.poemCount}>
+              {formattedPoems.length} {formattedPoems.length === 1 ? 'Poem' : 'Poems'}
+            </span>
+          </div>
           <span className={styles.nameJapanese}>{chapterData.kanji}</span>
         </div>
       </div>
@@ -186,7 +197,7 @@ export default function ChapterDetail({ name }) {
               ref={searchInputRef}
               type="text"
               className={styles.panelHeaderSearch}
-              placeholder="Search Chapters..."
+              placeholder="Search Chapters"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -231,11 +242,19 @@ export default function ChapterDetail({ name }) {
                 <div className={styles.descriptionContent}>
                   <span
                     style={{
-                      color: '#436875' // Using blue color for chapter descriptions
+                      color: 'White' // Using blue color for chapter descriptions
                     }}
                   >
-                    Chapter {chapterData.chapter_number}: {chapterData.chapter_name} {chapterData.kanji}
+                    Chapter {chapterData.chapter_number} Summary
                   </span>
+
+                  {chapterData.nicktitles && Object.values(chapterData.nicktitles).length > 0 && (
+                    <div className={styles.nicknameSmall}>
+                      AKA: {Object.values(chapterData.nicktitles).join(', ')}
+                    </div>
+                  )}
+
+                  
                   <div className={styles.descriptionText}>
                     <p className={styles.descriptionPlaceholder}>
                         <i>Chapter summary not available at this time. Under construction.</i>
@@ -276,7 +295,7 @@ export default function ChapterDetail({ name }) {
                           <div className={styles.resultWrapper}>
                             <div className={styles.resultWrapperChapter}>
                               <div className={styles.resultTitle}>
-                                {poem.chapterNum} {poem.chapterAbr}
+                                {poem.chapterNum}{poem.chapterAbr}
                               </div>
                               <div className={styles.resultTitle}>
                                 {poem.poemNum}
