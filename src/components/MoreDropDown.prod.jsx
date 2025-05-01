@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import styles from '../styles/pages/moreDropDown.module.css';
 
 const MoreDropDown = () => {
@@ -8,6 +9,8 @@ const MoreDropDown = () => {
 
     // Ref to reference the dropdown container element
     const dropdownRef = useRef(null);
+
+    const pathname = usePathname();
 
     // Toggles the dropdown open/close state
     const handleMenuClick = () => {
@@ -31,12 +34,33 @@ const MoreDropDown = () => {
         };
     }, []);
 
+    const isActive = (path) => {
+        if (path === '/') {
+            return pathname === path;
+        }
+        return pathname.startsWith(path);
+    };
+
+    const isAnyLinkActive = () => {
+        const paths = [
+            '/blog',
+            '/furtherReading',
+            '/characters/relationships',
+            '/characters/map',
+            '/characters/timeline'
+        ];
+        return paths.some(path => isActive(path));
+    };
+
     return (
         <div
             ref={dropdownRef}
             className={`${styles.moreDropdown} ${isOpen ? styles.open : ''}`}
         >
-            <button onClick={handleMenuClick} className={styles.moreButton}>
+            <button 
+                onClick={handleMenuClick} 
+                className={`${styles.moreButton} ${isAnyLinkActive() ? styles.active : ''}`}
+            >
                 more
             </button>
 
@@ -47,46 +71,57 @@ const MoreDropDown = () => {
 };
 
 const MoreOptions = ({ setIsOpen }) => {
+    const pathname = usePathname();
+
+    const isActive = (path) => {
+        if (path === '/') {
+            return pathname === path;
+        }
+        return pathname.startsWith(path);
+    };
+
     return (
         <div className={styles.moreOptions}>
-
-            <Link href="/blog" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            <Link 
+                href="/blog" 
+                className={`${styles.moreLink} ${isActive('/blog') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
                 blog
             </Link>
 
-            <Link href="/teamMembers" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                team members
+            <Link 
+                href="/furtherReading" 
+                className={`${styles.moreLink} ${isActive('/furtherReading') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                further reading
             </Link>
-
-            <Link href="/collaborate" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                collaborate
-            </Link>
-
-            <Link href="/Sources" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                sources & resources
-            </Link>
-
-            <Link href="/translators" className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                translators
-            </Link>
-
-            <Link href="/characters/relationships" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            
+            <Link 
+                href="/characters/relationships" 
+                className={`${styles.moreLink} ${isActive('/characters/relationships') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
                 relationships
             </Link>
 
-            <Link href="/characters/map" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            <Link 
+                href="/characters/map" 
+                className={`${styles.moreLink} ${isActive('/characters/map') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
                 map
             </Link>
 
-            <Link href="/characters/timeline" className={styles.moreLink} onClick={() => setIsOpen(false)}>
+            <Link 
+                href="/characters/timeline" 
+                className={`${styles.moreLink} ${isActive('/characters/timeline') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
                 timeline
             </Link>
 
-            <Link href="https://docs.google.com/forms/d/e/1FAIpQLScY8ZrN5JlW-GJoeOWuJ9l4LPOwSViTMQBfEAJc4Z1O3ahK2w/viewform?usp=header" 
-                  target="_blank"
-                  className={styles.moreLink} onClick={() => setIsOpen(false)}>
-                report an error/bug
-            </Link>
         </div>
     );
 };

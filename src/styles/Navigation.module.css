@@ -42,7 +42,7 @@
 
 .logo {
     position: relative;
-    top: -5px;
+    top: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,7 +68,7 @@
     text-decoration: none;
     font-size: 18px;
     font-weight: 600;
-    color: #c49c3e;
+    color: #EDB940;
     line-height: 150%;
     letter-spacing: 0.1em;
     vertical-align: middle;
@@ -82,6 +82,12 @@
     margin: 0;
     white-space: nowrap;
     margin-top: 20px;
+}
+
+.navLinks a.active, 
+.navLinks span.active,
+.dropdownWrapper > div > span.active {
+    color: #ffffff;
 }
 
 .navLinks a.characterLink,

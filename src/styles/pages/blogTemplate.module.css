@@ -540,7 +540,7 @@
 }
 
 .sourcesScrollContainer {
-    max-height: 400px;
+    max-height: 1000px;
     overflow-y: auto;
     padding-right: 16px;
     scrollbar-width: thin;

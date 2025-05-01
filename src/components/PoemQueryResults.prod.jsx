@@ -11,6 +11,43 @@ import PoemNavigation from './PoemNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
+const EvidenceDropdown = ({ content, evidence }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    if (!evidence) {
+        return (
+            <div className={styles.evidenceContent}>
+                {typeof content === 'string' ? (
+                    <FormatContent content={content} />
+                ) : (
+                    content
+                )}
+            </div>
+        );
+    }
+
+    return (
+        <div className={styles.evidenceDropdown}>
+            <div 
+                className={styles.evidenceContent}
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+                {typeof content === 'string' ? (
+                    <FormatContent content={content} />
+                ) : (
+                    content
+                )}
+                <span className={`${styles.evidenceToggle} ${isExpanded ? styles.expanded : ''}`}>
+                    ▼
+                </span>
+            </div>
+            <div className={`${styles.evidencePanel} ${isExpanded ? styles.expanded : ''}`}>
+                <FormatContent content={evidence} />
+            </div>
+        </div>
+    );
+};
+
 const PoemDisplay = ({ poemData }) => {
 
     const [poemState, setPoemState] = useState({
@@ -475,7 +512,7 @@ const PoemDisplay = ({ poemData }) => {
                             {/* no data shown if no data is available */}
                             {poemState.spoken && (
                                 <>
-                                    {poemState.spoken === 'no' ? (
+                                    {poemState.spoken === 'false' ? (
                                         <span className={styles.crossedOut}>spoken</span> 
                                     ) : (
                                         <span>spoken</span>
@@ -487,7 +524,7 @@ const PoemDisplay = ({ poemData }) => {
 
                             {poemState.written && (
                                 <>
-                                    {poemState.written === 'no' ? (
+                                    {poemState.written === 'false' ? (
                                         <span className={styles.crossedOut}>written</span> 
                                     ) : (
                                         <span>written</span>
@@ -609,18 +646,10 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>SEASON IN NARRATIVE</h3>
                                         <div className={styles.withEvidence}>
-                                            <FormatContent content={poemState.season} />
-                                            {poemState.season_evidence && (
-                                                <div className={styles.evidenceContainer}>
-                                                    <FontAwesomeIcon 
-                                                        icon={faInfoCircle} 
-                                                        className={styles.infoIcon}
-                                                    />
-                                                    <div className={styles.evidenceTooltip}>
-                                                        <FormatContent content={poemState.season_evidence} />
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <EvidenceDropdown 
+                                                content={poemState.season}
+                                                evidence={poemState.season_evidence}
+                                            />
                                         </div>
                                     </div>
                                 )}
@@ -662,18 +691,10 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>COMPOSED AT</h3>
                                         <div className={styles.withEvidence}>
-                                            <FormatContent content={poemState.placeOfComp} />
-                                            {poemState.placeOfComp_evidence && (
-                                                <div className={styles.evidenceContainer}>
-                                                    <FontAwesomeIcon 
-                                                        icon={faInfoCircle} 
-                                                        className={styles.infoIcon}
-                                                    />
-                                                    <div className={styles.evidenceTooltip}>
-                                                        <FormatContent content={poemState.placeOfComp_evidence} />
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <EvidenceDropdown 
+                                                content={poemState.placeOfComp}
+                                                evidence={poemState.placeOfComp_evidence}
+                                            />
                                         </div>
                                     </div>
                                 )}
@@ -682,41 +703,27 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>RECEIVED AT</h3>
                                         <div className={styles.withEvidence}>
-                                            <FormatContent content={poemState.placeOfReceipt} />
-                                            {poemState.placeOfReceipt_evidence && (
-                                                <div className={styles.evidenceContainer}>
-                                                    <FontAwesomeIcon 
-                                                        icon={faInfoCircle} 
-                                                        className={styles.infoIcon}
-                                                    />
-                                                    <div className={styles.evidenceTooltip}>
-                                                        <FormatContent content={poemState.placeOfReceipt_evidence} />
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <EvidenceDropdown 
+                                                content={poemState.placeOfReceipt}
+                                                evidence={poemState.placeOfReceipt_evidence}
+                                            />
                                         </div>
                                     </div>
                                 )}
 
-                                {(poemState.spoken === 'yes' || poemState.written === 'yes') && (
+                                {(poemState.spoken === 'true' || poemState.written === 'true') && (
                                     <div className={styles.detailItem}>
                                         <h3>SPOKEN OR WRITTEN</h3>
                                         <div className={styles.withEvidence}>
-
-                                            {poemState.spoken === 'yes'  && <FormatContent content={ 'Is spoken' } />}
-                                            {poemState.written === 'yes'  && <FormatContent content={ 'Is written' } />}
-                                            
-                                            {poemState.spoken_or_written_evidence && (
-                                                <div className={styles.evidenceContainer}>
-                                                    <FontAwesomeIcon 
-                                                        icon={faInfoCircle} 
-                                                        className={styles.infoIcon}
-                                                    />
-                                                    <div className={styles.evidenceTooltip}>
-                                                        <FormatContent content={poemState.spoken_or_written_evidence} />
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <EvidenceDropdown 
+                                                content={
+                                                    <>
+                                                        {poemState.spoken === 'true'  && <FormatContent content={ 'Is spoken' } />}
+                                                        {poemState.written === 'true'  && <FormatContent content={ 'Is written' } />}
+                                                    </>
+                                                }
+                                                evidence={poemState.spoken_or_written_evidence}
+                                            />
                                         </div>
                                     </div>
                                 )}
@@ -776,30 +783,23 @@ const PoemDisplay = ({ poemData }) => {
                                 {poemState.relWithEvidence && poemState.relWithEvidence.length > 0 && (
                                     <div className={styles.detailItem}>
                                         <h3>INTERNAL ALLUSION</h3>
-                                            <div className={styles.relatedPoemsContainer}>
-                                                {poemState.relWithEvidence.map((rel, idx) => (
-                                                <div key={idx} className={styles.relatedPoemItem}>
-                                                    <a 
-                                                        href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
-                                                        className={styles.relatedPoemLink}
-                                                    >
-                                                        {rel[0]} 
-                                                    </a>
-                                            
-                                                    {rel[1] && (
-                                                        <div className={styles.evidenceContainer}>
-                                                            <FontAwesomeIcon 
-                                                                icon={faInfoCircle} 
-                                                                className={styles.infoIcon}
-                                                            />
-                                                            <div className={styles.evidenceTooltip}>
-                                                                <FormatContent content={rel[1]} />
-                                                            </div>
-                                                        </div>
-                                                    )}
+                                        <div className={styles.allusionContainer}>
+                                            {poemState.relWithEvidence.map((rel, idx) => (
+                                                <div key={idx} className={styles.allusionItem}>
+                                                    <EvidenceDropdown 
+                                                        content={
+                                                            <a 
+                                                                href={`/poems/${parseInt(rel[0].substring(0, 2), 10)}/${parseInt(rel[0].substring(4, 6), 10)}`}
+                                                                className={styles.relatedPoemLink}
+                                                            >
+                                                                {rel[0]}
+                                                            </a>
+                                                        }
+                                                        evidence={rel[1]}
+                                                    />
                                                 </div>
-                                                ))}
-                                            </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
 
@@ -846,7 +846,7 @@ const PoemDisplay = ({ poemData }) => {
                                     <div className={styles.detailItem}>
                                         <h3>FURTHER READING</h3>
                                         {poemState.furtherReadings.map((furtherReading, idx) => (
-                                            <p key={idx}>{<FormatContent content={`${formatAuthorName(furtherReading.author)}, ${furtherReading.title}`}/>}</p>
+                                            <p key={idx}>{<FormatContent content={`${furtherReading.title}`}/>}</p>
                                         ))}
                                     </div>
                                 )}
