@@ -26,6 +26,8 @@ async function getSourcesData() {
 }
 
 // need to avoid caching
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request) => {
   try {
     const sources = await getSourcesData();
