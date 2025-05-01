@@ -48,7 +48,7 @@
     color: #2d2d2d;
     margin-bottom: 2rem;
     text-align: center;
-    font-weight: 400;
+    font-weight: 600;
     font-family: "Yu Mincho", "MS Mincho", serif;
     letter-spacing: 0.05em;
     line-height: 1.8;
@@ -85,16 +85,16 @@
     overflow: hidden;
     font-family: "Yu Mincho", "MS Mincho", serif;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 1rem;
     line-height: 1.8;
     text-align: center;
     color: #2d2d2d;
 }
 
-.notice p {
+.notice p{
     font-size: 1.1rem;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0 0 1.5rem 0;
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -120,6 +120,7 @@
 
 .termsSection {
     margin: 2rem 0;
+    font-family: "Yu Mincho", "MS Mincho", serif;
 }
 
 .checkboxContainer {

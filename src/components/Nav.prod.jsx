@@ -3,18 +3,20 @@
 import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import styles from '../styles/Navigation.module.css';
 import MoreDropDown from './MoreDropDown.prod';
+import AboutDropDown from './AboutDropDown.prod';
 import { SignIn } from './auth/signin-button.prod';
 import NotificationIcon from './NotificationIcon.prod';
 import { useSession } from 'next-auth/react';
 import LogoSVG from '../../public/images/genji_logo.svg';
 
-
 const Navigation = () => {
     const [graph, setGraph] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { data: session } = useSession();
+    const pathname = usePathname();
 
     useEffect(() => {
         const fetchCharacterData = async () => {
@@ -32,6 +34,13 @@ const Navigation = () => {
         fetchCharacterData();
     }, []);
 
+    const isActive = (path) => {
+        if (path === '/') {
+            return pathname === path;
+        }
+        return pathname.startsWith(path);
+    };
+
     return (
         <div className={styles.navFrame}>
             <div className={styles.navContainer}>
@@ -41,7 +50,6 @@ const Navigation = () => {
                         <div className={styles.logo}>
                             <LogoSVG width={240} height={80} />
                         </div>
-
                     </Link>
                 </div>
                 
@@ -49,18 +57,35 @@ const Navigation = () => {
                 <div className={styles.navLinksWrapper}>
                     <nav className={styles.navLinks}>
                         {/* Poem Search */}
-                        <Link href="/search/search-by-keyword">poem search</Link>
+                        <Link 
+                            href="/search/search-by-keyword" 
+                            className={isActive('/search') ? styles.active : ''}
+                        >
+                            poem search
+                        </Link>
                         
                         {/* Characters Dropdown */}
-                        <Link href="/characters">characters</Link>
+                        <Link 
+                            href="/characters" 
+                            className={isActive('/characters') ? styles.active : ''}
+                        >
+                            characters
+                        </Link>
                         
                         {/* Chapters Dropdown */}
-                        <Link href="/chapters">chapters</Link>
+                        <Link 
+                            href="/chapters" 
+                            className={isActive('/chapters') ? styles.active : ''}
+                        >
+                            chapters
+                        </Link>
 
                         {/* More Dropdown */}
                         <MoreDropDown />
                         
-                        <Link href="/about">about</Link>
+                        {/* About Dropdown */}
+                        <AboutDropDown />
+
                     </nav>
 
                     <div className={styles.userControls}>

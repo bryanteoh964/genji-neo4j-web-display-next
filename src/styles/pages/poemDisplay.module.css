@@ -396,7 +396,7 @@
 }
 
 .analysisPanel {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   position: relative;
 }
 
@@ -463,7 +463,7 @@
   max-height: 1000px; 
   visibility: visible;
   opacity: 1;
-  padding: 10px 0 20px 0;
+  padding: 0px 0 0px 0;
   overflow-y: auto;
   transition: 
     max-height 0.35s ease-in, 
@@ -502,23 +502,24 @@
 }
 
 .detailItem {
-  margin-bottom: 15px;
-  padding-bottom: 15px;
+  margin-top: 25px;
+  padding-bottom: 0px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .detailItem h3 {
-  font-size: 0.8rem;
+  font-size: 16px;
+  font-family: "Lexend", sans-serif;
   color: #aaa;
   margin: 0 0 8px 0;
   text-transform: uppercase;
-  font-weight: 600;
+  text-decoration: underline;
+  font-weight: 500;
   text-align: left;
 }
 
 .detailItem p {
   margin: 0 0 10px 0;
-  line-height: 1.6;
 }
 
 .detailItem p a {
@@ -531,39 +532,52 @@
   opacity: 0.8;
 }
 
+.relatedPoemItem {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.relatedPoemItem:last-child {
+    margin-bottom: 0;
+}
+
 .relatedPoemsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .relatedPoemLink {
-  display: inline-block;
-  padding: 3px 8px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  text-decoration: none;
-  color: #ddd;
-  font-size: 0.8rem;
-  transition: background-color 0.2s;
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    text-decoration: none;
+    color: #ddd;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
 }
 
 .relatedPoemLink:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.allusionContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .allusionItem {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    margin-bottom: 8px;
 }
 
 .allusionItem:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* Right side - Translations */
@@ -1357,7 +1371,6 @@
 
 .translationItem .translationText {
   font-size: 16px;
-  line-height: 1.4;
   gap: 10px;
   margin-left: 10px;
 }
@@ -1366,11 +1379,86 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
 
 .evidenceContainer {
   position: relative;
   display: inline-block;
+}
+
+.evidenceDropdown {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.evidenceContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-family: 'Lexend', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.evidenceToggle {
+  color: #888;
+  font-size: 0.8rem;
+  transition: transform 0.2s ease-out;
+  margin-left: 0px;
+  margin-bottom: 5px;
+}
+
+.evidenceToggle.expanded {
+  transform: rotate(180deg);
+}
+
+.evidencePanel {
+  color: #ffffff;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 5px 16px;
+  margin-top: 0px;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+  display: none;
+  transform-origin: top;
+  transition: all 0.3s ease-out;
+}
+
+.evidencePanel.expanded {
+  display: block;
+}
+
+.evidencePanel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.evidencePanel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.evidencePanel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.evidencePanel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.evidencePanel p {
+  font-size: 16px !important;
+  line-height: 1.5;
+  white-space: normal;
+  margin: 0;
 }
 
 .infoIcon {
