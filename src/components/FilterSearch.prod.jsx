@@ -436,6 +436,7 @@ const PoemSearch = () => {
     return acc;
   }, {});
 
+
   const filteredChapterList = useMemo(() => {
     return Object.keys(defaultChapterCounts)
       .sort((a, b) => parseInt(a) - parseInt(b))
@@ -446,6 +447,7 @@ const PoemSearch = () => {
         return { chapterNum, count };
       });
   }, [filteredResults]);
+
 
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
