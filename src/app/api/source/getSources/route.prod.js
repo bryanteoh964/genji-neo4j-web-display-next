@@ -7,7 +7,7 @@ async function getSourcesData() {
   try {
     const result = await session.readTransaction(tx => 
       tx.run(
-        'MATCH (s:Source)<-[:AUTHOR_OF]-(a:People) WHERE s.on_source_page = "true" ORDER BY a.name RETURN s.title as title, a.name as author',
+        'MATCH (s:Source)<-[:AUTHOR_OF]-(a:People) WHERE s.on_source_page = "true" ORDER BY s.title RETURN s.title as title, a.name as author',
       )
     );
     
@@ -26,6 +26,8 @@ async function getSourcesData() {
 }
 
 // need to avoid caching
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request) => {
   try {
     const sources = await getSourcesData();

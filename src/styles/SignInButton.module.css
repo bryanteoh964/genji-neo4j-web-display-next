@@ -13,7 +13,7 @@
 .userLink {
   font-family: 'Lexend', sans-serif;
   text-decoration: none;
-  color: #c49c3e;
+  color: #EDB940;
   font-weight: 600;
   font-size: 18px;
   transition: color 0.3s ease;
@@ -21,7 +21,8 @@
   margin-right: 20px;
 }
 
-.userLink:hover {
+.userLink:hover,
+.userLink.active {
   color: #ffffff;
 }
 
@@ -48,6 +49,10 @@
 
 .signInButton:hover {
   transform: translateY(-1px);
+}
+
+.signInButton.active {
+  color: #ffffff;
 }
 
 .button {

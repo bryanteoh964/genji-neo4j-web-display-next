@@ -87,55 +87,36 @@ const BlogPage = () => {
                         <div className={styles.translationContent}>
                            <FormatContent content={translatorsInfo[0].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>ARTHUR WALEY</a>
+                        <span className={styles.translatorName}>ARTHUR WALEY</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[1].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>EDWARD SEIDENSTICKER</a>
+                        <span className={styles.translatorName}>EDWARD SEIDENSTICKER</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[2].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>ROYALL TYLER</a>
+                        <span className={styles.translatorName}>ROYALL TYLER</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[3].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>DENNIS WASHBURN</a>
+                        <span className={styles.translatorName}>DENNIS WASHBURN</span>
                     </div>
 
                     <div className={styles.translationCard}>
                         <div className={styles.translationContent}>
                             <FormatContent content={translatorsInfo[4].info}/>
                         </div>
-                        <a href="/translators" className={styles.translatorName}>EDWARD CRANSTON</a>
+                        <span className={styles.translatorName}>EDWIN CRANSTON</span>
                     </div>
-
-                    <br/>
-                    {/* sources section */}
-                    <h2 className={styles.translationsHeader}>OTHER SOURCES + RELATED ARTICLES</h2>
-
-                    {isLoading ? (
-                        <div className={styles.loading}>Loading...</div>
-                    ) : (
-                        <div className={styles.sourcesScrollContainer}>
-                            {sources.map((source, index) => (
-                                <div key={index} className={styles.translationCard}>
-                                    <div className={styles.translationContent}>
-                                        <FormatContent content={source.title}/>
-                                    </div>
-                                    <span className={styles.translatorName} style={{backgroundColor: 'rgba(154, 152, 152, 0.66)'}}>{source.author}</span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

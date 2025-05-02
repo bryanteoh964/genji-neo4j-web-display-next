@@ -23,6 +23,8 @@ async function getBlogNames() {
 }
 
 // need to avoid caching
+export const dynamic = 'force-dynamic';
+
 export const GET = async (request) => {
   try {
     const { titles } = await getBlogNames();
