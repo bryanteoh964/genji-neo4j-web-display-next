@@ -436,6 +436,15 @@ const PoemSearch = () => {
     return acc;
   }, {});
 
+  const filteredChapterList = Object.keys(defaultChapterCounts)
+  .sort((a, b) => a - b) // Ensure proper order: '01', '02', ...
+  .map((chapterNum) => {
+    const count = filteredResults.reduce((sum, poem) => {
+      return poem.chapterNum === chapterNum ? sum + 1 : sum;
+    }, 0);
+    return { chapterNum, count };
+  });
+
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
     const originalCounts = { ...defaultChapterCounts };
@@ -1464,8 +1473,14 @@ const PoemSearch = () => {
         />
       </div>
 
-
-
+      <div className={styles.chapterCountBar}>
+        {filteredChapterList.map(({ chapterNum, count }) => (
+          <div key={chapterNum} className={styles.chapterCell}>
+            {count > 0 ? count.toString().padStart(2, '0') : ''}
+          </div>
+        ))}
+      </div>
+      
       <div className={styles.mainContent}>
         <aside className={styles.filterSidebar}>{renderFilters()}</aside>
 

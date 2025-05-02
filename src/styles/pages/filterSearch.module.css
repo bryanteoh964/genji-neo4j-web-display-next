@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Monomaniac+One:wght@400&display=swap');
 
 .fullBackgroundImage {
   position: absolute;
@@ -305,6 +305,28 @@
 
 .inactive {
   color: #EDB940; /* Gold */
+}
+
+.chapterCountBar {
+  position: absolute;
+  top: 465px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  left: 140.5px;
+}
+
+.chapterCell {
+  text-align: center;
+  font-size: 12.5px;
+  font-family: 'Monomaniac One';
+  color: white;
+  width: 20px; /* Fixed width for each cell */
+  margin-right: 2.33px; /* Consistent spacing between cells */
+  line-height: 1;
 }
 
 .filterOnlyResultsLabel {
