@@ -504,7 +504,6 @@ const PoemSearch = () => {
       y: {
        beginAtZero: true,
         stacked: false,
-        max: 50, // ✅ This forces Y-axis max to 60
         ticks: {
           display: false,
         },
@@ -1453,9 +1452,10 @@ const PoemSearch = () => {
       <div
         className={styles.chartContainer}
         style={{
-          top: showByAge ? '106px' : '98px',
+          top: showByAge ? '33px' : '98px',
           left: showByAge ? '54.3%' : '53.6%',
           width: showByAge ? '1230px' : '1253px',
+          height: showByAge ? '413px' : '340px',
         }}
       >
         <Bar
