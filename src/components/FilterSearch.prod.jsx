@@ -436,14 +436,7 @@ const PoemSearch = () => {
     return acc;
   }, {});
 
-  const filteredChapterList = Object.keys(defaultChapterCounts)
-  .sort((a, b) => parseInt(a) - parseInt(b)) // Convert strings to integers for proper numeric sorting
-  .map((chapterNum) => {
-    const count = filteredResults.reduce((sum, poem) => {
-      return poem.chapterNum === chapterNum ? sum + 1 : sum;
-    }, 0);
-    return { chapterNum, count };
-  });
+
 
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
