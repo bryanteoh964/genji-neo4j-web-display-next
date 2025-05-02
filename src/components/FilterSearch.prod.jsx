@@ -437,6 +437,17 @@ const PoemSearch = () => {
   }, {});
 
 
+  const filteredChapterList = useMemo(() => {
+    return Object.keys(defaultChapterCounts)
+      .sort((a, b) => parseInt(a) - parseInt(b))
+      .map((chapterNum) => {
+        const count = filteredResults.reduce((sum, poem) => {
+          return poem.chapterNum === chapterNum ? sum + 1 : sum;
+        }, 0);
+        return { chapterNum, count };
+      });
+  }, [filteredResults]);
+
 
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
