@@ -522,7 +522,7 @@
 
 .resultTitleSpeaker {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
     text-transform: uppercase;
     line-height: 15.75px;
     letter-spacing: 0.32px;
@@ -535,7 +535,7 @@
   
 .resultTitleAddressee {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
     text-transform: uppercase;
     margin: 0px;
     line-height: 15.75px;

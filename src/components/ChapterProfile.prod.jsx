@@ -170,22 +170,22 @@ export default function ChapterDetail({ name }) {
   return (
     <div className={styles.characterProfilePage}>
       <div className={styles.heroSection}>
-        <img
+        <div
           className={styles.fullBackgroundImage}
-          src="/images/chapter_banner2.png"
-          alt="Chapter background"
-        />
-        <div className={styles.titleOverlay}>
-          <div className={styles.titleContainer}>
-            <span className={styles.nameEnglish}>{chapterData.chapter_name}</span>
-            <span className={styles.chapterNumber}>
-              {chapterData.chapter_number.padStart(2, '0')}
-            </span>
-            <span className={styles.poemCount}>
-              {formattedPoems.length} {formattedPoems.length === 1 ? 'Poem' : 'Poems'}
-            </span>
+          style={{ backgroundImage: "url('/images/chapter_banner2.png')" }}
+        >
+          <div className={styles.titleOverlay}>
+            <div className={styles.titleContainer}>
+              <span className={styles.nameEnglish}>{chapterData.chapter_name}</span>
+              <span className={styles.chapterNumber}>
+                {chapterData.chapter_number.padStart(2, '0')}
+              </span>
+              <span className={styles.poemCount}>
+                {formattedPoems.length} {formattedPoems.length === 1 ? 'Poem' : 'Poems'}
+              </span>
+            </div>
+            <span className={styles.nameJapanese}>{chapterData.kanji}</span>
           </div>
-          <span className={styles.nameJapanese}>{chapterData.kanji}</span>
         </div>
       </div>
 

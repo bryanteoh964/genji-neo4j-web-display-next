@@ -59,7 +59,6 @@ async function getChapterData(name) {
       const poems = toNativeTypes(record.get('poems'));
       const nicktitles = toNativeTypes(record.get('nicktitles'));
 
-      // Return chapter data with additional nicktitles
       return { chapter, poems, nicktitles };
     } else {
       console.log(`No data found for chapter: ${name}`);
