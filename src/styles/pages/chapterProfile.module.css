@@ -21,6 +21,8 @@
     width: 100%;
     height: 501px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 .fullBackgroundImage {
@@ -29,13 +31,12 @@
     background-size: cover;
     background-position: center;
     z-index: 1;
-}
+  }  
 
 .titleOverlay {
-    position: absolute;
-    top: 70px;
-    right: 80px;
-    width: 1440px;
+    padding-top: 70px;
+    padding-right: 95px;
+    max-width: 1440px;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -567,7 +568,7 @@
 
 .resultTitleSpeaker {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
     text-transform: uppercase;
     line-height: 15.75px;
     letter-spacing: 0.32px;
@@ -580,7 +581,7 @@
   
 .resultTitleAddressee {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
     text-transform: uppercase;
     margin: 0px;
     line-height: 15.75px;

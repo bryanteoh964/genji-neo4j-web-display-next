@@ -1453,7 +1453,7 @@ const PoemSearch = () => {
         className={styles.chartContainer}
         style={{
           top: showByAge ? '33px' : '98px',
-          left: showByAge ? '54.4%' : '53.8%',
+          left: showByAge ? '54.4%' : '53.7%',
           width: showByAge ? '1230px' : '1253px',
           height: showByAge ? '413px' : '340px',
         }}

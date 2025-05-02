@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/characterBaseProfile.module.css'; // Can reuse or rename
+import styles from '../styles/pages/chapterBaseProfile.module.css'; // Can reuse or rename
 
 export default function ChaptersListPage() {
   const [chapters, setChapters] = useState([]);
