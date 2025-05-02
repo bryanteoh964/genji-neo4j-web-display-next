@@ -472,7 +472,7 @@ const PoemSearch = () => {
           label: 'Original Poems per Chapter',
           data: labels.map((label) => originalCounts[label] || 0),
           backgroundColor: labels.map(getBackgroundColor), // Apply dynamic backgroundColor
-          barPercentage: 0.8, // Make the bars slightly narrower
+          barPercentage: 0.6, // Make the bars slightly narrower
           categoryPercentage: 0.8, // Adjust spacing between bars
           order: 2, // Render this dataset first
         },
@@ -480,7 +480,7 @@ const PoemSearch = () => {
           label: 'Filtered Poems per Chapter',
           data: labels.map((label) => filteredCounts[label] || 0),
           backgroundColor: 'rgba(255, 255, 255, .9)', // White for filtered data
-          barPercentage: 0.8, // Make the filtered bars slightly wider
+          barPercentage: 0.6, // Make the filtered bars slightly wider
           categoryPercentage: 0.8, // Ensure filtered bars fully cover original bars
           order: 1, // Render this dataset second (on top of original bars)
         },
@@ -598,7 +598,7 @@ const PoemSearch = () => {
           label: 'Original Poems per Age',
           data: labels.map((label) => originalCounts[label] || 0),
           backgroundColor: labels.map(getBackgroundColor), // Apply dynamic color
-          barPercentage: 0.4,
+          barPercentage: 0.5,
           categoryPercentage: 1,
           order: 2,
         },
@@ -606,7 +606,7 @@ const PoemSearch = () => {
           label: 'Filtered Poems per Age',
           data: labels.map((label) => filteredCounts[label] || 0),
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          barPercentage: 0.4,
+          barPercentage: 0.5,
           categoryPercentage: 1,
           order: 1,
         },
@@ -1453,7 +1453,7 @@ const PoemSearch = () => {
         className={styles.chartContainer}
         style={{
           top: showByAge ? '33px' : '98px',
-          left: showByAge ? '54.3%' : '53.6%',
+          left: showByAge ? '54.4%' : '53.8%',
           width: showByAge ? '1230px' : '1253px',
           height: showByAge ? '413px' : '340px',
         }}
