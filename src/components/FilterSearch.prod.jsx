@@ -436,6 +436,15 @@ const PoemSearch = () => {
     return acc;
   }, {});
 
+  const filteredChapterList = Object.keys(defaultChapterCounts)
+  .sort((a, b) => a - b) // Ensure proper order: '01', '02', ...
+  .map((chapterNum) => {
+    const count = filteredResults.reduce((sum, poem) => {
+      return poem.chapterNum === chapterNum ? sum + 1 : sum;
+    }, 0);
+    return { chapterNum, count };
+  });
+
   const chapterData = useMemo(() => {
     // Start with the default counts for all chapters
     const originalCounts = { ...defaultChapterCounts };
@@ -472,7 +481,7 @@ const PoemSearch = () => {
           label: 'Original Poems per Chapter',
           data: labels.map((label) => originalCounts[label] || 0),
           backgroundColor: labels.map(getBackgroundColor), // Apply dynamic backgroundColor
-          barPercentage: 0.8, // Make the bars slightly narrower
+          barPercentage: 0.6, // Make the bars slightly narrower
           categoryPercentage: 0.8, // Adjust spacing between bars
           order: 2, // Render this dataset first
         },
@@ -480,7 +489,7 @@ const PoemSearch = () => {
           label: 'Filtered Poems per Chapter',
           data: labels.map((label) => filteredCounts[label] || 0),
           backgroundColor: 'rgba(255, 255, 255, .9)', // White for filtered data
-          barPercentage: 0.8, // Make the filtered bars slightly wider
+          barPercentage: 0.6, // Make the filtered bars slightly wider
           categoryPercentage: 0.8, // Ensure filtered bars fully cover original bars
           order: 1, // Render this dataset second (on top of original bars)
         },
@@ -504,7 +513,6 @@ const PoemSearch = () => {
       y: {
        beginAtZero: true,
         stacked: false,
-        max: 50, // ✅ This forces Y-axis max to 60
         ticks: {
           display: false,
         },
@@ -599,7 +607,7 @@ const PoemSearch = () => {
           label: 'Original Poems per Age',
           data: labels.map((label) => originalCounts[label] || 0),
           backgroundColor: labels.map(getBackgroundColor), // Apply dynamic color
-          barPercentage: 0.4,
+          barPercentage: 0.5,
           categoryPercentage: 1,
           order: 2,
         },
@@ -607,7 +615,7 @@ const PoemSearch = () => {
           label: 'Filtered Poems per Age',
           data: labels.map((label) => filteredCounts[label] || 0),
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
-          barPercentage: 0.4,
+          barPercentage: 0.5,
           categoryPercentage: 1,
           order: 1,
         },
@@ -1453,9 +1461,10 @@ const PoemSearch = () => {
       <div
         className={styles.chartContainer}
         style={{
-          top: showByAge ? '106px' : '98px',
-          left: showByAge ? '54.3%' : '53.6%',
+          top: showByAge ? '33px' : '98px',
+          left: showByAge ? '54.4%' : '53.7%',
           width: showByAge ? '1230px' : '1253px',
+          height: showByAge ? '413px' : '340px',
         }}
       >
         <Bar
@@ -1464,8 +1473,14 @@ const PoemSearch = () => {
         />
       </div>
 
-
-
+      <div className={styles.chapterCountBar}>
+        {filteredChapterList.map(({ chapterNum, count }) => (
+          <div key={chapterNum} className={styles.chapterCell}>
+            {count > 0 ? count.toString().padStart(2, '0') : ''}
+          </div>
+        ))}
+      </div>
+      
       <div className={styles.mainContent}>
         <aside className={styles.filterSidebar}>{renderFilters()}</aside>
 

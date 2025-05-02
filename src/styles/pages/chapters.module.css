@@ -1,0 +1,15 @@
+.section_frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: #737373;
+}
+
+.section_container {
+    position: relative;
+    margin: 0;
+    max-width: 1440px;
+    max-height: 100%;
+    text-align: center;
+}
