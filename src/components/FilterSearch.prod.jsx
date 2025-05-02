@@ -437,7 +437,7 @@ const PoemSearch = () => {
   }, {});
 
   const filteredChapterList = Object.keys(defaultChapterCounts)
-  .sort((a, b) => a - b) // Ensure proper order: '01', '02', ...
+  .sort((a, b) => parseInt(a) - parseInt(b)) // Convert strings to integers for proper numeric sorting
   .map((chapterNum) => {
     const count = filteredResults.reduce((sum, poem) => {
       return poem.chapterNum === chapterNum ? sum + 1 : sum;
