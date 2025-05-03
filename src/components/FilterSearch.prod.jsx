@@ -1477,13 +1477,15 @@ const PoemSearch = () => {
         />
       </div>
 
-      <div className={styles.chapterCountBar}>
-        {filteredChapterList.map(({ chapterNum, count }) => (
-          <div key={chapterNum} className={styles.chapterCell}>
-            {count > 0 ? count.toString().padStart(2, '0') : ''}
-          </div>
-        ))}
-      </div>
+      {!showByAge && (
+        <div className={styles.chapterCountBar}>
+          {filteredChapterList.map(({ chapterNum, count }) => (
+            <div key={chapterNum} className={styles.chapterCell}>
+              {count > 0 ? count.toString().padStart(2, '0') : ''}
+            </div>
+          ))}
+        </div>
+      )}
       
       <div className={styles.mainContent}>
         <aside className={styles.filterSidebar}>{renderFilters()}</aside>
