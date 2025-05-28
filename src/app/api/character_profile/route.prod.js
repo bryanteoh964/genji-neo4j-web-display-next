@@ -39,37 +39,51 @@ async function getCharacterData(name) {
     const query = `
       MATCH (c:Character)
       WHERE toLower(c.name) = toLower($name)
+
+      // Related characters
       OPTIONAL MATCH (c)-[r1]->(related:Character)
-      OPTIONAL MATCH (poem:Genji_Poem)<-[r2:ADDRESSEE_OF|MESSENGER_OF|SPEAKER_OF]-(c)
-      OPTIONAL MATCH (poem)-[:INCLUDED_IN]->(chapter:Chapter)
-      OPTIONAL MATCH (poem)<-[:SPEAKER_OF]-(speaker:Character)
-      OPTIONAL MATCH (poem)<-[:ADDRESSEE_OF]-(addressee:Character)
-      // NEW: Match nicknames
+
+      // Nicknames
       OPTIONAL MATCH (c)-[:AKA]->(nickname:Nickname)
-      WITH c, related, r1, poem, chapter, speaker, addressee, nickname
-      WHERE poem IS NOT NULL OR related IS NOT NULL
+
       WITH c,
-      collect(DISTINCT {name: related.name, relationship: type(r1), gender: related.gender}) as relatedCharacters,
-      collect(DISTINCT {
-        pnum: poem.pnum,
-        Japanese: poem.Japanese,
-        Romaji: poem.Romaji,
-        speaker_name: COALESCE(speaker.name, ""),
-        speaker_gender: COALESCE(speaker.gender, ""),
-        addressee_name: COALESCE(addressee.name, ""),
-        addressee_gender: COALESCE(addressee.gender, ""),
-        chapter_number: chapter.chapter_number
-      }) as unsortedPoems,
-      collect(DISTINCT nickname.nickname) AS nicknames
+          collect(DISTINCT {name: related.name, relationship: type(r1), gender: related.gender}) AS relatedCharacters,
+          collect(DISTINCT nickname.nickname) AS nicknames
+
+      // Subquery: sorted poems (ascending)
+      CALL {
+        WITH c
+        MATCH (poem:Genji_Poem)<-[r2:ADDRESSEE_OF|MESSENGER_OF|SPEAKER_OF]-(c)
+        OPTIONAL MATCH (poem)-[:INCLUDED_IN]->(chapter:Chapter)
+        OPTIONAL MATCH (poem)<-[:SPEAKER_OF]-(speaker:Character)
+        OPTIONAL MATCH (poem)<-[:ADDRESSEE_OF]-(addressee:Character)
+        WHERE poem IS NOT NULL AND poem.pnum IS NOT NULL AND chapter.chapter_number IS NOT NULL
+        WITH poem, chapter.chapter_number AS chapNum,
+            speaker, addressee,
+            toInteger(apoc.text.regexGroups(poem.pnum, '\\d+$')[0][0]) AS pnumInt
+        ORDER BY chapNum ASC, pnumInt ASC
+        RETURN collect(DISTINCT {
+          pnum: poem.pnum,
+          Japanese: poem.Japanese,
+          Romaji: poem.Romaji,
+          speaker_name: COALESCE(speaker.name, ""),
+          speaker_gender: COALESCE(speaker.gender, ""),
+          addressee_name: COALESCE(addressee.name, ""),
+          addressee_gender: COALESCE(addressee.gender, ""),
+          chapter_number: chapNum
+        }) AS relatedPoems
+      }
+
+      // All character names
       OPTIONAL MATCH (all:Character)
-      WITH c, relatedCharacters, unsortedPoems, nicknames,
-          collect(DISTINCT all.name) AS allCharacterNamesRaw,
-          [poem IN unsortedPoems WHERE poem.pnum IS NOT NULL AND poem.chapter_number IS NOT NULL] AS sortablePoems
-      RETURN c as character,
-      apoc.coll.sort(allCharacterNamesRaw) AS allCharacterNames,
-      relatedCharacters,
-      apoc.coll.sortMulti(sortablePoems, ['chapter_number', 'pnum']) as relatedPoems,
-      nicknames
+      WITH c, relatedCharacters, nicknames, relatedPoems,
+          collect(DISTINCT all.name) AS allCharacterNamesRaw
+
+      RETURN c AS character,
+            apoc.coll.sort(allCharacterNamesRaw) AS allCharacterNames,
+            relatedCharacters,
+            relatedPoems,
+            nicknames
     `;
     
     const res = await session.readTransaction(tx => tx.run(query, { name }));
