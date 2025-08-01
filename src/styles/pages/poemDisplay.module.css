@@ -803,23 +803,29 @@
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  padding: 10px 20px;
+  padding: 12px 26px;
+  font-size: 1.1rem;
   font-weight: bold;
   margin: 0 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-  letter-spacing: 4%;
-  vertical-align: middle;
-  opacity: 0.33;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  opacity: 0.66;
+}
+
+.navigationButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.navigationButton:active:not(:disabled) {
+  transform: translateY(0);
+  opacity: 0.8;
 }
 
 .navigationButton:disabled {
-  color: rgba(191, 174, 147, 0.5);
+  color: white;
   cursor: not-allowed;
+  opacity: 0.66;
 }
 
 .poemInfoGrid {
