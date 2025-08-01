@@ -18,7 +18,7 @@ z-index: 2;
 
 
 .favButton.unfavorited {
-color: #888;
+color: white;
 }
 
 .favButton.unfavorited:hover {
