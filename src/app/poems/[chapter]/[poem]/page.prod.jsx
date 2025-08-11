@@ -1,6 +1,7 @@
 'use client'
 
 import PoemQueryResults from '../../../../components/PoemQueryResults.prod'
+import EditPoemPage from '../../../../components/EditPoemPage.prod'
 import styles from "../../../../styles/pages/poems.module.css"
 
 const PoemPage = (params) => {
@@ -11,6 +12,10 @@ const PoemPage = (params) => {
                     chapterNum: params.params.chapter, 
                     poemNum: params.params.poem 
                 }}
+            />
+            <EditPoemPage
+                chapter={params.params.chapter}
+                poemNum={params.params.poem}
             />
         </div>
     )
