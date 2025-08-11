@@ -36,6 +36,12 @@ export async function DELETE(request) {
 
     const session = await getSession();
 
+    // **Sanitize field name** - just a simple check for allowed fields to avoid injection:
+    const allowedFields = ["Spoken", "Written"];
+    if (!allowedFields.includes(field)) {
+      return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
+    }
+
     const query = `
       MATCH (g:Genji_Poem {pnum: $pnum})
       REMOVE g.${field}
@@ -49,12 +55,12 @@ export async function DELETE(request) {
     } else {
       return new Response(JSON.stringify({ error: "Poem not found" }), { status: 404 });
     }
-
   } catch (error) {
     console.error("DELETE error:", error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
+
 
 // Optional GET if needed
 export async function GET(request) {
@@ -94,8 +100,8 @@ async function updatePoemProperties(pnum, data) {
       if (data.notes !== undefined) props.notes = data.notes || null;
       if (data.paperMediumType !== undefined) props.paper_or_medium_type = data.paperMediumType || null;
       if (data.paraphrase !== undefined) props.paraphrase = data.paraphrase || null;
-      if (data.spoken !== undefined) props.Spoken = parseBoolean(data.spoken);
-      if (data.written !== undefined) props.Written = parseBoolean(data.written);
+      if (data.spoken !== undefined) props.Spoken = (data.spoken !== undefined && data.spoken !== null) ? String(data.spoken).toLowerCase() : null;
+      if (data.written !== undefined) props.Written = (data.written !== undefined && data.written !== null) ? String(data.written).toLowerCase() : null;
       if (data.handwritingDescription !== undefined) props.handwriting_description = data.handwritingDescription || null;
       if (data.kigo !== undefined) props.kigo = data.kigo || null;
       if (data.pt !== undefined) props.poetic_techniques = data.pt || null;

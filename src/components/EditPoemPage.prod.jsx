@@ -111,19 +111,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
 
                     let speaker = [...new Set(exchange.map(e => e.start.properties.name))];
                     let addressee = [...new Set(exchange.map(e => e.end.properties.name))];
-
-                    // let translations = {
-                    //     Waley: 'N/A',
-                    //     Seidensticker: 'N/A',
-                    //     Tyler: 'N/A',
-                    //     Washburn: 'N/A',
-                    //     Cranston: 'N/A'
-                    // };
-
-                    // transTemp.forEach(e => {
-                    //     translations[e[0]] = e[0] !== 'Waley' ? e[1] : [e[1], e[2]];
-                    // });
-
+                    
                     let src_obj = [];
                     let index = 0;
                     let entered_honka = [];
@@ -262,12 +250,16 @@ export default function EditPoemPage({ chapter, poemNum }) {
             continue;
             }
 
+            if (key === "spoken" || key === "written") {
+                // Accept only "true" or "false" string on save; fallback to "false"
+                const valLower = val.toLowerCase();
+                result[key] = valLower === "true" ? "true" : "false";
+            } else {
             try {
-            result[key] = JSON.parse(val);
+                result[key] = JSON.parse(val);
             } catch {
-            if (val === "true") result[key] = true;
-            else if (val === "false") result[key] = false;
-            else result[key] = val;
+                result[key] = val;
+            }
             }
         }
 
@@ -313,22 +305,29 @@ export default function EditPoemPage({ chapter, poemNum }) {
         const confirmDelete = window.confirm(`Delete field "${key}"?`);
         if (!confirmDelete) return;
 
+        // Map local key to backend field name expected by API
+        const fieldMap = {
+            spoken: "Spoken",
+            written: "Written",
+        };
+        const fieldToDelete = fieldMap[key] || key;
+
         try {
-            const res = await fetch(`/api/poems/edit_poem?pnum=${encodeURIComponent(editData.poemId)}&field=${encodeURIComponent(key)}`, {
-                method: "DELETE",
+            const res = await fetch(`/api/poems/edit_poem?pnum=${encodeURIComponent(editData.poemId)}&field=${encodeURIComponent(fieldToDelete)}`, {
+            method: "DELETE",
             });
 
             if (!res.ok) {
-                const err = await res.json();
-                alert(`Error: ${err.error}`);
-                return;
+            const err = await res.json();
+            alert(`Error: ${err.error}`);
+            return;
             }
 
             // Remove field from local state
             setEditData((prev) => {
-                const updated = { ...prev };
-                delete updated[key];
-                return updated;
+            const updated = { ...prev };
+            delete updated[key];
+            return updated;
             });
 
         } catch (error) {
@@ -357,33 +356,103 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (!editData) return null;
 
         const compactFields = [
-            "speaker", "addressee", "poemId", "season", "age", "spoken", "written",
+            "speaker",
+            "addressee",
+            "poemId",
+            "season",
+            "age",
+            "spoken",
+            "written",
         ];
 
-        const compactItems = compactFields.map((key) => (
+        const readOnlyFields = ["speaker", "addressee", "poemId"];
+
+        const seasonHint = "Possible values: Spring, Summer, Autumn, Winter";
+
+        const booleanHint = 'Possible value: lowercase "true" or "false"';
+
+        const compactItems = compactFields.map((key) => {
+            const isReadOnly = readOnlyFields.includes(key);
+
+            // For spoken and written, ensure value is either "true" or "false"
+            let inputValue = editData[key] ?? "";
+
+            inputValue = editData[key] ?? "";
+
+            return (
             <div key={key} className="compact-field-container">
-                <label className="compact-field-label">
-                    {formatFieldName(key)}
-                    <button
-                        type="button"
-                        className="delete-button"
-                        onClick={() => handleDelete(key)}
-                        title="Clear field"
-                        style={{ marginLeft: "0.5rem", color: "red", cursor: "pointer" }}
+                <label
+                className="compact-field-label"
+                style={{ display: "flex", alignItems: "center" }}
+                >
+                {formatFieldName(key)}
+
+                {(key === "spoken" || key === "written") && (
+                    <span
+                    title={booleanHint}
+                    style={{
+                        marginLeft: "0.3rem",
+                        cursor: "help",
+                        color: "#888",
+                        fontWeight: "bold",
+                    }}
                     >
-                        ❌
+                    ?
+                    </span>
+                )}
+
+                {key === "season" && (
+                    <span
+                    title={seasonHint}
+                    style={{
+                        marginLeft: "0.3rem",
+                        cursor: "help",
+                        color: "#888",
+                        fontWeight: "bold",
+                    }}
+                    >
+                    ?
+                    </span>
+                )}
+
+                {!isReadOnly && (
+                    <button
+                    type="button"
+                    className="delete-button"
+                    aria-label={`Delete field ${formatFieldName(key)}`}
+                    onClick={() => handleDelete(key)}
+                    title="Clear field"
+                    style={{
+                        marginLeft: "0.5rem",
+                        color: "red",
+                        cursor: "pointer",
+                        border: "none",
+                        background: "transparent",
+                        padding: 0,
+                        fontSize: "1rem",
+                        lineHeight: 1,
+                    }}
+                    >
+                    ❌
                     </button>
+                )}
                 </label>
                 <input
                     type="text"
                     className="compact-field-input"
-                    value={editData[key] || ""}
-                    onChange={(e) =>
-                        setEditData((prev) => ({ ...prev, [key]: e.target.value }))
-                    }
+                    value={inputValue}
+                    readOnly={isReadOnly}
+                    style={isReadOnly ? { backgroundColor: "#f5f5f5" } : {}}
+                    onChange={(e) => {
+                        if (isReadOnly) return;
+
+                        const newValue = e.target.value.toLowerCase();
+                        setEditData((prev) => ({ ...prev, [key]: newValue }));
+                    }}
                 />
             </div>
-        ));
+            );
+        });
 
         const fullFields = fieldOrder.filter((key) => !compactFields.includes(key));
 
