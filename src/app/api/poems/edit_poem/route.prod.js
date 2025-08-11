@@ -36,31 +36,65 @@ export async function DELETE(request) {
 
     const session = await getSession();
 
-    // **Sanitize field name** - just a simple check for allowed fields to avoid injection:
-    const allowedFields = ["Spoken", "Written"];
+    // **Sanitize field name** - expanded to include season and other allowed fields
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
 
-    const query = `
-      MATCH (g:Genji_Poem {pnum: $pnum})
-      REMOVE g.${field}
-      RETURN g
-    `;
+    // Handle season deletion specially (remove relationship)
+    if (field === "season") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:IN_SEASON_OF]->(s:Season)
+        DELETE r
+        RETURN g
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      if (result.records.length > 0) {
+        return new Response(JSON.stringify({ message: "Season relationship deleted successfully" }), { status: 200 });
+      } else {
+        return new Response(JSON.stringify({ message: "No season relationship found to delete" }), { status: 200 });
+      }
+    } 
+    // Handle season_evidence deletion specially (remove evidence property from relationship)
+    else if (field === "season_evidence") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:IN_SEASON_OF]->(s:Season)
+        REMOVE r.evidence
+        RETURN r
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      if (result.records.length > 0) {
+        return new Response(JSON.stringify({ message: "Season evidence property deleted successfully" }), { status: 200 });
+      } else {
+        return new Response(JSON.stringify({ message: "No season relationship found to delete evidence from" }), { status: 200 });
+      }
+    } 
+    else {
+      // Handle other field deletions (remove property)
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})
+        REMOVE g.\`${field}\`
+        RETURN g
+      `;
 
-    const result = await session.run(query, { pnum });
+      const result = await session.run(query, { pnum });
 
-    if (result.records.length > 0) {
-      return new Response(JSON.stringify({ message: `Field '${field}' deleted successfully` }), { status: 200 });
-    } else {
-      return new Response(JSON.stringify({ error: "Poem not found" }), { status: 404 });
+      if (result.records.length > 0) {
+        return new Response(JSON.stringify({ message: `Field '${field}' deleted successfully` }), { status: 200 });
+      } else {
+        return new Response(JSON.stringify({ error: "Poem not found" }), { status: 404 });
+      }
     }
   } catch (error) {
     console.error("DELETE error:", error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
-
 
 // Optional GET if needed
 export async function GET(request) {
@@ -77,6 +111,8 @@ async function updatePoemProperties(pnum, data) {
     Washburn: "W",  // check if "A" is correct for Washburn in your DB
     Cranston: "C"
   };
+
+  const validSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
   try {
     await session.writeTransaction(async (tx) => {
@@ -109,7 +145,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
       if (data.repCharacter !== undefined) props.representative_character = data.repCharacter || null;
-      if (data.season_evidence !== undefined) props.season_evidence = data.season_evidence || null;
       if (data.placeOfComp_evidence !== undefined) props.place_of_comp_evidence = data.placeOfComp_evidence || null;
       if (data.placeOfReceipt_evidence !== undefined) props.place_of_receipt_evidence = data.placeOfReceipt_evidence || null;
       if (data.groupPoems !== undefined) props.group_poems = data.groupPoems || null;
@@ -119,7 +154,50 @@ async function updatePoemProperties(pnum, data) {
 
       await tx.run(query, { pnum: pnum.toString(), props });
 
-      // 2️⃣ Update each Translation node separately if provided
+      // 2️⃣ Handle season relationship
+      if (data.season !== undefined) {
+        // First, remove any existing season relationship
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:IN_SEASON_OF]->(s:Season)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a valid season is provided, create new relationship
+        if (data.season && validSeasons.includes(data.season)) {
+          console.log(`Creating season relationship to: ${data.season}`);
+          
+          // Create relationship with evidence property if provided
+          const evidence = data.season_evidence || null;
+          
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (s:Season {name: $seasonName})
+            CREATE (g)-[r:IN_SEASON_OF]->(s)
+            SET r.evidence = $evidence
+          `, { 
+            pnum: pnum.toString(), 
+            seasonName: data.season,
+            evidence: evidence
+          });
+        } else if (data.season && !validSeasons.includes(data.season)) {
+          console.warn(`Invalid season provided: ${data.season}. Valid options: ${validSeasons.join(', ')}`);
+        }
+      }
+
+      // 2️⃣b Handle season_evidence separately (update evidence property on existing relationship)
+      if (data.season_evidence !== undefined && data.season === undefined) {
+        console.log(`Updating season evidence: ${data.season_evidence}`);
+        
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:IN_SEASON_OF]->(s:Season)
+          SET r.evidence = $evidence
+        `, { 
+          pnum: pnum.toString(),
+          evidence: data.season_evidence || null
+        });
+      }
+
+      // 3️⃣ Update each Translation node separately if provided
       for (const [translatorName, letter] of Object.entries(translatorMap)) {
         if (data[translatorName] !== undefined) {
           const translationText = data[translatorName] || null;
@@ -146,17 +224,4 @@ async function updatePoemProperties(pnum, data) {
   } finally {
     await session.close();
   }
-}
-
-
-function parseBoolean(value) {
-  if (value === null || value === undefined || value === "") return null;
-  if (typeof value === "boolean") return value;
-  if (typeof value === "string") {
-    const lowerVal = value.toLowerCase().trim();
-    if (lowerVal === "true") return true;
-    if (lowerVal === "false") return false;
-    return null;
-  }
-  return Boolean(value);
 }
