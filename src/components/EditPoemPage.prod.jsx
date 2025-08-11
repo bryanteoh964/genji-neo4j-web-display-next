@@ -81,10 +81,10 @@ const fieldOrder = [
   "Waley", "Seidensticker", "Tyler", "Washburn", "Cranston",
   "narrativeContext", "paraphrase", "notes", "paperMediumType", "deliveryStyle",
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
-  "pt", "pw", "placeOfComp", "placeOfComp_evidence",
+  "pt", "tag", "pw", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
   "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-  "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence", "tag",
+  "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence",
 ];
 
 
@@ -219,6 +219,16 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
+                        } else if (key === "tag") {
+                            // Special handling for poem types/tags - convert from backend format to frontend format
+                            if (Array.isArray(val)) {
+                                // Backend returns format like [["Proferred", true], ["Reply", true]]
+                                // Convert to just the selected tag names for frontend: ["Proferred", "Reply"]
+                                const selectedTags = val.filter(([name, selected]) => selected).map(([name]) => name);
+                                serialized[key] = JSON.stringify(selectedTags);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (typeof val === "object") {
                             serialized[key] = JSON.stringify(val, null, 2);
                         } else {
@@ -266,6 +276,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 result[key] = val;
             } else if (key === "pt") {
                 // Special handling for poetic techniques - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
+            } else if (key === "tag") {
+                // Special handling for poem types/tags - ensure it's properly parsed
                 try {
                     if (!val || val.trim() === "") {
                         result[key] = [];
@@ -337,6 +359,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             deliveryStyle: "delivery_style",
             season_evidence: "season_evidence",
             pt: "pt", // poetic techniques map directly
+            tag: "tag", // poem types/tags map directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -355,8 +378,10 @@ export default function EditPoemPage({ chapter, poemNum }) {
             setEditData((prev) => {
             const updated = { ...prev };
             
-            // Special handling for poetic techniques - set to empty array instead of deleting
+            // Special handling for poetic techniques and tags - set to empty array instead of deleting
             if (key === "pt") {
+                updated[key] = JSON.stringify([]);
+            } else if (key === "tag") {
                 updated[key] = JSON.stringify([]);
             } else {
                 delete updated[key];
@@ -378,6 +403,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'notes') return 'Commentary';
         if (key === 'narrativeContext') return 'Where We Are In The Tale';
         if (key === 'paraphrase') return 'What The Poem Is Saying';
+        if (key === 'tag') return 'Poem Type';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -575,6 +601,79 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear all poetic techniques"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for poem types/tags
+                    if (key === "tag") {
+                        const poemTypes = ["Proferred Poem", "Reply Poem", "Soliloquy", "Group Poem"];
+                        
+                        // Parse current tag data - handle both array and JSON string formats
+                        let currentTypes = [];
+                        try {
+                            let tagData = editData[key];
+                            if (typeof tagData === 'string' && tagData.trim() !== '') {
+                                // Try to parse as JSON first, fallback to comma-separated
+                                if (tagData.includes('[')) {
+                                    tagData = JSON.parse(tagData);
+                                } else {
+                                    tagData = tagData.split(',').map(item => item.trim()).filter(item => item);
+                                }
+                            } else if (typeof tagData === 'string' && tagData.trim() === '') {
+                                tagData = [];
+                            }
+                            if (Array.isArray(tagData)) {
+                                currentTypes = tagData;
+                            }
+                        } catch (e) {
+                            currentTypes = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid #ccc", borderRadius: "4px", minHeight: "120px", backgroundColor: "#fafafa" }}>
+                                        {poemTypes.map((poemType) => (
+                                            <label key={poemType} style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", padding: "4px 0" }}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={currentTypes.includes(poemType)}
+                                                    onChange={(e) => {
+                                                        const isChecked = e.target.checked;
+                                                        let newTypes = [...currentTypes]; // Create a copy
+                                                        
+                                                        if (isChecked) {
+                                                            if (!newTypes.includes(poemType)) {
+                                                                newTypes.push(poemType);
+                                                            }
+                                                        } else {
+                                                            newTypes = newTypes.filter(t => t !== poemType);
+                                                        }
+                                                        
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(newTypes)
+                                                        }));
+                                                    }}
+                                                    style={{ transform: "scale(1.2)" }}
+                                                />
+                                                <span style={{ fontSize: "14px", fontWeight: "500" }}>{poemType}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all poem types"
                                         style={{ marginTop: "8px" }}
                                     >
                                         ❌

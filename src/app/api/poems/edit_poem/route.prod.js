@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -83,6 +83,19 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic technique relationships` }), { status: 200 });
+    } 
+    // Handle poem types/tags deletion specially (remove all TAGGED_AS relationships)
+    else if (field === "tag") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:TAGGED_AS]->(t:Tag)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poem type relationships` }), { status: 200 });
     } 
     else {
       // Handle other field deletions (remove property)
@@ -242,6 +255,55 @@ async function updatePoemProperties(pnum, data) {
               `, { 
                 pnum: pnum.toString(), 
                 techniqueName: techniqueName
+              });
+            }
+          }
+        }
+      }
+
+      // 2️⃣d Handle poem types/tags relationships
+      if (data.tag !== undefined) {
+        // First, remove all existing tag relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:TAGGED_AS]->(t:Tag)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the tag data and create new relationships for selected types
+        let tagData = [];
+        try {
+          tagData = Array.isArray(data.tag) ? data.tag : JSON.parse(data.tag);
+        } catch (e) {
+          tagData = [];
+        }
+
+        if (Array.isArray(tagData)) {
+          // Create relationships for selected poem types
+          for (const typeName of tagData) {
+            if (typeName && typeName.trim()) {
+              // First check if the Tag node exists
+              const checkQuery = `
+                MATCH (t:Tag {Type: $typeName})
+                RETURN t.Type as type
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { typeName: typeName });
+              
+              if (checkResult.records.length === 0) {
+                // Create the Tag node if it doesn't exist
+                await tx.run(`
+                  CREATE (t:Tag {Type: $typeName})
+                `, { typeName: typeName });
+              }
+              
+              // Create the relationship
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (t:Tag {Type: $typeName})
+                CREATE (g)-[r:TAGGED_AS]->(t)
+              `, { 
+                pnum: pnum.toString(), 
+                typeName: typeName
               });
             }
           }
