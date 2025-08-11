@@ -71,16 +71,16 @@ async function updatePoemData(pnum, updatedData) {
 
 // Order of fields to render - updated to match actual data structure
 const fieldOrder = [
-  "speaker", "addressee", "JPRM_Japanese", "JPRM_Romaji",
+  "speaker", "addressee", "poemId", "age", "JPRM_Japanese", "JPRM_Romaji",
   "Waley", "Seidensticker", "Tyler", "Washburn", "Cranston",
-  "source", "relWithEvidence", "tag",
-  "notes", "poemId", "narrativeContext", "paraphrase", "handwritingDescription",
-  "paperMediumType", "deliveryStyle", "season", "kigo", "pt", "pw", "proxy",
-  "messenger", "age", "repCharacter", "placeOfComp", "placeOfReceipt",
-  "spoken", "written", "season_evidence", "placeOfComp_evidence",
-  "placeOfReceipt_evidence", "groupPoems", "replyPoems", "furtherReadings",
-  "spoken_or_written_evidence"
+  "narrativeContext", "paraphrase", "notes", "paperMediumType", "deliveryStyle",
+  "season", "season_evidence", "spoken", "written",
 ];
+
+//   "pt", "pw", "placeOfComp", "placeOfComp_evidence",
+//   "placeOfReceipt", "placeOfReceipt_evidence","spoken", "written", "spoken_or_written_evidence", 
+//   "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
+//   "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence", "tag",
 
 export default function EditPoemPage({ chapter, poemNum }) {
     const [showButton, setShowButton] = useState(false);
@@ -254,6 +254,9 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 // Accept only "true" or "false" string on save; fallback to "false"
                 const valLower = val.toLowerCase();
                 result[key] = valLower === "true" ? "true" : "false";
+            } else if (key === "season") {
+                // Handle season as a simple string value - backend will create the relationship
+                result[key] = val;
             } else {
             try {
                 result[key] = JSON.parse(val);
@@ -309,6 +312,13 @@ export default function EditPoemPage({ chapter, poemNum }) {
         const fieldMap = {
             spoken: "Spoken",
             written: "Written",
+            season: "season", // season maps directly
+            narrativeContext: "narrative_context",
+            paraphrase: "paraphrase",
+            notes: "notes",
+            paperMediumType: "paper_or_medium_type",
+            deliveryStyle: "delivery_style",
+            season_evidence: "season_evidence",
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -339,6 +349,11 @@ export default function EditPoemPage({ chapter, poemNum }) {
 
     // Helper function to format field names
     function formatFieldName(key) {
+        // Handle specific field name mappings first
+        if (key === 'notes') return 'Commentary';
+        if (key === 'narrativeContext') return 'Where We Are In The Tale';
+        if (key === 'paraphrase') return 'What The Poem Is Saying';
+        
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
             .replace(/^./, str => str.toUpperCase()) // Capitalize first letter
@@ -446,7 +461,17 @@ export default function EditPoemPage({ chapter, poemNum }) {
                     onChange={(e) => {
                         if (isReadOnly) return;
 
-                        const newValue = e.target.value.toLowerCase();
+                        let newValue = e.target.value;
+                        
+                        // For spoken/written, convert to lowercase
+                        if (key === "spoken" || key === "written") {
+                            newValue = newValue.toLowerCase();
+                        }
+                        // For season, capitalize first letter to match Season node names
+                        else if (key === "season") {
+                            newValue = newValue.charAt(0).toUpperCase() + newValue.slice(1).toLowerCase();
+                        }
+                        
                         setEditData((prev) => ({ ...prev, [key]: newValue }));
                     }}
                 />
