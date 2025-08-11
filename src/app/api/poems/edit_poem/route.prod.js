@@ -11,8 +11,6 @@ export async function PUT(request) {
     }
 
     const data = await request.json();
-    console.log("Received data:", data);
-    console.log("pnum:", pnum);
 
     await updatePoemProperties(pnum, data);
 
@@ -23,8 +21,9 @@ export async function PUT(request) {
   }
 }
 
-// Delete a single field from a poem node
 export async function DELETE(request) {
+  const session = await getSession();
+  
   try {
     const { searchParams } = new URL(request.url);
     const pnum = searchParams.get("pnum");
@@ -34,10 +33,8 @@ export async function DELETE(request) {
       return new Response(JSON.stringify({ error: "Missing pnum or field param" }), { status: 400 });
     }
 
-    const session = await getSession();
-
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -74,6 +71,19 @@ export async function DELETE(request) {
         return new Response(JSON.stringify({ message: "No season relationship found to delete evidence from" }), { status: 200 });
       }
     } 
+    // Handle poetic techniques deletion specially (remove all EMPLOYS_POETIC_TECHNIQUE relationships)
+    else if (field === "pt") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:EMPLOYS_POETIC_TECHNIQUE]->(pt:Poetic_Technique)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic technique relationships` }), { status: 200 });
+    } 
     else {
       // Handle other field deletions (remove property)
       const query = `
@@ -93,6 +103,8 @@ export async function DELETE(request) {
   } catch (error) {
     console.error("DELETE error:", error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  } finally {
+    await session.close();
   }
 }
 
@@ -140,7 +152,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.written !== undefined) props.Written = (data.written !== undefined && data.written !== null) ? String(data.written).toLowerCase() : null;
       if (data.handwritingDescription !== undefined) props.handwriting_description = data.handwritingDescription || null;
       if (data.kigo !== undefined) props.kigo = data.kigo || null;
-      if (data.pt !== undefined) props.poetic_techniques = data.pt || null;
       if (data.pw !== undefined) props.pivot_words = data.pw || null;
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
@@ -149,8 +160,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.placeOfReceipt_evidence !== undefined) props.place_of_receipt_evidence = data.placeOfReceipt_evidence || null;
       if (data.groupPoems !== undefined) props.group_poems = data.groupPoems || null;
       if (data.furtherReadings !== undefined) props.further_readings = data.furtherReadings || null;
-
-      console.log("Props being set:", props);
 
       await tx.run(query, { pnum: pnum.toString(), props });
 
@@ -164,8 +173,6 @@ async function updatePoemProperties(pnum, data) {
 
         // Then, if a valid season is provided, create new relationship
         if (data.season && validSeasons.includes(data.season)) {
-          console.log(`Creating season relationship to: ${data.season}`);
-          
           // Create relationship with evidence property if provided
           const evidence = data.season_evidence || null;
           
@@ -186,8 +193,6 @@ async function updatePoemProperties(pnum, data) {
 
       // 2️⃣b Handle season_evidence separately (update evidence property on existing relationship)
       if (data.season_evidence !== undefined && data.season === undefined) {
-        console.log(`Updating season evidence: ${data.season_evidence}`);
-        
         await tx.run(`
           MATCH (g:Genji_Poem {pnum: $pnum})-[r:IN_SEASON_OF]->(s:Season)
           SET r.evidence = $evidence
@@ -197,12 +202,56 @@ async function updatePoemProperties(pnum, data) {
         });
       }
 
+      // 2️⃣c Handle poetic techniques relationships
+      if (data.pt !== undefined) {
+        // First, remove all existing poetic technique relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:EMPLOYS_POETIC_TECHNIQUE]->(pt:Poetic_Technique)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the pt data and create new relationships for selected techniques
+        let ptData = [];
+        try {
+          ptData = Array.isArray(data.pt) ? data.pt : JSON.parse(data.pt);
+        } catch (e) {
+          ptData = [];
+        }
+
+        if (Array.isArray(ptData)) {
+          // Create relationships for techniques that are marked as true
+          for (const [techniqueName, isSelected] of ptData) {
+            if (isSelected) {
+              // First check if the Poetic_Technique node exists
+              const checkQuery = `
+                MATCH (pt:Poetic_Technique {name: $techniqueName})
+                RETURN pt.name as name
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { techniqueName: techniqueName });
+              
+              if (checkResult.records.length === 0) {
+                continue;
+              }
+              
+              // Create the relationship
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (pt:Poetic_Technique {name: $techniqueName})
+                CREATE (g)-[r:EMPLOYS_POETIC_TECHNIQUE]->(pt)
+              `, { 
+                pnum: pnum.toString(), 
+                techniqueName: techniqueName
+              });
+            }
+          }
+        }
+      }
+
       // 3️⃣ Update each Translation node separately if provided
       for (const [translatorName, letter] of Object.entries(translatorMap)) {
         if (data[translatorName] !== undefined) {
           const translationText = data[translatorName] || null;
-
-          console.log(`Updating translation for ${translatorName} (${letter})`);
 
           const translationQuery = `
             MATCH (t:Translation {id: $translationId})-[:TRANSLATION_OF]->(g:Genji_Poem {pnum: $pnum})

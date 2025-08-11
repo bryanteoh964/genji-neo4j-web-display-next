@@ -34,6 +34,12 @@ function cleanProps(input) {
     if (typeof val === "string" && val.trim() === "") continue; // skip empty strings
     if (val === "NO_VALUE") continue; // skip placeholders
 
+    // Special handling for poetic techniques array
+    if (key === "pt" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
     if (isPrimitiveOrPrimitiveArray(val)) {
       output[key] = val;
     } else {
@@ -74,13 +80,13 @@ const fieldOrder = [
   "speaker", "addressee", "poemId", "age", "JPRM_Japanese", "JPRM_Romaji",
   "Waley", "Seidensticker", "Tyler", "Washburn", "Cranston",
   "narrativeContext", "paraphrase", "notes", "paperMediumType", "deliveryStyle",
-  "season", "season_evidence", "spoken", "written",
+  "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
+  "pt", "pw", "placeOfComp", "placeOfComp_evidence",
+  "placeOfReceipt", "placeOfReceipt_evidence",
+  "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
+  "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence", "tag",
 ];
 
-//   "pt", "pw", "placeOfComp", "placeOfComp_evidence",
-//   "placeOfReceipt", "placeOfReceipt_evidence","spoken", "written", "spoken_or_written_evidence", 
-//   "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-//   "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence", "tag",
 
 export default function EditPoemPage({ chapter, poemNum }) {
     const [showButton, setShowButton] = useState(false);
@@ -100,8 +106,6 @@ export default function EditPoemPage({ chapter, poemNum }) {
             setLoading(true);
             fetchPoemData(chapter, number)
                 .then((responseData) => {
-                    console.log("Raw response data:", responseData);
-                    
                     const exchange = responseData[0];
                     const transTemp = responseData[1];
                     const sources = responseData[2];
@@ -203,13 +207,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
                     spoken_or_written_evidence: responseData[30]
                     };
 
-                    console.log("Parsed poem state:", newPoemState);
-
                     // Fixed serialization logic
                     const serialized = {};
                     Object.entries(newPoemState).forEach(([key, val]) => {
                         if (val === null || val === undefined) {
                             serialized[key] = "";
+                        } else if (key === "pt") {
+                            // Special handling for poetic techniques - ensure it's always a valid JSON array
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (typeof val === "object") {
                             serialized[key] = JSON.stringify(val, null, 2);
                         } else {
@@ -217,8 +226,6 @@ export default function EditPoemPage({ chapter, poemNum }) {
                         }
                     });
 
-                    console.log("Serialized data:", serialized);
-                    
                     setPoemData(serialized);
                     setEditData({ ...serialized });
                 })
@@ -257,6 +264,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
             } else if (key === "season") {
                 // Handle season as a simple string value - backend will create the relationship
                 result[key] = val;
+            } else if (key === "pt") {
+                // Special handling for poetic techniques - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
             } else {
             try {
                 result[key] = JSON.parse(val);
@@ -276,7 +295,6 @@ export default function EditPoemPage({ chapter, poemNum }) {
         try {
             const prepared = prepareForSave(editData);
 
-
             // CLEAN the prepared data here before sending:
             const cleaned = cleanProps(prepared);
 
@@ -286,7 +304,6 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 throw new Error("Poem ID (pnum) is not available for saving.");
             }
 
-            console.log("Saving prepared data for", pnum, cleaned);
             await updatePoemData(pnum, cleaned);
 
             setPoemData({ ...editData });
@@ -319,6 +336,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             paperMediumType: "paper_or_medium_type",
             deliveryStyle: "delivery_style",
             season_evidence: "season_evidence",
+            pt: "pt", // poetic techniques map directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -336,7 +354,14 @@ export default function EditPoemPage({ chapter, poemNum }) {
             // Remove field from local state
             setEditData((prev) => {
             const updated = { ...prev };
-            delete updated[key];
+            
+            // Special handling for poetic techniques - set to empty array instead of deleting
+            if (key === "pt") {
+                updated[key] = JSON.stringify([]);
+            } else {
+                delete updated[key];
+            }
+            
             return updated;
             });
 
@@ -380,7 +405,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             "written",
         ];
 
-        const readOnlyFields = ["speaker", "addressee", "poemId"];
+        const readOnlyFields = ["speaker", "addressee", "poemId", "age"];
 
         const seasonHint = "Possible values: Spring, Summer, Autumn, Winter";
 
@@ -487,32 +512,106 @@ export default function EditPoemPage({ chapter, poemNum }) {
                     {compactItems}
                 </div>
 
-                {fullFields.map((key) => (
-                    <div key={key} className="full-field-container">
-                        <label className="full-field-label">
-                            {formatFieldName(key)}
-                        </label>
-                        <div className="full-input-wrapper">
-                            <textarea
-                                className="full-field-textarea"
-                                value={editData[key] || ""}
-                                onChange={(e) =>
-                                    setEditData((prev) => ({
-                                        ...prev,
-                                        [key]: e.target.value
-                                    }))
-                                }
-                            />
-                            <button
-                                className="delete-button"
-                                onClick={() => handleDelete(key)}
-                                title="Clear field"
-                            >
-                                ❌
-                            </button>
+                {fullFields.map((key) => {
+                    // Special handling for poetic techniques
+                    if (key === "pt") {
+                        const poeticTechniques = ["kakekotoba", "engo", "utamakura", "makurakotoba"];
+                        
+                        // Parse current pt data - handle both array and JSON string formats
+                        let currentTechniques = [];
+                        try {
+                            let ptData = editData[key];
+                            if (typeof ptData === 'string' && ptData.trim() !== '') {
+                                ptData = JSON.parse(ptData);
+                            } else if (typeof ptData === 'string' && ptData.trim() === '') {
+                                ptData = [];
+                            }
+                            if (Array.isArray(ptData)) {
+                                currentTechniques = ptData.filter(([name, selected]) => selected).map(([name]) => name);
+                            }
+                        } catch (e) {
+                            currentTechniques = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid #ccc", borderRadius: "4px", minHeight: "120px", backgroundColor: "#fafafa" }}>
+                                        {poeticTechniques.map((technique) => (
+                                            <label key={technique} style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", padding: "4px 0" }}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={currentTechniques.includes(technique)}
+                                                    onChange={(e) => {
+                                                        const isChecked = e.target.checked;
+                                                        let newTechniques = [...currentTechniques]; // Create a copy
+                                                        
+                                                        if (isChecked) {
+                                                            if (!newTechniques.includes(technique)) {
+                                                                newTechniques.push(technique);
+                                                            }
+                                                        } else {
+                                                            newTechniques = newTechniques.filter(t => t !== technique);
+                                                        }
+                                                        
+                                                        // Convert to the expected format: all techniques with boolean values
+                                                        const ptData = poeticTechniques.map(tech => [tech, newTechniques.includes(tech)]);
+                                                        
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(ptData)
+                                                        }));
+                                                    }}
+                                                    style={{ transform: "scale(1.2)" }}
+                                                />
+                                                <span style={{ textTransform: "capitalize", fontSize: "14px", fontWeight: "500" }}>{technique}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all poetic techniques"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Regular field handling
+                    return (
+                        <div key={key} className="full-field-container">
+                            <label className="full-field-label">
+                                {formatFieldName(key)}
+                            </label>
+                            <div className="full-input-wrapper">
+                                <textarea
+                                    className="full-field-textarea"
+                                    value={editData[key] || ""}
+                                    onChange={(e) =>
+                                        setEditData((prev) => ({
+                                            ...prev,
+                                            [key]: e.target.value
+                                        }))
+                                    }
+                                />
+                                <button
+                                    className="delete-button"
+                                    onClick={() => handleDelete(key)}
+                                    title="Clear field"
+                                >
+                                    ❌
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         );
     }
