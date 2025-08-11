@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -96,6 +96,63 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poem type relationships` }), { status: 200 });
+    } 
+    // Handle place of composition deletion specially (remove PLACE_OF_COMPOSITION relationship)
+    else if (field === "placeOfComp") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_COMPOSITION]->(p:Place)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} place of composition relationships` }), { status: 200 });
+    } 
+    // Handle place of receipt deletion specially (remove PLACE_OF_RECEIPT relationship)
+    else if (field === "placeOfReceipt") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_RECEIPT]->(p:Place)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} place of receipt relationships` }), { status: 200 });
+    } 
+    // Handle place evidence deletion specially (remove evidence property from place relationships)
+    else if (field === "placeOfComp_evidence") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_COMPOSITION]->(p:Place)
+        REMOVE r.evidence
+        RETURN r
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      if (result.records.length > 0) {
+        return new Response(JSON.stringify({ message: "Place of composition evidence deleted successfully" }), { status: 200 });
+      } else {
+        return new Response(JSON.stringify({ message: "No place of composition relationship found to delete evidence from" }), { status: 200 });
+      }
+    } 
+    else if (field === "placeOfReceipt_evidence") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_RECEIPT]->(p:Place)
+        REMOVE r.evidence
+        RETURN r
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      if (result.records.length > 0) {
+        return new Response(JSON.stringify({ message: "Place of receipt evidence deleted successfully" }), { status: 200 });
+      } else {
+        return new Response(JSON.stringify({ message: "No place of receipt relationship found to delete evidence from" }), { status: 200 });
+      }
     } 
     else {
       // Handle other field deletions (remove property)
@@ -169,8 +226,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
       if (data.repCharacter !== undefined) props.representative_character = data.repCharacter || null;
-      if (data.placeOfComp_evidence !== undefined) props.place_of_comp_evidence = data.placeOfComp_evidence || null;
-      if (data.placeOfReceipt_evidence !== undefined) props.place_of_receipt_evidence = data.placeOfReceipt_evidence || null;
       if (data.groupPoems !== undefined) props.group_poems = data.groupPoems || null;
       if (data.furtherReadings !== undefined) props.further_readings = data.furtherReadings || null;
 
@@ -308,6 +363,111 @@ async function updatePoemProperties(pnum, data) {
             }
           }
         }
+      }
+
+      // 2️⃣e Handle place of composition relationships
+      if (data.placeOfComp !== undefined) {
+        // First, remove any existing place of composition relationship
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_COMPOSITION]->(p:Place)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a place is provided, create new relationship
+        if (data.placeOfComp && data.placeOfComp.trim()) {
+          const placeName = data.placeOfComp.trim();
+          const evidence = data.placeOfComp_evidence || null;
+          
+          // First check if Place node exists, create if it doesn't
+          const checkQuery = `
+            MATCH (p:Place {name: $placeName})
+            RETURN p.name as name
+          `;
+          
+          const checkResult = await tx.run(checkQuery, { placeName });
+          
+          if (checkResult.records.length === 0) {
+            // Create the Place node if it doesn't exist
+            await tx.run(`
+              CREATE (p:Place {name: $placeName})
+            `, { placeName });
+          }
+          
+          // Create the relationship
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (p:Place {name: $placeName})
+            CREATE (g)-[r:PLACE_OF_COMPOSITION]->(p)
+            SET r.evidence = $evidence
+          `, { 
+            pnum: pnum.toString(), 
+            placeName: placeName,
+            evidence: evidence
+          });
+        }
+      }
+
+      // 2️⃣f Handle place of receipt relationships
+      if (data.placeOfReceipt !== undefined) {
+        // First, remove any existing place of receipt relationship
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_RECEIPT]->(p:Place)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a place is provided, create new relationship
+        if (data.placeOfReceipt && data.placeOfReceipt.trim()) {
+          const placeName = data.placeOfReceipt.trim();
+          const evidence = data.placeOfReceipt_evidence || null;
+          
+          // First check if Place node exists, create if it doesn't
+          const checkQuery = `
+            MATCH (p:Place {name: $placeName})
+            RETURN p.name as name
+          `;
+          
+          const checkResult = await tx.run(checkQuery, { placeName });
+          
+          if (checkResult.records.length === 0) {
+            // Create the Place node if it doesn't exist
+            await tx.run(`
+              CREATE (p:Place {name: $placeName})
+            `, { placeName });
+          }
+          
+          // Create the relationship
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (p:Place {name: $placeName})
+            CREATE (g)-[r:PLACE_OF_RECEIPT]->(p)
+            SET r.evidence = $evidence
+          `, { 
+            pnum: pnum.toString(), 
+            placeName: placeName,
+            evidence: evidence
+          });
+        }
+      }
+
+      // 2️⃣g Handle place evidence separately (update evidence property on existing relationships)
+      if (data.placeOfComp_evidence !== undefined && data.placeOfComp === undefined) {
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_COMPOSITION]->(p:Place)
+          SET r.evidence = $evidence
+        `, { 
+          pnum: pnum.toString(),
+          evidence: data.placeOfComp_evidence || null
+        });
+      }
+
+      if (data.placeOfReceipt_evidence !== undefined && data.placeOfReceipt === undefined) {
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:PLACE_OF_RECEIPT]->(p:Place)
+          SET r.evidence = $evidence
+        `, { 
+          pnum: pnum.toString(),
+          evidence: data.placeOfReceipt_evidence || null
+        });
       }
 
       // 3️⃣ Update each Translation node separately if provided

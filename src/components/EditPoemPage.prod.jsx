@@ -81,11 +81,12 @@ const fieldOrder = [
   "Waley", "Seidensticker", "Tyler", "Washburn", "Cranston",
   "narrativeContext", "paraphrase", "notes", "paperMediumType", "deliveryStyle",
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
-  "pt", "tag", "pw", "placeOfComp", "placeOfComp_evidence",
+  "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
-  "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-  "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence",
 ];
+
+//   "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
+//   "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence",
 
 
 export default function EditPoemPage({ chapter, poemNum }) {
@@ -95,11 +96,27 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [poemData, setPoemData] = useState(null);
     const [editData, setEditData] = useState(null);
     const [error, setError] = useState(null);
+    const [availablePlaces, setAvailablePlaces] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
     useEffect(() => {
         isAdmin().then(setShowButton);
     }, []);
+
+    // Fetch available places when popup opens
+    useEffect(() => {
+        if (showPopup && availablePlaces.length === 0) {
+            fetch('/api/poems/edit_places')
+                .then(res => res.json())
+                .then(places => {
+                    setAvailablePlaces(places);
+                })
+                .catch(err => {
+                    console.error('Error loading places:', err);
+                    setAvailablePlaces([]);
+                });
+        }
+    }, [showPopup, availablePlaces.length]);
 
     useEffect(() => {
         if (showPopup && !poemData) {
@@ -358,8 +375,13 @@ export default function EditPoemPage({ chapter, poemNum }) {
             paperMediumType: "paper_or_medium_type",
             deliveryStyle: "delivery_style",
             season_evidence: "season_evidence",
+            spoken_or_written_evidence: "evidence_for_spoken_or_written",
             pt: "pt", // poetic techniques map directly
             tag: "tag", // poem types/tags map directly
+            placeOfComp: "placeOfComp", // place of composition maps directly
+            placeOfReceipt: "placeOfReceipt", // place of receipt maps directly
+            placeOfComp_evidence: "placeOfComp_evidence",
+            placeOfReceipt_evidence: "placeOfReceipt_evidence",
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -674,6 +696,51 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear all poem types"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for place fields (placeOfComp and placeOfReceipt)
+                    if (key === "placeOfComp" || key === "placeOfReceipt") {
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <input
+                                        type="text"
+                                        list={`${key}-places`}
+                                        placeholder="Type or select a place name"
+                                        value={editData[key] || ""}
+                                        onChange={(e) => {
+                                            setEditData((prev) => ({
+                                                ...prev,
+                                                [key]: e.target.value
+                                            }));
+                                        }}
+                                        style={{
+                                            padding: "8px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            width: "100%"
+                                        }}
+                                    />
+                                    <datalist id={`${key}-places`}>
+                                        {availablePlaces.map((place) => (
+                                            <option key={place} value={place} />
+                                        ))}
+                                    </datalist>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear place"
                                         style={{ marginTop: "8px" }}
                                     >
                                         ❌
