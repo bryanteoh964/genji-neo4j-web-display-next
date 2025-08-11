@@ -88,13 +88,19 @@ export default function CharacterDetail({ name }) {
 
     useEffect(() => {
         if (characterData) {
-            setSections([
-                { id: 'about', title: 'About' },
-                { id: 'related-characters', title: 'Related Characters' },
-                { id: 'poems', title: 'Poems' }
-            ]);
+          const base = [
+            { id: 'about', title: 'About' },
+            { id: 'related-characters', title: 'Related Characters' },
+            { id: 'poems', title: 'Poems' }
+          ];
+      
+          if ((characterData.messengerPoems || []).length > 0) {
+            base.push({ id: 'messenger-of', title: 'Messenger of' });
+          }
+      
+          setSections(base);
         }
-    }, [characterData]);
+      }, [characterData]);
 
     useEffect(() => {
         const handleHashChange = () => {
@@ -182,12 +188,13 @@ export default function CharacterDetail({ name }) {
     if (!characterExists) return <div className={styles.error}>Character does not exist.</div>;
     if (!characterData || !characterData.character) return <div className={styles.error}>No character data available</div>;
 
-    const { allCharacterNames, character, relatedCharacters, relatedPoems, nicknames } = characterData;
+    const { allCharacterNames, character, relatedCharacters, relatedPoems,messengerPoems, nicknames } = characterData;
     const groupedRelatedCharacters = groupRelatedCharacters(relatedCharacters);
     const filteredCharacters = filterCharacters(allCharacterNames);
 
     // Convert object-based relatedPoems to array
     const poemsArray = relatedPoems ? Object.values(relatedPoems) : [];
+    const messengerPoemsArray = messengerPoems ? Object.values(messengerPoems) : [];
 
     const formattedPoems = poemsArray.map(poem => {
         const chapterNum = poem.pnum.substring(0, 2);
@@ -207,6 +214,24 @@ export default function CharacterDetail({ name }) {
             addressee_gender: poem.addressee_gender || 'Unknown'
         };
     });
+    const formattedMessengerPoems = messengerPoemsArray.map(poem => {
+        const chapterNum = poem.pnum.substring(0, 2);
+        const chapterAbr = poem.pnum.substring(2, 4);
+        const poemNum = poem.pnum.substring(4);
+      
+        return {
+          chapterNum,
+          chapterAbr,
+          poemNum,
+          chapterKanji: getChapterNamKanji(chapterNum),
+          japanese: poem.Japanese,
+          romaji: poem.Romaji,
+          speaker_name: poem.speaker_name || 'Unknown',
+          speaker_gender: poem.speaker_gender || 'Unknown',
+          addressee_name: poem.addressee_name || 'Unknown',
+          addressee_gender: poem.addressee_gender || 'Unknown'
+        };
+      });
 
     if (isLoading) { 
         if (timeline.length > 0) {
@@ -565,6 +590,57 @@ export default function CharacterDetail({ name }) {
                                 </div>
                             ) : (
                                 <p className={styles.noPoemsMessage}>No poems associated with this character.</p>
+                            )}
+                        </div>
+
+                        {/* Messenger Of Section */}
+                        <div className={styles.poemsSection} id="messenger-of">
+                            <span className={styles.filterResultsLabel}>MESSENGER OF</span>
+                            {formattedMessengerPoems.length > 0 ? (
+                                <div className={styles.searchResults}>
+                                {formattedMessengerPoems.map((result, index) => (
+                                    <div
+                                    key={`messenger-${index}`}
+                                    className={`${styles.resultItem} ${hoveredIndex === `m-${index}` ? styles.hovered : ''}`}
+                                    onMouseEnter={(event) => handleMouseEnter(`m-${index}`, event)}
+                                    onMouseLeave={handleMouseLeave}
+                                    >
+                                    <Link href={`/poems/${removeLeadingZero(result.chapterNum)}/${removeLeadingZero(result.poemNum)}`}>
+                                        <div className={styles.resultContent}>
+                                        <h3 className={styles.resultTitleSpeaker}>
+                                            Messenger · from {result.speaker_name || '—'}
+                                        </h3>
+                                        <div className={styles.resultWrapper}>
+                                            <div className={styles.resultWrapperChapter}>
+                                            <div className={styles.resultTitle}>
+                                                {result.chapterNum}{result.chapterAbr}
+                                            </div>
+                                            <div className={styles.resultTitle}>
+                                                {result.poemNum}
+                                            </div>
+                                            </div>
+                                            <div className={styles.resultPoemKanji}>
+                                            {result.chapterKanji}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className={styles.japaneseText}>
+                                            {result.japanese.split("\n")[0] || result.japanese}
+                                            </div>
+                                            <div className={styles.romajiText}>
+                                            {result.romaji.split("\n")[0] || result.romaji}
+                                            </div>
+                                        </div>
+                                        <h3 className={styles.resultTitleAddressee}>
+                                            &raquo; {result.addressee_name}
+                                        </h3>
+                                        </div>
+                                    </Link>
+                                    </div>
+                                ))}
+                                </div>
+                            ) : (
+                                <p className={styles.noPoemsMessage}>No poems delivered by this character.</p>
                             )}
                         </div>
 
