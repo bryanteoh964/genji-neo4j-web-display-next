@@ -753,19 +753,46 @@ export default function EditPoemPage({ chapter, poemNum }) {
                     // Regular field handling
                     return (
                         <div key={key} className="full-field-container">
-                            <label className="full-field-label">
+                            <label className="full-field-label" style={{ display: "flex", alignItems: "center" }}>
                                 {formatFieldName(key)}
+                                
+                                {(key === "notes" || key === "narrativeContext" || key === "paraphrase") && (
+                                    <span
+                                        title="Formatting: **bold**, *italic*, &amp;nbsp; for indent, [link title](URL) for links"
+                                        style={{
+                                            marginLeft: "0.3rem",
+                                            cursor: "help",
+                                            color: "#888",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        ?
+                                    </span>
+                                )}
                             </label>
                             <div className="full-input-wrapper">
                                 <textarea
                                     className="full-field-textarea"
-                                    value={editData[key] || ""}
-                                    onChange={(e) =>
+                                    value={(() => {
+                                        const rawValue = editData[key] || "";
+                                        // Convert \n to actual line breaks for these specific fields
+                                        if (key === "notes" || key === "narrativeContext" || key === "paraphrase") {
+                                            return rawValue.replace(/\\n/g, '\n');
+                                        }
+                                        return rawValue;
+                                    })()}
+                                    onChange={(e) => {
+                                        const newValue = e.target.value;
+                                        // Convert actual line breaks back to \n for storage for these specific fields
+                                        const valueToStore = (key === "notes" || key === "narrativeContext" || key === "paraphrase") 
+                                            ? newValue.replace(/\n/g, '\\n')
+                                            : newValue;
+                                        
                                         setEditData((prev) => ({
                                             ...prev,
-                                            [key]: e.target.value
-                                        }))
-                                    }
+                                            [key]: valueToStore
+                                        }));
+                                    }}
                                 />
                                 <button
                                     className="delete-button"
