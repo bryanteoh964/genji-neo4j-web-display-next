@@ -1,0 +1,319 @@
+/* EditPoemPage.css */
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.edit-poem-button {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 1000;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    padding: 14px 28px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.edit-poem-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+}
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%), rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.popup-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    padding: 40px;
+    min-width: 900px;
+    width: 90vw;
+    max-width: 1200px;
+    height: 85vh;
+    max-height: 900px;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 30px rgba(102, 126, 234, 0.1);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.popup-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 32px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 16px;
+}
+
+.popup-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.popup-subtitle {
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #667eea;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-top-color: transparent;
+    border-radius: 50%;
+    margin-right: 12px;
+    animation: spin 1s linear infinite;
+}
+
+.error-message {
+    color: #e53e3e;
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #fc8181;
+    margin-bottom: 24px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.fields-container {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+.compact-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.compact-field-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.compact-field-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #2d3748;
+    font-size: 13px;
+}
+
+.compact-field-input {
+    font-size: 12px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-family: inherit;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.section-header {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 32px 0 20px 0;
+    padding: 12px 0;
+    border-bottom: 3px solid #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.full-field-container {
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e1e5e9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.poem-text-field {
+    border-left: 4px solid #48bb78;
+    background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+}
+
+.translation-field {
+    border-left: 4px solid #4299e1;
+    background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
+}
+
+.full-field-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #2d3748;
+    font-size: 15px;
+    letter-spacing: 0.025em;
+}
+
+.full-field-textarea {
+    width: 100%;
+    min-height: 80px;
+    font-size: 13px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    color: #2d3748;
+    line-height: 1.5;
+    resize: vertical;
+    transition: all 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.poem-text-textarea {
+    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    min-height: 120px;
+    white-space: pre-wrap;
+    background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+    border: 2px solid #68d391;
+}
+
+.poem-text-textarea:focus {
+    border-color: #48bb78;
+    box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+}
+
+.translation-textarea {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100px;
+    white-space: pre-wrap;
+    background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
+    border: 2px solid #63b3ed;
+}
+
+.translation-textarea:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.full-field-textarea:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    background: #ffffff;
+}
+
+.buttons-container {
+    margin-top: 32px;
+    text-align: right;
+    padding-top: 24px;
+    border-top: 2px solid #e2e8f0;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.cancel-button {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4a5568;
+    transition: all 0.2s ease;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.cancel-button:hover {
+    border-color: #cbd5e0;
+    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+}
+
+.save-button {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.save-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.save-button:disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.delete-button {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.compact-input-wrapper,
+.full-input-wrapper {
+  display: flex;
+  align-items: center;
+}
