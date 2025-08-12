@@ -48,7 +48,7 @@ const GenjiHomePage = () => {
 		  <section className={styles.heroImageSection}>
 			<img 
 			  className={styles.fullBackgroundImage} 
-			  src="/images/homepage_background.svg" 
+			  src="/images/genji_background_compressed.jpg" 
 			  alt="Genji background" 
 			/>
 		  </section>
