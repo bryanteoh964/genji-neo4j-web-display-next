@@ -47,6 +47,7 @@ const MoreDropDown = () => {
             '/Sources',
             '/translators',
             '/teamMembers',
+            '/methadology',
             '/collaborate',
         ];
         return paths.some(path => isActive(path));
@@ -113,6 +114,14 @@ const MoreOptions = ({ setIsOpen }) => {
                 onClick={() => setIsOpen(false)}
             >
                 team members
+            </Link>
+
+            <Link 
+                href="/methodology" 
+                className={`${styles.moreLink} ${isActive('/methodology') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                methodology
             </Link>
 
             <Link 
