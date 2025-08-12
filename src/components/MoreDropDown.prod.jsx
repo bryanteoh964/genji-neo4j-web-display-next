@@ -47,7 +47,8 @@ const MoreDropDown = () => {
             '/furtherReading',
             '/characters/relationships',
             '/characters/map',
-            '/characters/timeline'
+            '/characters/timeline',
+            '/whats_new',
         ];
         return paths.some(path => isActive(path));
     };
@@ -122,6 +123,13 @@ const MoreOptions = ({ setIsOpen }) => {
                 timeline
             </Link>
 
+            <Link 
+                href="/whats_new" 
+                className={`${styles.moreLink} ${isActive('/whats_new') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                what&apos;s new
+            </Link>
         </div>
     );
 };
