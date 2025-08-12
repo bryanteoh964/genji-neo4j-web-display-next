@@ -128,7 +128,7 @@ const MoreOptions = ({ setIsOpen }) => {
                 className={`${styles.moreLink} ${isActive('/whats_new') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
-                what's new
+                what&apos;s new
             </Link>
         </div>
     );
