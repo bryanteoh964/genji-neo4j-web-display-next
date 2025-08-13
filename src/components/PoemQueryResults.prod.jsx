@@ -74,8 +74,8 @@ const PoemDisplay = ({ poemData }) => {
         paperMediumType: "",
         deliveryStyle: "",
         season: "",
-        kigo: { jp: "", en: "" },
-        pt: "",
+        kigo: { jp: "", en: "", evidence: "" },
+        pt: [],
         pw: { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" },
         messenger: "",
         age: "",
@@ -251,7 +251,7 @@ const PoemDisplay = ({ poemData }) => {
                     deliveryStyle: responseData[11],
                     season: responseData[12],
                     kigo: responseData[13],
-                    pt: responseData[14],
+                    pt: Array.isArray(responseData[14]) ? responseData[14] : [],
                     pw: responseData[15],
                     proxy: responseData[16],
                     // unused messenger
@@ -657,8 +657,12 @@ const PoemDisplay = ({ poemData }) => {
                                 {poemState.kigo && poemState.kigo.jp && (
                                     <div className={styles.detailItem}>
                                         <h3>SEASONAL WORD</h3>
-                                        <FormatContent content={`${poemState.kigo.jp}`} />
-                                        <FormatContent content={`${poemState.kigo.en}`} />
+                                        <div className={styles.withEvidence}>
+                                            <EvidenceDropdown
+                                                content={`${poemState.kigo.jp} – ${poemState.kigo.en || ''}`}
+                                                evidence={poemState.kigo.evidence || ''}
+                                            />
+                                        </div>
                                     </div>
                                 )}
                                 
