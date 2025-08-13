@@ -15,7 +15,7 @@ async function getData (chapter, number){
 		resTag : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[:TAGGED_AS]->(t:Tag) where g.pnum ends with "' + number + '" return t.Type as type',
 		resType : 'match (t:Tag) return t.Type as type',
 		resSeason : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[r:IN_SEASON_OF]->(s:Season) WHERE g.pnum ends with "' + number + '" RETURN s.name as season, r.evidence as season_evidence',
-		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en',
+		resKigo : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word) WHERE g.pnum ends with "' + number + '" RETURN sw.japanese as sw_jp, sw.english as sw_en, r.evidence as sw_evidence',
 		resTech: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:EMPLOYS_POETIC_TECHNIQUE]->(pt:Poetic_Technique) WHERE g.pnum ends with "' + number + '" RETURN pt.name as pt_name',
 		resPoeticWord: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)-[:HAS_POETIC_WORD_OF]->(pw:Poetic_Word) WHERE g.pnum ends with "' + number + '" RETURN pw.name as pw_name, pw.kanji_hiragana as kanji_hiragana, pw.gloss as gloss, pw.english_equiv as english_equiv',
 		resProxy: 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}), (g:Genji_Poem)<-[:PROXY_POET_OF]-(a:Character) WHERE g.pnum ends with "' + number + '" RETURN a.name as name',
@@ -95,6 +95,7 @@ async function getData (chapter, number){
 		const kigo = {
 			jp: result['resKigo'].records[0]?.get('sw_jp') || null,
 			en: result['resKigo'].records[0]?.get('sw_en') || null,
+			evidence: result['resKigo'].records[0]?.get('sw_evidence') || null,
 		};
 
 		// poetic technique
