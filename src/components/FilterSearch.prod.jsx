@@ -111,15 +111,24 @@ const PoemSearch = () => {
       label: "Genji's Age",
       options: ageOptions,
     },
-    //   season: {
-    //       label: 'Season',
-    //       options: {
-    //           'Spring': { checked: false },
-    //           'Summer': { checked: false },
-    //           'Autumn': { checked: false },
-    //           'Winter': { checked: false }
-    //       }
-    //   },
+      season: {
+          label: 'Season',
+          options: {
+              'spring': { checked: false },
+              'summer': { checked: false },
+              'autumn': { checked: false },
+              'winter': { checked: false }
+          }
+      },
+      poem_type: {
+        label: "Poem Type",
+        options: {
+          'Proffered Poem' : {checked: false},
+          'Reply Poem' : {checked: false},
+          'Group Poem' : {checked: false},
+          'Soliloquy' : {checked: false},
+        },
+      },
     //   poetic_tech: {
     //       label: 'Poetic Techniques Used',
     //       options: {
@@ -255,9 +264,9 @@ const PoemSearch = () => {
         // const response = await fetch(
         //   `/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`
         // );
-        const response = queryToUse === "=#="
-          ? await fetch("/poems/default_poems.json")
-          : await fetch(`/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`);
+        const response = await fetch(`/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`);
+          // ? await fetch("/poems/default_poems.json")
+          // : await fetch(`/api/poems/poem_search?q=${encodeURIComponent(queryToUse)}`);
 
 
         if (!response.ok) {
@@ -268,11 +277,11 @@ const PoemSearch = () => {
         console.log("API Response:", data);
 
         // If the query is =#=, set results to data otherwise process the data
-        if (queryToUse === "=#=") {
-          setResults(data);
-          setShowResults(true);
-          return; // Early return if fetching all poems
-        }
+        // if (queryToUse === "=#=") {
+        //   setResults(data);
+        //   setShowResults(true);
+        //   return; // Early return if fetching all poems
+        // }
 
         if (Array.isArray(data.searchResults)) {
           const processedResults = data.searchResults.map((result) => ({
@@ -291,7 +300,11 @@ const PoemSearch = () => {
             speaker_name: Object.values(result.speaker_name).join(""),
             speaker_gender: Object.values(result.speaker_gender).join(""),
             season: Object.values(result.season).join(""),
-            peotic_tech: Object.values(result.peotic_tech).join(""),
+            poem_type: 
+              typeof result.poem_type === "string"
+                ? result.poem_type.trim()
+                : Object.values(result.poem_type || {}).join("").trim(),
+            poetic_tech: Object.values(result.peotic_tech).join(""),
             genji_age: Object.values(result.genji_age).join(""),
             waley_translation: Object.values(result.waley_translation).join(""),
             seidensticker_translation: Object.values(
@@ -377,11 +390,14 @@ const PoemSearch = () => {
             case "addressee_gender":
               return activeOptions.includes(result.addressee_gender);
             case "season":
-              return activeOptions.includes(result.season);
+              const val = (result.season || "").toString().toLowerCase();
+              return activeOptions.map(s => s.toLowerCase()).includes(val);
             case "poetic_tech":
               return activeOptions.includes(result.poetic_tech);
             case "genji_age":
               return activeOptions.includes(result.genji_age);
+            case "poem_type":
+              return activeOptions.includes(result.poem_type);
             default:
               return true;
           }
@@ -681,9 +697,9 @@ const PoemSearch = () => {
     },
   };
 
-  useEffect(() => {
-    handleSearch(query);
-  }, [query, handleSearch]);
+  // useEffect(() => {
+  //   handleSearch(query);
+  // }, [query, handleSearch]);
   
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -804,7 +820,7 @@ const PoemSearch = () => {
             value={query}
             onChange={handleInputChange}
             onFocus={() => setShowResults(true)}
-            placeholder="KEY WORD SEARCH"
+            placeholder="POEM TEXT SEARCH"
             className={styles.keywordSearchInput}
           />
         </div>
@@ -818,7 +834,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="SEARCH CHAPTER"
+                placeholder="CHAPTER FILTER"
                 value={searchChapter}
                 onChange={handleChapterSearch}
                 className={styles.searchInput}
@@ -869,7 +885,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="SEARCH SPEAKER"
+                placeholder="SPEAKER FILTER"
                 value={searchSpeaker}
                 onChange={handleSpeakerSearch}
                 className={styles.searchInput}
@@ -960,7 +976,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="SEARCH ADDRESSEE"
+                placeholder="ADDRESSEE FILTER"
                 value={searchAddressee}
                 onChange={handleAddresseeSearch}
                 className={styles.searchInput}
@@ -1051,7 +1067,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="SEARCH GENJI'S AGE"
+                placeholder="GENJI AGE FILTER"
                 value={searchGenjiAge}
                 onChange={handleGenjiAgeSearch}
                 className={styles.searchInput}
@@ -1089,57 +1105,57 @@ const PoemSearch = () => {
           </div>
     
           {/* Other Filter Sections */}
-          {Object.entries(filters).map(
-            ([category, { label, options }]) =>
-              // Skip the already handled categories and gender categories
-              category !== "speaker_gender" &&
-              category !== "addressee_gender" &&
-              category !== "chapterNum" &&
-              category !== "speaker_name" &&
-              category !== "addressee_name" &&
-              category !== "genji_age" && (
-                <div key={category} className={styles.filterSection}>
-                  <div
-                    className={styles.filterSectionHeader}
-                    onClick={() => toggleSection(category)}
+          <div className={styles.filterSection}>
+            <div
+              className={styles.filterSectionHeader}
+              onClick={() => toggleSection('other_filters')}
+            >
+              <span className={styles.filterLabel}>Other Filters</span>
+              <span
+                className={`${styles.arrow} ${
+                  openSections.has('other_filters') ? styles.arrowDown : ""
+                }`}
+              >
+                ▸
+              </span>
+            </div>
+
+            <div
+              className={`${styles.filterContent} ${
+                openSections.has('other_filters') ? styles.expanded : ""
+              }`}
+            >
+              {/* Season */}
+              <div className={styles.filterOptions}>
+                {["spring", "summer", "autumn", "winter"].map((k) => (
+                  <Checkbox
+                    key={k}
+                    checked={filters.season.options[k]?.checked}
+                    onChange={() => handleFilterChange("season", k)}
+                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
                   >
-                    <span className={styles.filterLabel}>{label}</span>
-                    <span
-                      className={`${styles.arrow} ${
-                        openSections.has(category) ? styles.arrowDown : ""
-                      }`}
-                    >
-                      ▸
-                    </span>
-                  </div>
-                  <div
-                    className={`${styles.filterContent} ${
-                      openSections.has(category) ? styles.expanded : ""
-                    }`}
+                    {k.charAt(0).toUpperCase() + k.slice(1)}
+                  </Checkbox>
+                ))}
+              </div>
+
+              <hr className={styles.divider} />
+
+              {/* Poem Type */}
+              <div className={styles.filterOptions}>
+                {Object.keys(filters.poem_type.options).map((k) => (
+                  <Checkbox
+                    key={k}
+                    checked={filters.poem_type.options[k]?.checked}
+                    onChange={() => handleFilterChange("poem_type", k)}
+                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
                   >
-                    <div className={styles.filterOptions}>
-                      {Object.entries(options).map(
-                        ([key, { checked }], index) => (
-                          <Checkbox
-                            key={key}
-                            checked={checked}
-                            onChange={() =>
-                              handleFilterChange(category, key)
-                            }
-                            className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                            style={{
-                              marginLeft: index !== 0 ? "0px" : "0px",
-                            }}
-                          >
-                            {key}
-                          </Checkbox>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )
-          )}
+                    {k}
+                  </Checkbox>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

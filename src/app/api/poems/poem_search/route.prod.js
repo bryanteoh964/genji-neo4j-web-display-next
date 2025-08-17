@@ -58,6 +58,8 @@ async function generalSearch(q) {
             OPTIONAL MATCH (p)-[:IN_SEASON_OF]->(season:Season)
             OPTIONAL MATCH (p)-[:USES_POETIC_TECHNIQUE_OF]->(pt:Poetic_Technique)
             OPTIONAL MATCH (p)-[:AT_GENJI_AGE_OF]->(ga:Genji_Age)
+            OPTIONAL MATCH (p)-[:TAGGED_AS]->(tag:Tag)
+                WHERE tag.Type IN ["Proffered Poem", "Reply Poem", "Group Poem", "Soliloquy"]
             WITH p, 
                 collect(DISTINCT {translator_name: COALESCE(translator.name, ""), text: t.translation}) AS translations,
                 collect(DISTINCT addressee.name) AS addressee_names,
@@ -65,7 +67,8 @@ async function generalSearch(q) {
                 speaker,
                 season,
                 pt,
-                ga
+                ga,
+                collect(DISTINCT tag.Type) AS poem_types
             RETURN DISTINCT
                 p.Japanese AS Japanese,
                 p.pnum AS pnum,
@@ -79,6 +82,10 @@ async function generalSearch(q) {
                 COALESCE(season.name, "") AS season,
                 COALESCE(pt.name, "") AS poetic_tech,
                 COALESCE(ga.age, "") AS genji_age,
+                CASE
+                    WHEN size(poem_types) > 0 THEN poem_types[0]
+                    ELSE ""
+                END AS poem_type,
                 COALESCE([x IN translations WHERE x.translator_name = "Waley"][0].text, "") AS Waley_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Seidensticker"][0].text, "") AS Seidensticker_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
@@ -114,6 +121,7 @@ async function generalSearch(q) {
                 speaker_color: toNativeTypes(record.get('speaker_color')), // Added to results
                 season: toNativeTypes(record.get('season')),
                 peotic_tech: toNativeTypes(record.get('poetic_tech')),
+                poem_type: toNativeTypes(record.get('poem_type')),
                 waley_translation: toNativeTypes(record.get('Waley_translation')),
                 seidensticker_translation: toNativeTypes(record.get('Seidensticker_translation')),
                 tyler_translation: toNativeTypes(record.get('Tyler_translation')),
