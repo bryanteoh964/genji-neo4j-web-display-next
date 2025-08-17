@@ -484,7 +484,7 @@ const PoemDisplay = ({ poemData }) => {
                                 <span>POEM</span>
                             </span>
                             <div className={styles.checkboxGroup}>
-                                <span>PROFFERRED {poemState.tag?.some(item => item[0] === 'Profferred Poem' && item[1]) ? '☑' : '☐'}</span>
+                                <span>PROFFERED {poemState.tag?.some(item => item[0] === 'Proffered Poem' && item[1]) ? '☑' : '☐'}</span>
                                 <span>REPLY {poemState.tag?.some(item => item[0]?.includes('Reply Poem') && item[1]) ? '☑' : '☐'}</span>
                                 <span>SOLILOQUY {poemState.tag?.some(item => item[0]?.includes('Soliloquy') && item[1]) ? '☑' : '☐'}</span>
                                 <span>GROUP {poemState.tag?.some(item => item[0]?.includes('Group Poem') && item[1]) ? '☑' : '☐'}</span>
