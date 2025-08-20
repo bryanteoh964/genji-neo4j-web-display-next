@@ -1,5 +1,5 @@
 const { getSession } = require('../../neo4j_driver/route.prod.js');
-const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
+//const { toNativeTypes } = require('../../neo4j_driver/utils.prod.js');
 //var kuromoji = require("kuromoji");
 
 // let tokenizer = null;
@@ -70,9 +70,9 @@ async function generalSearch(q) {
                 ga,
                 collect(DISTINCT tag.Type) AS poem_types
             RETURN DISTINCT
-                p.Japanese AS Japanese,
-                p.pnum AS pnum,
-                p.Romaji AS Romaji,
+                COALESCE(p.pnum, "") AS pnum,
+                COALESCE(p.Japanese, "") AS Japanese,
+                COALESCE(p.Romaji, "") AS Romaji,
                 COALESCE(p.paraphrase, "") AS paraphrase,
                 COALESCE(apoc.text.join(addressee_names, " & "), "") AS addressee_name,
                 COALESCE(apoc.text.join(addressee_genders, " & "), "") AS addressee_gender,
@@ -91,7 +91,7 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Washburn"][0].text, "") AS Washburn_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
-            ORDER BY p.pnum
+            ORDER BY pnum
         `;
 
         let res;
@@ -106,33 +106,36 @@ async function generalSearch(q) {
 
         // Format and sort related poems
         if (res.records.length > 0) {
-            const searchResults = res.records.map(record => ({
-                chapterNum: toNativeTypes(record.get('pnum').substring(0, 2)),
-                poemNum: toNativeTypes(record.get('pnum').substring(4)),
-                chapterAbr: toNativeTypes(record.get('pnum').substring(2, 4)),
-                japanese: toNativeTypes(record.get('Japanese')),
-                romaji: toNativeTypes(record.get('Romaji')),
-                paraphrase: toNativeTypes(record.get('paraphrase')),
-                genji_age: toNativeTypes(record.get('genji_age')),
-                addressee_name: toNativeTypes(record.get('addressee_name')),
-                addressee_gender: toNativeTypes(record.get('addressee_gender')),
-                speaker_name: toNativeTypes(record.get('speaker_name')),
-                speaker_gender: toNativeTypes(record.get('speaker_gender')),
-                speaker_color: toNativeTypes(record.get('speaker_color')), // Added to results
-                season: toNativeTypes(record.get('season')),
-                peotic_tech: toNativeTypes(record.get('poetic_tech')),
-                poem_type: toNativeTypes(record.get('poem_type')),
-                waley_translation: toNativeTypes(record.get('Waley_translation')),
-                seidensticker_translation: toNativeTypes(record.get('Seidensticker_translation')),
-                tyler_translation: toNativeTypes(record.get('Tyler_translation')),
-                washburn_translation: toNativeTypes(record.get('Washburn_translation')),
-                cranston_translation: toNativeTypes(record.get('Cranston_translation'))
-            }));
+            const searchResults = res.records.map(record => {
+                const pnum = (record.get('pnum') || "").toString();
+                return {
+                    chapterNum: pnum.substring(0, 2),
+                    chapterAbr: pnum.substring(2, 4),
+                    poemNum:    pnum.substring(4),
+                    japanese:   record.get('Japanese') || "",
+                    romaji:     record.get('Romaji') || "",
+                    paraphrase: record.get('paraphrase') || "",
+                    genji_age:  (record.get('genji_age') ?? "").toString(),
+                    addressee_name:   record.get('addressee_name') || "",
+                    addressee_gender: record.get('addressee_gender') || "",
+                    speaker_name:     record.get('speaker_name') || "",
+                    speaker_gender:   record.get('speaker_gender') || "",
+                    speaker_color:    record.get('speaker_color') || "",
+                    season:           record.get('season') || "",
+                    peotic_tech:      record.get('poetic_tech') || "",
+                    poem_type:        (record.get('poem_type') || "").toString(),
+                    waley_translation:         record.get('Waley_translation') || "",
+                    seidensticker_translation: record.get('Seidensticker_translation') || "",
+                    tyler_translation:         record.get('Tyler_translation') || "",
+                    washburn_translation:      record.get('Washburn_translation') || "",
+                    cranston_translation:      record.get('Cranston_translation') || "",
+                };
+            });
 
             return { searchResults };
         } else {
             console.log(`No poem found with name: ${q}`);
-            return null;
+            return { searchResults: [] };
         }
     }
     catch (error) {
@@ -144,20 +147,22 @@ async function generalSearch(q) {
 // Export data from API endpoint
 export const GET = async (request) => {
     const { searchParams } = new URL(request.url);
-    const q = searchParams.get('q');
+    const q = (searchParams.get('q') ?? '=#=');
     const gender = searchParams.get('gender'); // Get gender filter
 
-    if (!q) {
-        return new Response(JSON.stringify({ message: 'Search keyword is required' }), { status: 400 });
-    }
+    // if (!q) {
+    //     return new Response(JSON.stringify({ message: 'Search keyword is required' }), { status: 400 });
+    // }
 
     try {
-        const data = await generalSearch(q, gender); // Pass gender to search
-        if (data) {
-            return new Response(JSON.stringify(data), { status: 200 });
-        } else {
-            return new Response(JSON.stringify({ message: 'Search keyword Not found' }), { status: 404 });
-        }
+    //     const data = await generalSearch(q, gender); // Pass gender to search
+    //     if (data) {
+    //         return new Response(JSON.stringify(data), { status: 200 });
+    //     } else {
+    //         return new Response(JSON.stringify({ message: 'Search keyword Not found' }), { status: 404 });
+    //     }
+        const data = await generalSearch(q, gender);
+        return new Response(JSON.stringify(data || { searchResults: [] }), { status: 200 });
     } catch (error) {
         return new Response(JSON.stringify({ error: "Error in API", message: error.toString() }), { status: 500 });
     }

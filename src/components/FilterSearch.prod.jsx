@@ -72,6 +72,7 @@ const PoemSearch = () => {
   const [searchAddressee, setSearchAddressee] = useState("");
   const [searchChapter, setSearchChapter] = useState("");
   const [searchGenjiAge, setSearchGenjiAge] = useState('');
+  const [searchOther, setSearchOther] = useState('');
 
   const ageOptions = {};
   for (let age = 1; age <= 75; age++) {
@@ -439,6 +440,7 @@ const PoemSearch = () => {
     setSearchAddressee("");
     setSearchChapter("");
     setSearchGenjiAge(""); // Now this will work
+    setSearchOther("");
     
     // Close all dropdown sections
     setOpenSections(new Set());
@@ -747,7 +749,18 @@ const PoemSearch = () => {
     }
   }, [searchGenjiAge]);
 
+  useEffect(() => {
+    if (searchOther.trim() !== '') {
+      setOpenSections(prev => new Set([...prev, 'other_filters']));
+    }
+  }, [searchOther]);
+
+
   const renderFilters = () => {
+    //case-insensitive match for filters in Other Filters section
+    const otherMatches = (title) =>
+      (searchOther || '').length === 0 || title.toLowerCase().includes(searchOther);
+
     const selectedSpeakerGenders = Object.entries(
       filters.speaker_gender.options
     )
@@ -1110,7 +1123,14 @@ const PoemSearch = () => {
               className={styles.filterSectionHeader}
               onClick={() => toggleSection('other_filters')}
             >
-              <span className={styles.filterLabel}>Other Filters</span>
+              <input
+                type="text"
+                placeholder="OTHER FILTERS SEARCH"
+                value={searchOther}
+                onChange={(e) => setSearchOther(e.target.value.toLowerCase())}
+                className={styles.searchInput}
+                onClick={(e) => e.stopPropagation()}
+              />
               <span
                 className={`${styles.arrow} ${
                   openSections.has('other_filters') ? styles.arrowDown : ""
@@ -1126,34 +1146,47 @@ const PoemSearch = () => {
               }`}
             >
               {/* Season */}
-              <div className={styles.filterOptions}>
-                {["spring", "summer", "autumn", "winter"].map((k) => (
-                  <Checkbox
-                    key={k}
-                    checked={filters.season.options[k]?.checked}
-                    onChange={() => handleFilterChange("season", k)}
-                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                  >
-                    {k.charAt(0).toUpperCase() + k.slice(1)}
-                  </Checkbox>
-                ))}
-              </div>
+              
+              {otherMatches('Season') && (
+                <>
+                  <div className={styles.otherFilterTitles}>Season</div>
+                  <div className={styles.filterOptions}>
+                    {["spring", "summer", "autumn", "winter"].map((k) => (
+                      <Checkbox
+                        key={k}
+                        checked={filters.season.options[k]?.checked}
+                        onChange={() => handleFilterChange("season", k)}
+                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                      >
+                        {k.charAt(0).toUpperCase() + k.slice(1)}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </>
+              )}
 
-              <hr className={styles.divider} />
+              {(otherMatches('Season') && otherMatches('Poem Types')) && (
+                <hr className={styles.divider} />
+              )}
 
               {/* Poem Type */}
-              <div className={styles.filterOptions}>
-                {Object.keys(filters.poem_type.options).map((k) => (
-                  <Checkbox
-                    key={k}
-                    checked={filters.poem_type.options[k]?.checked}
-                    onChange={() => handleFilterChange("poem_type", k)}
-                    className={`${styles.filterCheckbox} ${styles.alignLeft}`}
-                  >
-                    {k}
-                  </Checkbox>
-                ))}
-              </div>
+              {otherMatches('Poem Types') && (
+                <>
+                  <div className={styles.otherFilterTitles}>Poem Types</div>
+                  <div className={styles.filterOptions}>
+                    {Object.keys(filters.poem_type.options).map((k) => (
+                      <Checkbox
+                        key={k}
+                        checked={filters.poem_type.options[k]?.checked}
+                        onChange={() => handleFilterChange("poem_type", k)}
+                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                      >
+                        {k}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
