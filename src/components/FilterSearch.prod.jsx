@@ -112,15 +112,15 @@ const PoemSearch = () => {
       label: "Genji's Age",
       options: ageOptions,
     },
-      season: {
-          label: 'Season',
-          options: {
-              'spring': { checked: false },
-              'summer': { checked: false },
-              'autumn': { checked: false },
-              'winter': { checked: false }
-          }
-      },
+      // season: {
+      //     label: 'Season',
+      //     options: {
+      //         'spring': { checked: false },
+      //         'summer': { checked: false },
+      //         'autumn': { checked: false },
+      //         'winter': { checked: false }
+      //     }
+      // },
       poem_type: {
         label: "Poem Type",
         options: {
@@ -390,9 +390,9 @@ const PoemSearch = () => {
               return activeOptions.includes(result.speaker_gender);
             case "addressee_gender":
               return activeOptions.includes(result.addressee_gender);
-            case "season":
-              const val = (result.season || "").toString().toLowerCase();
-              return activeOptions.map(s => s.toLowerCase()).includes(val);
+            // case "season":
+            //   const val = (result.season || "").toString().toLowerCase();
+            //   return activeOptions.map(s => s.toLowerCase()).includes(val);
             case "poetic_tech":
               return activeOptions.includes(result.poetic_tech);
             case "genji_age":
@@ -1145,9 +1145,10 @@ const PoemSearch = () => {
                 openSections.has('other_filters') ? styles.expanded : ""
               }`}
             >
+            {/* hide season filter for now */}
               {/* Season */}
               
-              {otherMatches('Season') && (
+              {/* {otherMatches('Season') && (
                 <>
                   <div className={styles.otherFilterTitles}>Season</div>
                   <div className={styles.filterOptions}>
@@ -1163,7 +1164,7 @@ const PoemSearch = () => {
                     ))}
                   </div>
                 </>
-              )}
+              )} */}
 
               {(otherMatches('Season') && otherMatches('Poem Types')) && (
                 <hr className={styles.divider} />
