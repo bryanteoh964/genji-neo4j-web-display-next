@@ -44,6 +44,7 @@ const MoreDropDown = () => {
     const isAnyLinkActive = () => {
         const paths = [
             '/about',
+            '/user-guide',
             '/Sources',
             '/translators',
             '/teamMembers',
@@ -90,6 +91,14 @@ const MoreOptions = ({ setIsOpen }) => {
                 onClick={() => setIsOpen(false)}
             >
                 this site
+            </Link>
+
+            <Link 
+                href="/user-guide" 
+                className={`${styles.moreLink} ${isActive('/user-guide') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                user guide
             </Link>
 
             <Link 
