@@ -110,7 +110,7 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
-                href="/translators" 
+                href="/translators/Arthur Waley" 
                 className={`${styles.moreLink} ${isActive('/translators') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
