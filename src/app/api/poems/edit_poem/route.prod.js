@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -166,6 +166,19 @@ export async function DELETE(request) {
       } else {
         return new Response(JSON.stringify({ message: "No place of receipt relationship found to delete evidence from" }), { status: 200 });
       }
+    } 
+    // Handle messenger deletion specially (remove MESSENGER_OF relationship)
+    else if (field === "messenger") {
+      const query = `
+        MATCH (c:Character)-[r:MESSENGER_OF]->(g:Genji_Poem {pnum: $pnum})
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} messenger relationships` }), { status: 200 });
     } 
     else {
       // Handle other field deletions (remove property)
@@ -482,7 +495,46 @@ async function updatePoemProperties(pnum, data) {
         });
       }
 
-      // 2️⃣h Handle poetic words relationships
+      // 2️⃣h Handle messenger relationships
+      if (data.messenger !== undefined) {
+        // First, remove any existing messenger relationship
+        await tx.run(`
+          MATCH (c:Character)-[r:MESSENGER_OF]->(g:Genji_Poem {pnum: $pnum})
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a character is provided, create new relationship
+        if (data.messenger && data.messenger.trim()) {
+          const characterName = data.messenger.trim();
+          
+          // First check if Character node exists, create if it doesn't
+          const checkQuery = `
+            MATCH (c:Character {name: $characterName})
+            RETURN c.name as name
+          `;
+          
+          const checkResult = await tx.run(checkQuery, { characterName });
+          
+          if (checkResult.records.length === 0) {
+            // Create the Character node if it doesn't exist
+            await tx.run(`
+              CREATE (c:Character {name: $characterName})
+            `, { characterName });
+          }
+          
+          // Create the relationship
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (c:Character {name: $characterName})
+            CREATE (c)-[r:MESSENGER_OF]->(g)
+          `, { 
+            pnum: pnum.toString(), 
+            characterName: characterName
+          });
+        }
+      }
+
+      // 2️⃣i Handle poetic words relationships
       if (data.pw !== undefined) {
         console.log("🔍 Backend received poetic words data:", data.pw);
         

@@ -107,6 +107,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [error, setError] = useState(null);
     const [availablePlaces, setAvailablePlaces] = useState([]);
     const [availablePoeticWords, setAvailablePoeticWords] = useState([]);
+    const [availableCharacters, setAvailableCharacters] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
     useEffect(() => {
@@ -142,6 +143,21 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 });
         }
     }, [showPopup, availablePoeticWords.length]);
+
+    // Fetch available characters when popup opens
+    useEffect(() => {
+        if (showPopup && availableCharacters.length === 0) {
+            fetch('/api/poems/edit_characters')
+                .then(res => res.json())
+                .then(characters => {
+                    setAvailableCharacters(characters);
+                })
+                .catch(err => {
+                    console.error('Error loading characters:', err);
+                    setAvailableCharacters([]);
+                });
+        }
+    }, [showPopup, availableCharacters.length]);
 
     useEffect(() => {
         if (showPopup && !poemData) {
@@ -426,6 +442,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             placeOfReceipt: "placeOfReceipt", // place of receipt maps directly
             placeOfComp_evidence: "placeOfComp_evidence",
             placeOfReceipt_evidence: "placeOfReceipt_evidence",
+            messenger: "messenger", // messenger maps directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -1042,6 +1059,51 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear place"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for messenger field
+                    if (key === "messenger") {
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <input
+                                        type="text"
+                                        list={`${key}-characters`}
+                                        placeholder="Type or select a character name"
+                                        value={editData[key] || ""}
+                                        onChange={(e) => {
+                                            setEditData((prev) => ({
+                                                ...prev,
+                                                [key]: e.target.value
+                                            }));
+                                        }}
+                                        style={{
+                                            padding: "8px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            width: "100%"
+                                        }}
+                                    />
+                                    <datalist id={`${key}-characters`}>
+                                        {availableCharacters.map((character) => (
+                                            <option key={character} value={character} />
+                                        ))}
+                                    </datalist>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear messenger"
                                         style={{ marginTop: "8px" }}
                                     >
                                         ❌
