@@ -287,8 +287,8 @@ export default function EditPoemPage({ chapter, poemNum }) {
                         } else if (key === "tag") {
                             // Special handling for poem types/tags - convert from backend format to frontend format
                             if (Array.isArray(val)) {
-                                // Backend returns format like [["Proferred", true], ["Reply", true]]
-                                // Convert to just the selected tag names for frontend: ["Proferred", "Reply"]
+                                // Backend returns format like [["Proffered", true], ["Reply", true]]
+                                // Convert to just the selected tag names for frontend: ["Proffered", "Reply"]
                                 const selectedTags = val.filter(([name, selected]) => selected).map(([name]) => name);
                                 serialized[key] = JSON.stringify(selectedTags);
                             } else {
@@ -695,7 +695,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
 
                     // Special handling for poem types/tags
                     if (key === "tag") {
-                        const poemTypes = ["Proferred Poem", "Reply Poem", "Soliloquy", "Group Poem"];
+                        const poemTypes = ["Proffered Poem", "Reply Poem", "Soliloquy", "Group Poem"];
                         
                         // Parse current tag data - handle both array and JSON string formats
                         let currentTypes = [];
