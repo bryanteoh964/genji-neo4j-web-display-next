@@ -40,6 +40,12 @@ function cleanProps(input) {
       continue;
     }
 
+    // Special handling for poetic words array
+    if (key === "pw" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
     if (isPrimitiveOrPrimitiveArray(val)) {
       output[key] = val;
     } else {
@@ -83,10 +89,13 @@ const fieldOrder = [
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
   "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
+  "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
+  "proxy", "kigo", "handwritingDescription", "relWithEvidence",
 ];
 
 //   "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-//   "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence",
+//   "proxy", "kigo", "handwritingDescription", "source", (Don't need Source)
+//   "relWithEvidence",
 
 
 export default function EditPoemPage({ chapter, poemNum }) {
@@ -97,6 +106,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [editData, setEditData] = useState(null);
     const [error, setError] = useState(null);
     const [availablePlaces, setAvailablePlaces] = useState([]);
+    const [availablePoeticWords, setAvailablePoeticWords] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
     useEffect(() => {
@@ -117,6 +127,21 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 });
         }
     }, [showPopup, availablePlaces.length]);
+
+    // Fetch available poetic words when popup opens
+    useEffect(() => {
+        if (showPopup && availablePoeticWords.length === 0) {
+            fetch('/api/poems/edit_poeticWords')
+                .then(res => res.json())
+                .then(poeticWords => {
+                    setAvailablePoeticWords(poeticWords);
+                })
+                .catch(err => {
+                    console.error('Error loading poetic words:', err);
+                    setAvailablePoeticWords([]);
+                });
+        }
+    }, [showPopup, availablePoeticWords.length]);
 
     useEffect(() => {
         if (showPopup && !poemData) {
@@ -236,6 +261,13 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
+                        } else if (key === "pw") {
+                            // Special handling for poetic words - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (key === "tag") {
                             // Special handling for poem types/tags - convert from backend format to frontend format
                             if (Array.isArray(val)) {
@@ -315,6 +347,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 } catch {
                     result[key] = [];
                 }
+            } else if (key === "pw") {
+                // Special handling for poetic words - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
             } else {
             try {
                 result[key] = JSON.parse(val);
@@ -332,10 +376,15 @@ export default function EditPoemPage({ chapter, poemNum }) {
         setLoading(true);
         setError(null);
         try {
+            console.log("🔍 Raw editData before prepare:", editData);
             const prepared = prepareForSave(editData);
+            console.log("🔍 Prepared data:", prepared);
+            console.log("🔍 Poetic words data specifically:", prepared.pw);
 
             // CLEAN the prepared data here before sending:
             const cleaned = cleanProps(prepared);
+            console.log("🔍 Cleaned data:", cleaned);
+            console.log("🔍 Cleaned poetic words data:", cleaned.pw);
 
             // Use poemId from state for pnum
             const pnum = editData?.poemId || poemData?.poemId;
@@ -343,6 +392,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 throw new Error("Poem ID (pnum) is not available for saving.");
             }
 
+            console.log("🔍 Sending to backend with pnum:", pnum);
             await updatePoemData(pnum, cleaned);
 
             setPoemData({ ...editData });
@@ -437,7 +487,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             .replace(/Place Of Comp/g, 'Place Of Composition')
             .replace(/Place Of Receipt/g, 'Place Of Receipt')
             .replace(/Pt/g, 'Poetic Techniques')
-            .replace(/Pw/g, 'Pivot Words');
+            .replace(/Pw/g, 'Poetic Words');
     }
 
     function renderFields() {
@@ -697,6 +747,263 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         onClick={() => handleDelete(key)}
                                         title="Clear all poem types"
                                         style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for poetic words (pw)
+                    if (key === "pw") {
+                        let currentPoeticWords = [];
+                        try {
+                            let pwData = editData[key];
+                            if (typeof pwData === 'string') {
+                                pwData = JSON.parse(pwData);
+                            } else if (typeof pwData === 'undefined' || pwData === null) {
+                                pwData = [];
+                            } else if (typeof pwData === 'string' && pwData.trim() === '') {
+                                pwData = [];
+                            }
+                            if (Array.isArray(pwData)) {
+                                currentPoeticWords = pwData;
+                            }
+                        } catch (e) {
+                            currentPoeticWords = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    Poetic Words
+                                    <span style={{ fontSize: "12px", fontWeight: "normal", color: "#666", marginLeft: "8px" }}>
+                                        Select from existing poetic words or create new ones
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ 
+                                        display: "flex", 
+                                        flexDirection: "column", 
+                                        gap: "16px", 
+                                        padding: "16px", 
+                                        border: "1px solid #ddd", 
+                                        borderRadius: "8px", 
+                                        backgroundColor: "#f9f9f9",
+                                        width: "100%",
+                                        maxWidth: "900px"
+                                    }}>
+                                        {currentPoeticWords.map((poeticWord, index) => (
+                                            <div key={index} style={{ 
+                                                display: "flex", 
+                                                flexDirection: "column", 
+                                                gap: "12px", 
+                                                padding: "16px", 
+                                                backgroundColor: "white",
+                                                borderRadius: "6px",
+                                                border: "1px solid #ccc"
+                                            }}>
+                                                <div style={{ alignSelf: "flex-start" }}>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Name (必須 / Required):
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        list="poetic-word-names"
+                                                        placeholder="Type or select poetic word name (e.g., Miyagino)"
+                                                        value={poeticWord.name || ""}
+                                                        onChange={(e) => {
+                                                            const selectedName = e.target.value;
+                                                            const selectedWord = availablePoeticWords.find(pw => pw.name === selectedName);
+                                                            
+                                                            const newPoeticWords = [...currentPoeticWords];
+                                                            if (selectedWord) {
+                                                                // Auto-fill all fields when a name is selected
+                                                                newPoeticWords[index] = {
+                                                                    name: selectedWord.name || "",
+                                                                    kanji_hiragana: selectedWord.kanji_hiragana || "",
+                                                                    english_equiv: selectedWord.english_equiv || "",
+                                                                    gloss: selectedWord.gloss || ""
+                                                                };
+                                                            } else {
+                                                                // Manual typing
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    name: selectedName
+                                                                };
+                                                            }
+                                                            
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newPoeticWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "400px",
+                                                            fontFamily: "inherit"
+                                                        }}
+                                                    />
+                                                </div>
+                                                
+                                                <div style={{ display: "grid", gridTemplateColumns: "300px 300px", gap: "24px" }}>
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            Kanji/Hiragana:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., 宮城野（みやぎの）"
+                                                            value={poeticWord.kanji_hiragana || ""}
+                                                            onChange={(e) => {
+                                                                const newPoeticWords = [...currentPoeticWords];
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    kanji_hiragana: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newPoeticWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            English Equivalent:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., Miyagi Moor"
+                                                            value={poeticWord.english_equiv || ""}
+                                                            onChange={(e) => {
+                                                                const newPoeticWords = [...currentPoeticWords];
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    english_equiv: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newPoeticWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style={{ maxWidth: "700px" }}>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Gloss (Detailed Description):
+                                                    </label>
+                                                    <textarea
+                                                        placeholder="Enter detailed description, literary associations, poetic sources, etc."
+                                                        value={poeticWord.gloss || ""}
+                                                        onChange={(e) => {
+                                                            const newPoeticWords = [...currentPoeticWords];
+                                                            newPoeticWords[index] = {
+                                                                ...poeticWord,
+                                                                gloss: e.target.value
+                                                            };
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newPoeticWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "100%",
+                                                            minHeight: "80px",
+                                                            resize: "vertical",
+                                                            fontFamily: "inherit",
+                                                            lineHeight: "1.4"
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newPoeticWords = [...currentPoeticWords, { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" }];
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(newPoeticWords)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "10px 16px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            ＋ Add New Poetic Word
+                                        </button>
+                                        
+                                        <datalist id="poetic-word-names">
+                                            {availablePoeticWords.map((pw) => (
+                                                <option key={pw.name} value={pw.name} />
+                                            ))}
+                                        </datalist>
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all poetic words"
+                                        style={{ marginTop: "12px" }}
                                     >
                                         ❌
                                     </button>

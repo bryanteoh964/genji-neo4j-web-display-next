@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -83,6 +83,19 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic technique relationships` }), { status: 200 });
+    } 
+    // Handle poetic words deletion specially (remove all HAS_POETIC_WORD_OF relationships)
+    else if (field === "pw") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_POETIC_WORD_OF]->(pw:Poetic_Word)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic word relationships` }), { status: 200 });
     } 
     // Handle poem types/tags deletion specially (remove all TAGGED_AS relationships)
     else if (field === "tag") {
@@ -222,7 +235,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.written !== undefined) props.Written = (data.written !== undefined && data.written !== null) ? String(data.written).toLowerCase() : null;
       if (data.handwritingDescription !== undefined) props.handwriting_description = data.handwritingDescription || null;
       if (data.kigo !== undefined) props.kigo = data.kigo || null;
-      if (data.pw !== undefined) props.pivot_words = data.pw || null;
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
       if (data.repCharacter !== undefined) props.representative_character = data.repCharacter || null;
@@ -468,6 +480,87 @@ async function updatePoemProperties(pnum, data) {
           pnum: pnum.toString(),
           evidence: data.placeOfReceipt_evidence || null
         });
+      }
+
+      // 2️⃣h Handle poetic words relationships
+      if (data.pw !== undefined) {
+        console.log("🔍 Backend received poetic words data:", data.pw);
+        
+        // First, remove all existing poetic word relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_POETIC_WORD_OF]->(pw:Poetic_Word)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the poetic words data and create new relationships
+        let poeticWordsData = [];
+        try {
+          poeticWordsData = Array.isArray(data.pw) ? data.pw : JSON.parse(data.pw);
+          console.log("🔍 Parsed poetic words data:", poeticWordsData);
+        } catch (e) {
+          console.error("🔍 Error parsing poetic words data:", e);
+          poeticWordsData = [];
+        }
+
+        if (Array.isArray(poeticWordsData)) {
+          console.log("🔍 Processing poetic words array:", poeticWordsData);
+          // Create relationships for each poetic word
+          for (const poeticWord of poeticWordsData) {
+            console.log("🔍 Processing individual poetic word:", poeticWord);
+            if (poeticWord && poeticWord.name && poeticWord.name.trim()) {
+              const wordName = poeticWord.name.trim();
+              console.log("🔍 Creating/updating poetic word:", wordName);
+              
+              // First check if the Poetic_Word node exists
+              const checkQuery = `
+                MATCH (pw:Poetic_Word {name: $wordName})
+                RETURN pw.name as name
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { wordName });
+              
+              if (checkResult.records.length === 0) {
+                // Create the Poetic_Word node if it doesn't exist
+                await tx.run(`
+                  CREATE (pw:Poetic_Word {
+                    name: $name,
+                    kanji_hiragana: $kanji_hiragana,
+                    english_equiv: $english_equiv,
+                    gloss: $gloss
+                  })
+                `, { 
+                  name: wordName,
+                  kanji_hiragana: poeticWord.kanji_hiragana || null,
+                  english_equiv: poeticWord.english_equiv || null,
+                  gloss: poeticWord.gloss || null
+                });
+              } else {
+                // Update existing Poetic_Word node with new data if provided
+                await tx.run(`
+                  MATCH (pw:Poetic_Word {name: $wordName})
+                  SET pw.kanji_hiragana = COALESCE($kanji_hiragana, pw.kanji_hiragana),
+                      pw.english_equiv = COALESCE($english_equiv, pw.english_equiv),
+                      pw.gloss = COALESCE($gloss, pw.gloss)
+                `, { 
+                  wordName,
+                  kanji_hiragana: poeticWord.kanji_hiragana || null,
+                  english_equiv: poeticWord.english_equiv || null,
+                  gloss: poeticWord.gloss || null
+                });
+              }
+              
+              // Create the relationship
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (pw:Poetic_Word {name: $wordName})
+                CREATE (g)-[r:HAS_POETIC_WORD_OF]->(pw)
+              `, { 
+                pnum: pnum.toString(), 
+                wordName: wordName
+              });
+            }
+          }
+        }
       }
 
       // 3️⃣ Update each Translation node separately if provided
