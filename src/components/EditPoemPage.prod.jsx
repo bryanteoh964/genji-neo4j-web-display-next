@@ -376,15 +376,10 @@ export default function EditPoemPage({ chapter, poemNum }) {
         setLoading(true);
         setError(null);
         try {
-            console.log("🔍 Raw editData before prepare:", editData);
             const prepared = prepareForSave(editData);
-            console.log("🔍 Prepared data:", prepared);
-            console.log("🔍 Poetic words data specifically:", prepared.pw);
 
             // CLEAN the prepared data here before sending:
             const cleaned = cleanProps(prepared);
-            console.log("🔍 Cleaned data:", cleaned);
-            console.log("🔍 Cleaned poetic words data:", cleaned.pw);
 
             // Use poemId from state for pnum
             const pnum = editData?.poemId || poemData?.poemId;
@@ -392,7 +387,6 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 throw new Error("Poem ID (pnum) is not available for saving.");
             }
 
-            console.log("🔍 Sending to backend with pnum:", pnum);
             await updatePoemData(pnum, cleaned);
 
             setPoemData({ ...editData });
