@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "proxy", "replyPoems"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "proxy", "replyPoems", "kigo"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -96,6 +96,19 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic word relationships` }), { status: 200 });
+    } 
+    // Handle seasonal words/kigo deletion specially (remove all HAS_SEASONAL_WORD_OF relationships)
+    else if (field === "kigo") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} seasonal word relationships` }), { status: 200 });
     } 
     // Handle poem types/tags deletion specially (remove all TAGGED_AS relationships)
     else if (field === "tag") {
@@ -273,7 +286,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.spoken !== undefined) props.Spoken = (data.spoken !== undefined && data.spoken !== null) ? String(data.spoken).toLowerCase() : null;
       if (data.written !== undefined) props.Written = (data.written !== undefined && data.written !== null) ? String(data.written).toLowerCase() : null;
       if (data.handwritingDescription !== undefined) props.handwriting_description = data.handwritingDescription || null;
-      if (data.kigo !== undefined) props.kigo = data.kigo || null;
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
       if (data.repCharacter !== undefined) props.representative_character = data.repCharacter || null;
@@ -680,7 +692,80 @@ async function updatePoemProperties(pnum, data) {
         }
       }
 
-      // 2️⃣k Handle reply poems relationships
+      // 2️⃣k Handle seasonal words/kigo relationships
+      if (data.kigo !== undefined) {
+        console.log("🔍 Backend received seasonal words data:", data.kigo);
+        
+        // First, remove all existing seasonal word relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the seasonal words data and create new relationships
+        let seasonalWordsData = [];
+        try {
+          seasonalWordsData = Array.isArray(data.kigo) ? data.kigo : JSON.parse(data.kigo);
+          console.log("🔍 Parsed seasonal words data:", seasonalWordsData);
+        } catch (e) {
+          console.error("🔍 Error parsing seasonal words data:", e);
+          seasonalWordsData = [];
+        }
+
+        if (Array.isArray(seasonalWordsData)) {
+          console.log("🔍 Processing seasonal words array:", seasonalWordsData);
+          // Create relationships for each seasonal word
+          for (const seasonalWord of seasonalWordsData) {
+            console.log("🔍 Processing individual seasonal word:", seasonalWord);
+            if (seasonalWord && seasonalWord.english && seasonalWord.english.trim()) {
+              const englishName = seasonalWord.english.trim();
+              console.log("🔍 Creating/updating seasonal word:", englishName);
+              
+              // First check if the Seasonal_Word node exists
+              const checkQuery = `
+                MATCH (sw:Seasonal_Word {english: $englishName})
+                RETURN sw.english as english
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { englishName });
+              
+              if (checkResult.records.length === 0) {
+                // Create the Seasonal_Word node if it doesn't exist
+                await tx.run(`
+                  CREATE (sw:Seasonal_Word {
+                    english: $english,
+                    japanese: $japanese
+                  })
+                `, { 
+                  english: englishName,
+                  japanese: seasonalWord.japanese || null
+                });
+              } else {
+                // Update existing Seasonal_Word node with new data if provided
+                await tx.run(`
+                  MATCH (sw:Seasonal_Word {english: $englishName})
+                  SET sw.japanese = COALESCE($japanese, sw.japanese)
+                `, { 
+                  englishName,
+                  japanese: seasonalWord.japanese || null
+                });
+              }
+              
+              // Create the relationship
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (sw:Seasonal_Word {english: $englishName})
+                CREATE (g)-[r:HAS_SEASONAL_WORD_OF]->(sw)
+              `, { 
+                pnum: pnum.toString(), 
+                englishName: englishName
+              });
+            }
+          }
+        }
+      }
+
+      // 2️⃣l Handle reply poems relationships
       if (data.replyPoems !== undefined) {
         console.log("🔍 Backend received reply poems data:", data.replyPoems);
         

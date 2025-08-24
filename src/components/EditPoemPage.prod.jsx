@@ -52,6 +52,12 @@ function cleanProps(input) {
       continue;
     }
 
+    // Special handling for seasonal words/kigo array
+    if (key === "kigo" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
     if (isPrimitiveOrPrimitiveArray(val)) {
       output[key] = val;
     } else {
@@ -112,6 +118,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [error, setError] = useState(null);
     const [availablePlaces, setAvailablePlaces] = useState([]);
     const [availablePoeticWords, setAvailablePoeticWords] = useState([]);
+    const [availableSeasonalWords, setAvailableSeasonalWords] = useState([]);
     const [availableCharacters, setAvailableCharacters] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
@@ -148,6 +155,21 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 });
         }
     }, [showPopup, availablePoeticWords.length]);
+
+    // Fetch available seasonal words when popup opens
+    useEffect(() => {
+        if (showPopup && availableSeasonalWords.length === 0) {
+            fetch('/api/poems/edit_seasonalWords')
+                .then(res => res.json())
+                .then(seasonalWords => {
+                    setAvailableSeasonalWords(seasonalWords);
+                })
+                .catch(err => {
+                    console.error('Error loading seasonal words:', err);
+                    setAvailableSeasonalWords([]);
+                });
+        }
+    }, [showPopup, availableSeasonalWords.length]);
 
     // Fetch available characters when popup opens
     useEffect(() => {
@@ -306,6 +328,13 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
+                        } else if (key === "kigo") {
+                            // Special handling for seasonal words/kigo - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (typeof val === "object") {
                             serialized[key] = JSON.stringify(val, null, 2);
                         } else {
@@ -399,6 +428,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 } catch {
                     result[key] = [];
                 }
+            } else if (key === "kigo") {
+                // Special handling for seasonal words/kigo - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
             } else {
             try {
                 result[key] = JSON.parse(val);
@@ -469,6 +510,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             messenger: "messenger", // messenger maps directly
             proxy: "proxy", // proxy maps directly
             replyPoems: "replyPoems", // reply poems map directly
+            kigo: "kigo", // seasonal words/kigo map directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -517,6 +559,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'tag') return 'Poem Type';
         if (key === 'replyPoems') return 'Reply Poems';
         if (key === 'proxy') return 'Proxy Poet';
+        if (key === 'kigo') return 'Seasonal Words';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -1044,6 +1087,209 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear all poetic words"
+                                        style={{ marginTop: "12px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for seasonal words/kigo (kigo)
+                    if (key === "kigo") {
+                        let currentSeasonalWords = [];
+                        try {
+                            let kigoData = editData[key];
+                            if (typeof kigoData === 'string') {
+                                kigoData = JSON.parse(kigoData);
+                            } else if (typeof kigoData === 'undefined' || kigoData === null) {
+                                kigoData = [];
+                            } else if (typeof kigoData === 'string' && kigoData.trim() === '') {
+                                kigoData = [];
+                            }
+                            if (Array.isArray(kigoData)) {
+                                currentSeasonalWords = kigoData;
+                            }
+                        } catch (e) {
+                            currentSeasonalWords = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    Seasonal Words (Kigo)
+                                    <span style={{ fontSize: "12px", fontWeight: "normal", color: "#666", marginLeft: "8px" }}>
+                                        Select from existing seasonal words or create new ones
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ 
+                                        display: "flex", 
+                                        flexDirection: "column", 
+                                        gap: "16px", 
+                                        padding: "16px", 
+                                        border: "1px solid #ddd", 
+                                        borderRadius: "8px", 
+                                        backgroundColor: "#f9f9f9",
+                                        width: "100%",
+                                        maxWidth: "900px"
+                                    }}>
+                                        {currentSeasonalWords.map((seasonalWord, index) => (
+                                            <div key={index} style={{ 
+                                                display: "flex", 
+                                                flexDirection: "column", 
+                                                gap: "12px", 
+                                                padding: "16px", 
+                                                backgroundColor: "white",
+                                                borderRadius: "6px",
+                                                border: "1px solid #ccc"
+                                            }}>
+                                                <div style={{ display: "grid", gridTemplateColumns: "400px 400px", gap: "24px" }}>
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            English (必須 / Required):
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            list="seasonal-word-english"
+                                                            placeholder="Type or select English name (e.g., tender lilac stems)"
+                                                            value={seasonalWord.english || ""}
+                                                            onChange={(e) => {
+                                                                const selectedEnglish = e.target.value;
+                                                                const selectedWord = availableSeasonalWords.find(sw => sw.english === selectedEnglish);
+                                                                
+                                                                const newSeasonalWords = [...currentSeasonalWords];
+                                                                if (selectedWord) {
+                                                                    // Auto-fill all fields when an English name is selected
+                                                                    newSeasonalWords[index] = {
+                                                                        english: selectedWord.english || "",
+                                                                        japanese: selectedWord.japanese || ""
+                                                                    };
+                                                                } else {
+                                                                    // Manual typing
+                                                                    newSeasonalWords[index] = {
+                                                                        ...seasonalWord,
+                                                                        english: selectedEnglish
+                                                                    };
+                                                                }
+                                                                
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            Japanese:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., 小萩"
+                                                            value={seasonalWord.japanese || ""}
+                                                            onChange={(e) => {
+                                                                const newSeasonalWords = [...currentSeasonalWords];
+                                                                newSeasonalWords[index] = {
+                                                                    ...seasonalWord,
+                                                                    japanese: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                <button
+                                                    onClick={() => {
+                                                        const newSeasonalWords = currentSeasonalWords.filter((_, i) => i !== index);
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(newSeasonalWords)
+                                                        }));
+                                                    }}
+                                                    style={{
+                                                        padding: "6px 12px",
+                                                        backgroundColor: "#dc3545",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "4px",
+                                                        cursor: "pointer",
+                                                        fontSize: "12px",
+                                                        alignSelf: "flex-start"
+                                                    }}
+                                                >
+                                                    Remove This Seasonal Word
+                                                </button>
+                                            </div>
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newSeasonalWords = [...currentSeasonalWords, { english: "", japanese: "" }];
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "10px 16px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            ＋ Add New Seasonal Word
+                                        </button>
+                                        
+                                        <datalist id="seasonal-word-english">
+                                            {availableSeasonalWords.map((sw) => (
+                                                <option key={sw.english} value={sw.english} />
+                                            ))}
+                                        </datalist>
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all seasonal words"
                                         style={{ marginTop: "12px" }}
                                     >
                                         ❌
