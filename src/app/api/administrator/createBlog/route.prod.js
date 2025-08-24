@@ -1,5 +1,5 @@
 const { getSession } = require('../../neo4j_driver/route.prod.js');
-import { auth } from "../../../../auth.prod";
+import { withAdminAuth } from "../../../../lib/auth-utils";
 
 async function createBlog(title, content, userEmail) {
   const session = await getSession();
@@ -50,25 +50,8 @@ async function createBlog(title, content, userEmail) {
   }
 }
 
-export const POST = async (request) => {
+export const POST = withAdminAuth(async (request, session) => {
   try {
-    // Check if user is authenticated
-    const session = await auth();
-    if (!session) {
-      return new Response(JSON.stringify({ message: "Unauthorized" }), { 
-        status: 401,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    // TODO: Add proper admin role check when roles are implemented
-    // if (session.user.role !== 'admin') {
-    //   return new Response(JSON.stringify({ message: "Forbidden" }), { 
-    //     status: 403,
-    //     headers: { 'Content-Type': 'application/json' }
-    //   });
-    // }
-
     const { title, content } = await request.json();
     
     if (!title || !title.trim()) {
@@ -113,4 +96,4 @@ export const POST = async (request) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-};
+});

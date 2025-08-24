@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import AdminBlogEditor from '../../components/AdminBlogEditor.prod';
 import styles from '../../styles/pages/administrator.module.css';
 
 const AdministratorPage = () => {
-    const { data: session, status } = useSession();
+    const { session, status, isAuthenticated, isAdmin, isLoading } = useAuth();
     const router = useRouter();
     const [blogs, setBlogs] = useState([]);
     const [selectedBlog, setSelectedBlog] = useState(null);
@@ -15,23 +15,22 @@ const AdministratorPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (status === 'loading') return;
+        if (isLoading) return; // Wait for auth to load
 
-        // Check if user is authenticated and has admin role
-        if (!session) {
+        // Check if user is authenticated
+        if (!isAuthenticated) {
             router.push('/login');
             return;
         }
 
-        // TODO: Add proper admin role check when role is implemented
-        // For now, allowing all authenticated users
-        // if (session.user.role !== 'admin') {
-        //     router.push('/');
-        //     return;
-        // }
+        // Check if user has admin role
+        if (!isAdmin) {
+            router.push('/');
+            return;
+        }
 
         fetchBlogs();
-    }, [session, status, router]);
+    }, [isAuthenticated, isAdmin, isLoading, router]);
 
     const fetchBlogs = async () => {
         try {
@@ -144,7 +143,8 @@ const AdministratorPage = () => {
         }
     };
 
-    if (status === 'loading' || loading) {
+    // Show loading while auth is being determined
+    if (isLoading || loading) {
         return (
             <div className={styles.loadingContainer}>
                 <div className={styles.loader}>Loading...</div>
@@ -152,8 +152,21 @@ const AdministratorPage = () => {
         );
     }
 
-    if (!session) {
-        return null; // Will redirect to login
+    // Show unauthorized access message for non-admins
+    if (isAuthenticated && !isAdmin) {
+        return (
+            <div className={styles.loadingContainer}>
+                <div className={styles.unauthorizedMessage}>
+                    <h2>Access Denied</h2>
+                    <p>You do not have administrator privileges to access this page.</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Don't render anything if not authenticated (will redirect to login)
+    if (!isAuthenticated) {
+        return null;
     }
 
     return (

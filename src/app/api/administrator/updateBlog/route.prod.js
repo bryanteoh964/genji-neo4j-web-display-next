@@ -36,13 +36,13 @@ export const POST = async (request) => {
       });
     }
 
-    // TODO: Add proper admin role check when roles are implemented
-    // if (session.user.role !== 'admin') {
-    //   return new Response(JSON.stringify({ message: "Forbidden" }), { 
-    //     status: 403,
-    //     headers: { 'Content-Type': 'application/json' }
-    //   });
-    // }
+    // Check if user has admin role
+    if (session.user.role !== 'admin') {
+      return new Response(JSON.stringify({ message: "Forbidden - Admin access required" }), { 
+        status: 403,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     const { title, content } = await request.json();
     

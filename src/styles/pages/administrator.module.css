@@ -168,6 +168,29 @@
     font-size: 0.9rem;
 }
 
+.unauthorizedMessage {
+    background-color: #1a1a2a;
+    color: #ffa366;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #ffa366;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.unauthorizedMessage h2 {
+    color: #EDB940;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.unauthorizedMessage p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .mainContent {
