@@ -375,6 +375,21 @@ const PoemSearch = () => {
             case "speaker_gender":
               return activeOptions.includes(result.speaker_gender);
             case "addressee_gender":
+
+              // Enhanced addressee gender filtering (currently disabled)
+              // This special handling was added to fix poems that were being filtered out:
+              // - Poems with empty addressee_gender (like 12SM20, 21OT06) would always pass
+              // - Poems with combined genders (like "male & female" from 53TN17) would match if any gender is active
+              // Uncomment the code below if you need to include poems with missing or combined addressee genders:
+              
+              // if (!result.addressee_gender || result.addressee_gender.trim() === "") {
+              //   return true; // Empty addressee gender passes all filters
+              // }
+              // if (result.addressee_gender.includes(" & ")) {
+              //   const genders = result.addressee_gender.split(" & ").map(g => g.trim());
+              //   return genders.some(gender => activeOptions.includes(gender));
+              // }
+              
               return activeOptions.includes(result.addressee_gender);
             case "season":
               return activeOptions.includes(result.season);
