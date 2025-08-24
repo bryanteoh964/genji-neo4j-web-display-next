@@ -1051,6 +1051,28 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                                         }}
                                                     />
                                                 </div>
+                                                
+                                                <button
+                                                    onClick={() => {
+                                                        const newPoeticWords = currentPoeticWords.filter((_, i) => i !== index);
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(newPoeticWords)
+                                                        }));
+                                                    }}
+                                                    style={{
+                                                        padding: "6px 12px",
+                                                        backgroundColor: "#dc3545",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "4px",
+                                                        cursor: "pointer",
+                                                        fontSize: "12px",
+                                                        alignSelf: "flex-start"
+                                                    }}
+                                                >
+                                                    Remove This Poetic Word
+                                                </button>
                                             </div>
                                         ))}
                                         
