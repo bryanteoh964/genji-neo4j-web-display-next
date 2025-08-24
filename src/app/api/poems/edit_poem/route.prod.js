@@ -706,6 +706,7 @@ async function updatePoemProperties(pnum, data) {
           for (const seasonalWord of seasonalWordsData) {
             if (seasonalWord && seasonalWord.english && seasonalWord.english.trim()) {
               const englishName = seasonalWord.english.trim();
+              const evidence = seasonalWord.evidence || null;
               
               // First check if the Seasonal_Word node exists
               const checkQuery = `
@@ -737,14 +738,16 @@ async function updatePoemProperties(pnum, data) {
                 });
               }
               
-              // Create the relationship
+              // Create the relationship with evidence property
               await tx.run(`
                 MATCH (g:Genji_Poem {pnum: $pnum})
                 MATCH (sw:Seasonal_Word {english: $englishName})
                 CREATE (g)-[r:HAS_SEASONAL_WORD_OF]->(sw)
+                SET r.evidence = $evidence
               `, { 
                 pnum: pnum.toString(), 
-                englishName: englishName
+                englishName: englishName,
+                evidence: evidence
               });
             }
           }

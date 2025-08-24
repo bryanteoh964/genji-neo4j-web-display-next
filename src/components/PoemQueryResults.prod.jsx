@@ -271,7 +271,7 @@ const PoemDisplay = ({ poemData }) => {
                     spoken_or_written_evidence: responseData[30]
                 };
                 
-
+                
                 // console.log(responseData)
 
                 setPoemState(prev => ({...prev, ...newPoemState}));
@@ -657,12 +657,27 @@ const PoemDisplay = ({ poemData }) => {
                                 {poemState.kigo && poemState.kigo.length > 0 && (
                                     <div className={styles.detailItem}>
                                         <h3>SEASONAL WORD</h3>
-                                        {poemState.kigo.map((kigoItem, index) => (
-                                            <div key={index} className={styles.seasonalWordItem}>
-                                                {kigoItem.japanese && <FormatContent content={kigoItem.japanese} />}
-                                                {kigoItem.english && <FormatContent content={kigoItem.english} />}
-                                            </div>
-                                        ))}
+                                        {poemState.kigo.map((kigoItem, index) => {
+                                            return (
+                                                <div key={index} className={styles.seasonalWordItem}>
+                                                    <div className={styles.withEvidence}>
+                                                        <EvidenceDropdown 
+                                                            content={(() => {
+                                                                if (kigoItem.japanese && kigoItem.english) {
+                                                                    return `${kigoItem.japanese} — ${kigoItem.english}`;
+                                                                } else if (kigoItem.japanese && !kigoItem.english) {
+                                                                    return kigoItem.japanese;
+                                                                } else if (!kigoItem.japanese && kigoItem.english) {
+                                                                    return kigoItem.english;
+                                                                }
+                                                                return '';
+                                                            })()}
+                                                            evidence={kigoItem.evidence}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 )}
                                 

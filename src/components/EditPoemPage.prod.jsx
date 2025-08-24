@@ -1194,7 +1194,8 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                                                     // Auto-fill all fields when an English name is selected
                                                                     newSeasonalWords[index] = {
                                                                         english: selectedWord.english || "",
-                                                                        japanese: selectedWord.japanese || ""
+                                                                        japanese: selectedWord.japanese || "",
+                                                                        evidence: seasonalWord.evidence || ""
                                                                     };
                                                                 } else {
                                                                     // Manual typing
@@ -1257,6 +1258,55 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                                     </div>
                                                 </div>
                                                 
+                                                {/* Evidence input field */}
+                                                <div>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Evidence (Optional):
+                                                        <span
+                                                            title="Formatting: **bold**, *italic*, &amp;nbsp; for indent, [link title](URL) for links"
+                                                            style={{
+                                                                marginLeft: "0.3rem",
+                                                                cursor: "help",
+                                                                color: "#888",
+                                                                fontWeight: "bold",
+                                                            }}
+                                                        >
+                                                            ?
+                                                        </span>
+                                                    </label>
+                                                    <textarea
+                                                        placeholder="Evidence supporting this seasonal word assignment..."
+                                                        value={seasonalWord.evidence || ""}
+                                                        onChange={(e) => {
+                                                            const newSeasonalWords = [...currentSeasonalWords];
+                                                            newSeasonalWords[index] = {
+                                                                ...seasonalWord,
+                                                                evidence: e.target.value
+                                                            };
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newSeasonalWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "100%",
+                                                            fontFamily: "inherit",
+                                                            minHeight: "60px",
+                                                            resize: "vertical"
+                                                        }}
+                                                    />
+                                                </div>
+                                                
                                                 <button
                                                     onClick={() => {
                                                         const newSeasonalWords = currentSeasonalWords.filter((_, i) => i !== index);
@@ -1283,7 +1333,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         
                                         <button
                                             onClick={() => {
-                                                const newSeasonalWords = [...currentSeasonalWords, { english: "", japanese: "" }];
+                                                const newSeasonalWords = [...currentSeasonalWords, { english: "", japanese: "", evidence: "" }];
                                                 setEditData((prev) => ({
                                                     ...prev,
                                                     [key]: JSON.stringify(newSeasonalWords)
