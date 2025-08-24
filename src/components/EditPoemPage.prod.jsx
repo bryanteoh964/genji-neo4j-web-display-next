@@ -102,12 +102,12 @@ const fieldOrder = [
   "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
   "pw", "messenger", "replyPoems",
-  "proxy", "kigo", "handwritingDescription", "relWithEvidence",
+  "proxy", "kigo", "handwritingDescription", 
 ];
 
-// "repCharacter", "source", (Don't need source - also not fully sure what source is)
-// "groupPoems", "furtherReadings (utilizes source)", (Difficult to implement group as many poems are related by unique group node)
-
+// "repCharacter", "source?", (This refers to Honka nodes in Neo4j)
+// "groupPoems", "furtherReadings (utilizes source, don't need this source atm?)", (Difficult to implement group as many poems are related by unique group node)
+// Also kinda difficult "relWithEvidence", internal allusions, Genji Poem -- Genji Poem with evidence
 
 export default function EditPoemPage({ chapter, poemNum }) {
     const [showButton, setShowButton] = useState(false);
@@ -511,6 +511,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             proxy: "proxy", // proxy maps directly
             replyPoems: "replyPoems", // reply poems map directly
             kigo: "kigo", // seasonal words/kigo map directly
+            handwritingDescription: "handwriting_description", // handwriting description maps directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -560,6 +561,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'replyPoems') return 'Reply Poems';
         if (key === 'proxy') return 'Proxy Poet';
         if (key === 'kigo') return 'Seasonal Words';
+        if (key === 'handwritingDescription') return 'Handwriting Description';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -1574,7 +1576,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             <label className="full-field-label" style={{ display: "flex", alignItems: "center" }}>
                                 {formatFieldName(key)}
                                 
-                                {(key === "notes" || key === "narrativeContext" || key === "paraphrase") && (
+                                {(key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") && (
                                     <span
                                         title="Formatting: **bold**, *italic*, &amp;nbsp; for indent, [link title](URL) for links"
                                         style={{
@@ -1594,7 +1596,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                     value={(() => {
                                         const rawValue = editData[key] || "";
                                         // Convert \n to actual line breaks for these specific fields
-                                        if (key === "notes" || key === "narrativeContext" || key === "paraphrase") {
+                                        if (key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") {
                                             return rawValue.replace(/\\n/g, '\n');
                                         }
                                         return rawValue;
@@ -1602,7 +1604,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                     onChange={(e) => {
                                         const newValue = e.target.value;
                                         // Convert actual line breaks back to \n for storage for these specific fields
-                                        const valueToStore = (key === "notes" || key === "narrativeContext" || key === "paraphrase") 
+                                        const valueToStore = (key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") 
                                             ? newValue.replace(/\n/g, '\\n')
                                             : newValue;
                                         

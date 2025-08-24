@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "proxy", "replyPoems", "kigo"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "proxy", "replyPoems", "kigo", "handwriting_description"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -613,8 +613,6 @@ async function updatePoemProperties(pnum, data) {
 
       // 2️⃣j Handle poetic words relationships
       if (data.pw !== undefined) {
-        console.log("🔍 Backend received poetic words data:", data.pw);
-        
         // First, remove all existing poetic word relationships
         await tx.run(`
           MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_POETIC_WORD_OF]->(pw:Poetic_Word)
@@ -625,20 +623,15 @@ async function updatePoemProperties(pnum, data) {
         let poeticWordsData = [];
         try {
           poeticWordsData = Array.isArray(data.pw) ? data.pw : JSON.parse(data.pw);
-          console.log("🔍 Parsed poetic words data:", poeticWordsData);
         } catch (e) {
-          console.error("🔍 Error parsing poetic words data:", e);
           poeticWordsData = [];
         }
 
         if (Array.isArray(poeticWordsData)) {
-          console.log("🔍 Processing poetic words array:", poeticWordsData);
           // Create relationships for each poetic word
           for (const poeticWord of poeticWordsData) {
-            console.log("🔍 Processing individual poetic word:", poeticWord);
             if (poeticWord && poeticWord.name && poeticWord.name.trim()) {
               const wordName = poeticWord.name.trim();
-              console.log("🔍 Creating/updating poetic word:", wordName);
               
               // First check if the Poetic_Word node exists
               const checkQuery = `
@@ -694,8 +687,6 @@ async function updatePoemProperties(pnum, data) {
 
       // 2️⃣k Handle seasonal words/kigo relationships
       if (data.kigo !== undefined) {
-        console.log("🔍 Backend received seasonal words data:", data.kigo);
-        
         // First, remove all existing seasonal word relationships
         await tx.run(`
           MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word)
@@ -706,20 +697,15 @@ async function updatePoemProperties(pnum, data) {
         let seasonalWordsData = [];
         try {
           seasonalWordsData = Array.isArray(data.kigo) ? data.kigo : JSON.parse(data.kigo);
-          console.log("🔍 Parsed seasonal words data:", seasonalWordsData);
         } catch (e) {
-          console.error("🔍 Error parsing seasonal words data:", e);
           seasonalWordsData = [];
         }
 
         if (Array.isArray(seasonalWordsData)) {
-          console.log("🔍 Processing seasonal words array:", seasonalWordsData);
           // Create relationships for each seasonal word
           for (const seasonalWord of seasonalWordsData) {
-            console.log("🔍 Processing individual seasonal word:", seasonalWord);
             if (seasonalWord && seasonalWord.english && seasonalWord.english.trim()) {
               const englishName = seasonalWord.english.trim();
-              console.log("🔍 Creating/updating seasonal word:", englishName);
               
               // First check if the Seasonal_Word node exists
               const checkQuery = `
@@ -767,8 +753,6 @@ async function updatePoemProperties(pnum, data) {
 
       // 2️⃣l Handle reply poems relationships
       if (data.replyPoems !== undefined) {
-        console.log("🔍 Backend received reply poems data:", data.replyPoems);
-        
         // First, remove all existing reply relationships where other poems reply TO this poem
         await tx.run(`
           MATCH (replyPoem:Genji_Poem)-[r:REPLY_TO]->(g:Genji_Poem {pnum: $pnum})
@@ -779,19 +763,15 @@ async function updatePoemProperties(pnum, data) {
         let replyPoemsData = [];
         try {
           replyPoemsData = Array.isArray(data.replyPoems) ? data.replyPoems : JSON.parse(data.replyPoems);
-          console.log("🔍 Parsed reply poems data:", replyPoemsData);
         } catch (e) {
-          console.error("🔍 Error parsing reply poems data:", e);
           replyPoemsData = [];
         }
 
         if (Array.isArray(replyPoemsData)) {
-          console.log("🔍 Processing reply poems array:", replyPoemsData);
           // Create REPLY_TO relationships for each reply poem
           for (const [replyPnum, isSelected] of replyPoemsData) {
             if (isSelected && replyPnum && replyPnum.trim()) {
               const replyPoemNum = replyPnum.trim();
-              console.log("🔍 Creating REPLY_TO relationship from:", replyPoemNum, "to:", pnum);
               
               // Check if the reply poem exists
               const checkQuery = `
@@ -811,9 +791,6 @@ async function updatePoemProperties(pnum, data) {
                   replyPnum: replyPoemNum,
                   currentPnum: pnum.toString()
                 });
-                console.log("✅ Created REPLY_TO relationship successfully");
-              } else {
-                console.warn(`⚠️ Reply poem ${replyPoemNum} not found in database`);
               }
             }
           }
