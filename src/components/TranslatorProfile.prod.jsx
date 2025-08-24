@@ -1,24 +1,22 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import FormatContent from '../../components/FormatText.prod';
-import styles from '../../styles/pages/blogTemplate.module.css';
+import FormatContent from './FormatText.prod';
+import styles from '../styles/pages/blogTemplate.module.css';
 
-const BlogPage = () => {
+const TranslatorProfile = ({ name }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTranslator, setSelectedTranslator] = useState('Arthur Waley');
   const [content, setContent] = useState('');
   const [authorInfo, setAuthorInfo] = useState({name: '', homepage: '', email: ''});
   const [sources, setSources] = useState([]);
 
   const translators = [
     { name: 'Arthur Waley' },
-    { name: 'Dennis Washburn' },
     { name: 'Edward Seidensticker' },
-    { name: 'Edwin Cranston' },
     { name: 'Royall Tyler' },
+    { name: 'Dennis Washburn' },
+    { name: 'Edwin Cranston' },
   ];
-  
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -26,10 +24,10 @@ const BlogPage = () => {
       // reset author info
       setAuthorInfo({name: '', homepage: '', email: ''});
 
-      if (selectedTranslator) {
+      if (name) {
         try {
           // get translator content
-          const translatorRes = await fetch(`/api/blog/getSingle?title=About ${selectedTranslator}`);
+          const translatorRes = await fetch(`/api/blog/getSingle?title=About ${name}`);
           const translatorData = await translatorRes.json();
           setContent(translatorData.content);
 
@@ -46,7 +44,7 @@ const BlogPage = () => {
           }
 
           // get sources
-          const sourcesRes = await fetch(`/api/source/getSingleSource?title=About ${selectedTranslator}`);
+          const sourcesRes = await fetch(`/api/source/getSingleSource?title=About ${name}`);
           const sourcesData = await sourcesRes.json();
           setSources(sourcesData.sources);
         } catch (error) {
@@ -57,8 +55,7 @@ const BlogPage = () => {
     };
 
     fetchContent();
-  }, [selectedTranslator]);
-
+  }, [name]);
 
   return (
     <div className={styles.translatorPage}>
@@ -69,7 +66,7 @@ const BlogPage = () => {
                 alt="translators banner"
             />
             <div className={styles.translatorTitleOverlay}>
-                <span className={styles.translatorTitle}>{selectedTranslator.split(' ')[1]}</span>
+                <span className={styles.translatorTitle}>{name ? name.split(' ')[1] : ''}</span>
             </div>
         </div>
 
@@ -79,17 +76,17 @@ const BlogPage = () => {
                       <div className={styles.analysisLeft}>
                           
                           {translators.map((translator, index) => ( 
-                            <div className={styles.translatorPanel}>
-                                <div 
-                                    key={index} 
-                                    className={`${styles.translatorPanel} ${selectedTranslator === translator.name ? styles.selected : ''}`}
-                                    onClick={() => setSelectedTranslator(prev => prev = translator.name)}
-                                    style={{ cursor: 'pointer' }}s
-                                >
-                                    <span className={styles.panelHeader}>
-                                        <h2>{translator.name}</h2>
-                                    </span>
-                                </div>
+                            <div key={index} className={styles.translatorPanel}>
+                                <Link href={`/translators/${encodeURIComponent(translator.name)}`} style={{ textDecoration: 'none' }}>
+                                    <div 
+                                        className={`${styles.translatorPanel} ${name === translator.name ? styles.selected : ''}`}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <span className={styles.panelHeader}>
+                                            <h2>{translator.name}</h2>
+                                        </span>
+                                    </div>
+                                </Link>
                             </div>
                           ))}
 
@@ -102,7 +99,7 @@ const BlogPage = () => {
                       <div className={styles.loading}>Loading...</div>
                   ) : (
                       <>  
-                          <div className={styles.heading}>{'About ' + selectedTranslator}</div>
+                          <div className={styles.heading}>{'About ' + name}</div>
                           <FormatContent 
                               content={content} 
                               className={styles.descriptionText} 
@@ -132,4 +129,4 @@ const BlogPage = () => {
 )
 }
 
-export default BlogPage;
+export default TranslatorProfile;

@@ -40,6 +40,24 @@ function cleanProps(input) {
       continue;
     }
 
+    // Special handling for poetic words array
+    if (key === "pw" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
+    // Special handling for reply poems array
+    if (key === "replyPoems" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
+    // Special handling for seasonal words/kigo array
+    if (key === "kigo" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
     if (isPrimitiveOrPrimitiveArray(val)) {
       output[key] = val;
     } else {
@@ -83,11 +101,13 @@ const fieldOrder = [
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
   "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
+  "pw", "messenger", "replyPoems",
+  "proxy", "kigo", "handwritingDescription", 
 ];
 
-//   "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-//   "proxy", "kigo", "handwritingDescription", "source", "relWithEvidence",
-
+// "repCharacter", "source?", (This refers to Honka nodes in Neo4j)
+// "groupPoems", "furtherReadings (utilizes source, don't need this source atm?)", (Difficult to implement group as many poems are related by unique group node)
+// Also kinda difficult "relWithEvidence", internal allusions, Genji Poem -- Genji Poem with evidence
 
 export default function EditPoemPage({ chapter, poemNum }) {
     const [showButton, setShowButton] = useState(false);
@@ -97,6 +117,9 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [editData, setEditData] = useState(null);
     const [error, setError] = useState(null);
     const [availablePlaces, setAvailablePlaces] = useState([]);
+    const [availablePoeticWords, setAvailablePoeticWords] = useState([]);
+    const [availableSeasonalWords, setAvailableSeasonalWords] = useState([]);
+    const [availableCharacters, setAvailableCharacters] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
     useEffect(() => {
@@ -117,6 +140,51 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 });
         }
     }, [showPopup, availablePlaces.length]);
+
+    // Fetch available poetic words when popup opens
+    useEffect(() => {
+        if (showPopup && availablePoeticWords.length === 0) {
+            fetch('/api/poems/edit_poeticWords')
+                .then(res => res.json())
+                .then(poeticWords => {
+                    setAvailablePoeticWords(poeticWords);
+                })
+                .catch(err => {
+                    console.error('Error loading poetic words:', err);
+                    setAvailablePoeticWords([]);
+                });
+        }
+    }, [showPopup, availablePoeticWords.length]);
+
+    // Fetch available seasonal words when popup opens
+    useEffect(() => {
+        if (showPopup && availableSeasonalWords.length === 0) {
+            fetch('/api/poems/edit_seasonalWords')
+                .then(res => res.json())
+                .then(seasonalWords => {
+                    setAvailableSeasonalWords(seasonalWords);
+                })
+                .catch(err => {
+                    console.error('Error loading seasonal words:', err);
+                    setAvailableSeasonalWords([]);
+                });
+        }
+    }, [showPopup, availableSeasonalWords.length]);
+
+    // Fetch available characters when popup opens
+    useEffect(() => {
+        if (showPopup && availableCharacters.length === 0) {
+            fetch('/api/poems/edit_characters')
+                .then(res => res.json())
+                .then(characters => {
+                    setAvailableCharacters(characters);
+                })
+                .catch(err => {
+                    console.error('Error loading characters:', err);
+                    setAvailableCharacters([]);
+                });
+        }
+    }, [showPopup, availableCharacters.length]);
 
     useEffect(() => {
         if (showPopup && !poemData) {
@@ -236,13 +304,34 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
+                        } else if (key === "pw") {
+                            // Special handling for poetic words - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (key === "tag") {
                             // Special handling for poem types/tags - convert from backend format to frontend format
                             if (Array.isArray(val)) {
-                                // Backend returns format like [["Proferred", true], ["Reply", true]]
-                                // Convert to just the selected tag names for frontend: ["Proferred", "Reply"]
+                                // Backend returns format like [["Proffered", true], ["Reply", true]]
+                                // Convert to just the selected tag names for frontend: ["Proffered", "Reply"]
                                 const selectedTags = val.filter(([name, selected]) => selected).map(([name]) => name);
                                 serialized[key] = JSON.stringify(selectedTags);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
+                        } else if (key === "replyPoems") {
+                            // Special handling for replyPoems - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
+                        } else if (key === "kigo") {
+                            // Special handling for seasonal words/kigo - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
@@ -305,6 +394,42 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 }
             } else if (key === "tag") {
                 // Special handling for poem types/tags - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
+            } else if (key === "pw") {
+                // Special handling for poetic words - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
+            } else if (key === "replyPoems") {
+                // Special handling for reply poems - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
+            } else if (key === "kigo") {
+                // Special handling for seasonal words/kigo - ensure it's properly parsed
                 try {
                     if (!val || val.trim() === "") {
                         result[key] = [];
@@ -382,6 +507,11 @@ export default function EditPoemPage({ chapter, poemNum }) {
             placeOfReceipt: "placeOfReceipt", // place of receipt maps directly
             placeOfComp_evidence: "placeOfComp_evidence",
             placeOfReceipt_evidence: "placeOfReceipt_evidence",
+            messenger: "messenger", // messenger maps directly
+            proxy: "proxy", // proxy maps directly
+            replyPoems: "replyPoems", // reply poems map directly
+            kigo: "kigo", // seasonal words/kigo map directly
+            handwritingDescription: "handwriting_description", // handwriting description maps directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -400,10 +530,12 @@ export default function EditPoemPage({ chapter, poemNum }) {
             setEditData((prev) => {
             const updated = { ...prev };
             
-            // Special handling for poetic techniques and tags - set to empty array instead of deleting
+            // Special handling for poetic techniques, tags, and reply poems - set to empty array instead of deleting
             if (key === "pt") {
                 updated[key] = JSON.stringify([]);
             } else if (key === "tag") {
+                updated[key] = JSON.stringify([]);
+            } else if (key === "replyPoems") {
                 updated[key] = JSON.stringify([]);
             } else {
                 delete updated[key];
@@ -426,6 +558,10 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'narrativeContext') return 'Where We Are In The Tale';
         if (key === 'paraphrase') return 'What The Poem Is Saying';
         if (key === 'tag') return 'Poem Type';
+        if (key === 'replyPoems') return 'Reply Poems';
+        if (key === 'proxy') return 'Proxy Poet';
+        if (key === 'kigo') return 'Seasonal Words';
+        if (key === 'handwritingDescription') return 'Handwriting Description';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -437,7 +573,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             .replace(/Place Of Comp/g, 'Place Of Composition')
             .replace(/Place Of Receipt/g, 'Place Of Receipt')
             .replace(/Pt/g, 'Poetic Techniques')
-            .replace(/Pw/g, 'Pivot Words');
+            .replace(/Pw/g, 'Poetic Words');
     }
 
     function renderFields() {
@@ -634,7 +770,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
 
                     // Special handling for poem types/tags
                     if (key === "tag") {
-                        const poemTypes = ["Proferred Poem", "Reply Poem", "Soliloquy", "Group Poem"];
+                        const poemTypes = ["Proffered Poem", "Reply Poem", "Soliloquy", "Group Poem"];
                         
                         // Parse current tag data - handle both array and JSON string formats
                         let currentTypes = [];
@@ -705,6 +841,538 @@ export default function EditPoemPage({ chapter, poemNum }) {
                         );
                     }
 
+                    // Special handling for poetic words (pw)
+                    if (key === "pw") {
+                        let currentPoeticWords = [];
+                        try {
+                            let pwData = editData[key];
+                            if (typeof pwData === 'string') {
+                                pwData = JSON.parse(pwData);
+                            } else if (typeof pwData === 'undefined' || pwData === null) {
+                                pwData = [];
+                            } else if (typeof pwData === 'string' && pwData.trim() === '') {
+                                pwData = [];
+                            }
+                            if (Array.isArray(pwData)) {
+                                currentPoeticWords = pwData;
+                            }
+                        } catch (e) {
+                            currentPoeticWords = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    Poetic Words
+                                    <span style={{ fontSize: "12px", fontWeight: "normal", color: "#666", marginLeft: "8px" }}>
+                                        Select from existing poetic words or create new ones
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ 
+                                        display: "flex", 
+                                        flexDirection: "column", 
+                                        gap: "16px", 
+                                        padding: "16px", 
+                                        border: "1px solid #ddd", 
+                                        borderRadius: "8px", 
+                                        backgroundColor: "#f9f9f9",
+                                        width: "100%",
+                                        maxWidth: "900px"
+                                    }}>
+                                        {currentPoeticWords.map((poeticWord, index) => (
+                                            <div key={index} style={{ 
+                                                display: "flex", 
+                                                flexDirection: "column", 
+                                                gap: "12px", 
+                                                padding: "16px", 
+                                                backgroundColor: "white",
+                                                borderRadius: "6px",
+                                                border: "1px solid #ccc"
+                                            }}>
+                                                <div style={{ alignSelf: "flex-start" }}>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Name (必須 / Required):
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        list="poetic-word-names"
+                                                        placeholder="Type or select poetic word name (e.g., Miyagino)"
+                                                        value={poeticWord.name || ""}
+                                                        onChange={(e) => {
+                                                            const selectedName = e.target.value;
+                                                            const selectedWord = availablePoeticWords.find(pw => pw.name === selectedName);
+                                                            
+                                                            const newPoeticWords = [...currentPoeticWords];
+                                                            if (selectedWord) {
+                                                                // Auto-fill all fields when a name is selected
+                                                                newPoeticWords[index] = {
+                                                                    name: selectedWord.name || "",
+                                                                    kanji_hiragana: selectedWord.kanji_hiragana || "",
+                                                                    english_equiv: selectedWord.english_equiv || "",
+                                                                    gloss: selectedWord.gloss || ""
+                                                                };
+                                                            } else {
+                                                                // Manual typing
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    name: selectedName
+                                                                };
+                                                            }
+                                                            
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newPoeticWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "400px",
+                                                            fontFamily: "inherit"
+                                                        }}
+                                                    />
+                                                </div>
+                                                
+                                                <div style={{ display: "grid", gridTemplateColumns: "300px 300px", gap: "24px" }}>
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            Kanji/Hiragana:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., 宮城野（みやぎの）"
+                                                            value={poeticWord.kanji_hiragana || ""}
+                                                            onChange={(e) => {
+                                                                const newPoeticWords = [...currentPoeticWords];
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    kanji_hiragana: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newPoeticWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            English Equivalent:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., Miyagi Moor"
+                                                            value={poeticWord.english_equiv || ""}
+                                                            onChange={(e) => {
+                                                                const newPoeticWords = [...currentPoeticWords];
+                                                                newPoeticWords[index] = {
+                                                                    ...poeticWord,
+                                                                    english_equiv: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newPoeticWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style={{ maxWidth: "700px" }}>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Gloss (Detailed Description):
+                                                    </label>
+                                                    <textarea
+                                                        placeholder="Enter detailed description, literary associations, poetic sources, etc."
+                                                        value={poeticWord.gloss || ""}
+                                                        onChange={(e) => {
+                                                            const newPoeticWords = [...currentPoeticWords];
+                                                            newPoeticWords[index] = {
+                                                                ...poeticWord,
+                                                                gloss: e.target.value
+                                                            };
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newPoeticWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "100%",
+                                                            minHeight: "80px",
+                                                            resize: "vertical",
+                                                            fontFamily: "inherit",
+                                                            lineHeight: "1.4"
+                                                        }}
+                                                    />
+                                                </div>
+                                                
+                                                <button
+                                                    onClick={() => {
+                                                        const newPoeticWords = currentPoeticWords.filter((_, i) => i !== index);
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(newPoeticWords)
+                                                        }));
+                                                    }}
+                                                    style={{
+                                                        padding: "6px 12px",
+                                                        backgroundColor: "#dc3545",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "4px",
+                                                        cursor: "pointer",
+                                                        fontSize: "12px",
+                                                        alignSelf: "flex-start"
+                                                    }}
+                                                >
+                                                    Remove This Poetic Word
+                                                </button>
+                                            </div>
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newPoeticWords = [...currentPoeticWords, { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" }];
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(newPoeticWords)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "10px 16px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            ＋ Add New Poetic Word
+                                        </button>
+                                        
+                                        <datalist id="poetic-word-names">
+                                            {availablePoeticWords.map((pw) => (
+                                                <option key={pw.name} value={pw.name} />
+                                            ))}
+                                        </datalist>
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all poetic words"
+                                        style={{ marginTop: "12px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for seasonal words/kigo (kigo)
+                    if (key === "kigo") {
+                        let currentSeasonalWords = [];
+                        try {
+                            let kigoData = editData[key];
+                            if (typeof kigoData === 'string') {
+                                kigoData = JSON.parse(kigoData);
+                            } else if (typeof kigoData === 'undefined' || kigoData === null) {
+                                kigoData = [];
+                            } else if (typeof kigoData === 'string' && kigoData.trim() === '') {
+                                kigoData = [];
+                            }
+                            if (Array.isArray(kigoData)) {
+                                currentSeasonalWords = kigoData;
+                            }
+                        } catch (e) {
+                            currentSeasonalWords = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    Seasonal Words (Kigo)
+                                    <span style={{ fontSize: "12px", fontWeight: "normal", color: "#666", marginLeft: "8px" }}>
+                                        Select from existing seasonal words or create new ones
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ 
+                                        display: "flex", 
+                                        flexDirection: "column", 
+                                        gap: "16px", 
+                                        padding: "16px", 
+                                        border: "1px solid #ddd", 
+                                        borderRadius: "8px", 
+                                        backgroundColor: "#f9f9f9",
+                                        width: "100%",
+                                        maxWidth: "900px"
+                                    }}>
+                                        {currentSeasonalWords.map((seasonalWord, index) => (
+                                            <div key={index} style={{ 
+                                                display: "flex", 
+                                                flexDirection: "column", 
+                                                gap: "12px", 
+                                                padding: "16px", 
+                                                backgroundColor: "white",
+                                                borderRadius: "6px",
+                                                border: "1px solid #ccc"
+                                            }}>
+                                                <div style={{ display: "grid", gridTemplateColumns: "400px 400px", gap: "24px" }}>
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            English (必須 / Required):
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            list="seasonal-word-english"
+                                                            placeholder="Type or select English name (e.g., tender lilac stems)"
+                                                            value={seasonalWord.english || ""}
+                                                            onChange={(e) => {
+                                                                const selectedEnglish = e.target.value;
+                                                                const selectedWord = availableSeasonalWords.find(sw => sw.english === selectedEnglish);
+                                                                
+                                                                const newSeasonalWords = [...currentSeasonalWords];
+                                                                if (selectedWord) {
+                                                                    // Auto-fill all fields when an English name is selected
+                                                                    newSeasonalWords[index] = {
+                                                                        english: selectedWord.english || "",
+                                                                        japanese: selectedWord.japanese || "",
+                                                                        evidence: seasonalWord.evidence || ""
+                                                                    };
+                                                                } else {
+                                                                    // Manual typing
+                                                                    newSeasonalWords[index] = {
+                                                                        ...seasonalWord,
+                                                                        english: selectedEnglish
+                                                                    };
+                                                                }
+                                                                
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <label style={{ 
+                                                            display: "block", 
+                                                            fontSize: "13px", 
+                                                            fontWeight: "bold", 
+                                                            color: "#333", 
+                                                            marginBottom: "4px" 
+                                                        }}>
+                                                            Japanese:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="e.g., 小萩"
+                                                            value={seasonalWord.japanese || ""}
+                                                            onChange={(e) => {
+                                                                const newSeasonalWords = [...currentSeasonalWords];
+                                                                newSeasonalWords[index] = {
+                                                                    ...seasonalWord,
+                                                                    japanese: e.target.value
+                                                                };
+                                                                setEditData((prev) => ({
+                                                                    ...prev,
+                                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                                }));
+                                                            }}
+                                                            style={{
+                                                                padding: "8px",
+                                                                border: "1px solid #ccc",
+                                                                borderRadius: "4px",
+                                                                fontSize: "14px",
+                                                                width: "100%",
+                                                                fontFamily: "inherit"
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Evidence input field */}
+                                                <div>
+                                                    <label style={{ 
+                                                        display: "block", 
+                                                        fontSize: "13px", 
+                                                        fontWeight: "bold", 
+                                                        color: "#333", 
+                                                        marginBottom: "4px" 
+                                                    }}>
+                                                        Evidence (Optional):
+                                                        <span
+                                                            title="Formatting: **bold**, *italic*, &amp;nbsp; for indent, [link title](URL) for links"
+                                                            style={{
+                                                                marginLeft: "0.3rem",
+                                                                cursor: "help",
+                                                                color: "#888",
+                                                                fontWeight: "bold",
+                                                            }}
+                                                        >
+                                                            ?
+                                                        </span>
+                                                    </label>
+                                                    <textarea
+                                                        placeholder="Evidence supporting this seasonal word assignment..."
+                                                        value={seasonalWord.evidence || ""}
+                                                        onChange={(e) => {
+                                                            const newSeasonalWords = [...currentSeasonalWords];
+                                                            newSeasonalWords[index] = {
+                                                                ...seasonalWord,
+                                                                evidence: e.target.value
+                                                            };
+                                                            setEditData((prev) => ({
+                                                                ...prev,
+                                                                [key]: JSON.stringify(newSeasonalWords)
+                                                            }));
+                                                        }}
+                                                        style={{
+                                                            padding: "8px",
+                                                            border: "1px solid #ccc",
+                                                            borderRadius: "4px",
+                                                            fontSize: "14px",
+                                                            width: "100%",
+                                                            fontFamily: "inherit",
+                                                            minHeight: "60px",
+                                                            resize: "vertical"
+                                                        }}
+                                                    />
+                                                </div>
+                                                
+                                                <button
+                                                    onClick={() => {
+                                                        const newSeasonalWords = currentSeasonalWords.filter((_, i) => i !== index);
+                                                        setEditData((prev) => ({
+                                                            ...prev,
+                                                            [key]: JSON.stringify(newSeasonalWords)
+                                                        }));
+                                                    }}
+                                                    style={{
+                                                        padding: "6px 12px",
+                                                        backgroundColor: "#dc3545",
+                                                        color: "white",
+                                                        border: "none",
+                                                        borderRadius: "4px",
+                                                        cursor: "pointer",
+                                                        fontSize: "12px",
+                                                        alignSelf: "flex-start"
+                                                    }}
+                                                >
+                                                    Remove This Seasonal Word
+                                                </button>
+                                            </div>
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newSeasonalWords = [...currentSeasonalWords, { english: "", japanese: "", evidence: "" }];
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(newSeasonalWords)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "10px 16px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            ＋ Add New Seasonal Word
+                                        </button>
+                                        
+                                        <datalist id="seasonal-word-english">
+                                            {availableSeasonalWords.map((sw) => (
+                                                <option key={sw.english} value={sw.english} />
+                                            ))}
+                                        </datalist>
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all seasonal words"
+                                        style={{ marginTop: "12px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
                     // Special handling for place fields (placeOfComp and placeOfReceipt)
                     if (key === "placeOfComp" || key === "placeOfReceipt") {
                         return (
@@ -750,13 +1418,215 @@ export default function EditPoemPage({ chapter, poemNum }) {
                         );
                     }
 
+                    // Special handling for replyPoems field
+                    if (key === "replyPoems") {
+                        // Parse current replyPoems data
+                        let currentReplyPoems = [];
+                        try {
+                            let replyData = editData[key];
+                            if (typeof replyData === 'string' && replyData.trim() !== '') {
+                                replyData = JSON.parse(replyData);
+                            } else if (typeof replyData === 'string' && replyData.trim() === '') {
+                                replyData = [];
+                            }
+                            if (Array.isArray(replyData)) {
+                                // Backend format: [["05WM14", true], ["06WM02", true]]
+                                // Extract only the poem numbers that are marked as true
+                                currentReplyPoems = replyData.filter(([pnum, selected]) => selected).map(([pnum]) => pnum);
+                            }
+                        } catch (e) {
+                            currentReplyPoems = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                    <span style={{ 
+                                        fontSize: "12px", 
+                                        color: "#666", 
+                                        fontWeight: "normal", 
+                                        marginLeft: "8px" 
+                                    }}>
+                                        (Poems that reply to this current poem)
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid #ccc", borderRadius: "4px", minHeight: "120px", backgroundColor: "#fafafa" }}>
+                                        {currentReplyPoems.map((pnum, index) => (
+                                            <input
+                                                key={index}
+                                                type="text"
+                                                placeholder="Enter poem number (e.g., 05WM14)"
+                                                value={pnum}
+                                                onChange={(e) => {
+                                                    const newReplyPoems = [...currentReplyPoems];
+                                                    newReplyPoems[index] = e.target.value;
+                                                    // Convert back to backend format
+                                                    const backendFormat = newReplyPoems.map(pnum => [pnum, true]);
+                                                    setEditData((prev) => ({
+                                                        ...prev,
+                                                        [key]: JSON.stringify(backendFormat)
+                                                    }));
+                                                }}
+                                                style={{
+                                                    padding: "8px 12px",
+                                                    border: "1px solid #ccc",
+                                                    borderRadius: "4px",
+                                                    fontSize: "14px",
+                                                    backgroundColor: "#fff",
+                                                    width: "80%",
+                                                    minWidth: "300px"
+                                                }}
+                                            />
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newReplyPoems = [...currentReplyPoems, ""];
+                                                const backendFormat = newReplyPoems.map(pnum => [pnum, true]);
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(backendFormat)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "8px 12px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            + Add Reply Poem
+                                        </button>
+                                        
+                                        {currentReplyPoems.length === 0 && (
+                                            <div style={{ 
+                                                color: "#888", 
+                                                fontSize: "14px", 
+                                                fontStyle: "italic", 
+                                                textAlign: "center", 
+                                                padding: "20px" 
+                                            }}>
+                                                No reply poems added yet. Click &quot;Add Reply Poem&quot; to add poems that reply to this current poem.
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all reply poems"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for messenger field
+                    if (key === "messenger") {
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <input
+                                        type="text"
+                                        list={`${key}-characters`}
+                                        placeholder="Type or select a character name"
+                                        value={editData[key] || ""}
+                                        onChange={(e) => {
+                                            setEditData((prev) => ({
+                                                ...prev,
+                                                [key]: e.target.value
+                                            }));
+                                        }}
+                                        style={{
+                                            padding: "8px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            width: "100%"
+                                        }}
+                                    />
+                                    <datalist id={`${key}-characters`}>
+                                        {availableCharacters.map((character) => (
+                                            <option key={character} value={character} />
+                                        ))}
+                                    </datalist>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear messenger"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for proxy field
+                    if (key === "proxy") {
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <input
+                                        type="text"
+                                        list={`${key}-characters`}
+                                        placeholder="Type or select a character name"
+                                        value={editData[key] || ""}
+                                        onChange={(e) => {
+                                            setEditData((prev) => ({
+                                                ...prev,
+                                                [key]: e.target.value
+                                            }));
+                                        }}
+                                        style={{
+                                            padding: "8px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            width: "100%"
+                                        }}
+                                    />
+                                    <datalist id={`${key}-characters`}>
+                                        {availableCharacters.map((character) => (
+                                            <option key={character} value={character} />
+                                        ))}
+                                    </datalist>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear proxy"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
                     // Regular field handling
                     return (
                         <div key={key} className="full-field-container">
                             <label className="full-field-label" style={{ display: "flex", alignItems: "center" }}>
                                 {formatFieldName(key)}
                                 
-                                {(key === "notes" || key === "narrativeContext" || key === "paraphrase") && (
+                                {(key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") && (
                                     <span
                                         title="Formatting: **bold**, *italic*, &amp;nbsp; for indent, [link title](URL) for links"
                                         style={{
@@ -776,7 +1646,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                     value={(() => {
                                         const rawValue = editData[key] || "";
                                         // Convert \n to actual line breaks for these specific fields
-                                        if (key === "notes" || key === "narrativeContext" || key === "paraphrase") {
+                                        if (key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") {
                                             return rawValue.replace(/\\n/g, '\n');
                                         }
                                         return rawValue;
@@ -784,7 +1654,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                     onChange={(e) => {
                                         const newValue = e.target.value;
                                         // Convert actual line breaks back to \n for storage for these specific fields
-                                        const valueToStore = (key === "notes" || key === "narrativeContext" || key === "paraphrase") 
+                                        const valueToStore = (key === "notes" || key === "narrativeContext" || key === "paraphrase" || key === "handwritingDescription") 
                                             ? newValue.replace(/\n/g, '\\n')
                                             : newValue;
                                         

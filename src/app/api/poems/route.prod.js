@@ -92,11 +92,11 @@ async function getData (chapter, number){
 		let season_evidence = result['resSeason'].records[0]?.get('season_evidence') || null;
 
 		// seasonal word
-		const kigo = {
-			jp: result['resKigo'].records[0]?.get('sw_jp') || null,
-			en: result['resKigo'].records[0]?.get('sw_en') || null,
-			evidence: result['resKigo'].records[0]?.get('sw_evidence') || null,
-		};
+		const kigo = result['resKigo'].records.map(record => ({
+			japanese: record.get('sw_jp') || null,
+			english: record.get('sw_en') || null,
+			evidence: record.get('sw_evidence') || null
+		}));
 
 		// poetic technique
 		let tech = result['resTech'].records.map(record => record.get('pt_name')).filter(Boolean);

@@ -74,8 +74,8 @@ const PoemDisplay = ({ poemData }) => {
         paperMediumType: "",
         deliveryStyle: "",
         season: "",
-        kigo: { jp: "", en: "", evidence: "" },
-        pt: [],
+        kigo: [],
+        pt: "",
         pw: { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" },
         messenger: "",
         age: "",
@@ -271,7 +271,7 @@ const PoemDisplay = ({ poemData }) => {
                     spoken_or_written_evidence: responseData[30]
                 };
                 
-
+                
                 // console.log(responseData)
 
                 setPoemState(prev => ({...prev, ...newPoemState}));
@@ -484,7 +484,7 @@ const PoemDisplay = ({ poemData }) => {
                                 <span>POEM</span>
                             </span>
                             <div className={styles.checkboxGroup}>
-                                <span>PROFERRED {poemState.tag?.some(item => item[0] === 'Proferred Poem' && item[1]) ? '☑' : '☐'}</span>
+                                <span>PROFFERED {poemState.tag?.some(item => item[0] === 'Proffered Poem' && item[1]) ? '☑' : '☐'}</span>
                                 <span>REPLY {poemState.tag?.some(item => item[0]?.includes('Reply Poem') && item[1]) ? '☑' : '☐'}</span>
                                 <span>SOLILOQUY {poemState.tag?.some(item => item[0]?.includes('Soliloquy') && item[1]) ? '☑' : '☐'}</span>
                                 <span>GROUP {poemState.tag?.some(item => item[0]?.includes('Group Poem') && item[1]) ? '☑' : '☐'}</span>
@@ -654,15 +654,30 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 )}
                                 
-                                {poemState.kigo && poemState.kigo.jp && (
+                                {poemState.kigo && poemState.kigo.length > 0 && (
                                     <div className={styles.detailItem}>
                                         <h3>SEASONAL WORD</h3>
-                                        <div className={styles.withEvidence}>
-                                            <EvidenceDropdown
-                                                content={`${poemState.kigo.jp} – ${poemState.kigo.en || ''}`}
-                                                evidence={poemState.kigo.evidence || ''}
-                                            />
-                                        </div>
+                                        {poemState.kigo.map((kigoItem, index) => {
+                                            return (
+                                                <div key={index} className={styles.seasonalWordItem}>
+                                                    <div className={styles.withEvidence}>
+                                                        <EvidenceDropdown 
+                                                            content={(() => {
+                                                                if (kigoItem.japanese && kigoItem.english) {
+                                                                    return `${kigoItem.japanese} — ${kigoItem.english}`;
+                                                                } else if (kigoItem.japanese && !kigoItem.english) {
+                                                                    return kigoItem.japanese;
+                                                                } else if (!kigoItem.japanese && kigoItem.english) {
+                                                                    return kigoItem.english;
+                                                                }
+                                                                return '';
+                                                            })()}
+                                                            evidence={kigoItem.evidence}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 )}
                                 
@@ -908,7 +923,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/translators" className={styles.translatorName}>WALEY</a>
+                            <a href="/translators/Arthur Waley" className={styles.translatorName}>WALEY</a>
                         </div>
                     </div>
                     
@@ -926,7 +941,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/translators" className={styles.translatorName}>SEIDENSTICKER</a>
+                            <a href="/translators/Edward Seidensticker" className={styles.translatorName}>SEIDENSTICKER</a>
                         </div>
                     </div>
                     
@@ -944,7 +959,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/translators" className={styles.translatorName}>TYLER</a>
+                            <a href="/translators/Royall Tyler" className={styles.translatorName}>TYLER</a>
                         </div>
                     </div>
                     
@@ -962,7 +977,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/translators" className={styles.translatorName}>WASHBURN</a>
+                            <a href="/translators/Dennis Washburn" className={styles.translatorName}>WASHBURN</a>
                         </div>
                     </div>
                     
@@ -980,7 +995,7 @@ const PoemDisplay = ({ poemData }) => {
                                 addressee={poemState.addressee}
                                 poemId={poemState.poemId}
                             />
-                            <a href="/translators" className={styles.translatorName}>CRANSTON</a>
+                            <a href="/translators/Edwin Cranston" className={styles.translatorName}>CRANSTON</a>
                         </div>
                     </div>
                     
