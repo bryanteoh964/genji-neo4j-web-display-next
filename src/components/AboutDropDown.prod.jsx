@@ -43,13 +43,14 @@ const MoreDropDown = () => {
 
     const isAnyLinkActive = () => {
         const paths = [
-            '/about',
+            '/aboutThisSite',
             '/user-guide',
             '/Sources',
             '/translators',
             '/teamMembers',
-            '/methadology',
+            '/methodology',
             '/collaborate',
+            '/administrator',
         ];
         return paths.some(path => isActive(path));
     };
@@ -148,6 +149,14 @@ const MoreOptions = ({ setIsOpen }) => {
                 onClick={() => setIsOpen(false)}
             >
                 report an error
+            </Link>
+
+            <Link 
+                href="/administrator" 
+                className={`${styles.moreLink} ${isActive('/administrator') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                administrator
             </Link>
         </div>
     );

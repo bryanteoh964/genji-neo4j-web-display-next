@@ -1,0 +1,309 @@
+/* Admin Blog Editor Component Styles */
+.editorContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Lexend', sans-serif;
+}
+
+.editorHeader {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.titleSection {
+    flex: 1;
+}
+
+.blogTitle {
+    color: #EDB940;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+
+.titleInput {
+    width: 100%;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: 'Lexend', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.titleInput:focus {
+    border-color: #EDB940;
+}
+
+.titleInput::placeholder {
+    color: #888;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Lexend', sans-serif;
+    min-width: 80px;
+}
+
+.saveButton {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+.saveButton:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.cancelButton {
+    background-color: #666;
+    color: white;
+}
+
+.cancelButton:hover:not(:disabled) {
+    background-color: #555;
+}
+
+.editButton {
+    background-color: #EDB940;
+    color: #000;
+}
+
+.editButton:hover {
+    background-color: #d4a535;
+}
+
+.closeButton {
+    background-color: #666;
+    color: white;
+}
+
+.closeButton:hover {
+    background-color: #555;
+}
+
+.deleteButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #c82333;
+}
+
+.deleteConfirmButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteConfirmButton:hover:not(:disabled) {
+    background-color: #c82333;
+}
+
+.deleteConfirmButton:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.message {
+    padding: 12px 20px;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: #1a2a1a;
+    color: #4CAF50;
+    border-bottom: 1px solid #4CAF50;
+}
+
+.message.error {
+    background-color: #2a1a1a;
+    color: #ff6b6b;
+    border-bottom: 1px solid #ff6b6b;
+}
+
+.editorContent {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.metadata {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #2a2a2a;
+    border-radius: 4px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.author {
+    color: #cccccc;
+    font-size: 0.9rem;
+}
+
+.userBadge {
+    background-color: #EDB940;
+    color: #000;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.contentSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contentLabel {
+    color: #EDB940;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.contentTextarea {
+    flex: 1;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 400px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.contentTextarea:focus {
+    border-color: #EDB940;
+}
+
+.contentTextarea::placeholder {
+    color: #888;
+}
+
+.contentDisplay {
+    flex: 1;
+    background-color: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    min-height: 400px;
+}
+
+.renderedContent {
+    padding: 20px;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #ffffff;
+    word-wrap: break-word;
+}
+
+.emptyContent {
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .editorHeader {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .actionButtons {
+        justify-content: flex-end;
+    }
+
+    .blogTitle {
+        font-size: 1.5rem;
+    }
+
+    .titleInput {
+        font-size: 1.5rem;
+    }
+
+    .contentTextarea {
+        min-height: 300px;
+    }
+
+    .contentDisplay {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .editorContainer {
+        height: auto;
+        min-height: 100%;
+    }
+
+    .editorHeader {
+        padding: 15px;
+    }
+
+    .editorContent {
+        padding: 15px;
+    }
+
+    .actionButtons {
+        flex-wrap: wrap;
+    }
+
+    .button {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .metadata {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

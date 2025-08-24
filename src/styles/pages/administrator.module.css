@@ -1,0 +1,208 @@
+/* Administrator Page Styles */
+.administratorContainer {
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    padding: 20px;
+    font-family: 'Lexend', sans-serif;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #EDB940;
+    padding-bottom: 20px;
+}
+
+.title {
+    color: #EDB940;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+}
+
+.subtitle {
+    color: #cccccc;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.mainContent {
+    display: flex;
+    height: calc(100vh - 160px);
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 300px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebarHeader {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebarHeader h2 {
+    color: #EDB940;
+    font-size: 1.3rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.createButton {
+    background-color: #EDB940;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.createButton:hover {
+    background-color: #d4a535;
+}
+
+.blogList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.blogItem {
+    padding: 15px 20px;
+    border-bottom: 1px solid #2a2a2a;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.blogItem:hover {
+    background-color: #2a2a2a;
+}
+
+.blogItem.active {
+    background-color: #EDB940;
+    color: #000;
+}
+
+.blogTitle {
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.blogItem.active .blogTitle {
+    color: #000;
+    font-weight: 600;
+}
+
+/* Editor Area Styles */
+.editorArea {
+    flex: 1;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.noSelection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: #666;
+}
+
+.noSelection h3 {
+    color: #EDB940;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.noSelection p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Loading and Error States */
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0a0a0a;
+}
+
+.loader {
+    color: #EDB940;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.errorMessage {
+    background-color: #2a1a1a;
+    color: #ff6b6b;
+    padding: 15px 20px;
+    margin: 10px 20px;
+    border-radius: 4px;
+    border-left: 4px solid #ff6b6b;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mainContent {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 300px;
+    }
+
+    .editorArea {
+        min-height: 500px;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .administratorContainer {
+        padding: 10px;
+    }
+
+    .sidebarHeader {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .createButton {
+        width: 100%;
+        text-align: center;
+    }
+}
