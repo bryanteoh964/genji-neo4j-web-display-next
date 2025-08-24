@@ -46,6 +46,12 @@ function cleanProps(input) {
       continue;
     }
 
+    // Special handling for reply poems array
+    if (key === "replyPoems" && Array.isArray(val)) {
+      output[key] = val;
+      continue;
+    }
+
     if (isPrimitiveOrPrimitiveArray(val)) {
       output[key] = val;
     } else {
@@ -89,13 +95,12 @@ const fieldOrder = [
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
   "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
-  "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
+  "pw", "messenger", "replyPoems", "furtherReadings",
   "proxy", "kigo", "handwritingDescription", "relWithEvidence",
 ];
 
-//   "pw", "messenger", "repCharacter", "groupPoems", "replyPoems", "furtherReadings",
-//   "proxy", "kigo", "handwritingDescription", "source", (Don't need Source)
-//   "relWithEvidence",
+// "repCharacter", "source", (Don't need source)
+// "groupPoems", (Difficult to implement)
 
 
 export default function EditPoemPage({ chapter, poemNum }) {
@@ -294,6 +299,13 @@ export default function EditPoemPage({ chapter, poemNum }) {
                             } else {
                                 serialized[key] = JSON.stringify([]);
                             }
+                        } else if (key === "replyPoems") {
+                            // Special handling for replyPoems - serialize as JSON
+                            if (Array.isArray(val)) {
+                                serialized[key] = JSON.stringify(val);
+                            } else {
+                                serialized[key] = JSON.stringify([]);
+                            }
                         } else if (typeof val === "object") {
                             serialized[key] = JSON.stringify(val, null, 2);
                         } else {
@@ -375,6 +387,18 @@ export default function EditPoemPage({ chapter, poemNum }) {
                 } catch {
                     result[key] = [];
                 }
+            } else if (key === "replyPoems") {
+                // Special handling for reply poems - ensure it's properly parsed
+                try {
+                    if (!val || val.trim() === "") {
+                        result[key] = [];
+                    } else {
+                        const parsed = JSON.parse(val);
+                        result[key] = parsed;
+                    }
+                } catch {
+                    result[key] = [];
+                }
             } else {
             try {
                 result[key] = JSON.parse(val);
@@ -443,6 +467,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             placeOfComp_evidence: "placeOfComp_evidence",
             placeOfReceipt_evidence: "placeOfReceipt_evidence",
             messenger: "messenger", // messenger maps directly
+            replyPoems: "replyPoems", // reply poems map directly
         };
         const fieldToDelete = fieldMap[key] || key;
 
@@ -461,10 +486,12 @@ export default function EditPoemPage({ chapter, poemNum }) {
             setEditData((prev) => {
             const updated = { ...prev };
             
-            // Special handling for poetic techniques and tags - set to empty array instead of deleting
+            // Special handling for poetic techniques, tags, and reply poems - set to empty array instead of deleting
             if (key === "pt") {
                 updated[key] = JSON.stringify([]);
             } else if (key === "tag") {
+                updated[key] = JSON.stringify([]);
+            } else if (key === "replyPoems") {
                 updated[key] = JSON.stringify([]);
             } else {
                 delete updated[key];
@@ -487,6 +514,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'narrativeContext') return 'Where We Are In The Tale';
         if (key === 'paraphrase') return 'What The Poem Is Saying';
         if (key === 'tag') return 'Poem Type';
+        if (key === 'replyPoems') return 'Reply Poems';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -1059,6 +1087,118 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear place"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for replyPoems field
+                    if (key === "replyPoems") {
+                        // Parse current replyPoems data
+                        let currentReplyPoems = [];
+                        try {
+                            let replyData = editData[key];
+                            if (typeof replyData === 'string' && replyData.trim() !== '') {
+                                replyData = JSON.parse(replyData);
+                            } else if (typeof replyData === 'string' && replyData.trim() === '') {
+                                replyData = [];
+                            }
+                            if (Array.isArray(replyData)) {
+                                // Backend format: [["05WM14", true], ["06WM02", true]]
+                                // Extract only the poem numbers that are marked as true
+                                currentReplyPoems = replyData.filter(([pnum, selected]) => selected).map(([pnum]) => pnum);
+                            }
+                        } catch (e) {
+                            currentReplyPoems = [];
+                        }
+
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                    <span style={{ 
+                                        fontSize: "12px", 
+                                        color: "#666", 
+                                        fontWeight: "normal", 
+                                        marginLeft: "8px" 
+                                    }}>
+                                        (Poems that reply to this current poem)
+                                    </span>
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px", border: "1px solid #ccc", borderRadius: "4px", minHeight: "120px", backgroundColor: "#fafafa" }}>
+                                        {currentReplyPoems.map((pnum, index) => (
+                                            <input
+                                                key={index}
+                                                type="text"
+                                                placeholder="Enter poem number (e.g., 05WM14)"
+                                                value={pnum}
+                                                onChange={(e) => {
+                                                    const newReplyPoems = [...currentReplyPoems];
+                                                    newReplyPoems[index] = e.target.value;
+                                                    // Convert back to backend format
+                                                    const backendFormat = newReplyPoems.map(pnum => [pnum, true]);
+                                                    setEditData((prev) => ({
+                                                        ...prev,
+                                                        [key]: JSON.stringify(backendFormat)
+                                                    }));
+                                                }}
+                                                style={{
+                                                    padding: "8px 12px",
+                                                    border: "1px solid #ccc",
+                                                    borderRadius: "4px",
+                                                    fontSize: "14px",
+                                                    backgroundColor: "#fff",
+                                                    width: "80%",
+                                                    minWidth: "300px"
+                                                }}
+                                            />
+                                        ))}
+                                        
+                                        <button
+                                            onClick={() => {
+                                                const newReplyPoems = [...currentReplyPoems, ""];
+                                                const backendFormat = newReplyPoems.map(pnum => [pnum, true]);
+                                                setEditData((prev) => ({
+                                                    ...prev,
+                                                    [key]: JSON.stringify(backendFormat)
+                                                }));
+                                            }}
+                                            style={{
+                                                padding: "8px 12px",
+                                                backgroundColor: "#007cba",
+                                                color: "white",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                cursor: "pointer",
+                                                fontSize: "14px",
+                                                fontWeight: "bold",
+                                                alignSelf: "flex-start"
+                                            }}
+                                        >
+                                            + Add Reply Poem
+                                        </button>
+                                        
+                                        {currentReplyPoems.length === 0 && (
+                                            <div style={{ 
+                                                color: "#888", 
+                                                fontSize: "14px", 
+                                                fontStyle: "italic", 
+                                                textAlign: "center", 
+                                                padding: "20px" 
+                                            }}>
+                                                No reply poems added yet. Click "Add Reply Poem" to add poems that reply to this current poem.
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear all reply poems"
                                         style={{ marginTop: "8px" }}
                                     >
                                         ❌

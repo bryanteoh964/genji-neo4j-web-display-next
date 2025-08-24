@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "replyPoems"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -179,6 +179,19 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} messenger relationships` }), { status: 200 });
+    } 
+    // Handle reply poems deletion specially (remove REPLY_TO relationships)
+    else if (field === "replyPoems") {
+      const query = `
+        MATCH (replyPoem:Genji_Poem)-[r:REPLY_TO]->(g:Genji_Poem {pnum: $pnum})
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} reply poem relationships` }), { status: 200 });
     } 
     else {
       // Handle other field deletions (remove property)
@@ -610,6 +623,61 @@ async function updatePoemProperties(pnum, data) {
                 pnum: pnum.toString(), 
                 wordName: wordName
               });
+            }
+          }
+        }
+      }
+
+      // 2️⃣j Handle reply poems relationships
+      if (data.replyPoems !== undefined) {
+        console.log("🔍 Backend received reply poems data:", data.replyPoems);
+        
+        // First, remove all existing reply relationships where other poems reply TO this poem
+        await tx.run(`
+          MATCH (replyPoem:Genji_Poem)-[r:REPLY_TO]->(g:Genji_Poem {pnum: $pnum})
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the reply poems data and create new relationships
+        let replyPoemsData = [];
+        try {
+          replyPoemsData = Array.isArray(data.replyPoems) ? data.replyPoems : JSON.parse(data.replyPoems);
+          console.log("🔍 Parsed reply poems data:", replyPoemsData);
+        } catch (e) {
+          console.error("🔍 Error parsing reply poems data:", e);
+          replyPoemsData = [];
+        }
+
+        if (Array.isArray(replyPoemsData)) {
+          console.log("🔍 Processing reply poems array:", replyPoemsData);
+          // Create REPLY_TO relationships for each reply poem
+          for (const [replyPnum, isSelected] of replyPoemsData) {
+            if (isSelected && replyPnum && replyPnum.trim()) {
+              const replyPoemNum = replyPnum.trim();
+              console.log("🔍 Creating REPLY_TO relationship from:", replyPoemNum, "to:", pnum);
+              
+              // Check if the reply poem exists
+              const checkQuery = `
+                MATCH (replyPoem:Genji_Poem {pnum: $replyPnum})
+                RETURN replyPoem.pnum as pnum
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { replyPnum: replyPoemNum });
+              
+              if (checkResult.records.length > 0) {
+                // Create the REPLY_TO relationship: replyPoem REPLY_TO currentPoem
+                await tx.run(`
+                  MATCH (replyPoem:Genji_Poem {pnum: $replyPnum})
+                  MATCH (currentPoem:Genji_Poem {pnum: $currentPnum})
+                  CREATE (replyPoem)-[r:REPLY_TO]->(currentPoem)
+                `, { 
+                  replyPnum: replyPoemNum,
+                  currentPnum: pnum.toString()
+                });
+                console.log("✅ Created REPLY_TO relationship successfully");
+              } else {
+                console.warn(`⚠️ Reply poem ${replyPoemNum} not found in database`);
+              }
             }
           }
         }
