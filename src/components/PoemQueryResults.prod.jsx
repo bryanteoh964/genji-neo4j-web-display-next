@@ -74,7 +74,7 @@ const PoemDisplay = ({ poemData }) => {
         paperMediumType: "",
         deliveryStyle: "",
         season: "",
-        kigo: { jp: "", en: "" },
+        kigo: [],
         pt: "",
         pw: { name: "", kanji_hiragana: "", english_equiv: "", gloss: "" },
         messenger: "",
@@ -654,11 +654,15 @@ const PoemDisplay = ({ poemData }) => {
                                     </div>
                                 )}
                                 
-                                {poemState.kigo && poemState.kigo.jp && (
+                                {poemState.kigo && poemState.kigo.length > 0 && (
                                     <div className={styles.detailItem}>
                                         <h3>SEASONAL WORD</h3>
-                                        <FormatContent content={`${poemState.kigo.jp}`} />
-                                        <FormatContent content={`${poemState.kigo.en}`} />
+                                        {poemState.kigo.map((kigoItem, index) => (
+                                            <div key={index} className={styles.seasonalWordItem}>
+                                                {kigoItem.japanese && <FormatContent content={kigoItem.japanese} />}
+                                                {kigoItem.english && <FormatContent content={kigoItem.english} />}
+                                            </div>
+                                        ))}
                                     </div>
                                 )}
                                 
