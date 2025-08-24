@@ -95,12 +95,12 @@ const fieldOrder = [
   "season", "season_evidence", "spoken", "written", "spoken_or_written_evidence", 
   "pt", "tag", "placeOfComp", "placeOfComp_evidence",
   "placeOfReceipt", "placeOfReceipt_evidence",
-  "pw", "messenger", "replyPoems", "furtherReadings",
+  "pw", "messenger", "replyPoems",
   "proxy", "kigo", "handwritingDescription", "relWithEvidence",
 ];
 
-// "repCharacter", "source", (Don't need source)
-// "groupPoems", (Difficult to implement)
+// "repCharacter", "source", (Don't need source - also not fully sure what source is)
+// "groupPoems", "furtherReadings (utilizes source)", (Difficult to implement group as many poems are related by unique group node)
 
 
 export default function EditPoemPage({ chapter, poemNum }) {
@@ -467,6 +467,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
             placeOfComp_evidence: "placeOfComp_evidence",
             placeOfReceipt_evidence: "placeOfReceipt_evidence",
             messenger: "messenger", // messenger maps directly
+            proxy: "proxy", // proxy maps directly
             replyPoems: "replyPoems", // reply poems map directly
         };
         const fieldToDelete = fieldMap[key] || key;
@@ -515,6 +516,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
         if (key === 'paraphrase') return 'What The Poem Is Saying';
         if (key === 'tag') return 'Poem Type';
         if (key === 'replyPoems') return 'Reply Poems';
+        if (key === 'proxy') return 'Proxy Poet';
         
         return key
             .replace(/([A-Z])/g, ' $1') // Add space before capital letters
@@ -1244,6 +1246,51 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                         className="delete-button"
                                         onClick={() => handleDelete(key)}
                                         title="Clear messenger"
+                                        style={{ marginTop: "8px" }}
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Special handling for proxy field
+                    if (key === "proxy") {
+                        return (
+                            <div key={key} className="full-field-container">
+                                <label className="full-field-label">
+                                    {formatFieldName(key)}
+                                </label>
+                                <div className="full-input-wrapper">
+                                    <input
+                                        type="text"
+                                        list={`${key}-characters`}
+                                        placeholder="Type or select a character name"
+                                        value={editData[key] || ""}
+                                        onChange={(e) => {
+                                            setEditData((prev) => ({
+                                                ...prev,
+                                                [key]: e.target.value
+                                            }));
+                                        }}
+                                        style={{
+                                            padding: "8px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            width: "100%"
+                                        }}
+                                    />
+                                    <datalist id={`${key}-characters`}>
+                                        {availableCharacters.map((character) => (
+                                            <option key={character} value={character} />
+                                        ))}
+                                    </datalist>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(key)}
+                                        title="Clear proxy"
                                         style={{ marginTop: "8px" }}
                                     >
                                         ❌
