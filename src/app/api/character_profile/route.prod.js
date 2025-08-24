@@ -53,7 +53,7 @@ async function getCharacterData(name) {
       // Subquery: sorted poems (ascending)
       CALL {
         WITH c
-        MATCH (poem:Genji_Poem)<-[r2:ADDRESSEE_OF|MESSENGER_OF|SPEAKER_OF]-(c)
+        MATCH (poem:Genji_Poem)<-[r2:ADDRESSEE_OF|SPEAKER_OF]-(c)
         OPTIONAL MATCH (poem)-[:INCLUDED_IN]->(chapter:Chapter)
         OPTIONAL MATCH (poem)<-[:SPEAKER_OF]-(speaker:Character)
         OPTIONAL MATCH (poem)<-[:ADDRESSEE_OF]-(addressee:Character)
@@ -74,15 +74,40 @@ async function getCharacterData(name) {
         }) AS relatedPoems
       }
 
+      //get messenger poems 
+      CALL {
+        WITH c
+        MATCH (poem:Genji_Poem)<-[:MESSENGER_OF]-(c)
+        OPTIONAL MATCH (poem)-[:INCLUDED_IN]->(chapter:Chapter)
+        OPTIONAL MATCH (poem)<-[:SPEAKER_OF]-(speaker:Character)
+        OPTIONAL MATCH (poem)<-[:ADDRESSEE_OF]-(addressee:Character)
+        WHERE poem IS NOT NULL AND poem.pnum IS NOT NULL AND chapter.chapter_number IS NOT NULL
+        WITH poem, chapter.chapter_number AS chapNum,
+            speaker, addressee,
+            toInteger(apoc.text.regexGroups(poem.pnum, '\\d+$')[0][0]) AS pnumInt
+        ORDER BY chapNum ASC, pnumInt ASC
+        RETURN collect(DISTINCT {
+          pnum: poem.pnum,
+          Japanese: poem.Japanese,
+          Romaji: poem.Romaji,
+          speaker_name: COALESCE(speaker.name, ""),
+          speaker_gender: COALESCE(speaker.gender, ""),
+          addressee_name: COALESCE(addressee.name, ""),
+          addressee_gender: COALESCE(addressee.gender, ""),
+          chapter_number: chapNum
+        }) AS messengerPoems
+      }
+
       // All character names
       OPTIONAL MATCH (all:Character)
-      WITH c, relatedCharacters, nicknames, relatedPoems,
+      WITH c, relatedCharacters, nicknames, relatedPoems, messengerPoems,
           collect(DISTINCT all.name) AS allCharacterNamesRaw
 
       RETURN c AS character,
             apoc.coll.sort(allCharacterNamesRaw) AS allCharacterNames,
             relatedCharacters,
             relatedPoems,
+            messengerPoems,
             nicknames
     `;
     
@@ -97,8 +122,9 @@ async function getCharacterData(name) {
       const relatedPoems = toNativeTypes(record.get('relatedPoems'));
       const allCharacterNames = toNativeTypes(record.get('allCharacterNames'));
       const nicknames = toNativeTypes(record.get('nicknames'));
+      const messengerPoems = toNativeTypes(record.get('messengerPoems'));
 
-      return { character, relatedCharacters, relatedPoems, allCharacterNames, nicknames };
+      return { character, relatedCharacters, relatedPoems, messengerPoems, allCharacterNames, nicknames };
     } else {
       console.log(`No character data returned for: ${name}`);
       return null;

@@ -251,7 +251,7 @@ const PoemDisplay = ({ poemData }) => {
                     deliveryStyle: responseData[11],
                     season: responseData[12],
                     kigo: responseData[13],
-                    pt: responseData[14],
+                    pt: Array.isArray(responseData[14]) ? responseData[14] : [],
                     pw: responseData[15],
                     proxy: responseData[16],
                     // unused messenger
