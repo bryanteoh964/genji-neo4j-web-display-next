@@ -44,6 +44,7 @@ const MoreDropDown = () => {
     const isAnyLinkActive = () => {
         const paths = [
             '/about',
+            '/user-guide',
             '/Sources',
             '/translators',
             '/teamMembers',
@@ -93,6 +94,14 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
+                href="/user-guide" 
+                className={`${styles.moreLink} ${isActive('/user-guide') ? styles.active : ''}`} 
+                onClick={() => setIsOpen(false)}
+            >
+                user guide
+            </Link>
+
+            <Link 
                 href="/Sources" 
                 className={`${styles.moreLink} ${isActive('/Sources') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
@@ -101,7 +110,7 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
-                href="/translators" 
+                href="/translators/Arthur Waley" 
                 className={`${styles.moreLink} ${isActive('/translators') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >

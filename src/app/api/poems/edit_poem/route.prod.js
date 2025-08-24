@@ -34,7 +34,7 @@ export async function DELETE(request) {
     }
 
     // **Sanitize field name** - expanded to include season and other allowed fields
-    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written"];
+    const allowedFields = ["Spoken", "Written", "season", "paper_or_medium_type", "delivery_style", "season_evidence", "narrative_context", "paraphrase", "notes", "pt", "tag", "placeOfComp", "placeOfReceipt", "placeOfComp_evidence", "placeOfReceipt_evidence", "evidence_for_spoken_or_written", "pw", "messenger", "proxy", "replyPoems", "kigo", "handwriting_description"];
     if (!allowedFields.includes(field)) {
       return new Response(JSON.stringify({ error: "Invalid field param" }), { status: 400 });
     }
@@ -83,6 +83,32 @@ export async function DELETE(request) {
       
       const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
       return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic technique relationships` }), { status: 200 });
+    } 
+    // Handle poetic words deletion specially (remove all HAS_POETIC_WORD_OF relationships)
+    else if (field === "pw") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_POETIC_WORD_OF]->(pw:Poetic_Word)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} poetic word relationships` }), { status: 200 });
+    } 
+    // Handle seasonal words/kigo deletion specially (remove all HAS_SEASONAL_WORD_OF relationships)
+    else if (field === "kigo") {
+      const query = `
+        MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word)
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} seasonal word relationships` }), { status: 200 });
     } 
     // Handle poem types/tags deletion specially (remove all TAGGED_AS relationships)
     else if (field === "tag") {
@@ -154,6 +180,45 @@ export async function DELETE(request) {
         return new Response(JSON.stringify({ message: "No place of receipt relationship found to delete evidence from" }), { status: 200 });
       }
     } 
+    // Handle messenger deletion specially (remove MESSENGER_OF relationship)
+    else if (field === "messenger") {
+      const query = `
+        MATCH (c:Character)-[r:MESSENGER_OF]->(g:Genji_Poem {pnum: $pnum})
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} messenger relationships` }), { status: 200 });
+    } 
+    // Handle proxy deletion specially (remove PROXY_POET_OF relationship)
+    else if (field === "proxy") {
+      const query = `
+        MATCH (c:Character)-[r:PROXY_POET_OF]->(g:Genji_Poem {pnum: $pnum})
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} proxy relationships` }), { status: 200 });
+    } 
+    // Handle reply poems deletion specially (remove REPLY_TO relationships)
+    else if (field === "replyPoems") {
+      const query = `
+        MATCH (replyPoem:Genji_Poem)-[r:REPLY_TO]->(g:Genji_Poem {pnum: $pnum})
+        DELETE r
+        RETURN count(r) as deletedCount
+      `;
+      
+      const result = await session.run(query, { pnum });
+      
+      const deletedCount = result.records[0]?.get("deletedCount")?.toNumber() || 0;
+      return new Response(JSON.stringify({ message: `Deleted ${deletedCount} reply poem relationships` }), { status: 200 });
+    } 
     else {
       // Handle other field deletions (remove property)
       const query = `
@@ -221,8 +286,6 @@ async function updatePoemProperties(pnum, data) {
       if (data.spoken !== undefined) props.Spoken = (data.spoken !== undefined && data.spoken !== null) ? String(data.spoken).toLowerCase() : null;
       if (data.written !== undefined) props.Written = (data.written !== undefined && data.written !== null) ? String(data.written).toLowerCase() : null;
       if (data.handwritingDescription !== undefined) props.handwriting_description = data.handwritingDescription || null;
-      if (data.kigo !== undefined) props.kigo = data.kigo || null;
-      if (data.pw !== undefined) props.pivot_words = data.pw || null;
       if (data.proxy !== undefined) props.proxy = data.proxy || null;
       if (data.messenger !== undefined) props.messenger = data.messenger || null;
       if (data.repCharacter !== undefined) props.representative_character = data.repCharacter || null;
@@ -468,6 +531,273 @@ async function updatePoemProperties(pnum, data) {
           pnum: pnum.toString(),
           evidence: data.placeOfReceipt_evidence || null
         });
+      }
+
+      // 2️⃣h Handle messenger relationships
+      if (data.messenger !== undefined) {
+        // First, remove any existing messenger relationship
+        await tx.run(`
+          MATCH (c:Character)-[r:MESSENGER_OF]->(g:Genji_Poem {pnum: $pnum})
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a character is provided, create new relationship
+        if (data.messenger && data.messenger.trim()) {
+          const characterName = data.messenger.trim();
+          
+          // First check if Character node exists, create if it doesn't
+          const checkQuery = `
+            MATCH (c:Character {name: $characterName})
+            RETURN c.name as name
+          `;
+          
+          const checkResult = await tx.run(checkQuery, { characterName });
+          
+          if (checkResult.records.length === 0) {
+            // Create the Character node if it doesn't exist
+            await tx.run(`
+              CREATE (c:Character {name: $characterName})
+            `, { characterName });
+          }
+          
+          // Create the relationship
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (c:Character {name: $characterName})
+            CREATE (c)-[r:MESSENGER_OF]->(g)
+          `, { 
+            pnum: pnum.toString(), 
+            characterName: characterName
+          });
+        }
+      }
+
+      // 2️⃣i Handle proxy relationships
+      if (data.proxy !== undefined) {
+        // First, remove any existing proxy relationship
+        await tx.run(`
+          MATCH (c:Character)-[r:PROXY_POET_OF]->(g:Genji_Poem {pnum: $pnum})
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Then, if a character is provided, create new relationship
+        if (data.proxy && data.proxy.trim()) {
+          const characterName = data.proxy.trim();
+          
+          // First check if Character node exists, create if it doesn't
+          const checkQuery = `
+            MATCH (c:Character {name: $characterName})
+            RETURN c.name as name
+          `;
+          
+          const checkResult = await tx.run(checkQuery, { characterName });
+          
+          if (checkResult.records.length === 0) {
+            // Create the Character node if it doesn't exist
+            await tx.run(`
+              CREATE (c:Character {name: $characterName})
+            `, { characterName });
+          }
+          
+          // Create the relationship
+          await tx.run(`
+            MATCH (g:Genji_Poem {pnum: $pnum})
+            MATCH (c:Character {name: $characterName})
+            CREATE (c)-[r:PROXY_POET_OF]->(g)
+          `, { 
+            pnum: pnum.toString(), 
+            characterName: characterName
+          });
+        }
+      }
+
+      // 2️⃣j Handle poetic words relationships
+      if (data.pw !== undefined) {
+        // First, remove all existing poetic word relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_POETIC_WORD_OF]->(pw:Poetic_Word)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the poetic words data and create new relationships
+        let poeticWordsData = [];
+        try {
+          poeticWordsData = Array.isArray(data.pw) ? data.pw : JSON.parse(data.pw);
+        } catch (e) {
+          poeticWordsData = [];
+        }
+
+        if (Array.isArray(poeticWordsData)) {
+          // Create relationships for each poetic word
+          for (const poeticWord of poeticWordsData) {
+            if (poeticWord && poeticWord.name && poeticWord.name.trim()) {
+              const wordName = poeticWord.name.trim();
+              
+              // First check if the Poetic_Word node exists
+              const checkQuery = `
+                MATCH (pw:Poetic_Word {name: $wordName})
+                RETURN pw.name as name
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { wordName });
+              
+              if (checkResult.records.length === 0) {
+                // Create the Poetic_Word node if it doesn't exist
+                await tx.run(`
+                  CREATE (pw:Poetic_Word {
+                    name: $name,
+                    kanji_hiragana: $kanji_hiragana,
+                    english_equiv: $english_equiv,
+                    gloss: $gloss
+                  })
+                `, { 
+                  name: wordName,
+                  kanji_hiragana: poeticWord.kanji_hiragana || null,
+                  english_equiv: poeticWord.english_equiv || null,
+                  gloss: poeticWord.gloss || null
+                });
+              } else {
+                // Update existing Poetic_Word node with new data if provided
+                await tx.run(`
+                  MATCH (pw:Poetic_Word {name: $wordName})
+                  SET pw.kanji_hiragana = COALESCE($kanji_hiragana, pw.kanji_hiragana),
+                      pw.english_equiv = COALESCE($english_equiv, pw.english_equiv),
+                      pw.gloss = COALESCE($gloss, pw.gloss)
+                `, { 
+                  wordName,
+                  kanji_hiragana: poeticWord.kanji_hiragana || null,
+                  english_equiv: poeticWord.english_equiv || null,
+                  gloss: poeticWord.gloss || null
+                });
+              }
+              
+              // Create the relationship
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (pw:Poetic_Word {name: $wordName})
+                CREATE (g)-[r:HAS_POETIC_WORD_OF]->(pw)
+              `, { 
+                pnum: pnum.toString(), 
+                wordName: wordName
+              });
+            }
+          }
+        }
+      }
+
+      // 2️⃣k Handle seasonal words/kigo relationships
+      if (data.kigo !== undefined) {
+        // First, remove all existing seasonal word relationships
+        await tx.run(`
+          MATCH (g:Genji_Poem {pnum: $pnum})-[r:HAS_SEASONAL_WORD_OF]->(sw:Seasonal_Word)
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the seasonal words data and create new relationships
+        let seasonalWordsData = [];
+        try {
+          seasonalWordsData = Array.isArray(data.kigo) ? data.kigo : JSON.parse(data.kigo);
+        } catch (e) {
+          seasonalWordsData = [];
+        }
+
+        if (Array.isArray(seasonalWordsData)) {
+          // Create relationships for each seasonal word
+          for (const seasonalWord of seasonalWordsData) {
+            if (seasonalWord && seasonalWord.english && seasonalWord.english.trim()) {
+              const englishName = seasonalWord.english.trim();
+              const evidence = seasonalWord.evidence || null;
+              
+              // First check if the Seasonal_Word node exists
+              const checkQuery = `
+                MATCH (sw:Seasonal_Word {english: $englishName})
+                RETURN sw.english as english
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { englishName });
+              
+              if (checkResult.records.length === 0) {
+                // Create the Seasonal_Word node if it doesn't exist
+                await tx.run(`
+                  CREATE (sw:Seasonal_Word {
+                    english: $english,
+                    japanese: $japanese
+                  })
+                `, { 
+                  english: englishName,
+                  japanese: seasonalWord.japanese || null
+                });
+              } else {
+                // Update existing Seasonal_Word node with new data if provided
+                await tx.run(`
+                  MATCH (sw:Seasonal_Word {english: $englishName})
+                  SET sw.japanese = COALESCE($japanese, sw.japanese)
+                `, { 
+                  englishName,
+                  japanese: seasonalWord.japanese || null
+                });
+              }
+              
+              // Create the relationship with evidence property
+              await tx.run(`
+                MATCH (g:Genji_Poem {pnum: $pnum})
+                MATCH (sw:Seasonal_Word {english: $englishName})
+                CREATE (g)-[r:HAS_SEASONAL_WORD_OF]->(sw)
+                SET r.evidence = $evidence
+              `, { 
+                pnum: pnum.toString(), 
+                englishName: englishName,
+                evidence: evidence
+              });
+            }
+          }
+        }
+      }
+
+      // 2️⃣l Handle reply poems relationships
+      if (data.replyPoems !== undefined) {
+        // First, remove all existing reply relationships where other poems reply TO this poem
+        await tx.run(`
+          MATCH (replyPoem:Genji_Poem)-[r:REPLY_TO]->(g:Genji_Poem {pnum: $pnum})
+          DELETE r
+        `, { pnum: pnum.toString() });
+
+        // Parse the reply poems data and create new relationships
+        let replyPoemsData = [];
+        try {
+          replyPoemsData = Array.isArray(data.replyPoems) ? data.replyPoems : JSON.parse(data.replyPoems);
+        } catch (e) {
+          replyPoemsData = [];
+        }
+
+        if (Array.isArray(replyPoemsData)) {
+          // Create REPLY_TO relationships for each reply poem
+          for (const [replyPnum, isSelected] of replyPoemsData) {
+            if (isSelected && replyPnum && replyPnum.trim()) {
+              const replyPoemNum = replyPnum.trim();
+              
+              // Check if the reply poem exists
+              const checkQuery = `
+                MATCH (replyPoem:Genji_Poem {pnum: $replyPnum})
+                RETURN replyPoem.pnum as pnum
+              `;
+              
+              const checkResult = await tx.run(checkQuery, { replyPnum: replyPoemNum });
+              
+              if (checkResult.records.length > 0) {
+                // Create the REPLY_TO relationship: replyPoem REPLY_TO currentPoem
+                await tx.run(`
+                  MATCH (replyPoem:Genji_Poem {pnum: $replyPnum})
+                  MATCH (currentPoem:Genji_Poem {pnum: $currentPnum})
+                  CREATE (replyPoem)-[r:REPLY_TO]->(currentPoem)
+                `, { 
+                  replyPnum: replyPoemNum,
+                  currentPnum: pnum.toString()
+                });
+              }
+            }
+          }
+        }
       }
 
       // 3️⃣ Update each Translation node separately if provided
