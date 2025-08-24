@@ -1463,7 +1463,7 @@ export default function EditPoemPage({ chapter, poemNum }) {
                                                 textAlign: "center", 
                                                 padding: "20px" 
                                             }}>
-                                                No reply poems added yet. Click "Add Reply Poem" to add poems that reply to this current poem.
+                                                No reply poems added yet. Click &quot;Add Reply Poem&quot; to add poems that reply to this current poem.
                                             </div>
                                         )}
                                     </div>
