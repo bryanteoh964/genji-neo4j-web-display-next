@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/components/adminBlogEditor.module.css';
+import styles from '../styles/pages/adminBlogEditor.module.css'
 
 const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
     const [title, setTitle] = useState('');
@@ -207,7 +207,21 @@ const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
                 )}
 
                 <div className={styles.contentSection}>
-                    <label className={styles.contentLabel}>Content:</label>
+                    <label className={styles.contentLabel}>
+                        Content:
+                        <span
+                            title="Formatting: **bold**, *italic*, # Header, &nbsp; for indent, [link title](URL) for links"
+                            style={{
+                                marginLeft: "0.5rem",
+                                cursor: "help",
+                                color: "#64748b",
+                                fontWeight: "normal",
+                                fontSize: "0.9rem"
+                            }}
+                        >
+                            ?
+                        </span>
+                    </label>
                     {isEditing ? (
                         <textarea
                             value={content}
