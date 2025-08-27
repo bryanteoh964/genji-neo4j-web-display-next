@@ -175,6 +175,17 @@ form, button {
     letter-spacing: 1px;
     text-align: center;
   }
+  
+  /* Ensure mobile layout doesn't break */
+  .main {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  /* Mobile-friendly padding for main content */
+  .bottom {
+    padding: 0 16px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -190,5 +201,9 @@ form, button {
   
   h1.main-title {
     font-size: 1.1rem;
+  }
+  
+  .bottom {
+    padding: 0 12px;
   }
 }
