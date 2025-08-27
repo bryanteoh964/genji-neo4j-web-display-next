@@ -113,7 +113,7 @@ const MoreOptions = ({ setIsOpen, isAdmin }) => {
             </Link>
 
             <Link 
-                href="/translators/Arthur Waley" 
+                href="/translators" 
                 className={`${styles.moreLink} ${isActive('/translators') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
