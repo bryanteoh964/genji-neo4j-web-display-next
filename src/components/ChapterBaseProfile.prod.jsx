@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/chapterBaseProfile.module.css'; // Can reuse or rename
+import FormatContent from './FormatText.prod';
+import chapterStyles from '../styles/pages/chapterBaseProfile.module.css';
+import blogStyles from '../styles/pages/blogTemplate.module.css';
 
 export default function ChaptersListPage() {
   const [chapters, setChapters] = useState([]);
@@ -10,22 +12,38 @@ export default function ChaptersListPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
+  
+  // Blog-related state
+  const [isLoadingBlog, setIsLoadingBlog] = useState(true);
+  const [content, setContent] = useState('');
 
   useEffect(() => {
-    const fetchChapters = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setIsLoadingBlog(true);
+      
       try {
-        const res = await fetch('/api/chapter_names');
-        if (!res.ok) throw new Error('Failed to fetch chapters');
-        const data = await res.json();
-        setChapters(data);
+        // Fetch chapters
+        const chaptersRes = await fetch('/api/chapter_names');
+        if (!chaptersRes.ok) throw new Error('Failed to fetch chapters');
+        const chaptersData = await chaptersRes.json();
+        setChapters(chaptersData);
+
+        // Fetch blog content for "Chapters"
+        const blogRes = await fetch(`/api/blog/getSingle?title=Chapters`);
+        const blogData = await blogRes.json();
+        setContent(blogData.content);
+
       } catch (error) {
-        console.error("Error fetching chapters:", error);
+        console.error("Error fetching data:", error);
         setError(error.message);
       } finally {
         setLoading(false);
+        setIsLoadingBlog(false);
       }
     };
-    fetchChapters();
+    
+    fetchData();
   }, []);
 
   const handleSearchChange = (e) => {
@@ -46,7 +64,7 @@ export default function ChaptersListPage() {
     const handleClickOutside = (event) => {
       if (
         isDropdownOpen &&
-        !event.target.closest(`.${styles.analysisPanel}`) &&
+        !event.target.closest(`.${chapterStyles.analysisPanel}`) &&
         event.target !== searchInputRef.current
       ) {
         setIsDropdownOpen(false);
@@ -63,46 +81,66 @@ export default function ChaptersListPage() {
   if (chapters.length === 0) return <p>No chapters found.</p>;
 
   return (
-    <div className={styles.characterProfilePage}>
-      <div className={styles.heroSection}>
+    <div className={chapterStyles.characterProfilePage}>
+      <div className={chapterStyles.heroSection}>
         <img
-          className={styles.fullBackgroundImage}
+          className={chapterStyles.fullBackgroundImage}
           src="/images/chapter_banner.png"
           alt="Chapter background"
         />
       </div>
-      <div className={styles.characterProfileContainer}>
-        <div className={styles.analysisPanel}>
-          <div className={styles.panelHeader}>
-            <input
-              ref={searchInputRef}
-              type="text"
-              className={styles.panelHeaderSearch}
-              placeholder="Search Chapters"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <div className={styles.panelMedium} onClick={() => setIsDropdownOpen(!isDropdownOpen)}></div>
-            <div 
-              className={`${styles.toggleArrow} ${isDropdownOpen ? styles.arrowExpanded : styles.arrowCollapsed}`}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              ▼
+
+      <div className={blogStyles.mainSection} style={{ gap: '2rem' }}>
+        <div className={blogStyles.analysisContainer}>
+          {/* Left Side - Chapters List */}
+          <div className={chapterStyles.analysisPanel}>
+            <div className={chapterStyles.panelHeader}>
+              <input
+                ref={searchInputRef}
+                type="text"
+                className={chapterStyles.panelHeaderSearch}
+                placeholder="Search Chapters"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <div className={chapterStyles.panelMedium} onClick={() => setIsDropdownOpen(!isDropdownOpen)}></div>
+              <div 
+                className={`${chapterStyles.toggleArrow} ${isDropdownOpen ? chapterStyles.arrowExpanded : chapterStyles.arrowCollapsed}`}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                ▼
+              </div>
+            </div>
+
+            <div className={`${chapterStyles.panelContent} ${isDropdownOpen ? chapterStyles.expanded : ''}`}>
+              <div className={chapterStyles.scrollableList}>
+                {filteredChapters.map((chapter, index) => (
+                  <div key={index} className={chapterStyles.characterItem}>
+                    <Link href={`/chapters/${encodeURIComponent(chapter.name)}`} style={{ textDecoration: 'none' }}>
+                      <button className={chapterStyles.characterButton}>
+                        {chapter.number}: {chapter.name} ({chapter.kanji})
+                      </button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className={`${styles.panelContent} ${isDropdownOpen ? styles.expanded : ''}`}>
-            <div className={styles.scrollableList}>
-              {filteredChapters.map((chapter, index) => (
-                <div key={index} className={styles.characterItem}>
-                  <Link href={`/chapters/${encodeURIComponent(chapter.name)}`} style={{ textDecoration: 'none' }}>
-                    <button className={styles.characterButton}>
-                      {chapter.number}: {chapter.name} ({chapter.kanji})
-                    </button>
-                  </Link>
-                </div>
-              ))}
-            </div>
+        {/* Right Side - Blog Content */}
+        <div className={blogStyles.description}>
+          <div className={blogStyles.descriptionContent} style={{ paddingTop: '0' }}>
+            {isLoadingBlog ? (
+              <div className={blogStyles.loading} style={{ marginTop: '1rem' }}>Loading...</div>
+            ) : (
+              <>  
+                <FormatContent 
+                  content={content} 
+                  className={blogStyles.descriptionText} 
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

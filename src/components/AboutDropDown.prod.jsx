@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useIsAdmin } from '../hooks/useAuth';
 import styles from '../styles/pages/moreDropDown.module.css';
 
 const MoreDropDown = () => {
     // State to track if the dropdown is open or closed
     const [isOpen, setIsOpen] = useState(false);
+    const { isAdmin } = useIsAdmin();
 
     // Ref to reference the dropdown container element
     const dropdownRef = useRef(null);
@@ -43,13 +45,14 @@ const MoreDropDown = () => {
 
     const isAnyLinkActive = () => {
         const paths = [
-            '/about',
+            '/aboutThisSite',
             '/user-guide',
             '/Sources',
             '/translators',
             '/teamMembers',
-            '/methadology',
+            '/methodology',
             '/collaborate',
+            '/administrator',
         ];
         return paths.some(path => isActive(path));
     };
@@ -67,12 +70,12 @@ const MoreDropDown = () => {
             </button>
 
             {/* Render the dropdown options only if the dropdown is open */}
-            {isOpen && <MoreOptions setIsOpen={setIsOpen} />}
+            {isOpen && <MoreOptions setIsOpen={setIsOpen} isAdmin={isAdmin} />}
         </div>
     );
 };
 
-const MoreOptions = ({ setIsOpen }) => {
+const MoreOptions = ({ setIsOpen, isAdmin }) => {
     const pathname = usePathname();
 
     const isActive = (path) => {
@@ -110,7 +113,7 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
-                href="/translators/Arthur Waley" 
+                href="/translators" 
                 className={`${styles.moreLink} ${isActive('/translators') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
@@ -149,6 +152,16 @@ const MoreOptions = ({ setIsOpen }) => {
             >
                 report an error
             </Link>
+
+            {isAdmin && (
+                <Link 
+                    href="/administrator" 
+                    className={`${styles.moreLink} ${isActive('/administrator') ? styles.active : ''}`} 
+                    onClick={() => setIsOpen(false)}
+                >
+                    administrator
+                </Link>
+            )}
         </div>
     );
 };

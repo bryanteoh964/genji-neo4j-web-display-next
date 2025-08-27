@@ -1,8 +1,18 @@
 import { getSession } from '../../neo4j_driver/route.prod.js';
+import { checkServerSideAdmin } from '../../../../lib/auth-utils';
 
 // Update (PUT) existing poem
 export async function PUT(request) {
   try {
+    // Check if user is admin before allowing poem edits
+    const { isAdmin } = await checkServerSideAdmin();
+    if (!isAdmin) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized. Admin access required to edit poems.' }), 
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const pnum = searchParams.get("pnum");
 
@@ -22,6 +32,15 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
+  // Check if user is admin before allowing poem field deletions
+  const { isAdmin } = await checkServerSideAdmin();
+  if (!isAdmin) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized. Admin access required to delete poem fields.' }), 
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   const session = await getSession();
   
   try {
@@ -245,6 +264,15 @@ export async function DELETE(request) {
 
 // Optional GET if needed
 export async function GET(request) {
+  // Check if user is admin before allowing access to poem edit endpoints
+  const { isAdmin } = await checkServerSideAdmin();
+  if (!isAdmin) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized. Admin access required.' }), 
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   return new Response(JSON.stringify({ message: "GET method" }), { status: 200 });
 }
 
