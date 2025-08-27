@@ -68,7 +68,7 @@ export default function TranslatorsListPage() {
             </div>
         </div>
 
-        <div className={styles.mainSection}>
+        <div className={styles.mainSection} style={{ gap: '2rem' }}>
         <div className={styles.analysisContainer}>
                       {/* Left Side  */}
                       <div className={styles.analysisLeft}>
@@ -92,12 +92,11 @@ export default function TranslatorsListPage() {
                   </div>
 
           <div className={styles.description}>
-              <div className={styles.descriptionContent}>
+              <div className={styles.descriptionContent} style={{ paddingTop: '0' }}>
                   {isLoading ? (
-                      <div className={styles.loading}>Loading...</div>
+                      <div className={styles.loading} style={{ marginTop: '1rem' }}>Loading...</div>
                   ) : (
                       <>  
-                          <div className={styles.heading}>Translators</div>
                           <FormatContent 
                               content={content} 
                               className={styles.descriptionText} 
