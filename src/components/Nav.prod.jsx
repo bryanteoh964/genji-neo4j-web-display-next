@@ -58,7 +58,7 @@ const Navigation = () => {
                     <nav className={styles.navLinks}>
                         {/* Poem Search */}
                         <Link 
-                            href="/search/search-by-keyword" 
+                            href="/search" 
                             className={isActive('/search') ? styles.active : ''}
                         >
                             poem search
