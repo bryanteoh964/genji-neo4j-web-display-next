@@ -7,8 +7,6 @@ import styles from '../styles/pages/blogTemplate.module.css';
 export default function TranslatorsListPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [content, setContent] = useState('');
-  const [authorInfo, setAuthorInfo] = useState({name: '', homepage: '', email: ''});
-  const [sources, setSources] = useState([]);
 
   const translators = [
     { name: 'Arthur Waley' },
@@ -21,31 +19,12 @@ export default function TranslatorsListPage() {
   useEffect(() => {
     const fetchContent = async () => {
       setIsLoading(true);
-      // reset author info
-      setAuthorInfo({name: '', homepage: '', email: ''});
 
       try {
         // get translators content from blog
         const translatorRes = await fetch(`/api/blog/getSingle?title=Translators`);
         const translatorData = await translatorRes.json();
         setContent(translatorData.content);
-
-        // get author info
-        if (translatorData.isUser === 'true' && translatorData.authorEmail) {
-          const apiUrl = `/api/user/getByEmail?email=${encodeURIComponent(translatorData.authorEmail)}`;
-          const authorRes = await fetch(apiUrl);
-          const authorData = await authorRes.json();
-          setAuthorInfo({
-            name: authorData.name,
-            homepage: `/userhomepage/${authorData._id}`,
-            email: translatorData.authorEmail
-          });
-        }
-
-        // get sources
-        const sourcesRes = await fetch(`/api/source/getSingleSource?title=Translators`);
-        const sourcesData = await sourcesRes.json();
-        setSources(sourcesData.sources);
       } catch (error) {
         console.error('Error fetching translators content:', error);
       }
@@ -101,22 +80,6 @@ export default function TranslatorsListPage() {
                               content={content} 
                               className={styles.descriptionText} 
                           />
-                          <a href={authorInfo.homepage} className={styles.author}>{authorInfo.name}</a>
-                          <br/>
-                          <br/>
-                          {sources && sources.length > 0 &&<h2 className={styles.translationsHeader}>FURTHER READINGS</h2>}
-                          <div className={styles.sourcesScrollContainer}>
-                            {sources && sources.length > 0 && (
-                                sources.map((source, index) => (
-                                    <div key={index} className={styles.translationCard}>
-                                        <div className={styles.translationContent}>
-                                            <FormatContent content={source.title}/>
-                                        </div>
-                                        <span className={styles.translatorName} style={{backgroundColor: 'rgba(154, 152, 152, 0.66)'}}>{source.author}</span>
-                                    </div>
-                                ))
-                            )} 
-                          </div>
                       </>
                   )}
               </div>
