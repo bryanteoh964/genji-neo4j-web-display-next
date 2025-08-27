@@ -1,7 +1,17 @@
 import { getSession } from '../../neo4j_driver/route.prod.js';
+import { checkServerSideAdmin } from '../../../../lib/auth-utils';
 
 // GET all characters for dropdown
 export async function GET(request) {
+  // Check if user is admin before allowing access to edit data
+  const { isAdmin } = await checkServerSideAdmin();
+  if (!isAdmin) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized. Admin access required.' }), 
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   const session = await getSession();
   
   try {

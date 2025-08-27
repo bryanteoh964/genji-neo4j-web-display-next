@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useIsAdmin } from '../hooks/useAuth';
 import "../styles/pages/editPoemPage.css";
 
 
@@ -67,14 +68,6 @@ function cleanProps(input) {
   return output;
 }
 
-// Check if user is admin
-async function isAdmin() {
-    const res = await fetch("/api/user/checkAdmin");
-    if (!res.ok) return false;
-    const data = await res.json();
-    return data.isAdmin === true;
-}
-
 // Fetch poem data
 async function fetchPoemData(chapter, number) {
     const res = await fetch(`/api/poems?chapter=${chapter}&&number=${number}`);
@@ -110,6 +103,7 @@ const fieldOrder = [
 // Also kinda difficult "relWithEvidence", internal allusions, Genji Poem -- Genji Poem with evidence
 
 export default function EditPoemPage({ chapter, poemNum }) {
+    const { isAdmin, isLoading } = useIsAdmin();
     const [showButton, setShowButton] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -122,9 +116,11 @@ export default function EditPoemPage({ chapter, poemNum }) {
     const [availableCharacters, setAvailableCharacters] = useState([]);
     const number = poemNum.toString().padStart(2, '0');
 
+    // Check if user is admin based on session
     useEffect(() => {
-        isAdmin().then(setShowButton);
-    }, []);
+        if (isLoading) return; // Wait for session to load
+        setShowButton(isAdmin);
+    }, [isAdmin, isLoading]);
 
     // Fetch available places when popup opens
     useEffect(() => {
