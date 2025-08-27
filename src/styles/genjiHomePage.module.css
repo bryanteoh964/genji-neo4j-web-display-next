@@ -132,4 +132,69 @@
   padding-left: 6%;
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .pageContainer {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .heroImageSection {
+    height: 50vh;
+    width: 100%;
+    min-height: 400px;
+  }
+  
+  .fullBackgroundImage {
+    object-fit: cover;
+  }
+  
+  .titleOverlay {
+    position: absolute;
+    width: 90%;
+    height: auto;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .descriptionSection {
+    width: 100%;
+    padding: 40px 20px;
+    display: block;
+  }
+  
+  .descriptionText {
+    width: 100%;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .statsImage {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroImageSection {
+    height: 40vh;
+    min-height: 300px;
+  }
+  
+  .titleOverlay {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .descriptionSection {
+    padding: 30px 15px;
+  }
+}
+
 

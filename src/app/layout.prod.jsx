@@ -3,10 +3,13 @@
 import '../styles/globals.css';
 // import Header from '../components/Header.prod';
 import Nav from '../components/Nav.prod';
+import MobileNav from '../components/MobileNav.prod';
+import MobileWarning from '../components/MobileWarning.prod';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import Footer from '../components/Footer.prod'
 import { SessionProvider } from 'next-auth/react'
+import { useMobileRouteProtection } from '../hooks/useMobileRouteProtection';
 
 export const metadata = {
   title: 'The Tale of Genji Poem Database',
@@ -17,17 +20,22 @@ export const metadata = {
 const Layout = ({ children }) => {
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
+  
+  // Enable mobile route protection
+  useMobileRouteProtection();
 
   return (
     <html lang="en">
       <body className={`main ${isLoginPage ? 'login-page' : ''}`}>
       <SessionProvider>
-      {!isLoginPage && (
-        <div className="top">
-          {/* <Header /> */}
-          <Nav />
-        </div>
-       )}
+        <MobileWarning />
+        {!isLoginPage && (
+          <div className="top">
+            {/* <Header /> */}
+            <Nav />
+            <MobileNav />
+          </div>
+        )}
         <main className="bottom">{children}</main>
         <Footer />
         {/* chatbot */}

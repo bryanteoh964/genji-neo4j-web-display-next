@@ -156,3 +156,39 @@ form, button {
 	margin-right: auto;
 	border: 1px solid lightgray ;
   }
+
+/* Mobile-specific global styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  body p,
+  .section_container p,
+  .section_container li {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  h1.main-title {
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+  
+  body p,
+  .section_container p,
+  .section_container li {
+    font-size: 13px;
+  }
+  
+  h1.main-title {
+    font-size: 1.1rem;
+  }
+}
