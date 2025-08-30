@@ -8,6 +8,13 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const PLURAL_TO_SING = {
+  'Proffered Poems': 'Proffered Poem',
+  'Reply Poems': 'Reply Poem',
+  'Group Poems': 'Group Poem',
+  'Soliloquies': 'Soliloquy',
+};
+
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
 const removeLeadingZero = (num) => {
   return num.replace(/^0+/, '');
@@ -124,10 +131,17 @@ const PoemSearch = () => {
       poem_type: {
         label: "Poem Type",
         options: {
-          'Proffered Poem' : {checked: false},
-          'Reply Poem' : {checked: false},
-          'Group Poem' : {checked: false},
-          'Soliloquy' : {checked: false},
+          'Proffered Poems' : {checked: false},
+          'Reply Poems' : {checked: false},
+          'Group Poems' : {checked: false},
+          'Soliloquies' : {checked: false},
+        },
+      },
+
+      other_tags: {
+        label: "Other Tags",
+        options: {
+          'Omitted by Waley': { checked: false },
         },
       },
     //   poetic_tech: {
@@ -305,6 +319,7 @@ const PoemSearch = () => {
               typeof result.poem_type === "string"
                 ? result.poem_type.trim()
                 : Object.values(result.poem_type || {}).join("").trim(),
+            omitted_by_waley: !!result.omitted_by_waley,
             poetic_tech: Object.values(result.peotic_tech).join(""),
             genji_age: Object.values(result.genji_age).join(""),
             waley_translation: Object.values(result.waley_translation).join(""),
@@ -398,7 +413,14 @@ const PoemSearch = () => {
             case "genji_age":
               return activeOptions.includes(result.genji_age);
             case "poem_type":
-              return activeOptions.includes(result.poem_type);
+              const Singular = activeOptions.map(k => PLURAL_TO_SING[k] ?? k);
+              return Singular.includes(result.poem_type);
+            case "other_tags": {
+              if (activeOptions.includes("Omitted by Waley")) {
+                return !!result.omitted_by_waley;
+              }
+              return true;
+            }
             default:
               return true;
           }
@@ -1125,7 +1147,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="OTHER FILTERS SEARCH"
+                placeholder="OTHER FILTERS"
                 value={searchOther}
                 onChange={(e) => setSearchOther(e.target.value.toLowerCase())}
                 className={styles.searchInput}
@@ -1166,9 +1188,10 @@ const PoemSearch = () => {
                 </>
               )} */}
 
-              {(otherMatches('Season') && otherMatches('Poem Types')) && (
+              {/* title divider between season and poem types */}
+              {/* {(otherMatches('Season') && otherMatches('Poem Types')) && (
                 <hr className={styles.divider} />
-              )}
+              )} */}
 
               {/* Poem Type */}
               {otherMatches('Poem Types') && (
@@ -1188,6 +1211,30 @@ const PoemSearch = () => {
                   </div>
                 </>
               )}
+
+              {(otherMatches('Poem Types') && otherMatches('Other Tags')) && (
+                <hr className={styles.divider} />
+              )}
+
+              {/* Poem Type */}
+              {otherMatches('Other Tags') && (
+                <>
+                  <div className={styles.otherFilterTitles}>Other Tags</div>
+                  <div className={styles.filterOptions}>
+                    {Object.keys(filters.other_tags.options).map((k) => (
+                      <Checkbox
+                        key={k}
+                        checked={filters.other_tags.options[k]?.checked}
+                        onChange={() => handleFilterChange("other_tags", k)}
+                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                      >
+                        {k}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </>
+              )}
+
             </div>
           </div>
         </div>
