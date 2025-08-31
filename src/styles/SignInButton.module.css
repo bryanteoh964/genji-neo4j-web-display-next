@@ -47,6 +47,29 @@
   opacity: 0.5;
 }
 
+/* Mobile overrides: remove right margins and center username inside mobile menu */
+@media (max-width: 768px) {
+  .userContainer {
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .userLink {
+    margin-right: 0 !important;
+    text-align: center;
+    width: auto;
+  }
+
+  .signInButton {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    margin-top: 12px !important;
+  }
+}
+
 .signInButton:hover {
   transform: translateY(-1px);
 }
