@@ -342,6 +342,33 @@ const PoemDisplay = ({ poemData }) => {
     if (poemState.isLoading) {
         return <div className={styles.loadingContainer}>Loading poem...</div>;
     }
+    //section has-content flags
+    const hasContext = !!poemState.narrativeContext;
+    const hasSummary = !!poemState.paraphrase;
+    const hasCommentary = !!poemState.notes;
+    const hasDetails = Boolean(
+    poemState.paperMediumType ||
+    poemState.deliveryStyle ||
+    poemState.season ||
+    (poemState.kigo && (poemState.kigo.jp || poemState.kigo.en)) ||
+    (Array.isArray(poemState.pt) && poemState.pt.length > 0) ||
+    (Array.isArray(poemState.pw) && poemState.pw.length > 0) ||
+    poemState.placeOfComp ||
+    poemState.placeOfReceipt ||
+    poemState.spoken === 'true' ||
+    poemState.written === 'true' ||
+    (Array.isArray(poemState.tag) && poemState.tag.some(t =>
+        (t[0] === 'Character Name Poem' && t[1]) ||
+        (t[0] === 'Chapter Title Poem' && t[1]) ||
+        (t[0] === 'Morning After Poem' && t[1]) ||
+        (t[0] === 'Proxy Poem' && t[1])
+    )) ||
+    (Array.isArray(poemState.replyPoems) && poemState.replyPoems.length > 0) ||
+    (Array.isArray(poemState.relWithEvidence) && poemState.relWithEvidence.length > 0) ||
+    (Array.isArray(poemState.groupPoems) && poemState.groupPoems.length > 0) ||
+    (Array.isArray(poemState.source) && poemState.source.length > 0) ||
+    (Array.isArray(poemState.furtherReadings) && poemState.furtherReadings.length > 0)
+    );
 
     return (
         <div className={styles.poemPageContainer}>
@@ -582,7 +609,7 @@ const PoemDisplay = ({ poemData }) => {
                             
                             {/* Narrative Context Panel */}
                             <div className={styles.analysisPanel}>
-                                <div className={styles.panelHeader} onClick={() => togglePanel('context')}>
+                                <div className={`${styles.panelHeader} ${!hasContext ? styles.panelHeaderEmpty : ''}`} onClick={() => togglePanel('context')}>
                                     <h2>WHERE WE ARE IN THE TALE</h2>
                                     <div className={`${styles.toggleArrow} ${expandedPanels.context ? styles.arrowExpanded : styles.arrowCollapsed}`}>
                                         ▼
@@ -595,7 +622,7 @@ const PoemDisplay = ({ poemData }) => {
 
                             {/* Poem Summary Panel */}
                             <div className={styles.analysisPanel}>
-                                <div className={styles.panelHeader} onClick={() => togglePanel('summary')}>
+                                <div className={`${styles.panelHeader} ${!hasSummary ? styles.panelHeaderEmpty : ''}`} onClick={() => togglePanel('summary')}>
                                     <h2>WHAT THE POEM IS SAYING</h2>
                                     <div className={`${styles.toggleArrow} ${expandedPanels.summary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
                                         ▼
@@ -608,7 +635,7 @@ const PoemDisplay = ({ poemData }) => {
 
                             {/* Commentary Panel */}
                             <div className={styles.analysisPanel}>
-                                <div className={styles.panelHeader} onClick={() => togglePanel('commentary')}>
+                                <div className={`${styles.panelHeader} ${!hasCommentary ? styles.panelHeaderEmpty : ''}`} onClick={() => togglePanel('commentary')}>
                                     <h2>COMMENTARY</h2>
                                     <div className={`${styles.toggleArrow} ${expandedPanels.commentary ? styles.arrowExpanded : styles.arrowCollapsed}`}>
                                         ▼
@@ -621,7 +648,7 @@ const PoemDisplay = ({ poemData }) => {
 
                             {/* More Details Panel */}
                             <div className={styles.analysisPanel}>
-                                <div className={styles.panelHeader} onClick={() => togglePanel('details')}>
+                                <div className={`${styles.panelHeader} ${!hasDetails ? styles.panelHeaderEmpty : ''}`} onClick={() => togglePanel('details')}>
                                     <h2>MORE DETAILS</h2>
                                     <div className={`${styles.toggleArrow} ${expandedPanels.details ? styles.arrowExpanded : styles.arrowCollapsed}`}>
                                         ▼
