@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from '../styles/MobileNavigation.module.css';
 import { SignIn } from './auth/signin-button.prod';
-import LogoSVG from '../../public/images/genji_logo.svg';
+import MobileLogo from './MobileLogo.prod';
 
 const MobileNavigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +31,7 @@ const MobileNavigation = () => {
     // Priority pages for mobile
     const mobilePages = [
         { href: '/', label: 'Home' },
-        { href: '/search', label: 'Poem Search' },
+        { href: '/mobile-search', label: 'Mobile Poem Search' },
         { href: '/aboutThisSite', label: 'About This Site' }
     ];
 
@@ -41,7 +41,7 @@ const MobileNavigation = () => {
                 {/* Logo */}
                 <div className={styles.logoContainer}>
                     <Link href="/" className={styles.logoLink} onClick={closeMenu}>
-                        <LogoSVG width={120} height={40} />
+                        <MobileLogo className={styles.logoWrapper} />
                     </Link>
                 </div>
 

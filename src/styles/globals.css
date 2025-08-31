@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');
 
+/* Prevent horizontal scrolling on mobile */
+html {
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 h1.main-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -14,6 +25,8 @@ h1.main-title {
 
 body {
 	margin: 0;
+	width: 100%;
+	overflow-x: hidden;
 
 	/* font-family: 'MS Mincho'; */
 	/* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
@@ -159,6 +172,13 @@ form, button {
 
 /* Mobile-specific global styles */
 @media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
   body {
     font-size: 14px;
   }
@@ -180,11 +200,37 @@ form, button {
   .main {
     min-width: unset;
     width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .top {
+    width: 100%;
+    max-width: 100%;
   }
   
   /* Mobile-friendly padding for main content */
   .bottom {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  
+  .section_frame {
+    width: 100%;
+    max-width: 100%;
     padding: 0 16px;
+    box-sizing: border-box;
+  }
+  
+  .section_container {
+    width: 100%;
+    max-width: 100%;
+    margin: 40px 0;
+    padding: 0 16px;
+    box-sizing: border-box;
   }
 }
 
@@ -203,7 +249,12 @@ form, button {
     font-size: 1.1rem;
   }
   
-  .bottom {
+  .section_frame {
     padding: 0 12px;
+  }
+  
+  .section_container {
+    padding: 0 12px;
+    margin: 30px 0;
   }
 }
