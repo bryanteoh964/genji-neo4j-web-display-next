@@ -41,16 +41,15 @@ const MobileWarning = () => {
                 </div>
                 <div className={styles.content}>
                     <p>
-                        Welcome to The Tale of Genji Poem Database! 
-                        This mobile version provides access to our core features:
+                        Welcome to The Tale of Genji<br />Poem Database!
                     </p>
                     <ul>
-                        <li>🏠 Home page with site overview</li>
-                        <li>🔍 Poem search functionality</li>
-                        <li>📖 About this site information</li>
+                        <li>🔎 Perform quick poem text searches</li>
+                        <li>📚 View all available poem translations</li>
+                        <li>📖 View the “About This Site” page</li>
                     </ul>
                     <p>
-                        For the full experience with all features, please visit us on a desktop or tablet.
+                        For the full experience with all features, please visit us on a desktop or laptop.
                     </p>
                 </div>
                 <div className={styles.footer}>
