@@ -90,7 +90,8 @@ async function generalSearch(q) {
                 COALESCE([x IN translations WHERE x.translator_name = "Seidensticker"][0].text, "") AS Seidensticker_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Tyler"][0].text, "") AS Tyler_translation,
                 COALESCE([x IN translations WHERE x.translator_name = "Washburn"][0].text, "") AS Washburn_translation,
-                COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation
+                COALESCE([x IN translations WHERE x.translator_name = "Cranston"][0].text, "") AS Cranston_translation,
+                EXISTS { (p)-[:TAGGED_AS]->(:Tag {Type: "Omitted By Waley"}) } AS omitted_by_waley
             ORDER BY pnum
         `;
 
@@ -129,6 +130,7 @@ async function generalSearch(q) {
                     tyler_translation:         record.get('Tyler_translation') || "",
                     washburn_translation:      record.get('Washburn_translation') || "",
                     cranston_translation:      record.get('Cranston_translation') || "",
+                    omitted_by_waley: !!record.get('omitted_by_waley'),
                 };
             });
 

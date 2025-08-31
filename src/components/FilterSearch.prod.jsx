@@ -8,6 +8,13 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const PLURAL_TO_SING = {
+  'Proffered Poems': 'Proffered Poem',
+  'Reply Poems': 'Reply Poem',
+  'Group Poems': 'Group Poem',
+  'Soliloquies': 'Soliloquy',
+};
+
 // funtion to remove leading zero of chapternum and poemnum, ensure the correctness of link
 const removeLeadingZero = (num) => {
   return num.replace(/^0+/, '');
@@ -124,10 +131,17 @@ const PoemSearch = () => {
       poem_type: {
         label: "Poem Type",
         options: {
-          'Proffered Poem' : {checked: false},
-          'Reply Poem' : {checked: false},
-          'Group Poem' : {checked: false},
-          'Soliloquy' : {checked: false},
+          'Proffered Poems' : {checked: false},
+          'Reply Poems' : {checked: false},
+          'Group Poems' : {checked: false},
+          'Soliloquies' : {checked: false},
+        },
+      },
+
+      other_tags: {
+        label: "Other Tags",
+        options: {
+          'Omitted by Waley': { checked: false },
         },
       },
     //   poetic_tech: {
@@ -305,6 +319,7 @@ const PoemSearch = () => {
               typeof result.poem_type === "string"
                 ? result.poem_type.trim()
                 : Object.values(result.poem_type || {}).join("").trim(),
+            omitted_by_waley: !!result.omitted_by_waley,
             poetic_tech: Object.values(result.peotic_tech).join(""),
             genji_age: Object.values(result.genji_age).join(""),
             waley_translation: Object.values(result.waley_translation).join(""),
@@ -389,6 +404,21 @@ const PoemSearch = () => {
             case "speaker_gender":
               return activeOptions.includes(result.speaker_gender);
             case "addressee_gender":
+
+              // Enhanced addressee gender filtering (currently disabled)
+              // This special handling was added to fix poems that were being filtered out:
+              // - Poems with empty addressee_gender (like 12SM20, 21OT06) would always pass
+              // - Poems with combined genders (like "male & female" from 53TN17) would match if any gender is active
+              // Uncomment the code below if you need to include poems with missing or combined addressee genders:
+              
+              // if (!result.addressee_gender || result.addressee_gender.trim() === "") {
+              //   return true; // Empty addressee gender passes all filters
+              // }
+              // if (result.addressee_gender.includes(" & ")) {
+              //   const genders = result.addressee_gender.split(" & ").map(g => g.trim());
+              //   return genders.some(gender => activeOptions.includes(gender));
+              // }
+              
               return activeOptions.includes(result.addressee_gender);
             // case "season":
             //   const val = (result.season || "").toString().toLowerCase();
@@ -398,7 +428,14 @@ const PoemSearch = () => {
             case "genji_age":
               return activeOptions.includes(result.genji_age);
             case "poem_type":
-              return activeOptions.includes(result.poem_type);
+              const Singular = activeOptions.map(k => PLURAL_TO_SING[k] ?? k);
+              return Singular.includes(result.poem_type);
+            case "other_tags": {
+              if (activeOptions.includes("Omitted by Waley")) {
+                return !!result.omitted_by_waley;
+              }
+              return true;
+            }
             default:
               return true;
           }
@@ -1125,7 +1162,7 @@ const PoemSearch = () => {
             >
               <input
                 type="text"
-                placeholder="OTHER FILTERS SEARCH"
+                placeholder="OTHER FILTERS"
                 value={searchOther}
                 onChange={(e) => setSearchOther(e.target.value.toLowerCase())}
                 className={styles.searchInput}
@@ -1166,9 +1203,10 @@ const PoemSearch = () => {
                 </>
               )} */}
 
-              {(otherMatches('Season') && otherMatches('Poem Types')) && (
+              {/* title divider between season and poem types */}
+              {/* {(otherMatches('Season') && otherMatches('Poem Types')) && (
                 <hr className={styles.divider} />
-              )}
+              )} */}
 
               {/* Poem Type */}
               {otherMatches('Poem Types') && (
@@ -1188,6 +1226,30 @@ const PoemSearch = () => {
                   </div>
                 </>
               )}
+
+              {(otherMatches('Poem Types') && otherMatches('Other Tags')) && (
+                <hr className={styles.divider} />
+              )}
+
+              {/* Poem Type */}
+              {otherMatches('Other Tags') && (
+                <>
+                  <div className={styles.otherFilterTitles}>Other Tags</div>
+                  <div className={styles.filterOptions}>
+                    {Object.keys(filters.other_tags.options).map((k) => (
+                      <Checkbox
+                        key={k}
+                        checked={filters.other_tags.options[k]?.checked}
+                        onChange={() => handleFilterChange("other_tags", k)}
+                        className={`${styles.filterCheckbox} ${styles.alignLeft}`}
+                      >
+                        {k}
+                      </Checkbox>
+                    ))}
+                  </div>
+                </>
+              )}
+
             </div>
           </div>
         </div>

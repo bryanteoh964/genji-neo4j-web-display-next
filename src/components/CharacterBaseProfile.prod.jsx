@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import styles from '../styles/pages/characterBaseProfile.module.css';
+import FormatContent from './FormatText.prod';
+import characterStyles from '../styles/pages/characterBaseProfile.module.css';
+import blogStyles from '../styles/pages/blogTemplate.module.css';
 
 export default function CharactersListPage() {
   const [characters, setCharacters] = useState([]);
@@ -11,21 +13,37 @@ export default function CharactersListPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
 
+  // Blog-related state
+  const [isLoadingBlog, setIsLoadingBlog] = useState(true);
+  const [content, setContent] = useState('');
+
   useEffect(() => {
-    const fetchCharacters = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setIsLoadingBlog(true);
+      
       try {
-        const res = await fetch('/api/character_names');
-        if (!res.ok) throw new Error('Failed to fetch characters');
-        const data = await res.json();
-        setCharacters(data);
+        // Fetch characters
+        const charactersRes = await fetch('/api/character_names');
+        if (!charactersRes.ok) throw new Error('Failed to fetch characters');
+        const charactersData = await charactersRes.json();
+        setCharacters(charactersData);
+
+        // Fetch blog content for "Characters"
+        const blogRes = await fetch(`/api/blog/getSingle?title=Characters`);
+        const blogData = await blogRes.json();
+        setContent(blogData.content);
+
       } catch (error) {
-        console.error("Error fetching characters:", error);
+        console.error("Error fetching data:", error);
         setError(error.message);
       } finally {
         setLoading(false);
+        setIsLoadingBlog(false);
       }
     };
-    fetchCharacters();
+    
+    fetchData();
   }, []);
 
   // Handle search input change
@@ -48,7 +66,7 @@ export default function CharactersListPage() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isDropdownOpen &&
-        !event.target.closest(`.${styles.analysisPanel}`) &&
+        !event.target.closest(`.${characterStyles.analysisPanel}`) &&
         event.target !== searchInputRef.current) {
         setIsDropdownOpen(false);
       }
@@ -64,59 +82,77 @@ export default function CharactersListPage() {
   if (characters.length === 0) return <p>No characters found.</p>;
 
   return (
-    <div className={styles.characterProfilePage}>
-      <div className={styles.heroSection}>
+    <div className={characterStyles.characterProfilePage}>
+      <div className={characterStyles.heroSection}>
         <img
-          className={styles.fullBackgroundImage}
+          className={characterStyles.fullBackgroundImage}
           src="/images/character_banner2.png"
           alt="Character background"
         />
       </div>
-      <div className={styles.characterProfileContainer}>
-        {/* Search Dropdown Section */}
-        <div className={styles.analysisPanel}>
-          <div className={styles.panelHeader}>
-            <input
-              ref={searchInputRef}
-              type="text"
-              className={styles.panelHeaderSearch}
-              placeholder="Search Characters"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <div className={styles.panelMedium} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+
+      <div className={blogStyles.mainSection} style={{ gap: '2rem' }}>
+        <div className={blogStyles.analysisContainer}>
+          {/* Left Side - Characters List */}
+          <div className={characterStyles.analysisPanel}>
+            <div className={characterStyles.panelHeader}>
+              <input
+                ref={searchInputRef}
+                type="text"
+                className={characterStyles.panelHeaderSearch}
+                placeholder="Search Characters"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <div className={characterStyles.panelMedium} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              </div>
+              <div 
+                className={`${characterStyles.toggleArrow} ${isDropdownOpen ? characterStyles.arrowExpanded : characterStyles.arrowCollapsed}`}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                ▼
+              </div>
             </div>
-            <div 
-              className={`${styles.toggleArrow} ${isDropdownOpen ? styles.arrowExpanded : styles.arrowCollapsed}`}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              ▼
+
+            <div className={`${characterStyles.panelContent} ${isDropdownOpen ? characterStyles.expanded : ''}`}>
+              <div className={characterStyles.scrollableList}>
+                {filteredCharacters.length > 0 ? (
+                  filteredCharacters.map((character, index) => {
+                    const characterName = character.name || character;
+                    return (
+                      <div key={index} className={characterStyles.characterItem}>
+                        <Link 
+                          href={`/characters/${encodeURIComponent(characterName)}`}
+                          style={{ textDecoration: 'none' }}
+                        >
+                          <button className={characterStyles.characterButton}>
+                            {characterName}
+                          </button>
+                        </Link>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className={characterStyles.noResults}>No Characters Found</div>
+                )}
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Dropdown content */}
-          <div className={`${styles.panelContent} ${isDropdownOpen ? styles.expanded : ''}`}>
-            <div className={styles.scrollableList}>
-              {filteredCharacters.length > 0 ? (
-                filteredCharacters.map((character, index) => {
-                  const characterName = character.name || character;
-                  return (
-                    <div key={index} className={styles.characterItem}>
-                        <Link 
-                            href={`/characters/${encodeURIComponent(characterName)}`}
-                            style={{ textDecoration: 'none' }}
-                        >
-                            <button className={styles.characterButton}>
-                            {characterName}
-                            </button>
-                        </Link>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className={styles.noResults}>No Characters Found</div>
-              )}
-            </div>
+        {/* Right Side - Blog Content */}
+        <div className={blogStyles.description}>
+          <div className={blogStyles.descriptionContent} style={{ paddingTop: '0' }}>
+            {isLoadingBlog ? (
+              <div className={blogStyles.loading} style={{ marginTop: '1rem' }}>Loading...</div>
+            ) : (
+              <>  
+                <FormatContent 
+                  content={content} 
+                  className={blogStyles.descriptionText} 
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

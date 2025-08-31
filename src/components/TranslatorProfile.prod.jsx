@@ -70,7 +70,7 @@ const TranslatorProfile = ({ name }) => {
             </div>
         </div>
 
-        <div className={styles.mainSection}>
+        <div className={styles.mainSection} style={{ gap: '2rem' }}>
         <div className={styles.analysisContainer}>
                       {/* Left Side  */}
                       <div className={styles.analysisLeft}>
