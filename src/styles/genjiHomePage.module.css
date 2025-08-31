@@ -132,4 +132,120 @@
   padding-left: 6%;
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .pageContainer {
+    min-width: unset;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .heroImageSection {
+    height: 50vh;
+    width: 100%;
+    min-height: 400px;
+  }
+  
+  .fullBackgroundImage {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .titleOverlay {
+    position: absolute;
+    width: 90%;
+    height: auto;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .descriptionSection {
+    width: 100%;
+    padding: 20px 0;
+    overflow-x: hidden;
+  }
+  
+  .contentWrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .descriptionText {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .descriptionText img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 650px;
+    object-fit: contain;
+  }
+  
+  .statsContainer {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    display: none;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .statsImage {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroImageSection {
+    height: 40vh;
+    min-height: 300px;
+  }
+  
+  .titleOverlay {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .descriptionSection {
+    padding: 15px 0;
+  }
+  
+  .contentWrapper {
+    padding: 0 15px;
+    gap: 15px;
+  }
+  
+  .descriptionText img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 600px;
+  }
+  
+  .statsImage {
+    display: none;
+  }
+}
+
 

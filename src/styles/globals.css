@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap');
 
+/* Prevent horizontal scrolling on mobile */
+html {
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 h1.main-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -14,6 +25,8 @@ h1.main-title {
 
 body {
 	margin: 0;
+	width: 100%;
+	overflow-x: hidden;
 
 	/* font-family: 'MS Mincho'; */
 	/* font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif; */
@@ -156,3 +169,92 @@ form, button {
 	margin-right: auto;
 	border: 1px solid lightgray ;
   }
+
+/* Mobile-specific global styles */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-size: 14px;
+  }
+  
+  body p,
+  .section_container p,
+  .section_container li {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  h1.main-title {
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  
+  /* Ensure mobile layout doesn't break */
+  .main {
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .top {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Mobile-friendly padding for main content */
+  .bottom {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  
+  .section_frame {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+  
+  .section_container {
+    width: 100%;
+    max-width: 100%;
+    margin: 40px 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+  
+  body p,
+  .section_container p,
+  .section_container li {
+    font-size: 13px;
+  }
+  
+  h1.main-title {
+    font-size: 1.1rem;
+  }
+  
+  .section_frame {
+    padding: 0 12px;
+  }
+  
+  .section_container {
+    padding: 0 12px;
+    margin: 30px 0;
+  }
+}
