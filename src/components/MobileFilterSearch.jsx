@@ -107,7 +107,7 @@ const MobileFilterSearch = () => {
         setIsLoading(false);
       }
     }, 300),
-    []
+    [setIsLoading, setError, setResults, setShowResults, setAvailableChapters]
   );
 
   useEffect(() => {
@@ -297,7 +297,7 @@ const MobileFilterSearch = () => {
               {selectedPoem.waley_translation && (
                 <div className={styles.translationTile}>
                   <div>
-                    {(selectedPoem.waley_translation || '').split('\n').map((line, index) => (
+                    {(selectedPoem.waley_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
                       <p key={`waley-${index}`}>{highlightMatch(line, query)}</p>
                     ))}
                   </div>
@@ -308,7 +308,7 @@ const MobileFilterSearch = () => {
               {selectedPoem.seidensticker_translation && (
                 <div className={styles.translationTile}>
                   <div>
-                    {(selectedPoem.seidensticker_translation || '').split('\n').map((line, index) => (
+                    {(selectedPoem.seidensticker_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
                       <p key={`seidensticker-${index}`}>{highlightMatch(line, query)}</p>
                     ))}
                   </div>
@@ -319,7 +319,7 @@ const MobileFilterSearch = () => {
               {selectedPoem.tyler_translation && (
                 <div className={styles.translationTile}>
                   <div>
-                    {(selectedPoem.tyler_translation || '').split('\n').map((line, index) => (
+                    {(selectedPoem.tyler_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
                       <p key={`tyler-${index}`}>{highlightMatch(line, query)}</p>
                     ))}
                   </div>
@@ -330,7 +330,7 @@ const MobileFilterSearch = () => {
               {selectedPoem.washburn_translation && (
                 <div className={styles.translationTile}>
                   <div>
-                    {(selectedPoem.washburn_translation || '').split('\n').map((line, index) => (
+                    {(selectedPoem.washburn_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
                       <p key={`washburn-${index}`}>{highlightMatch(line, query)}</p>
                     ))}
                   </div>
@@ -341,7 +341,7 @@ const MobileFilterSearch = () => {
               {selectedPoem.cranston_translation && (
                 <div className={styles.translationTile}>
                   <div>
-                    {(selectedPoem.cranston_translation || '').split('\n').map((line, index) => (
+                    {(selectedPoem.cranston_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
                       <p key={`cranston-${index}`}>{highlightMatch(line, query)}</p>
                     ))}
                   </div>
