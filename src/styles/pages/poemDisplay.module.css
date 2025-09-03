@@ -686,7 +686,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   width: 160px;
-  height: 52px;
+  height: 60px;
   left: 505px;
   background-color: rgba(255, 255, 255, 0.2);
   padding-top: 8px;
@@ -726,7 +726,7 @@
 }
 
 .translatorName {
-  width: 150px;
+  width: 160px;
   height: 30px;
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.2);
