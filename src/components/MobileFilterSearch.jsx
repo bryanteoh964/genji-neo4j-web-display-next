@@ -107,7 +107,7 @@ const MobileFilterSearch = () => {
         setIsLoading(false);
       }
     }, 300),
-    []
+    [setIsLoading, setError, setResults, setShowResults, setAvailableChapters]
   );
 
   useEffect(() => {
@@ -296,35 +296,55 @@ const MobileFilterSearch = () => {
             <div className={styles.translationsCompact}>
               {selectedPoem.waley_translation && (
                 <div className={styles.translationTile}>
-                  <p>{highlightMatch(selectedPoem.waley_translation, query)}</p>
+                  <div>
+                    {(selectedPoem.waley_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
+                      <p key={`waley-${index}`}>{highlightMatch(line, query)}</p>
+                    ))}
+                  </div>
                   <div className={styles.translatorBadge}>Waley</div>
                 </div>
               )}
 
               {selectedPoem.seidensticker_translation && (
                 <div className={styles.translationTile}>
-                  <p>{highlightMatch(selectedPoem.seidensticker_translation, query)}</p>
+                  <div>
+                    {(selectedPoem.seidensticker_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
+                      <p key={`seidensticker-${index}`}>{highlightMatch(line, query)}</p>
+                    ))}
+                  </div>
                   <div className={styles.translatorBadge}>Seidensticker</div>
                 </div>
               )}
 
               {selectedPoem.tyler_translation && (
                 <div className={styles.translationTile}>
-                  <p>{highlightMatch(selectedPoem.tyler_translation, query)}</p>
+                  <div>
+                    {(selectedPoem.tyler_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
+                      <p key={`tyler-${index}`}>{highlightMatch(line, query)}</p>
+                    ))}
+                  </div>
                   <div className={styles.translatorBadge}>Tyler</div>
                 </div>
               )}
 
               {selectedPoem.washburn_translation && (
                 <div className={styles.translationTile}>
-                  <p>{highlightMatch(selectedPoem.washburn_translation, query)}</p>
+                  <div>
+                    {(selectedPoem.washburn_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
+                      <p key={`washburn-${index}`}>{highlightMatch(line, query)}</p>
+                    ))}
+                  </div>
                   <div className={styles.translatorBadge}>Washburn</div>
                 </div>
               )}
 
               {selectedPoem.cranston_translation && (
                 <div className={styles.translationTile}>
-                  <p>{highlightMatch(selectedPoem.cranston_translation, query)}</p>
+                  <div>
+                    {(selectedPoem.cranston_translation || '').split('\n').filter(line => line.trim()).map((line, index) => (
+                      <p key={`cranston-${index}`}>{highlightMatch(line, query)}</p>
+                    ))}
+                  </div>
                   <div className={styles.translatorBadge}>Cranston</div>
                 </div>
               )}

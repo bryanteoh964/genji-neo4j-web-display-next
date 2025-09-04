@@ -26,7 +26,7 @@
 }
 
 .keywordSearchInput {
-  width: 302px;
+  width: 320px;
   padding: 14px 16px 14px 0px;
   font-size: 16px;
   border: none; /* Remove the border */
@@ -810,7 +810,7 @@
   border-radius: 10px;
   height: 24px;
   margin-bottom: 10px;
-  width: 1310px;
+  width: 1340px;
   margin: 0 auto;
   margin-bottom: 10px;
   padding: 0 15px;
@@ -902,7 +902,7 @@
   background-color: #4B4B4B;
   text-align: left;
   width: 160px;
-  height: 10px;
+  height: 30px;
   vertical-align: middle;
   opacity: 0.3;
   display: flex;
@@ -938,7 +938,7 @@
 
 .translationMetaMid {
   position: absolute;
-  top: 25%;
+  top: 30px;
   right: 0px;
   margin: 0;
   font-weight: 600;
@@ -953,7 +953,7 @@
   letter-spacing: -0.05rem;
   text-align: left;
   width: 160px;
-  height: 40px;
+  height: 60px;
   vertical-align: middle;
   display: flex;
   flex-direction: row;
@@ -1007,8 +1007,13 @@
   letter-spacing: -0.05rem;
   text-align: right;
   width: 160px;
-  height: 10px;
+  height: 30px;
   vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: auto;
 }
 
 .translation:nth-of-type(1) .translatorName {
@@ -1057,7 +1062,7 @@
   letter-spacing: -0.05rem;
   text-align: right;
   width: 160px;
-  height: 10px;
+  height: 30px;
   vertical-align: middle;
 }
 
