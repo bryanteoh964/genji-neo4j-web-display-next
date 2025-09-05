@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../styles/pages/characterProfile.module.css';
 import FormatContent from './FormatText.prod';
-import ZoomableGanttChart from './ZoomableGanttChart.jsx';
+import ZoomableGanttChart from './ZoomableGanttChart.prod.jsx';
 import ContributorView from './ContributorView.prod'
 import DiscussionArea from './DiscussionArea.prod'
 

@@ -7,7 +7,7 @@ import DiscussionArea from '../components/DiscussionArea.prod';
 import FormatContent from './FormatText.prod'
 import TransSubmit from '../components/TranslationSubmit.prod';
 import TransDisplay from '../components/TranslationDisplay.prod'
-import PoemNavigation from './PoemNavigation';
+import PoemNavigation from './PoemNavigation.prod';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
