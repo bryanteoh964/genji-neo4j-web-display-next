@@ -8,7 +8,7 @@ async function getData (chapter, number){
 	//all the get method and return the db data
 	const queries = {
 
-		res: 'match poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), exchange=(s:Character)-[:SPEAKER_OF]->(g)<-[:ADDRESSEE_OF]-(a:Character), trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) WHERE g.pnum ENDS WITH "' + number + '" return poem, exchange, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style, g.Spoken as spoken, g.Written as written, g.evidence_for_spoken_or_written as spoken_or_written_evidence',
+		res: 'MATCH poem=(g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH "' + number + '" OPTIONAL MATCH speaker_rel=(s:Character)-[:SPEAKER_OF]->(g) OPTIONAL MATCH addressee_rel=(g)<-[:ADDRESSEE_OF]-(a:Character) OPTIONAL MATCH trans=(g)-[:TRANSLATION_OF]-(:Translation)-[:TRANSLATOR_OF]-(:People) RETURN poem, speaker_rel, addressee_rel, trans, g.narrative_context as narrative_context, g.paraphrase as paraphrase, g.handwriting_description as handwriting_description, g.paper_or_medium_type as paper_or_medium_type, g.delivery_style as delivery_style, g.Spoken as spoken, g.Written as written, g.evidence_for_spoken_or_written as spoken_or_written_evidence',
 		resHonkaInfo:  'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[n:ALLUDES_TO]->(h:Honka)-[r:ANTHOLOGIZED_IN]-(s:Source), (h)<-[:AUTHOR_OF]-(a:People), (h)<-[:TRANSLATION_OF]-(t:Translation)<-[:TRANSLATOR_OF]-(p:People) where g.pnum ends with "' + number + '" return h.Honka as honka, h.Romaji as romaji, s.title as title, a.name as poet, r.order as order, p.name as translator, t.translation as translation, n.notes as notes',
 		resRel : 'match (g:Genji_Poem)-[:INCLUDED_IN]->(:Chapter {chapter_number: "' + chapter + '"}), (g)-[r:INTERNAL_ALLUSION_TO]->(s:Genji_Poem) where g.pnum ends with "' + number + '" return s.pnum as rel, r.evidence as internal_allusion_evidence',
 		resPnum : 'MATCH (g:Genji_Poem)-[:INCLUDED_IN]->(c:Chapter {chapter_number: "' + chapter + '"}) WHERE g.pnum ENDS WITH (CASE WHEN "' + number + '" < 10 THEN \'0\' + toString("' + number + '") ELSE toString($number) END) RETURN g.pnum as pnum',
@@ -38,9 +38,41 @@ async function getData (chapter, number){
 			result[key] = queryResult;
 		} 
 
-		let exchange = new Set()           
-		result['res'].records.map(e => JSON.stringify(toNativeTypes(e.get('exchange')))).forEach(e => exchange.add(e))
-		exchange = Array.from(exchange).map(e => JSON.parse(e))
+		let exchange = []
+		result['res'].records.forEach(record => {
+			const speakerRel = record.get('speaker_rel');
+			const addresseeRel = record.get('addressee_rel');
+			
+			// Only process if we have at least one relationship
+			if (speakerRel || addresseeRel) {
+				const speaker = speakerRel ? toNativeTypes(speakerRel).start : toNativeTypes(addresseeRel).end;
+				const addressee = addresseeRel ? toNativeTypes(addresseeRel).end : speaker; // Default to speaker for self-addressed
+				const poem = speakerRel ? toNativeTypes(speakerRel).end : toNativeTypes(addresseeRel).start;
+				
+				exchange.push({
+					start: speaker,
+					end: addressee,
+					segments: [
+						{
+							start: speaker,
+							end: poem
+						}
+					]
+				});
+			}
+		});
+		
+		// Remove duplicates
+		const uniqueExchange = [];
+		const seenExchanges = new Set();
+		exchange.forEach(ex => {
+			const key = JSON.stringify([ex.start.properties.name, ex.end.properties.name]);
+			if (!seenExchanges.has(key)) {
+				seenExchanges.add(key);
+				uniqueExchange.push(ex);
+			}
+		});
+		exchange = uniqueExchange;
 
 		
 		let narrative_context = result['res'].records[0]?.get('narrative_context') || null;
