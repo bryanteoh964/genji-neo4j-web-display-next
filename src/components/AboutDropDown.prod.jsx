@@ -47,7 +47,7 @@ const MoreDropDown = () => {
         const paths = [
             '/about-this-site',
             '/user-guide',
-            '/Sources',
+            '/sources',
             '/translators',
             '/team-members',
             '/methodology',
@@ -105,8 +105,8 @@ const MoreOptions = ({ setIsOpen, isAdmin }) => {
             </Link>
 
             <Link 
-                href="/Sources" 
-                className={`${styles.moreLink} ${isActive('/Sources') ? styles.active : ''}`} 
+                href="/sources" 
+                className={`${styles.moreLink} ${isActive('/sources') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 sources
