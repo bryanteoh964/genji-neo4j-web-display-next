@@ -1,7 +1,7 @@
 const { getSession } = require('../../neo4j_driver/route.prod.js');
 import { withAdminAuth } from "../../../../lib/auth-utils";
 
-async function createBlog(title, content, userEmail) {
+async function createBlog(title, content, userEmail, showOnPage = false) {
   const session = await getSession();
 
   try {
@@ -20,8 +20,8 @@ async function createBlog(title, content, userEmail) {
     // Create the blog
     const createResult = await session.writeTransaction(tx => 
       tx.run(
-        'CREATE (b:Blog {title: $title, content: $content, createdAt: datetime()}) RETURN b',
-        { title, content }
+        'CREATE (b:Blog {title: $title, content: $content, showOnPage: $showOnPage}) RETURN b',
+        { title, content, showOnPage }
       )
     );
 
@@ -52,7 +52,7 @@ async function createBlog(title, content, userEmail) {
 
 export const POST = withAdminAuth(async (request, session) => {
   try {
-    const { title, content } = await request.json();
+    const { title, content, showOnPage = false } = await request.json();
     
     if (!title || !title.trim()) {
       return new Response(JSON.stringify({ message: "Title is required" }), { 
@@ -68,7 +68,7 @@ export const POST = withAdminAuth(async (request, session) => {
       });
     }
     
-    const result = await createBlog(title.trim(), content, session.user.email);
+    const result = await createBlog(title.trim(), content, session.user.email, showOnPage);
     
     return new Response(JSON.stringify({ 
       success: true, 
