@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 const MOBILE_ALLOWED_ROUTES = [
     '/',
     '/mobile-search',
-    '/aboutThisSite',
+    '/about-this-site',
     '/login'
 ];
 

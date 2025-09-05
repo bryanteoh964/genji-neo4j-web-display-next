@@ -45,11 +45,11 @@ const MoreDropDown = () => {
 
     const isAnyLinkActive = () => {
         const paths = [
-            '/aboutThisSite',
+            '/about-this-site',
             '/user-guide',
-            '/Sources',
+            '/sources',
             '/translators',
-            '/teamMembers',
+            '/team-members',
             '/methodology',
             '/collaborate',
             '/administrator',
@@ -89,8 +89,8 @@ const MoreOptions = ({ setIsOpen, isAdmin }) => {
         <div className={styles.moreOptions}>
 
             <Link 
-                href="/aboutThisSite" 
-                className={`${styles.moreLink} ${isActive('/aboutThisSite') ? styles.active : ''}`} 
+                href="/about-this-site" 
+                className={`${styles.moreLink} ${isActive('/about-this-site') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 this site
@@ -105,8 +105,8 @@ const MoreOptions = ({ setIsOpen, isAdmin }) => {
             </Link>
 
             <Link 
-                href="/Sources" 
-                className={`${styles.moreLink} ${isActive('/Sources') ? styles.active : ''}`} 
+                href="/sources" 
+                className={`${styles.moreLink} ${isActive('/sources') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 sources
@@ -121,8 +121,8 @@ const MoreOptions = ({ setIsOpen, isAdmin }) => {
             </Link>
 
             <Link 
-                href="/teamMembers" 
-                className={`${styles.moreLink} ${isActive('/teamMembers') ? styles.active : ''}`} 
+                href="/team-members" 
+                className={`${styles.moreLink} ${isActive('/team-members') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 team members

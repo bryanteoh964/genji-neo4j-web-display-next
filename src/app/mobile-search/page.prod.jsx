@@ -1,6 +1,6 @@
 'use client'
 
-import MobileFilterSearch from "../../components/MobileFilterSearch";
+import MobileFilterSearch from "../../components/MobileFilterSearch.prod";
 import styles from "../../styles/pages/mobileFilterSearch.module.css";
 
 export default function MobileSearchPage() {

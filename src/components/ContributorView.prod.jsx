@@ -143,7 +143,7 @@ return (
           const user = contributorUsers[contributor.contributor];
             return (
               <li key={contributor.contributor} className={styles.contributorItem}>
-                <Link href={`/userhomepage/${contributor.contributor}`} className={styles.contributorLink}>
+                <Link href={`/user-home-page/${contributor.contributor}`} className={styles.contributorLink}>
                   {user?.image && (
                     <img
                       src={user.image}

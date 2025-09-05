@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { useCallback, useEffect, useState, useRef} from 'react'
 import '../styles/pages/characterTimeline.css'
-import TimelineGanttChart from './TimelineGanttChart';  
+import TimelineGanttChart from './TimelineGanttChart.prod';  
 
 export default function CharacterTimeline({l}) {    
     // Back-end  

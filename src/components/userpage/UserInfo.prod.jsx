@@ -77,7 +77,7 @@ const UserInfo = () => {
 
           <div className={styles.infoRow}>
             <span className={styles.label}>User Homepage</span>
-            <a href={`/userhomepage/${user._id}`}>
+            <a href={`/user-home-page/${user._id}`}>
               <span className={styles.email_value}>Edit More on Homepage</span>
             </a>
           </div>

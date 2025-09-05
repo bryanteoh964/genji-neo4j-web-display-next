@@ -38,18 +38,26 @@ const BlogPage = () => {
           setContent(blogData.content);
           
           // get author info
-          if (blogData.isUser === 'true' && blogData.authorEmail) {
+          if (blogData.isUser && blogData.authorEmail) {
             const apiUrl = `/api/user/getByEmail?email=${encodeURIComponent(blogData.authorEmail)}`;
             const authorRes = await fetch(apiUrl);
             const authorData = await authorRes.json();
-            setAuthorInfo({
-              name: authorData.name,
-              homepage: `/userhomepage/${authorData._id}`,
-              email: blogData.authorEmail
-            });
+            
+            if (authorData._id && authorData.name) {
+              setAuthorInfo({
+                name: authorData.name,
+                homepage: `/user-home-page/${authorData._id}`,
+                email: blogData.authorEmail
+              });
+            } else {
+              setAuthorInfo({name: '', homepage: '', email: ''});
+            }
+          } else {
+            setAuthorInfo({name: '', homepage: '', email: ''});
           }
         } catch (error) {
           console.error('Error fetching blog content or author info:', error);
+          setAuthorInfo({name: '', homepage: '', email: ''});
         }
       } else {
         // clear author info when no blog is selected
@@ -185,7 +193,13 @@ const BlogPage = () => {
                               content={selectedBlog ? content : defaultBlogContent} 
                               className={styles.descriptionText} 
                           />
-                          <a href={authorInfo.homepage} className={styles.author}>{authorInfo.name}</a>
+                          {authorInfo.name && authorInfo.homepage ? (
+                              <a href={authorInfo.homepage} className={styles.author}>{authorInfo.name}</a>
+                          ) : authorInfo.email ? (
+                              <div className={styles.author}>Author: {authorInfo.email}</div>
+                          ) : (
+                              selectedBlog && <div className={styles.author}>Author information not available</div>
+                          )}
                       </>
                   )}
               </div>
