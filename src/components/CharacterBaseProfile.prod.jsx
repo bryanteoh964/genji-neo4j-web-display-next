@@ -86,7 +86,7 @@ export default function CharactersListPage() {
       <div className={characterStyles.heroSection}>
         <img
           className={characterStyles.fullBackgroundImage}
-          src="/images/character_banner2.png"
+          src="/images/character_banner.png"
           alt="Character background"
         />
       </div>

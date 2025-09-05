@@ -1570,8 +1570,8 @@ const PoemSearch = () => {
       <img 
         className={styles.fullBackgroundImage} 
         src={showByAge 
-          ? "/images/searchpage_background7.png" 
-          : "/images/searchpage_background5.png"} 
+          ? "/images/searchpage_background2.png" 
+          : "/images/searchpage_background.png"} 
         alt="Genji background" 
       />
       <div

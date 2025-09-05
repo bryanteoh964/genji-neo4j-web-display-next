@@ -441,7 +441,7 @@ export default function CharacterDetail({ name }) {
             <div className={styles.heroSection}>
                 <img
                     className={styles.fullBackgroundImage}
-                    src="/images/character_banner3.png"
+                    src="/images/character_banner2.png"
                     alt="Character background"
                 />
                 <div className={styles.titleOverlay}>

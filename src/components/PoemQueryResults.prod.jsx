@@ -348,7 +348,7 @@ const PoemDisplay = ({ poemData }) => {
             <section className={styles.imageSection}>
                 <img 
                     className={styles.fullBackgroundImage} 
-                    src="/images/poem_background_1.jpg" 
+                    src="/images/poem_background.jpg" 
                     alt="Poem background" 
                 />
 
