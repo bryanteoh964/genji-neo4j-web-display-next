@@ -59,6 +59,7 @@ const AdministratorPage = () => {
             setSelectedBlog({
                 title,
                 content: data.content,
+                showOnPage: data.showOnPage,
                 authorEmail: data.authorEmail,
                 isUser: data.isUser
             });
@@ -67,9 +68,10 @@ const AdministratorPage = () => {
         }
     };
 
-    const handleBlogUpdate = async (title, content) => {
+    const handleBlogUpdate = async (title, content, showOnPage) => {
         try {
-            const response = await fetch('/api/administrator/updateBlog', {
+            // Update blog content
+            const contentResponse = await fetch('/api/administrator/updateBlog', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,14 +79,28 @@ const AdministratorPage = () => {
                 body: JSON.stringify({ title, content }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update blog');
+            if (!contentResponse.ok) {
+                throw new Error('Failed to update blog content');
             }
 
-            // Update the selected blog content
+            // Update showOnPage property
+            const showOnPageResponse = await fetch('/api/administrator/updateBlogShowOnPage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, showOnPage }),
+            });
+
+            if (!showOnPageResponse.ok) {
+                throw new Error('Failed to update blog showOnPage property');
+            }
+
+            // Update the selected blog content and showOnPage
             setSelectedBlog(prev => ({
                 ...prev,
-                content
+                content,
+                showOnPage
             }));
 
             return { success: true };
@@ -93,14 +109,14 @@ const AdministratorPage = () => {
         }
     };
 
-    const handleCreateBlog = async (title, content) => {
+    const handleCreateBlog = async (title, content, showOnPage) => {
         try {
             const response = await fetch('/api/administrator/createBlog', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ title, content }),
+                body: JSON.stringify({ title, content, showOnPage }),
             });
 
             if (!response.ok) {
@@ -186,6 +202,7 @@ const AdministratorPage = () => {
                             onClick={() => setSelectedBlog({ 
                                 title: '', 
                                 content: '', 
+                                showOnPage: false,
                                 isNew: true 
                             })}
                         >

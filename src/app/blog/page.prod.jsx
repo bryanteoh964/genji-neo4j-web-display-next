@@ -63,15 +63,9 @@ const BlogPage = () => {
 
   useEffect(() => {
     const fetchBlogNames = async () => {
-      const response = await fetch('/api/blog/getBlogList');
+      const response = await fetch('/api/blog/getBlogListForPage');
       const data = await response.json();
-      const filteredTitles = data.titles.filter(title => 
-        !['Collaborate', 'Team Members', 'Genjipoems Blog', 'Sources', 'Privacy Policy', 'Terms of Service',
-          'About Arthur Waley', 'About Dennis Washburn', 'About Edward Seidensticker', 'About Edwin Cranston', 'About Royall Tyler',
-          'About This Site', 'Further Reading'
-        ].includes(title)
-      );
-      setBlogNames(filteredTitles);
+      setBlogNames(data.titles || []);
     };
     fetchBlogNames();
   }, []);

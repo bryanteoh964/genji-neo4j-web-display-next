@@ -6,6 +6,7 @@ import styles from '../styles/pages/adminBlogEditor.module.css'
 const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [showOnPage, setShowOnPage] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -16,6 +17,7 @@ const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
         if (blog) {
             setTitle(blog.title || '');
             setContent(blog.content || '');
+            setShowOnPage(blog.showOnPage || false);
             setIsEditing(blog.isNew || false);
         }
     }, [blog]);
@@ -37,9 +39,9 @@ const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
         try {
             let result;
             if (blog.isNew) {
-                result = await onCreate(title.trim(), content);
+                result = await onCreate(title.trim(), content, showOnPage);
             } else {
-                result = await onUpdate(title.trim(), content);
+                result = await onUpdate(title.trim(), content, showOnPage);
             }
 
             if (result.success) {
@@ -64,6 +66,7 @@ const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
             // Reset to original values
             setTitle(blog.title || '');
             setContent(blog.content || '');
+            setShowOnPage(blog.showOnPage || false);
             setIsEditing(false);
         }
         setMessage('');
@@ -189,6 +192,22 @@ const AdminBlogEditor = ({ blog, onUpdate, onCreate, onClose, onDelete }) => {
                     )}
                 </div>
             </div>
+
+            {/* Show on Page Checkbox - only when editing */}
+            {isEditing && (
+                <div className={styles.checkboxSection}>
+                    <label className={styles.checkboxLabel}>
+                        <input
+                            type="checkbox"
+                            checked={showOnPage}
+                            onChange={(e) => setShowOnPage(e.target.checked)}
+                            className={styles.checkbox}
+                            disabled={isSaving}
+                        />
+                        <span className={styles.checkboxText}>Show on Blog Page</span>
+                    </label>
+                </div>
+            )}
 
             {message && (
                 <div className={`${styles.message} ${
