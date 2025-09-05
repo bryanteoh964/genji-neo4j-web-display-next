@@ -43,53 +43,24 @@ async function getData (chapter, number){
 			const speakerRel = record.get('speaker_rel');
 			const addresseeRel = record.get('addressee_rel');
 			
-			// Handle cases where we have both speaker and addressee
-			if (speakerRel && addresseeRel) {
+			// Only process if we have at least one relationship
+			if (speakerRel || addresseeRel) {
+				const speaker = speakerRel ? toNativeTypes(speakerRel).start : toNativeTypes(addresseeRel).end;
+				const addressee = addresseeRel ? toNativeTypes(addresseeRel).end : speaker; // Default to speaker for self-addressed
+				const poem = speakerRel ? toNativeTypes(speakerRel).end : toNativeTypes(addresseeRel).start;
+				
 				exchange.push({
-					start: toNativeTypes(speakerRel).start, // speaker character
-					end: toNativeTypes(addresseeRel).end,   // addressee character
+					start: speaker,
+					end: addressee,
 					segments: [
 						{
-							start: toNativeTypes(speakerRel).start,  // speaker character
-							end: toNativeTypes(speakerRel).end       // the poem
-						}
-					]
-				});
-			}
-			// Handle cases where we only have speaker (might be self-addressed)
-			else if (speakerRel && !addresseeRel) {
-				exchange.push({
-					start: toNativeTypes(speakerRel).start, // speaker character
-					end: toNativeTypes(speakerRel).start,   // same as speaker for self-addressed
-					segments: [
-						{
-							start: toNativeTypes(speakerRel).start,  // speaker character
-							end: toNativeTypes(speakerRel).end       // the poem
-						}
-					]
-				});
-			}
-			// Handle cases where we only have addressee 
-			else if (!speakerRel && addresseeRel) {
-				exchange.push({
-					start: toNativeTypes(addresseeRel).end, // addressee character as both
-					end: toNativeTypes(addresseeRel).end,   // addressee character
-					segments: [
-						{
-							start: toNativeTypes(addresseeRel).end,   // addressee character
-							end: toNativeTypes(addresseeRel).start    // the poem
+							start: speaker,
+							end: poem
 						}
 					]
 				});
 			}
 		});
-		
-		console.log('Final exchange array:', exchange.map(ex => ({
-			speaker: ex.start.properties.name,
-			addressee: ex.end.properties.name,
-			start_id: ex.start.identity,
-			end_id: ex.end.identity
-		})));
 		
 		// Remove duplicates
 		const uniqueExchange = [];
