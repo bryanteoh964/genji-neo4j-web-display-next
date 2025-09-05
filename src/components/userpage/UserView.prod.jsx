@@ -82,7 +82,7 @@ export default function UserView() {
                                         />
                                     )}
                                     <div className={styles.userDetails}>
-                                        <Link href={`/userhomepage/${user._id}`}>
+                                        <Link href={`/user-home-page/${user._id}`}>
                                             {renderUserNames(user)}
                                             <span className={styles.userEmail}>{user?.email}</span>
                                         </Link>
@@ -97,7 +97,7 @@ export default function UserView() {
             <div className={styles.container}>
                 <div className={styles.userGrid}>
                     {userList.map((user) => (
-                        <Link key={user._id} href={`/userhomepage/${user._id}`} className={styles.userCard}>
+                        <Link key={user._id} href={`/user-home-page/${user._id}`} className={styles.userCard}>
                             <div className={styles.userHeader}>
                                 {user?.image ? (
                                     <img

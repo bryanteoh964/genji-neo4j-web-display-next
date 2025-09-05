@@ -44,7 +44,7 @@ const BlogPage = () => {
             const authorData = await authorRes.json();
             setAuthorInfo({
               name: authorData.name,
-              homepage: `/userhomepage/${authorData._id}`,
+              homepage: `/user-home-page/${authorData._id}`,
               email: blogData.authorEmail
             });
           }
