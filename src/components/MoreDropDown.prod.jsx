@@ -44,11 +44,11 @@ const MoreDropDown = () => {
     const isAnyLinkActive = () => {
         const paths = [
             '/blog',
-            '/furtherReading',
+            '/further-reading',
             '/characters/relationships',
             '/characters/map',
             '/characters/timeline',
-            '/whats_new',
+            '/whats-new',
         ];
         return paths.some(path => isActive(path));
     };
@@ -92,8 +92,8 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
-                href="/furtherReading" 
-                className={`${styles.moreLink} ${isActive('/furtherReading') ? styles.active : ''}`} 
+                href="/further-reading" 
+                className={`${styles.moreLink} ${isActive('/further-reading') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 further reading
@@ -124,8 +124,8 @@ const MoreOptions = ({ setIsOpen }) => {
             </Link>
 
             <Link 
-                href="/whats_new" 
-                className={`${styles.moreLink} ${isActive('/whats_new') ? styles.active : ''}`} 
+                href="/whats-new" 
+                className={`${styles.moreLink} ${isActive('/whats-new') ? styles.active : ''}`} 
                 onClick={() => setIsOpen(false)}
             >
                 what&apos;s new

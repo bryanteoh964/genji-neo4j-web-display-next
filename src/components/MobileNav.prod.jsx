@@ -32,7 +32,7 @@ const MobileNavigation = () => {
     const mobilePages = [
         { href: '/', label: 'Home' },
         { href: '/mobile-search', label: 'Mobile Poem Search' },
-        { href: '/aboutThisSite', label: 'About This Site' }
+        { href: '/about-this-site', label: 'About This Site' }
     ];
 
     return (
