@@ -17,7 +17,6 @@ async function getBlogData(title) {
     const authorEmail = result.records[0]?.get('authorEmail') || null;
     const isUser = result.records[0]?.get('isUser') || null;
 
-    
     return { content, showOnPage, authorEmail, isUser };
   } catch(error) {
     console.error('Failed to fetch blog info:', error);

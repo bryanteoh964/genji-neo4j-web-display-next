@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from '../styles/pages/characterProfile.module.css';
 import FormatContent from './FormatText.prod';
-import ZoomableGanttChart from './ZoomableGanttChart.jsx';
+import ZoomableGanttChart from './ZoomableGanttChart.prod.jsx';
 import ContributorView from './ContributorView.prod'
 import DiscussionArea from './DiscussionArea.prod'
 
@@ -441,7 +441,7 @@ export default function CharacterDetail({ name }) {
             <div className={styles.heroSection}>
                 <img
                     className={styles.fullBackgroundImage}
-                    src="/images/character_banner3.png"
+                    src="/images/character_banner2.png"
                     alt="Character background"
                 />
                 <div className={styles.titleOverlay}>

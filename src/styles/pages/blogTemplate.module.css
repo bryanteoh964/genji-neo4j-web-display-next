@@ -454,7 +454,7 @@
 }
 
 .translationCard {
-  width: 665px;
+  width: 630px;
   height: 120px;
   display: flex;
   flex-direction: column;
@@ -467,7 +467,7 @@
 .translationContent {
   flex: 1;
   padding: 0px 15px;
-  width: 635px;
+  width: 630px;
   height: 90px;
   text-align: left;
 }
@@ -504,7 +504,7 @@
 }
 
 .translatorName {
-  width: 655px;
+  width: 630px;
   height: 30px;
   color: #ffffff;
   background-color: rgba(154, 152, 152, 0.66);

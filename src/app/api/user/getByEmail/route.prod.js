@@ -27,10 +27,11 @@ export async function GET(req) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    // Get id and name
-    const { _id, name } = user;
+    // Get id and name, fallback to googleName if name is empty
+    const { _id, name, googleName } = user;
+    const displayName = (name && name.trim()) ? name : (googleName || '');
 
-    return NextResponse.json({ _id, name }, { status: 200 });
+    return NextResponse.json({ _id, name: displayName }, { status: 200 });
   } catch (error) {
       console.error('Error fetching user data:', error);
       return NextResponse.json({ message: "Internal server error" }, { status: 500 });
